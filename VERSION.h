@@ -1,4 +1,8 @@
 // file: ./VERSION.h
 
-#define VER_MAJOR 2
-#define VER_TRUNK "develop"
+#define EIRC2_VER_MAJOR 2
+#define EIRC2_VER_MINOR 2
+#define EIRC2_VER_RELEASE 5
+#define EIRC2_VER_BRANCH 0
+#define EIRC2_VER_STRING "v2.02E"
+#define EIRC2_VER_TRUNKNAME "develop"
