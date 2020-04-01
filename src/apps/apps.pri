@@ -2,3 +2,5 @@
 
 include(../src.pri)
 
+INCLUDEPATH *= ../../../libs
+

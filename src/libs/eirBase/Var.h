@@ -19,7 +19,11 @@ public:
     Var(const char * name,
         const QVariant &defValue,
         const QVariant &curValue=QVariant());
+    bool isNull() const;
     MultiName name() const;
+    QVariant current() const;
+    QVariant value() const;
+    bool operator == (const Var & other);
     void dump();
 
 private:

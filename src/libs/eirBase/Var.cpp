@@ -16,9 +16,29 @@ Var::Var(const char *name, const QVariant &defValue, const QVariant &curValue)
     , mDefault(defValue)
     , mCurrent(curValue) {;}
 
+bool Var::isNull() const
+{
+    return mName.isEmpty();
+}
+
 MultiName Var::name() const
 {
     return mName;
+}
+
+QVariant Var::current() const
+{
+    return mCurrent;
+}
+
+QVariant Var::value() const
+{
+    return mCurrent.isValid() ? mCurrent : mDefault;
+}
+
+bool Var::operator ==(const Var &other)
+{
+    return name() == other.name() && value() == other.value();
 }
 
 void Var::dump()

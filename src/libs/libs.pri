@@ -2,3 +2,4 @@
 
 include(../src.pri)
 
+INCLUDEPATH *= ..
