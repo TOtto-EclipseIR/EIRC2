@@ -2,6 +2,7 @@
 #include "eirBase.h"
 
 #include <QList>
+#include <QMap>
 #include <QVariant>
 
 #include "MultiName.h"
@@ -10,6 +11,7 @@ class EIRBASE_EXPORT Var
 {
 public:
     typedef QList<Var> List;
+    typedef QMap<QString /* MultiName.sortable() */, Var> Map;
 
 public:
     Var(const MultiName & name=MultiName());

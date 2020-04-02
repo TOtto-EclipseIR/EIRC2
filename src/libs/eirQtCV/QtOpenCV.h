@@ -9,6 +9,9 @@ class EIRQTCV_EXPORT QtOpenCV : public QObject
 public:
     explicit QtOpenCV(QObject *parent = nullptr);
 
+private slots:
+    void tryLoad();
+
 signals:
 
 };

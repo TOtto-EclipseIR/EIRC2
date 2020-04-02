@@ -17,12 +17,18 @@ public:
 
 public slots:
     void run();
-    void setupDefaults();
     void setDefault(Var var);
+
+private slots:
+    void initErrorHandler();
+    void initSettings();
+    void setupDefaults();
+    void initCommandLine();
 
 public: // static
 
 signals:
+    void initFinished();
 
 private:
     ErrorHandler * mpErrorHandler=nullptr;

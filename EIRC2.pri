@@ -4,19 +4,19 @@ DESTDIR = /bin
 
 win32 {
     CONFIG(debug, debug|release) {
-        DESTDIR = /bin/win32d
+        DESTDIR = /INDIface/win32d
     }
     else {
-        DESTDIR = /bin/win32
+        DESTDIR = /INDIface/win32
     }
 }
 
 win64 {
     CONFIG(debug, debug|release) {
-        DESTDIR = /bin/win64d
+        DESTDIR = /INDIface/win64d
     }
     else {
-        DESTDIR = /bin/win64
+        DESTDIR = /INDIface/win64
     }
 }
 

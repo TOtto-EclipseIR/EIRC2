@@ -18,19 +18,20 @@ MultiName VarMap::name() const
 
 bool VarMap::contains(const MultiName &name) const
 {
-    return mVarMap.contains(name.sortable());
+    return Var::Map::contains(name.sortable());
 }
 
 VarMap VarMap::insert(const Var &var)
 {
-    mVarMap.insert(var.name().sortable(), var);
-    NEEDDO("return VarMap(mVarMap)")
-    NEEDFNR(VarMap());
+    Var::Map::insert(var.name().sortable(), var);
+//    NEEDDO("return VarMap(mVarMap)")
+  //  NEEDFNR(VarMap());
+    return *this;
 }
 
 Var VarMap::value(const MultiName &name) const
 {
-    return mVarMap.value(name.sortable());
+    return Var::Map::value(name.sortable());
 }
 
 VarMap VarMap::extract(const MultiName &groupName) const
@@ -40,7 +41,7 @@ VarMap VarMap::extract(const MultiName &groupName) const
 
 Var::List VarMap::values() const
 {
-    return mVarMap.values();
+    return Var::Map::values();
 }
 
 VarMap VarMap::operator <<  (const Var &var)
@@ -51,6 +52,6 @@ VarMap VarMap::operator <<  (const Var &var)
 void VarMap::dump() const
 {
     mName.dump();
-    foreach (Var var, mVarMap) var.dump();
+    foreach (Var var, Var::Map::values()) var.dump();
 }
 

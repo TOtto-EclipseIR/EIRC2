@@ -8,7 +8,7 @@
 #include "MultiName.h"
 #include "Var.h"
 
-class EIRBASE_EXPORT VarMap
+class EIRBASE_EXPORT VarMap : private Var::Map
 {
 public:
     typedef QList<VarMap> List;
@@ -29,6 +29,6 @@ public:
 
 private:
     MultiName mName;
-    QMap<QString, Var> mVarMap;
+//    QMap<QString, Var> mVarMap;
 };
 

@@ -28,6 +28,7 @@ public:
              const VarMap & vars=VarMap());
         Item(const MultiName & name,
              const VarMap & vars=VarMap());
+        MultiName name() const;
         QStringList messages() const;
         QString message(const QChar sep=QChar('\n')) const;
         bool debug() const;
@@ -73,7 +74,13 @@ public:
                      const QFileInfo &fileInfo,
                      const QString & what=QString());
 
+private slots:
+    void registerCodes();
+
 signals:
+    void triggered(Item item);
+    void triggered(QString message);
+    void triggered(QStringList messages);
 
 };
 

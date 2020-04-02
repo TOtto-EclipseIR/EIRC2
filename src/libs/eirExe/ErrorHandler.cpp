@@ -1,6 +1,7 @@
 #include "ErrorHandler.h"
 
 #include <QCoreApplication>
+#include <QTimer>
 
 #include <eirBase/Debug.h>
 #include <eirBase/Success.h>
@@ -10,12 +11,19 @@ ErrorHandler::ErrorHandler()
 {
     TRACEFN
     setObjectName("ErrorHandler singleton");
+    QTimer::singleShot(10, this, &ErrorHandler::registerCodes);
 }
 
 bool ErrorHandler::submit(const ErrorHandler::Item item,
                           const bool fail)
 {
-    NEEDUSE(item) NEEDUSE(fail) NEEDFNR(false);
+    TRACEQFI << item.name()();
+    if ( ! fail) return false;
+    emit triggered(item);
+    emit triggered(item.message(';'));
+    emit triggered(item.messages());
+    item.debug();
+    return true;
 }
 
 bool ErrorHandler::submit(const ErrorHandler::Code code, const VarMap &vars, const bool fail)
@@ -53,10 +61,7 @@ bool ErrorHandler::tryFileMode(const QIODevice::OpenMode mode,
     vars << Var("ModesTested", QString::number(mode)
                 .toLocal8Bit().toHex().toUpper());
     vars << Var("FileName", fileInfo.fileName());
-    if (fileInfo.isAbsolute())
-        vars << Var("FileInfo/Path/Absolute", fileInfo.path());
-    if (fileInfo.isRelative())
-        vars << Var("FileInfo/Path/Relative", fileInfo.path());
+    vars << Var("FilePath", fileInfo.path());
 
     if (QIODevice::ExistingOnly & mode && ! fileInfo.exists())
     {
@@ -77,6 +82,12 @@ bool ErrorHandler::tryFileMode(const QIODevice::OpenMode mode,
     return success;
 }
 
+void ErrorHandler::registerCodes()
+{
+    TRACEFN
+    eirExe::registerErrors();
+}
+
 QHash<ErrorHandler::Code, ErrorHandler::Item> ErrorHandler::Item::smCodeHash;
 QtMsgType ErrorHandler::Item::smFatalMsgType = QtCriticalMsg;
 
@@ -94,6 +105,11 @@ ErrorHandler::Item::Item(const MultiName &name, const VarMap &vars)
 {
     if (isValid(name)) *this = item(name);
     mVars = vars;
+}
+
+MultiName ErrorHandler::Item::name() const
+{
+    return mName;
 }
 
 QStringList ErrorHandler::Item::messages() const
@@ -136,6 +152,8 @@ ErrorHandler::Code ErrorHandler::Item::registerCode(const MultiName &name,
                                       const QString format,
                                       const VarMap &itemVars)
 {
+    TRACEQFI << name() << qmt << format;
+    itemVars.dump();
     Item item;
     item.mCode = name.hash();
     item.mName = name;
@@ -197,6 +215,7 @@ bool ErrorHandler::Item::isFatal() const
     case QtWarningMsg:  /*1*/ return smFatalMsgType >= QtWarningMsg;
     case QtCriticalMsg: /*2*/ return smFatalMsgType >= QtCriticalMsg;
     case QtFatalMsg:    /*3*/ return smFatalMsgType >= QtFatalMsg;
+    default:                  return true;
     }
 }
 

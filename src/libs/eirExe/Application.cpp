@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include <QTimer>
+
 #include <eirBase/Debug.h>
 
 #include "CommandLine.h"
@@ -8,12 +10,12 @@
 
 Application::Application(QObject *parent)
     : QObject(parent)
-    , mpCommandLine(new CommandLine(this))
-    , mpSettings(new Settings(this))
+//    , mpCommandLine(new CommandLine(this))
+  //  , mpSettings(new Settings(this))
 {
     TRACEFN
-    TSTALLOC(mpCommandLine)
-    TSTALLOC(mpSettings)
+//    TSTALLOC(mpCommandLine)
+  //  TSTALLOC(mpSettings)
     setObjectName("Application");
 
 }
@@ -21,19 +23,47 @@ Application::Application(QObject *parent)
 void Application::run()
 {
     TRACEFN
+    QTimer::singleShot(100, this, &Application::initErrorHandler);
+}
+
+void Application::setDefault(Var var)
+{
+    mpSettings->set(var);
+}
+
+void Application::initErrorHandler()
+{
+    TRACEFN
+    TSTALLOC(errorHandler());
+    QTimer::singleShot(100, this, &Application::initSettings);
 
 }
+
+void Application::initSettings()
+{
+    TRACEFN
+    mpSettings = new Settings(this);
+    TSTALLOC(mpSettings);
+    QTimer::singleShot(100, this, &Application::setupDefaults);
+
+}
+
 
 void Application::setupDefaults()
 {
     TSTALLOC(mpSettings)
     setDefault(Var("Options/Shutdown", false));
     setDefault(Var("Options/UpdateMsec", 2000));
+    QTimer::singleShot(100, this, &Application::initCommandLine);
 }
 
-void Application::setDefault(Var var)
+void Application::initCommandLine()
 {
-    mpSettings->set(var);
+    TRACEFN
+    mpCommandLine = new CommandLine(this);
+    TSTALLOC(mpCommandLine);
+//    QTimer::singleShot(100, this, &Application::initErrorHandler);
+    emit initFinished();
 }
 
 ErrorHandler *Application::error()

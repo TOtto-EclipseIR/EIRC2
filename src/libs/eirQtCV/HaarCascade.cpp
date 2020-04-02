@@ -11,8 +11,10 @@ HaarCascade::HaarCascade()
 bool HaarCascade::load(const QFileInfo &xmlFileInfo)
 {
     TRACEQFI << xmlFileInfo;
-    errorHandler()->tryFileMode(QIODevice::ExistingOnly, xmlFileInfo, "HaarCascade XML file");
-    WEXPECT(xmlFileInfo.exists())
+    errorHandler()->tryFileMode(QIODevice::ReadOnly,
+                                xmlFileInfo,
+                                "HaarCascade XML file");
+//    WEXPECT(xmlFileInfo.exists())
     mpCascade = new cv::CascadeClassifier();
     return mpCascade->load(xmlFileInfo.absoluteFilePath().toStdString());
 }

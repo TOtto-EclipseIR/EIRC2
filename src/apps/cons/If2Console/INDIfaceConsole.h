@@ -13,9 +13,13 @@ public:
 
 public slots:
     void run();
+
+private slots:
     void setupDefaults();
+    void initOpenCV();
 
 signals:
+    void initFinished();
 
 private:
     QtOpenCV * mpQtOpenCV=nullptr;
