@@ -3,6 +3,8 @@
 #include <QObject>
 #include <eirExe/Console.h>
 
+class QtOpenCV;
+
 class INDIfaceConsole : public Console
 {
     Q_OBJECT
@@ -15,5 +17,7 @@ public slots:
 
 signals:
 
+private:
+    QtOpenCV * mpQtOpenCV=nullptr;
 };
 

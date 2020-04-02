@@ -24,6 +24,8 @@ INCLUDEPATH *= D:\git\github.com\EIRC2\src\3rd\OpenCV4
 LIBS *= -LD:\git\github.com\EIRC2\src\3rd\OpenCV4\lib
 LIBS *= -lopencv_objdetect420
 
+LIBS *= -leirExe
+
 SOURCES += \
     HaarCascade.cpp \
     QtOpenCV.cpp \

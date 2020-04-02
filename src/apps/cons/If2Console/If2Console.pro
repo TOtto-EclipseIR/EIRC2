@@ -21,6 +21,7 @@ depends = eirExe
 
 
 LIBS *= -leirExe
+LIBS *= -leirQtCV
 
 SOURCES += \
         INDIfaceConsole.cpp \

@@ -1,8 +1,9 @@
 #pragma once
+#include "eirQtCV.h"
 
 #include <QObject>
 
-class QtOpenCV : public QObject
+class EIRQTCV_EXPORT QtOpenCV : public QObject
 {
     Q_OBJECT
 public:

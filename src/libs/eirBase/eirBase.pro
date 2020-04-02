@@ -21,6 +21,7 @@ include(../libs.pri)
 SOURCES += \
     BasicName.cpp \
     MultiName.cpp \
+    Success.cpp \
     Var.cpp \
     VarMap.cpp \
     VersionInfo.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     BasicName.h \
     Debug.h \
     MultiName.h \
+    Success.h \
     Var.h \
     VarMap.h \
     VersionInfo.h \

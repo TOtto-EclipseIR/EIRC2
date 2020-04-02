@@ -3,13 +3,78 @@
 #include <QCoreApplication>
 
 #include <eirBase/Debug.h>
-
+#include <eirBase/Success.h>
 
 ErrorHandler::ErrorHandler()
     : QObject(qApp->parent())
 {
     TRACEFN
     setObjectName("ErrorHandler singleton");
+}
+
+bool ErrorHandler::submit(const ErrorHandler::Item item,
+                          const bool fail)
+{
+    NEEDUSE(item) NEEDUSE(fail) NEEDFNR(false);
+}
+
+bool ErrorHandler::submit(const ErrorHandler::Code code, const VarMap &vars, const bool fail)
+{
+    return submit(Item(code, vars), fail);
+}
+
+bool ErrorHandler::submit(const MultiName &name, const VarMap &vars, const bool fail)
+{
+    return submit(Item(name, vars), fail);
+}
+
+bool ErrorHandler::tryFileMode(const QIODevice::OpenMode mode,
+                               const QString &fileName,
+                               const QString &what,
+                               const QDir &dir)
+{
+    return tryFileMode(mode, QFileInfo(dir, fileName), what);
+}
+
+bool ErrorHandler::tryFileMode(const QIODevice::OpenMode mode,
+                               QFile *file,
+                               const QString & what)
+{
+    return tryFileMode(mode, QFileInfo(file->fileName()), what);
+}
+
+bool ErrorHandler::tryFileMode(const QIODevice::OpenMode mode,
+                               const QFileInfo &fileInfo,
+                               const QString &what)
+{
+    Success success(true);
+    VarMap vars;
+    vars << Var("What", what);
+    vars << Var("ModesTested", QString::number(mode)
+                .toLocal8Bit().toHex().toUpper());
+    vars << Var("FileName", fileInfo.fileName());
+    if (fileInfo.isAbsolute())
+        vars << Var("FileInfo/Path/Absolute", fileInfo.path());
+    if (fileInfo.isRelative())
+        vars << Var("FileInfo/Path/Relative", fileInfo.path());
+
+    if (QIODevice::ExistingOnly & mode && ! fileInfo.exists())
+    {
+        success.expect(submit("ErrorHandler/tryFileMode/NotExist",
+                              vars << Var("Mode", "Existing")));
+    }
+    else
+    {
+        if (QIODevice::ReadOnly & mode && ! fileInfo.isReadable())
+            success.expect(submit("ErrorHandler/tryFileMode/NotReadable",
+                                  vars << Var("Mode", "Readable")));
+        if (QIODevice::WriteOnly & mode && ! fileInfo.isWritable())
+            success.expect(submit("ErrorHandler/tryFileMode/NotWriteable",
+                                  vars << Var("Mode", "Writable")));
+    }
+
+
+    return success;
 }
 
 QHash<ErrorHandler::Code, ErrorHandler::Item> ErrorHandler::Item::smCodeHash;
@@ -66,7 +131,7 @@ bool ErrorHandler::Item::debug() const
     return fatal;
 }
 
-uint ErrorHandler::Item::registerCode(const MultiName &name,
+ErrorHandler::Code ErrorHandler::Item::registerCode(const MultiName &name,
                                       const QtMsgType qmt,
                                       const QString format,
                                       const VarMap &itemVars)
@@ -79,6 +144,21 @@ uint ErrorHandler::Item::registerCode(const MultiName &name,
     item.mItemVars = itemVars;
     smCodeHash.insert(item.mCode, item);
     return item.mCode;
+}
+
+Var::List ErrorHandler::Item::registerCodes(const VarMap::List maps)
+{
+    Var::List codeVars;
+    foreach (VarMap map, maps)
+    {
+        codeVars.append(Var(map.name(),
+                            registerCode(map.name(),
+                                         QtMsgType(map.value("QtMsgType")
+                                                   .value().toInt()),
+                                         map.value("Format").value().toString(),
+                                         map.extract("ItemVars"))));
+    }
+    return codeVars;
 }
 
 bool ErrorHandler::Item::isValid(const MultiName &name)

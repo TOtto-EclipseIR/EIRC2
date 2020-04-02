@@ -32,10 +32,11 @@ public:
         QString message(const QChar sep=QChar('\n')) const;
         bool debug() const;
 
-        static uint registerCode(const MultiName & name,
+        static Code registerCode(const MultiName & name,
                                  const QtMsgType qmt,
                                  const QString format,
                                  const VarMap & itemVars=VarMap());
+        static Var::List registerCodes(const VarMap::List maps);
         static bool isValid(const MultiName & name);
         static bool isValid(const Code code);
         bool isFatal() const;
@@ -58,13 +59,23 @@ public:
 
 public:
     explicit ErrorHandler();
-    bool tryFileExist(const QString &fileName,
+    bool submit(const Item item, const bool fail=true);
+    bool submit(const Code code, const VarMap & vars, const bool fail=true);
+    bool submit(const MultiName &name, const VarMap & vars, const bool fail=true);
+    bool tryFileMode(const QIODevice::OpenMode mode,
+                      const QString &fileName,
+                     const QString & what=QString(),
                       const QDir & dir=QDir());
-    bool tryFileExist(const QFileInfo &fileInfo);
+    bool tryFileMode(const QIODevice::OpenMode mode,
+                     QFile * file,
+                     const QString & what=QString());
+    bool tryFileMode(const QIODevice::OpenMode mode,
+                     const QFileInfo &fileInfo,
+                     const QString & what=QString());
 
 signals:
 
 };
 
-Q_GLOBAL_STATIC(ErrorHandler, error)
+Q_GLOBAL_STATIC(ErrorHandler, errorHandler)
 
