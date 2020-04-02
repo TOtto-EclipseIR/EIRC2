@@ -17,3 +17,8 @@ void INDIfaceConsole::run()
     writeLine("Welcome to INDIfaceConsole");
 
 }
+
+void INDIfaceConsole::setupDefaults()
+{
+
+}

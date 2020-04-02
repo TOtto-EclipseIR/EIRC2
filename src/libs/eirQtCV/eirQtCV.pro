@@ -1,7 +1,7 @@
 QT -= gui
 
 TEMPLATE = lib
-DEFINES += EIREXE_LIBRARY
+DEFINES += EIRQTCV_LIBRARY
 
 CONFIG += c++11
 
@@ -18,27 +18,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../libs.pri)
 
-LIBS *= -leirBase
-LIBS *= -leirType
+INCLUDEPATH *= D:\git\github.com\EIRC2\src\3rd\OpenCV4\install\include
+INCLUDEPATH *= D:\git\github.com\EIRC2\src\3rd\OpenCV4
+
+LIBS *= -LD:\git\github.com\EIRC2\src\3rd\OpenCV4\lib
+LIBS *= -lopencv_objdetect420
 
 SOURCES += \
-    Application.cpp \
-    CommandLine.cpp \
-    Console.cpp \
-    ErrorHandler.cpp \
-    Settings.cpp \
-    StdStreams.cpp \
-    eirExe.cpp
+    HaarCascade.cpp \
+    QtOpenCV.cpp \
+    eirQtCV.cpp
 
 HEADERS += \
-    Application.h \
-    CommandLine.h \
-    Console.h \
-    ErrorHandler.h \
-    Settings.h \
-    StdStreams.h \
-    eirExe_global.h \
-    eirExe.h
+    HaarCascade.h \
+    QtOpenCV.h \
+    eirQtCV_global.h \
+    eirQtCV.h
 
 # Default rules for deployment.
 unix {

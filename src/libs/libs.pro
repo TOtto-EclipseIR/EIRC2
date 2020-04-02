@@ -2,4 +2,6 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     eirBase \
-    eirExe
+    eirExe \
+    eirQtCV \
+    eirType

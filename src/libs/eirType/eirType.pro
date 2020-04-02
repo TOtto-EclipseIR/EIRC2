@@ -1,7 +1,7 @@
 QT -= gui
 
 TEMPLATE = lib
-DEFINES += EIREXE_LIBRARY
+DEFINES += EIRTYPE_LIBRARY
 
 CONFIG += c++11
 
@@ -18,27 +18,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../libs.pri)
 
-LIBS *= -leirBase
-LIBS *= -leirType
-
 SOURCES += \
-    Application.cpp \
-    CommandLine.cpp \
-    Console.cpp \
-    ErrorHandler.cpp \
-    Settings.cpp \
-    StdStreams.cpp \
-    eirExe.cpp
+    Milliseconds.cpp \
+    eirType.cpp
 
 HEADERS += \
-    Application.h \
-    CommandLine.h \
-    Console.h \
-    ErrorHandler.h \
-    Settings.h \
-    StdStreams.h \
-    eirExe_global.h \
-    eirExe.h
+    Milliseconds.h \
+    eirType_global.h \
+    eirType.h
 
 # Default rules for deployment.
 unix {

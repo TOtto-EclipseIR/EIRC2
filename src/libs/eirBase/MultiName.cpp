@@ -3,7 +3,9 @@
 
 #include "Debug.h"
 
-QChar MultiName::smDelimiter('/'); // static
+// static
+const uint MultiName::scmHashSeed = *((uint *)("MultNameHashSeed"));
+QChar MultiName::smDelimiter('/');
 
 /*! \class MultiName
  *  \brief The MultiName class provides a multi-element name.
@@ -110,6 +112,11 @@ QVariant MultiName::toVariant() const
 QString MultiName::sortable() const
 {
     return toString().toLower();
+}
+
+uint MultiName::hash() const
+{
+    return qHash(sortable(), scmHashSeed);
 }
 
 bool MultiName::operator == (const MultiName & other) const

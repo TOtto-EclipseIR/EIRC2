@@ -38,6 +38,7 @@ public:
     QVariant toVariant(void) const;
     operator QVariant (void) const;
     QString sortable(void) const;
+    uint hash() const;
     bool operator == (const MultiName & other) const;
     bool operator <  (const MultiName & other) const;
     void dump() const;
@@ -53,6 +54,7 @@ private:
     BasicName::List mBasicNames;
 
 private: // static
+    static const uint scmHashSeed;
     static QChar smDelimiter;
 };
 

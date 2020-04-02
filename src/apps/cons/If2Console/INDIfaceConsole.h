@@ -11,6 +11,7 @@ public:
 
 public slots:
     void run();
+    void setupDefaults();
 
 signals:
 
