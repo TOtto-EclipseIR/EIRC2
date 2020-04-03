@@ -31,6 +31,10 @@ LIBS *= -leirExe
 SOURCES += \
     Configurations.cpp \
     HaarCascade.cpp \
+    QtCVcore.cpp \
+    QtCVhighgui.cpp \
+    QtCVimgproc.cpp \
+    QtCVobjdetect.cpp \
     QtOpenCV.cpp \
     cvInputArray.cpp \
     cvString.cpp \
@@ -39,6 +43,10 @@ SOURCES += \
 HEADERS += \
     Configurations.h \
     HaarCascade.h \
+    QtCVcore.h \
+    QtCVhighgui.h \
+    QtCVimgproc.h \
+    QtCVobjdetect.h \
     QtOpenCV.h \
     cvInputArray.h \
     cvString.h \
