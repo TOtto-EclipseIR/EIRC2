@@ -24,6 +24,7 @@ SOURCES += \
     Success.cpp \
     Var.cpp \
     VarMap.cpp \
+    VarMapMap.cpp \
     VersionInfo.cpp \
     eirBase.cpp
 
@@ -35,6 +36,7 @@ HEADERS += \
     Success.h \
     Var.h \
     VarMap.h \
+    VarMapMap.h \
     VersionInfo.h \
     eirBase_global.h \
     eirBase.h

@@ -1,5 +1,6 @@
 #include "QtOpenCV.h"
 
+#include <QDir>
 #include <QTimer>
 
 #include <eirBase/Debug.h>
@@ -10,12 +11,23 @@ QtOpenCV::QtOpenCV(QObject *parent) : QObject(parent)
 {
     TRACEFN
     setObjectName("QtOpenCV");
-    QTimer::singleShot(5000, this, &QtOpenCV::tryLoad);
+    QTimer::singleShot(100, this, &QtOpenCV::setDefaultConfiguration);
 }
 
-void QtOpenCV::tryLoad()
+void QtOpenCV::setDefaultConfiguration()
 {
     TRACEFN
-    HaarCascade hc;
-    hc.load(QFileInfo("gigglesnorf.xml"));
+    mConfigurations.setDefaults();
+    emit defaultConfigurationLoaded();
 }
+
+void QtOpenCV::setOverideConfiguration()
+{
+    NEEDDO()
+}
+
+void QtOpenCV::createFrontalFace()
+{
+    NEEDDO()
+}
+

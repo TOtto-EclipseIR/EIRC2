@@ -24,8 +24,6 @@ bool VarMap::contains(const MultiName &name) const
 VarMap VarMap::insert(const Var &var)
 {
     Var::Map::insert(var.name().sortable(), var);
-//    NEEDDO("return VarMap(mVarMap)")
-  //  NEEDFNR(VarMap());
     return *this;
 }
 
@@ -36,12 +34,47 @@ Var VarMap::value(const MultiName &name) const
 
 VarMap VarMap::extract(const MultiName &groupName) const
 {
-    NEEDUSE(groupName); NEEDRTN(VarMap());
+    VarMap extractedMap(groupName);
+    int nGroupSegments = groupName.segmentCount();
+    foreach (Var var, values())
+        if (var.name().startsWith(groupName))
+        {
+            var.set(var.name().firstSegmentsRemoved(nGroupSegments));
+            extractedMap.insert(var);
+        }
+    return extractedMap;
+}
+
+void VarMap::insert(const MultiName &groupName,
+                    const VarMap &groupVars)
+{
+    foreach (Var var, groupVars.values())
+    {
+        var.prependName(groupName);
+        insert(var);
+    }
+}
+
+void VarMap::insert(const VarMap &other)
+{
+    foreach (Var var, other.values()) insert(var);
 }
 
 Var::List VarMap::values() const
 {
     return Var::Map::values();
+}
+
+BasicName::List VarMap::firstSegmentKeys() const
+{
+    BasicName::List resultList;
+    foreach (Var var, values())
+    {
+        BasicName firstSegment = var.name().firstSegment();
+        if ( ! resultList.contains(firstSegment))
+            resultList.append(firstSegment);
+    }
+    return resultList;
 }
 
 VarMap VarMap::operator <<  (const Var &var)

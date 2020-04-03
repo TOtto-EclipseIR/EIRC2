@@ -23,6 +23,8 @@ public:
         const QVariant &curValue=QVariant());
     bool isNull() const;
     MultiName name() const;
+    void set(const MultiName &newName);
+    void prependName(const MultiName &groupName);
     QVariant current() const;
     QVariant value() const;
     bool operator == (const Var & other);

@@ -3,18 +3,38 @@
 #include <eirBase/Debug.h>
 #include <eirExe/ErrorHandler.h>
 
-HaarCascade::HaarCascade()
-{
+#include "cvString.h"
 
-}
+HaarCascade::HaarCascade(const ObjectType objType,
+                         const VarMap &config)
+    : mObjType(objType)
+    , mConfig(config) {;}
 
-bool HaarCascade::load(const QFileInfo &xmlFileInfo)
+bool HaarCascade::load(QFileInfo xmlFileInfo=QFileInfo())
 {
+    if (mpCascade)
+    {
+        delete mpCascade;
+        mpCascade = nullptr;
+    }
+    if ( ! xmlFileInfo.isFile())
+        xmlFileInfo = QFileInfo(
+                QDir(mConfig.value("DirName")
+                    .current().toString()),
+                mConfig.value("FileName")
+                    .current().toString());
     TRACEQFI << xmlFileInfo;
-    errorHandler()->tryFileMode(QIODevice::ReadOnly,
+    if ( ! errorHandler()->tryFileMode(QIODevice::ReadOnly,
                                 xmlFileInfo,
-                                "HaarCascade XML file");
-//    WEXPECT(xmlFileInfo.exists())
-    mpCascade = new cv::CascadeClassifier();
-    return mpCascade->load(xmlFileInfo.absoluteFilePath().toStdString());
+                                "HaarCascade XML file"))
+        return false;
+    cv::CascadeClassifier * cascade = new cv::CascadeClassifier();
+    TSTALLOC(cascade);
+    if ( ! errorHandler()->
+         expect(cascade->load(cvString(xmlFileInfo.filePath())),
+                "Loading HaarCascadeClassifier: "
+                + xmlFileInfo.filePath()))
+        return false;
+    mpCascade = cascade;
+    return true;
 }

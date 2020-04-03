@@ -19,11 +19,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include(../libs.pri)
 
 SOURCES += \
+    Enumeration.cpp \
     Milliseconds.cpp \
     eirType.cpp
 
 HEADERS += \
+    Enumeration.h \
+    EnumerationArray.h \
+    EnumerationMask.h \
     Milliseconds.h \
+    Named.h \
+    NamedArray.h \
+    NamedEnum.h \
+    NamedMap.h \
     eirType_global.h \
     eirType.h
 

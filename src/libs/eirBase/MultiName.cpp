@@ -41,24 +41,30 @@ MultiName::MultiName(const QByteArray &baNames)
     set(QString::fromLocal8Bit(baNames));
 }
 
+MultiName::MultiName(const BasicName &segment)
+{
+    mBasicSegmentNames << segment;
+}
+
 MultiName::MultiName(const BasicName::List & other)
 {
-    mBasicNames = other;
+    mBasicSegmentNames = other;
 }
 
 MultiName::MultiName(const MultiName &base, const MultiName &name)
 {
-    mBasicNames = base.mBasicNames + name.mBasicNames;
+    mBasicSegmentNames = base.mBasicSegmentNames
+                       + name.mBasicSegmentNames;
 }
 
 bool MultiName::isEmpty() const
 {
-    return mBasicNames.isEmpty();
+    return mBasicSegmentNames.isEmpty();
 }
 
 void MultiName::clear()
 {
-    mBasicNames.clear();
+    mBasicSegmentNames.clear();
 }
 
 void MultiName::set(const QString & qsNames)
@@ -73,23 +79,54 @@ void MultiName::set(const QString & qsNames)
 void MultiName::set(const QStringList & qslNames)
 {
     foreach(QString s, qslNames)
-        mBasicNames << BasicName(s);
+        mBasicSegmentNames << BasicName(s);
 }
 
-BasicName MultiName::first() const
+void MultiName::prependName(const MultiName &groupName)
 {
-    return mBasicNames.first();
+    BasicName::List resultNames;
+    resultNames << groupName.mBasicSegmentNames;
+    resultNames << mBasicSegmentNames;
+    mBasicSegmentNames = resultNames;
 }
 
-void MultiName::removeLast()
+BasicName MultiName::firstSegment() const
 {
-    mBasicNames.removeLast();
+    return mBasicSegmentNames.first();
+}
+
+BasicName MultiName::segmentAt(const int index) const
+{
+    return mBasicSegmentNames.at(index);
+}
+
+int MultiName::segmentCount() const
+{
+    return mBasicSegmentNames.size();
+}
+
+void MultiName::removeFirstSegments(int count)
+{
+    while (count--)
+        mBasicSegmentNames.removeFirst();
+}
+
+void MultiName::removeLastSegment()
+{
+    mBasicSegmentNames.removeLast();
+}
+
+MultiName MultiName::firstSegmentsRemoved(int count) const
+{
+    MultiName resultName(mBasicSegmentNames);
+    resultName.removeFirstSegments(count);
+    return resultName;
 }
 
 QStringList MultiName::toStringList() const
 {
     QStringList qsl;
-    foreach(BasicName bn, mBasicNames)
+    foreach(BasicName bn, mBasicSegmentNames)
         qsl << bn.toString();
     return  qsl;
 }
@@ -141,12 +178,21 @@ QString MultiName::join(
     if ( ! isEmpty())
     {
         const QString sDelim(delimiter);
-        BasicName::List copy = mBasicNames;
+        BasicName::List copy = mBasicSegmentNames;
         qs = copy.takeFirst();
         while ( ! copy.isEmpty())
             qs += sDelim + copy.takeFirst().toString();
     }
     return qs;
+}
+
+bool MultiName::startsWith(const MultiName &groupName) const
+{
+    int n = groupName.segmentCount();
+    for (int index = 0; index < n; ++index)
+        if (segmentAt(index) != groupName.segmentAt(index))
+            return false;
+    return true;
 }
 
 QChar MultiName::getDelimiter(void) // static

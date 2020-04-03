@@ -28,6 +28,8 @@ public:
              const VarMap & vars=VarMap());
         Item(const MultiName & name,
              const VarMap & vars=VarMap());
+        bool isNull() const;
+        void setVars(const VarMap &vars);
         MultiName name() const;
         QStringList messages() const;
         QString message(const QChar sep=QChar('\n')) const;
@@ -63,7 +65,16 @@ public:
     bool submit(const Item item, const bool fail=true);
     bool submit(const Code code, const VarMap & vars, const bool fail=true);
     bool submit(const MultiName &name, const VarMap & vars, const bool fail=true);
-    bool tryFileMode(const QIODevice::OpenMode mode,
+    bool expect(const bool is,
+                const QString & what=QString(),
+                Item item=Item());
+/*  bool expect(const bool is,
+                const Code code,
+                const QString & what=QString());
+    bool expect(const bool is,
+                const MultiName &name,
+                const QString & what=QString());
+*/  bool tryFileMode(const QIODevice::OpenMode mode,
                       const QString &fileName,
                      const QString & what=QString(),
                       const QDir & dir=QDir());

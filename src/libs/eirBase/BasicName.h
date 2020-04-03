@@ -26,6 +26,7 @@ public:
     operator QVariant (void) const;
     Sortable sortable(void) const;
     bool operator == (const BasicName & other) const;
+    bool operator != (const BasicName & other) const;
     bool operator <  (const BasicName & other) const;
     bool UnitTest(void);
 

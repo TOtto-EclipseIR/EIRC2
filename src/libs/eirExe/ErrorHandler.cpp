@@ -36,6 +36,20 @@ bool ErrorHandler::submit(const MultiName &name, const VarMap &vars, const bool 
     return submit(Item(name, vars), fail);
 }
 
+bool ErrorHandler::expect(const bool is,
+                          const QString &what,
+                          ErrorHandler::Item item)
+{
+    if (is) return true;
+    if (item.isNull()) item = Item::item("ErrorHandler"
+                                         "/Expect/Critical");
+    VarMap vars;
+    vars << Var("What", what);
+    item.setVars(vars);
+    submit(item);
+    return false;
+}
+
 bool ErrorHandler::tryFileMode(const QIODevice::OpenMode mode,
                                const QString &fileName,
                                const QString &what,
@@ -77,8 +91,6 @@ bool ErrorHandler::tryFileMode(const QIODevice::OpenMode mode,
             success.expect(submit("ErrorHandler/tryFileMode/NotWriteable",
                                   vars << Var("Mode", "Writable")));
     }
-
-
     return success;
 }
 
@@ -104,6 +116,16 @@ ErrorHandler::Item::Item(const MultiName &name, const VarMap &vars)
     : mMsec(Milliseconds::current())
 {
     if (isValid(name)) *this = item(name);
+    mVars = vars;
+}
+
+bool ErrorHandler::Item::isNull() const
+{
+    return ! mCode;
+}
+
+void ErrorHandler::Item::setVars(const VarMap &vars)
+{
     mVars = vars;
 }
 

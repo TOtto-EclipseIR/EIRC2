@@ -5,15 +5,19 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/objdetect.hpp>
 
-//#include "D:/git/github.com/opencv/include/opencv2/opencv.hpp"
+#include "QtOpenCV.h"
 
 class HaarCascade
 {
 public:
-    HaarCascade();
-    bool load(const QFileInfo &xmlFileInfo);
+    HaarCascade(const ObjectType objType,
+                const VarMap &config);
+    bool load(QFileInfo xmlFileInfo);
+    bool isLoaded() const;
 
 private:
+    ObjectType mObjType=ObjectType::Null;
+    VarMap mConfig;
     cv::CascadeClassifier * mpCascade=nullptr;
 };
 

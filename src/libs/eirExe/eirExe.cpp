@@ -29,4 +29,10 @@ void eirExe::registerErrors()
                  VarMap() << Var("What", "File's purpose")
                      << Var("FileName", "File's Name")
                      << Var("FilePath", "File's Directory"));
+    ErrorHandler::Item::registerCode("ErrorHandler"
+                "/Expect/Critical",
+                QtCriticalMsg,
+                "Critical Expectation %what failed",
+                VarMap() << Var("What", "Expected Operation"));
+
 }

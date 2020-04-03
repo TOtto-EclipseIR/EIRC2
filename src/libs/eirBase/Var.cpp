@@ -26,6 +26,16 @@ MultiName Var::name() const
     return mName;
 }
 
+void Var::set(const MultiName &newName)
+{
+    mName = newName;
+}
+
+void Var::prependName(const MultiName &groupName)
+{
+    mName.prependName(groupName);
+}
+
 QVariant Var::current() const
 {
     return mCurrent;

@@ -22,6 +22,7 @@ public:
     MultiName(const QString & stringNames);
     MultiName(char * cNames);
     MultiName(const QByteArray & baNames);
+    MultiName(const BasicName &segment);
     MultiName(const BasicName::List & other);
     MultiName(const QStringList & qslNames);
     MultiName(const MultiName &base, const MultiName &name);
@@ -29,8 +30,14 @@ public:
     void clear(void);
     void set(const QString & qsNames);
     void set(const QStringList & qslNames);
-    BasicName first() const;
-    void removeLast();
+    void prependName(const MultiName &groupName);
+    BasicName firstSegment() const;
+    BasicName segmentAt(const int index) const;
+    bool startsWith(const MultiName &groupName) const;
+    int segmentCount() const;
+    void removeFirstSegments(int count);
+    void removeLastSegment();
+    MultiName firstSegmentsRemoved(int count) const;
     QStringList toStringList(void) const;
     QString toString(void) const;
     operator QString (void) const;
@@ -51,7 +58,7 @@ protected: // static
     static void setDelimiter(const QChar & value);
 
 private:
-    BasicName::List mBasicNames;
+    BasicName::List mBasicSegmentNames;
 
 private: // static
     static const uint scmHashSeed;
