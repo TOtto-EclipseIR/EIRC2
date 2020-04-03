@@ -1,4 +1,4 @@
-QT -= gui
+#QT -= gui ## for QImage
 
 TEMPLATE = lib
 DEFINES += EIRQTCV_LIBRARY
@@ -32,6 +32,7 @@ SOURCES += \
     Configurations.cpp \
     HaarCascade.cpp \
     QtOpenCV.cpp \
+    cvInputArray.cpp \
     cvString.cpp \
     eirQtCV.cpp
 
@@ -39,6 +40,7 @@ HEADERS += \
     Configurations.h \
     HaarCascade.h \
     QtOpenCV.h \
+    cvInputArray.h \
     cvString.h \
     eirQtCV_global.h \
     eirQtCV.h

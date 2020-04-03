@@ -31,3 +31,25 @@ void QtOpenCV::createFrontalFace()
     NEEDDO()
 }
 
+void QtOpenCV::loadFrontalFace()
+{
+    NEEDDO()
+}
+
+void QtOpenCV::setFrontalFaceImage(const QImage &inputImage)
+{
+    NEEDUSE(inputImage)
+    NEEDDO()
+}
+
+void QtOpenCV::detectFrontalFaceRectangles(const QQRect region)
+{
+    NEEDUSE(region)
+    NEEDDO()
+}
+
+void QtOpenCV::voteFrontalFaceObjects()
+{
+    NEEDDO()
+}
+

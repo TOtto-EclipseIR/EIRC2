@@ -65,6 +65,9 @@ public:
     bool submit(const Item item, const bool fail=true);
     bool submit(const Code code, const VarMap & vars, const bool fail=true);
     bool submit(const MultiName &name, const VarMap & vars, const bool fail=true);
+    Item test(const bool is,
+                const QString & what=QString(),
+                Item item=Item());
     bool expect(const bool is,
                 const QString & what=QString(),
                 Item item=Item());

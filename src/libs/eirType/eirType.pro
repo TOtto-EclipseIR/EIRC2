@@ -21,6 +21,7 @@ include(../libs.pri)
 SOURCES += \
     Enumeration.cpp \
     Milliseconds.cpp \
+    QQRect.cpp \
     eirType.cpp
 
 HEADERS += \
@@ -32,6 +33,7 @@ HEADERS += \
     NamedArray.h \
     NamedEnum.h \
     NamedMap.h \
+    QQRect.h \
     eirType_global.h \
     eirType.h
 

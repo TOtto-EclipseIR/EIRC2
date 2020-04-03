@@ -10,6 +10,11 @@ HaarCascade::HaarCascade(const ObjectType objType,
     : mObjType(objType)
     , mConfig(config) {;}
 
+ErrorHandler::Item HaarCascade::errorItem() const
+{
+    return mErrorItem;
+}
+
 bool HaarCascade::load(QFileInfo xmlFileInfo=QFileInfo())
 {
     if (mpCascade)
@@ -37,4 +42,14 @@ bool HaarCascade::load(QFileInfo xmlFileInfo=QFileInfo())
         return false;
     mpCascade = cascade;
     return true;
+}
+
+void HaarCascade::resetError()
+{
+    mErrorItem = ErrorHandler::Item();
+}
+
+void HaarCascade::setError(const ErrorHandler::Item &item)
+{
+    mErrorItem = item;
 }
