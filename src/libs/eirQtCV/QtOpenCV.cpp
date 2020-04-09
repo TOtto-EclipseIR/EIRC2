@@ -11,7 +11,10 @@ QtOpenCV::QtOpenCV(QObject *parent) : QObject(parent)
 {
     TRACEFN
     setObjectName("QtOpenCV");
-    QTimer::singleShot(100, this, &QtOpenCV::setDefaultConfiguration);
+    CONNECT(this, &QtOpenCV::defaultConfigurationLoaded,
+            this, &QtOpenCV::setOverideConfiguration);
+    QTimer::singleShot(100, this,
+        &QtOpenCV::setDefaultConfiguration);
 }
 
 void QtOpenCV::setDefaultConfiguration()
@@ -24,10 +27,14 @@ void QtOpenCV::setDefaultConfiguration()
 void QtOpenCV::setOverideConfiguration()
 {
     NEEDDO()
+    emit overideConfigurationLoaded();
 }
 
 void QtOpenCV::createFrontalFace()
 {
+    TRACEFN
+    HaarCascade * haarCascade
+        = new HaarCascade(ObjectType::FrontalFace, VarMap());
     NEEDDO()
 }
 

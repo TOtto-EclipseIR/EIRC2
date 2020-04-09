@@ -22,19 +22,17 @@ LIBS *= -leirBase
 LIBS *= -leirType
 
 SOURCES += \
-    Application.cpp \
+    ApplicationHelper.cpp \
     CommandLine.cpp \
     Console.cpp \
-    ErrorHandler.cpp \
     Settings.cpp \
     StdStreams.cpp \
     eirExe.cpp
 
 HEADERS += \
-    Application.h \
+    ApplicationHelper.h \
     CommandLine.h \
     Console.h \
-    ErrorHandler.h \
     Settings.h \
     StdStreams.h \
     eirExe_global.h \

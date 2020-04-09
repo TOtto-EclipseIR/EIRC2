@@ -3,7 +3,7 @@
 #include <QFileInfo>
 #include <QImage>
 
-#include <eirExe/ErrorHandler.h>
+#include <eirBase/ErrorHandler.h>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/objdetect.hpp>
@@ -13,7 +13,7 @@
 class HaarCascade
 {
 public:
-    HaarCascade(const ObjectType objType,
+    HaarCascade(const QtOpenCV::ObjectType objType,
                 const VarMap &config);
     ErrorHandler::Item errorItem() const;
     bool load(QFileInfo xmlFileInfo);
@@ -24,7 +24,8 @@ private:
     void setError(const ErrorHandler::Item &item);
 
 private:
-    ObjectType mObjType=ObjectType::Null;
+    QtOpenCV::ObjectType mObjType
+        =QtOpenCV::ObjectType::nullObjectType;
     VarMap mConfig;
     ErrorHandler::Item mErrorItem;
     cv::CascadeClassifier * mpCascade=nullptr;

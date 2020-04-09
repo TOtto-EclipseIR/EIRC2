@@ -1,11 +1,11 @@
 #include "HaarCascade.h"
 
 #include <eirBase/Debug.h>
-#include <eirExe/ErrorHandler.h>
+#include <eirBase/ErrorHandler.h>
 
 #include "cvString.h"
 
-HaarCascade::HaarCascade(const ObjectType objType,
+HaarCascade::HaarCascade(const QtOpenCV::ObjectType objType,
                          const VarMap &config)
     : mObjType(objType)
     , mConfig(config) {;}
@@ -24,7 +24,7 @@ bool HaarCascade::load(QFileInfo xmlFileInfo=QFileInfo())
     }
     if ( ! xmlFileInfo.isFile())
         xmlFileInfo = QFileInfo(
-                QDir(mConfig.value("DirName")
+                QDir(mConfig.value("DetectorDir")
                     .current().toString()),
                 mConfig.value("FileName")
                     .current().toString());

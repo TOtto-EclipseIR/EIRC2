@@ -20,7 +20,6 @@ include(../libs.pri)
 
 SOURCES += \
     Enumeration.cpp \
-    Milliseconds.cpp \
     QQRect.cpp \
     eirType.cpp
 
@@ -28,7 +27,6 @@ HEADERS += \
     Enumeration.h \
     EnumerationArray.h \
     EnumerationMask.h \
-    Milliseconds.h \
     Named.h \
     NamedArray.h \
     NamedEnum.h \

@@ -2,5 +2,6 @@
 
 include(../src.pri)
 
+CONFIG *= build_all
 INCLUDEPATH *= ../../../libs
 

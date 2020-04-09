@@ -11,7 +11,7 @@ void Configurations::setDefaults()
     VarMap haarMap;
     VarMap frontalMap;
 
-    objdetMap << Var("DirName", "../Detectors");
+    objdetMap << Var("DetectorDir", "../Detectors");
 
     haarMap.insert(objdetMap);
 

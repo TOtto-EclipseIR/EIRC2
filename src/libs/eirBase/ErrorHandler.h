@@ -1,5 +1,5 @@
 #pragma once
-#include "eirExe.h"
+#include "eirBase.h"
 
 #include <QObject>
 
@@ -11,16 +11,16 @@
 
 #include <eirBase/MultiName.h>
 #include <eirBase/VarMap.h>
-#include <eirType/Milliseconds.h>
+#include <eirBase/Milliseconds.h>
 
-class EIREXE_EXPORT ErrorHandler : public QObject
+class EIRBASE_EXPORT ErrorHandler : public QObject
 {
     Q_OBJECT
 
 public:
     typedef uint Code;
 
-    class EIREXE_EXPORT Item
+    class EIRBASE_EXPORT Item
     {
     public:
         Item();

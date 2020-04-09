@@ -5,7 +5,7 @@
 #include "../../libs/eirBase/Debug.h"
 
 Console::Console(QObject *parent)
-    : Application(parent)
+    : ApplicationHelper(parent)
     , mpCoreApp(QCoreApplication::instance())
     , mpIn(new QFile(this))
     , mpOut(new QFile(this))

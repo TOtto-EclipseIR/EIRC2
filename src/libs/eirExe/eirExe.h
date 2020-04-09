@@ -6,5 +6,4 @@ class EIREXE_EXPORT eirExe
 {
 public:
     eirExe();
-    static void registerErrors();
 };

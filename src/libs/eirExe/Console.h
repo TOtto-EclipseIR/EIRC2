@@ -2,14 +2,14 @@
 #include "eirExe.h"
 
 #include <QObject>
-#include "Application.h"
+#include "ApplicationHelper.h"
 
 #include <QCoreApplication>
 
 class QFile;
 
 
-class EIREXE_EXPORT Console : public Application
+class EIREXE_EXPORT Console : public ApplicationHelper
 {
     Q_OBJECT
 public:

@@ -20,6 +20,8 @@ include(../libs.pri)
 
 SOURCES += \
     BasicName.cpp \
+    ErrorHandler.cpp \
+    Milliseconds.cpp \
     MultiName.cpp \
     Success.cpp \
     Var.cpp \
@@ -32,6 +34,8 @@ HEADERS += \
     ../../../VERSION.h \
     BasicName.h \
     Debug.h \
+    ErrorHandler.h \
+    Milliseconds.h \
     MultiName.h \
     Success.h \
     Var.h \
@@ -46,3 +50,6 @@ unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    ../../depends.pri

@@ -5,30 +5,28 @@
 
 #include <QMap>
 
-#include <eirType/Enumeration.h>
 #include <eirType/QQRect.h>
-#include <eirExe/ErrorHandler.h>
+#include <eirBase/ErrorHandler.h>
 
 #include "Configurations.h"
-
-#define OBJECTTYPE_ENUM(NV) \
-    NV(Null, = 0)  \
-    NV(FrontalFace,)   \
-    NV(LeftEye,) \
-    NV(RightEye,) \
-    NV(EitherEye,) \
-    NV(BothEyes,) \
-
-class EIRQTCV_EXPORT ObjectType : public Enumeration
-{
-    DECLARE_ENUMERATION(ObjectType, OBJECTTYPE_ENUM)
-};
 
 class HaarCascade;
 
 class EIRQTCV_EXPORT QtOpenCV : public QObject
 {
     Q_OBJECT
+public:
+    enum ObjectType
+    {
+        nullObjectType = 0,
+        FrontalFace,
+        LeftEye,
+        RightEye,
+        EitherEye,
+        BothEyes,
+        sizenullObjectType
+    };
+
 public:
     explicit QtOpenCV(QObject *parent = nullptr);
 
@@ -54,6 +52,7 @@ private:
 
 signals:
     void defaultConfigurationLoaded();
+    void overideConfigurationLoaded();
     void cascadeError(ObjectType objType, QStringList messages);
     void cascadeError(ObjectType objType, ErrorHandler::Item);
     void cascadeCreated(ObjectType objType);

@@ -3,6 +3,7 @@
 #include <QTimer>
 
 #include <eirBase/Debug.h>
+#include <eirExe/Settings.h>
 #include <eirQtCV/QtOpenCV.h>
 
 
@@ -17,17 +18,27 @@ void INDIfaceConsole::run()
 {
     TRACEFN
     writeLine("Welcome to INDIfaceConsole");
-    CONNECT(this, &Application::initFinished,
-            this, &INDIfaceConsole::setupDefaults);
-//    mpQtOpenCV = new QtOpenCV(this);
-    QTimer::singleShot(100, this, &Application::run);
+    CONNECT(this, &ApplicationHelper::initFinished,
+            this, &INDIfaceConsole::initSettings);
+    QTimer::singleShot(100, this,
+                       &ApplicationHelper::run);
+}
+
+void INDIfaceConsole::initSettings()
+{
+    TRACEFN
+
+    QTimer::singleShot(100, this,
+                       &INDIfaceConsole::setupDefaults);
+
 }
 
 void INDIfaceConsole::setupDefaults()
 {
     TRACEFN
 
-    QTimer::singleShot(100, this, &INDIfaceConsole::initOpenCV);
+    QTimer::singleShot(100, this,
+                       &INDIfaceConsole::initOpenCV);
 }
 
 void INDIfaceConsole::initOpenCV()
@@ -35,4 +46,5 @@ void INDIfaceConsole::initOpenCV()
     TRACEFN
     mpQtOpenCV = new QtOpenCV(this);
     TSTALLOC(mpQtOpenCV)
+    emit initFinished();
 }
