@@ -90,6 +90,14 @@ void MultiName::prependName(const MultiName &groupName)
     mBasicSegmentNames = resultNames;
 }
 
+MultiName MultiName::prepended(const MultiName &groupName) const
+{
+    BasicName::List resultNames;
+    resultNames << groupName.mBasicSegmentNames;
+    resultNames << mBasicSegmentNames;
+    return resultNames;
+}
+
 BasicName MultiName::firstSegment() const
 {
     return mBasicSegmentNames.first();

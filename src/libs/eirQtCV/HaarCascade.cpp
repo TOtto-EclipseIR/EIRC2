@@ -7,7 +7,8 @@
 
 HaarCascade::HaarCascade(const QtOpenCV::ObjectType objType,
                          const VarMap &config)
-    : mObjType(objType)
+    : mUid(Uid::create())
+    , mObjType(objType)
     , mConfig(config) {;}
 
 ErrorHandler::Item HaarCascade::errorItem() const
@@ -17,17 +18,24 @@ ErrorHandler::Item HaarCascade::errorItem() const
 
 bool HaarCascade::load(QFileInfo xmlFileInfo=QFileInfo())
 {
+    TRACEQFI << xmlFileInfo << mObjType;
     if (mpCascade)
     {
         delete mpCascade;
         mpCascade = nullptr;
     }
+#if 1
+    NEEDDO(It Right!)
+    xmlFileInfo = QFileInfo(QDir("../Detectors"),
+                            "DefaultFrontalFace.xml");
+#else
     if ( ! xmlFileInfo.isFile())
         xmlFileInfo = QFileInfo(
                 QDir(mConfig.value("DetectorDir")
                     .current().toString()),
                 mConfig.value("FileName")
                     .current().toString());
+#endif
     TRACEQFI << xmlFileInfo;
     if ( ! errorHandler()->tryFileMode(QIODevice::ReadOnly,
                                 xmlFileInfo,
@@ -42,6 +50,17 @@ bool HaarCascade::load(QFileInfo xmlFileInfo=QFileInfo())
         return false;
     mpCascade = cascade;
     return true;
+}
+
+void HaarCascade::destroy()
+{
+    TRACEQFI << mObjType;
+    if (mpCascade) delete mpCascade;
+}
+
+Uid HaarCascade::uid() const
+{
+    return mUid;
 }
 
 void HaarCascade::resetError()

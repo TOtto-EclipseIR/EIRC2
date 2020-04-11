@@ -31,6 +31,7 @@ public:
     void set(const QString & qsNames);
     void set(const QStringList & qslNames);
     void prependName(const MultiName &groupName);
+    MultiName prepended(const MultiName &groupName) const;
     BasicName firstSegment() const;
     BasicName segmentAt(const int index) const;
     bool startsWith(const MultiName &groupName) const;

@@ -4,11 +4,15 @@
 #include <QImage>
 
 #include <eirBase/ErrorHandler.h>
+#include <eirBase/VarMap.h>
+#include <eirType/QQRect.h>
+#include <eirType/Uid.h>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/objdetect.hpp>
 
 #include "QtOpenCV.h"
+#include "cvInputArray.h"
 
 class HaarCascade
 {
@@ -18,12 +22,16 @@ public:
     ErrorHandler::Item errorItem() const;
     bool load(QFileInfo xmlFileInfo);
     bool isLoaded() const;
+    void destroy();
+    Uid setImages(const QImage & inputFrame);
+    Uid uid() const;
 
 private:
     void resetError();
     void setError(const ErrorHandler::Item &item);
 
 private:
+    const Uid mUid;
     QtOpenCV::ObjectType mObjType
         =QtOpenCV::ObjectType::nullObjectType;
     VarMap mConfig;
@@ -31,5 +39,9 @@ private:
     cv::CascadeClassifier * mpCascade=nullptr;
     QImage mInputImage;
     QImage mGreyImage;
+    cvInputArray mGreyInput;
+    cvInputArray mEqualizedInput;
+    QQRect::List mRectangles;
+    VarMap mObjectResultMap; // for now
 };
 
