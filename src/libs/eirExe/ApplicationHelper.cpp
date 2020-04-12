@@ -11,6 +11,8 @@
 #include "CommandLine.h"
 #include "Settings.h"
 
+#include "../../../VERSION.h"
+
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
     , mpTempDir(new QTemporaryDir())
@@ -46,16 +48,10 @@ QFile *ApplicationHelper::tempFile(const QString &ext,
 void ApplicationHelper::run()
 {
     TRACEFN
-    QTimer::singleShot(100, this, &ApplicationHelper::initSettings);
-}
-
-void ApplicationHelper::initSettings()
-{
-    TRACEFN
-    mpSettings = new Settings(this);
-    TSTALLOC(mpSettings);
-    QTimer::singleShot(100, this,
-                     &ApplicationHelper::initCommandLine);
+    qApp->setOrganizationName(EIRC2_VER_ORGNAME);
+    qApp->setApplicationName("If2Console");
+    qApp->setApplicationVersion(EIRC2_VER_APPVER);
+    QTimer::singleShot(100, this, &ApplicationHelper::initCommandLine);
 }
 
 void ApplicationHelper::initCommandLine()
@@ -63,6 +59,19 @@ void ApplicationHelper::initCommandLine()
     TRACEFN
     mpCommandLine = new CommandLine(this);
     TSTALLOC(mpCommandLine);
-    emit initFinished();
+    QTimer::singleShot(100, this, &ApplicationHelper::initSettings);
 }
 
+void ApplicationHelper::initSettings()
+{
+    TRACEFN
+    TSTALLOC(mpCommandLine)
+    if ( ! mpCommandLine->orgName().isNull())
+         qApp->setOrganizationName(mpCommandLine->orgName());
+    if ( ! mpCommandLine->appName().isNull())
+         qApp->setApplicationName(mpCommandLine->appName());
+    mpSettings = new Settings(this);
+    TSTALLOC(mpSettings);
+    WANTDO("Take the smell out");
+    emit initFinished();
+}

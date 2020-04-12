@@ -6,3 +6,9 @@
 #define EIRC2_VER_BRANCH 0
 #define EIRC2_VER_STRING "v2.06A"
 #define EIRC2_VER_TRUNKNAME "develop"
+#define EIRC2_VER_APPVER EIRC2_VER_STRING
+#ifdef NDEBUG
+#define EIRC2_VER_ORGNAME "EclipseIR"
+#else
+#define EIRC2_VER_ORGNAME "EclipseRD"
+#endif

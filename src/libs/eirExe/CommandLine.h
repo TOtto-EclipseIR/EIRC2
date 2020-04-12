@@ -37,6 +37,8 @@ public:
 
 public:
     explicit CommandLine(QObject *parent = nullptr);
+    QString orgName() const;
+    QString appName() const;
     void loadFromFile(const QFileInfo qfi);
     void loadFromUrl(const QUrl url);
 
@@ -60,7 +62,7 @@ public:
 
 public slots:
 //    void setupOptions();
-    void preprocess();
+//    void preprocess();
     void process();
 
 signals:
@@ -81,6 +83,9 @@ signals:
     void allResults(VarPak results);
 
 private:
+    QStringList mArguments;
+    QFileInfo mExeFileInfo;
+    QString mFirstArgument;
     BasicName mOrgName;
     BasicName mAppName;
     VarMap mSettings;

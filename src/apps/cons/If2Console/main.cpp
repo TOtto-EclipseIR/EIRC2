@@ -1,6 +1,8 @@
 #include <QCoreApplication>
 #include "INDIfaceConsole.h"
 
+#include "../../../../VERSION.h"
+
 #include <QTimer>
 
 int main(int argc, char *argv[])
