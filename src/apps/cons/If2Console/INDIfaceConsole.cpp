@@ -20,14 +20,14 @@ void INDIfaceConsole::run()
 {
     TRACEFN
     writeLine("Welcome to INDIfaceConsole");
-    CONNECT(this, &ApplicationHelper::initFinished,
+/*    CONNECT(this, &ApplicationHelper::initFinished,
             this, &INDIfaceConsole::initSettings);
     CONNECT(this, &INDIfaceConsole::frameProcessingComplete,
             qApp, &QCoreApplication::quit);
-    QTimer::singleShot(100, this,
+*/    QTimer::singleShot(100, this,
                        &ApplicationHelper::run);
 }
-
+#if 0
 void INDIfaceConsole::load()
 {
     TRACEFN
@@ -94,3 +94,4 @@ void INDIfaceConsole::initOpenCV()
             this, &INDIfaceConsole::processNextFrame);
     emit initFinished();
 }
+#endif

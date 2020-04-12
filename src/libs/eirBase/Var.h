@@ -1,3 +1,4 @@
+// file: {repo: EIRC2}./src/libs/eirBase/Var.h
 #pragma once
 #include "eirBase.h"
 
@@ -35,4 +36,3 @@ private:
     QVariant mDefault;
     QVariant mCurrent;
 };
-

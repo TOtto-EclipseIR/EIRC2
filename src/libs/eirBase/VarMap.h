@@ -1,3 +1,4 @@
+// file: {repo: EIRC2}./src/libs/eirBase/VarMap.h
 #pragma once
 #include "eirBase.h"
 
@@ -26,7 +27,7 @@ public:
     VarMap extract(const MultiName & groupName) const;
     void insert(const MultiName &groupName,
                 const VarMap &groupVars);
-    void insert(const VarMap &other);
+    void insert(const VarMap &other, const bool uaeMapName);
     Var::List values() const;
     BasicName::List firstSegmentKeys() const;
     VarMap operator << (const Var &var);

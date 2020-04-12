@@ -15,9 +15,9 @@ void Configurations::setDefaults()
 
     objdetMap << Var("DetectorDir", "../Detectors");
 
-    haarMap.insert(objdetMap);
+    //haarMap.insert(objdetMap);
 
-    frontalMap.insert(haarMap);
+    //frontalMap.insert(haarMap);
     frontalMap << Var("FileName", "DefaultFrontalFace.xml");
 
 //    mNamedConfigMaps.insert(BasicName("ObjDet"), objdetMap);

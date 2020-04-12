@@ -6,8 +6,8 @@
 #include <QMap>
 
 #include <eirBase/ErrorHandler.h>
+#include <eirBase/Uid.h>
 #include <eirType/QQRect.h>
-#include <eirType/Uid.h>
 
 #include "Configurations.h"
 

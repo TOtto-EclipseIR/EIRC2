@@ -1,3 +1,4 @@
+// file: {repo: EIRC2}./src/libs/eirBase/VarMap.cpp
 #include "VarMap.h"
 
 #include <eirBase/Debug.h>
@@ -55,7 +56,7 @@ void VarMap::insert(const MultiName &groupName,
     }
 }
 
-void VarMap::insert(const VarMap &other)
+void VarMap::insert(const VarMap &other, const bool uaeMapName)
 {
     foreach (Var var, other.values()) insert(var);
 }

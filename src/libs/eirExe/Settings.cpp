@@ -1,85 +1,51 @@
+// file: {repo: EIRC2}./src/libs/eirExe/Settings.cpp
 #include "Settings.h"
+
+#include <QTimer>
 
 #include <eirBase/Debug.h>
 
+#include "ApplicationHelper.h"
 
-Settings::Settings(QObject *parent)
-    : QObject(parent)
+Settings::Settings(ApplicationHelper *parent)
+    : QSettings(parent)
+    , mpHelper(parent)
 {
     TRACEFN
     setObjectName("Settings");
-    mSource = Defaults;
+    //QTimer::singleShot(0, this, &Settings::openTemp);
 }
 
-Var Settings::current(const MultiName &name) const
+ApplicationHelper * Settings::helper()
 {
-    Var var = stacked(name);
-    if ( ! var.isNull()) return var;
-    var = mLocals.value(name);
-    if ( ! var.isNull()) return var;
-    var = mOverrides.value(name);
-    if ( ! var.isNull()) return var;
-    var = mDefaults.value(name);
-    if ( ! var.isNull()) return var;
-    return Var();
+    return mpHelper;
 }
 
-Var Settings::stacked(const MultiName &name) const
+void Settings::openTemp()
 {
-    foreach (VarMap vars, mStack)
-        if (vars.contains(name))
-            return vars.value(name);
-    return Var();
+    TRACEFN
+
 }
 
-void Settings::set(Var var)
+
+
+
+
+#if 0
+void Settings::set(const Var &var)
 {
-    Var old = current(var.name());
-    switch (mSource)
-    {
-    case Defaults:
-        mDefaults.insert(var);
-        emit defaultSet(var);
-        break;
-    case CommandLine:
-        mOverrides.insert(var);
-        emit overrideSet(var);
-        break;
-    case Local:
-        mLocals.insert(var);
-        emit localSet(var);
-        break;
-    case Stacked:
-        mStack.top().insert(var);
-        break;
-    default:
-        WARNQFI << "Settings:Source is lost" << mSource;
-        break;
-    }
+//    Var old = current(var.name());
+    NEEDDO(set)
     if ( ! (old == var)) emit changed(var);
 }
 
-void Settings::set(VarMap vars)
+void Settings::set(const VarMap &vars)
 {
     foreach (Var var, vars.values()) set(var);
 }
 
-void Settings::push(VarMap config)
+void Settings::open(BasicName orgName, BasicName argName)
 {
-    NEEDDO(); NEEDUSE(config);
-}
 
-void Settings::pop()
-{
-    NEEDDO();
 }
-
-void Settings::startCommandLine()
-{
-    mSource = CommandLine;
-}
-
-void Settings::finishCommandLine()
-{
-    mSource = Local;
-}
+#endif

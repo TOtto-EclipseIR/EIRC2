@@ -4,9 +4,9 @@
 #include <QImage>
 
 #include <eirBase/ErrorHandler.h>
+#include <eirBase/Uid.h>
 #include <eirBase/VarMap.h>
 #include <eirType/QQRect.h>
-#include <eirType/Uid.h>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/objdetect.hpp>

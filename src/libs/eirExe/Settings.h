@@ -1,52 +1,43 @@
+// file: {repo: EIRC2}./src/libs/eirExe/Settings.h
 #pragma once
+#include "eirExe.h"
 
 #include <QObject>
+#include <QSettings>
 
-
+#include <eirBase/MultiName.h>
 #include <eirBase/Var.h>
 #include <eirBase/VarMap.h>
 
-class Settings : public QObject
+class ApplicationHelper;
+
+class EIREXE_EXPORT Settings : protected QSettings
 {
     Q_OBJECT
 public:
-    explicit Settings(QObject *parent = nullptr);
-    Var current(const MultiName & name) const;
-    Var stacked(const MultiName & name) const;
+    explicit Settings(ApplicationHelper *parent);
+    ApplicationHelper * helper();
+    void set(const MultiName &key,
+             const QVariant &value);
+    void addWatch(const MultiName &key);
+    void addWatchlist(const MultiName::List &keys);
+    QVariant value(const MultiName &key,
+                  const QVariant &fallback=QVariant()) const;
 
 public slots:
-    void set(Var var);
-    void set(VarMap vars);
-    void push(VarMap config);
-    void pop();
-    void startCommandLine();
-    void finishCommandLine();
-
+    void openTemp();
+//    void open(BasicName orgName, BasicName argName);
 
 signals:
-    void defaultSet(Var var);
-    void overrideSet(Var var);
-    void localSet(Var var);
-    void pushed(Var var);
-    void popped(Var var);
+    void opened(QString path);
+    void watchedChanged(MultiName key, QVariant value);
     void changed(Var var);
 
-private:
-    enum Source
-    {
-        nullSource = 0,
-        Defaults,
-        CommandLine,
-        Local,
-        Stacked,
-        sizeSource
-    };
+private slots:
+//    void setSupport(ApplicationHelper * apsup);
 
 private:
-    Source mSource=nullSource;
-    VarMap mDefaults;
-    VarMap mOverrides;
-    VarMap mLocals;
-    VarMap::Stack mStack;
+    ApplicationHelper * mpHelper=nullptr;
+    MultiName::List mWatchList;
 };
 

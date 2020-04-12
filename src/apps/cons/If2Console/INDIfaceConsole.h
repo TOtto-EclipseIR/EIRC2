@@ -17,22 +17,9 @@ public slots:
     void run();
 
 private slots:
-    void initSettings();
-    void setupDefaults();
-    void initOpenCV();
-    void load();
-    void scanFiles();
-    void processNextFrame();
 
 signals:
-    void initFinished();
-    void fileScanComplete();
-    void frameProcessed();
-    void frameProcessingComplete();
 
 private:
-    Settings * mpSettings=nullptr;
-    QtOpenCV * mpQtOpenCV=nullptr;
-    QFileInfoList mPendingFiles;
 };
 

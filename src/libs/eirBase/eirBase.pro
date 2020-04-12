@@ -21,12 +21,15 @@ include(../libs.pri)
 SOURCES += \
     BasicName.cpp \
     ErrorHandler.cpp \
+    Id.cpp \
     Milliseconds.cpp \
     MultiName.cpp \
     Success.cpp \
+    Uid.cpp \
     Var.cpp \
     VarMap.cpp \
     VarMapMap.cpp \
+    VarPak.cpp \
     VersionInfo.cpp \
     eirBase.cpp
 
@@ -35,12 +38,15 @@ HEADERS += \
     BasicName.h \
     Debug.h \
     ErrorHandler.h \
+    Id.h \
     Milliseconds.h \
     MultiName.h \
     Success.h \
+    Uid.h \
     Var.h \
     VarMap.h \
     VarMapMap.h \
+    VarPak.h \
     VersionInfo.h \
     eirBase_global.h \
     eirBase.h
