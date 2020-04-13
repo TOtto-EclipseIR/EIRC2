@@ -61,8 +61,6 @@ public:
     static Option addVersion();
 
 public slots:
-//    void setupOptions();
-//    void preprocess();
     void process();
 
 signals:
@@ -83,7 +81,7 @@ signals:
     void allResults(VarPak results);
 
 private:
-    QStringList mArguments;
+    const QStringList cmArguments;
     QFileInfo mExeFileInfo;
     QString mFirstArgument;
     BasicName mOrgName;

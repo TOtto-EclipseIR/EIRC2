@@ -24,17 +24,12 @@ public:
     QVariant value(const MultiName &key,
                   const QVariant &fallback=QVariant()) const;
 
-public slots:
-    void openTemp();
-//    void open(BasicName orgName, BasicName argName);
-
 signals:
     void opened(QString path);
     void watchedChanged(MultiName key, QVariant value);
     void changed(Var var);
 
 private slots:
-//    void setSupport(ApplicationHelper * apsup);
 
 private:
     ApplicationHelper * mpHelper=nullptr;

@@ -14,9 +14,10 @@ public:
     explicit INDIfaceConsole(Console *parent = nullptr);
 
 public slots:
-    void run();
+    void initApplication();
 
 private slots:
+    void initResources();
 
 signals:
 

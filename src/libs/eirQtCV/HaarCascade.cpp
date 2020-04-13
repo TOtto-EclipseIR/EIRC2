@@ -4,7 +4,7 @@
 #include <eirBase/ErrorHandler.h>
 
 #include "cvString.h"
-
+#if false
 HaarCascade::HaarCascade(const QtOpenCV::ObjectType objType,
                          const VarMap &config)
     : mUid(Uid::create())
@@ -72,3 +72,4 @@ void HaarCascade::setError(const ErrorHandler::Item &item)
 {
     mErrorItem = item;
 }
+#endif

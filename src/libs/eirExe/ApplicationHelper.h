@@ -17,7 +17,6 @@ class EIREXE_EXPORT ApplicationHelper : public QObject
     Q_OBJECT
 public:
     explicit ApplicationHelper(QObject *parent = nullptr);
-//    ~ApplicationHelper();
     QFile * tempFile(const QString &ext,
                      QObject * parent=nullptr);
 
@@ -28,8 +27,6 @@ protected:
 
 protected slots:
     void initCommandLine();
-//    virtual void setupCommandLine() {;}
-  //  virtual void processCommandLine() {;}
     void initSettings();
 
 public: // static

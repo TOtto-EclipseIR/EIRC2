@@ -21,16 +21,8 @@ ApplicationHelper::ApplicationHelper(QObject *parent)
     setObjectName("Application");
     TSTALLOC(mpTempDir);
     EXPECT(mpTempDir->isValid())
-    TSTALLOC(mpSettings);
 }
-/*
-ApplicationHelper::~ApplicationHelper()
-{
-    foreach (QFile * pTempFile, mTempFiles)
-        if (pTempFile) delete pTempFile;
-    if (mpTempDir) delete mpTempDir;
-}
-*/
+
 QFile *ApplicationHelper::tempFile(const QString &ext,
                                    QObject *parent)
 {
@@ -65,13 +57,16 @@ void ApplicationHelper::initCommandLine()
 void ApplicationHelper::initSettings()
 {
     TRACEFN
+
     TSTALLOC(mpCommandLine)
     if ( ! mpCommandLine->orgName().isNull())
          qApp->setOrganizationName(mpCommandLine->orgName());
     if ( ! mpCommandLine->appName().isNull())
          qApp->setApplicationName(mpCommandLine->appName());
+
     mpSettings = new Settings(this);
     TSTALLOC(mpSettings);
     WANTDO("Take the smell out");
+
     emit initFinished();
 }

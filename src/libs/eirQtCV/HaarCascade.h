@@ -14,6 +14,7 @@
 #include "QtOpenCV.h"
 #include "cvInputArray.h"
 
+#if false
 class HaarCascade
 {
 public:
@@ -44,4 +45,4 @@ private:
     QQRect::List mRectangles;
     VarMap mObjectResultMap; // for now
 };
-
+#endif

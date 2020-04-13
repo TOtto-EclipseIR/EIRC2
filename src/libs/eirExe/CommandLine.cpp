@@ -6,12 +6,13 @@
 
 CommandLine::CommandLine(QObject *parent)
     : QObject(parent)
+    , cmArguments(qApp->arguments())
 {
-    TRACEFN
+    TRACEQFI << cmArguments;
     setObjectName("CommandLine");
-    mExeFileInfo.setFile(mArguments.first());
-    if (mArguments.size() > 1)
-        mFirstArgument = mArguments.at(1);
+    mExeFileInfo.setFile(cmArguments.first());
+    if (cmArguments.size() > 1)
+        mFirstArgument = cmArguments.at(1);
     process();
 }
 
@@ -24,8 +25,6 @@ QString CommandLine::appName() const
 {
     return mAppName;
 }
-
-// void CommandLine::preprocess() {;}
 
 void CommandLine::process()
 {

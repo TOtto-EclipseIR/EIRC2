@@ -30,8 +30,11 @@ LIBS *= -leirType
 LIBS *= -leirExe
 
 SOURCES += \
-    Configurations.cpp \
     HaarCascade.cpp \
+    HaarClassifier.cpp \
+    HaarDetector.cpp \
+    HaarRectangles.cpp \
+    ObjectType.cpp \
     QtCVcore.cpp \
     QtCVhighgui.cpp \
     QtCVimgproc.cpp \
@@ -42,8 +45,11 @@ SOURCES += \
     eirQtCV.cpp
 
 HEADERS += \
-    Configurations.h \
     HaarCascade.h \
+    HaarClassifier.h \
+    HaarDetector.h \
+    HaarRectangles.h \
+    ObjectType.h \
     QtCVcore.h \
     QtCVhighgui.h \
     QtCVimgproc.h \
