@@ -18,8 +18,14 @@ public slots:
 
 private slots:
     void initResources();
+    void initTaskLine();
+    void startTaskLine();
 
 signals:
+    void applicationInitd();
+    void resoursesInitd();
+    void taskLineInitd();
+    void taskLineStarted();
 
 private:
 };

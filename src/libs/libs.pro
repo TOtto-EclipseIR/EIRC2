@@ -5,4 +5,5 @@ SUBDIRS += \
     eirExe \
     eirQtCV \
     eirResource \
+    eirTask \
     eirType

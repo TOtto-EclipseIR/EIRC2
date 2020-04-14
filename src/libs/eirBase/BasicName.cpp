@@ -60,6 +60,7 @@ BasicName::BasicName(const QByteArray & ba)
  */
 void BasicName::set(const QString &name)
 {
+    LIKEDO("static Valid chars; hint: _ is empty or root")
     mName = name;
 }
 
