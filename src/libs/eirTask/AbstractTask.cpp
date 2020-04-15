@@ -7,6 +7,11 @@ AbstractTask::AbstractTask(AbstractTask *parent)
 
 }
 
+AbstractTask::~AbstractTask()
+{
+
+}
+
 bool AbstractTask::isActive() const
 {
     return mActive;
@@ -30,6 +35,11 @@ AbstractTask *AbstractTask::nextTask() const
 AbstractTask::List AbstractTask::childTaskList() const
 {
     return mChildTaskList;
+}
+
+bool AbstractTask::event(QEvent *event)
+{
+    return QObject::event(event);
 }
 
 void AbstractTask::setActive(bool set)

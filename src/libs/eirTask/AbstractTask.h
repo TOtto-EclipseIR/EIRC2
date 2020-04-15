@@ -21,12 +21,18 @@ public:
 
 public:
     explicit AbstractTask(AbstractTask *parent = nullptr);
+    ~AbstractTask();
     //----- Property getters -----
     bool isActive() const;
     AbstractTask *  parentTask() const;
     AbstractTask *  previousTask() const;
     AbstractTask *  nextTask() const;
     List childTaskList() const;
+
+protected:
+    virtual void onEntry(QEvent *event) = 0;
+    virtual void onExit(QEvent *event) = 0;
+    bool event(QEvent *event) override;
 
 private slots:
     //----- Property setters -----
@@ -37,8 +43,10 @@ private slots:
 
 
 signals:
+    void entered(QPrivateSignal);
+    void exited(QPrivateSignal);
     //----- Property notifiers -----
-    void activeChanged(bool is);
+    void activeChanged(bool isActive);
     void parentTaskChanged(AbstractTask * task);
     void previousTaskChanged(AbstractTask * task);
     void nextTaskChanged(AbstractTask * task);
