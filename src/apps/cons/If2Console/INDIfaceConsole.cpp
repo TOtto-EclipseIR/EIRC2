@@ -19,9 +19,10 @@ INDIfaceConsole::INDIfaceConsole(Console *parent)
 void INDIfaceConsole::startWork()
 {
     TRACEFN
+    setBaseDir("D:/INDIface/INDIout/Console/@");
     mInputDir.setPath("D:/INDIface/INDIin/Console");
-    mOutputDir.setPath("D:/INDIface/INDIout/Console");
-    mOutputDir.mkpath(".");
+//    mOutputDir.setPath();
+  //  mOutputDir.mkpath(".");
     QFileInfoList files = mInputDir.entryInfoList(QDir::Files);
     foreach (QFileInfo qfi, files)
     {
@@ -40,6 +41,26 @@ int INDIfaceConsole::calculateScale(const QSize sz)
     TRACE << scale << dim;
     return qMax(1, scale);
 
+}
+
+QDir INDIfaceConsole::setBaseDir(QString basePath)
+{
+    TRACEQFI << basePath;
+    basePath.replace("@", QDateTime::currentDateTime()
+                     .toString("DyyyyMMddThhmm"));
+    QDir baseDir(basePath);
+    if ( ! baseDir.exists()) baseDir.mkpath(".");
+    return mBaseDir = baseDir;
+}
+
+QDir INDIfaceConsole::outputDir(const QString &subdirName) const
+{
+    TRACEQFI << subdirName;
+    QDir outDir(mBaseDir);
+    outDir.cd(subdirName);
+    if ( ! outDir.exists())
+        WEXPECT(outDir.mkpath("."));
+    return outDir;
 }
 
 QImage INDIfaceConsole::processImage(const QImage &inImage,
@@ -119,12 +140,12 @@ void INDIfaceConsole::nextImage()
     else
     {
         QFileInfo qfi = mPendingFiles.takeFirst();
+        QDir outDir = outputDir("GreyInput");
         QImage imageIn = QImage(qfi.filePath());
         int downScale = calculateScale(imageIn.size());
         QImage imageOut = processImage(imageIn, downScale);
-        QFileInfo outFI = mOutputDir.filePath(qfi.fileName());
+        QFileInfo outFI = outDir.filePath(qfi.fileName());
         TRACE << outFI.filePath();
-//        WEXPECT(outFI.isWritable());
         WEXPECT(imageOut.save(outFI.filePath()));
         QTimer::singleShot(100, this, &INDIfaceConsole::nextImage);
     }

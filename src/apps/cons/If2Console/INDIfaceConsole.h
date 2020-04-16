@@ -20,6 +20,8 @@ public:
 protected:
     void startWork();
     int calculateScale(const QSize sz);
+    QDir setBaseDir(QString basePath);
+    QDir outputDir(const QString &subdirName) const;
     QImage processImage(const QImage & inImage,
                         const int scale) const;
 
@@ -44,7 +46,8 @@ signals:
 private:
     QFileInfoList mPendingFiles;
     QDir mInputDir;
-    QDir mOutputDir;
+    QDir mBaseDir;
+//    QDir mOutputDir;
 
 };
 
