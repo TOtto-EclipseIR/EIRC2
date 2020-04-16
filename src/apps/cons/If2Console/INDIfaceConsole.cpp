@@ -21,8 +21,6 @@ void INDIfaceConsole::startWork()
     TRACEFN
     setBaseDir("D:/INDIface/INDIout/Console/@");
     mInputDir.setPath("D:/INDIface/INDIin/Console");
-//    mOutputDir.setPath();
-  //  mOutputDir.mkpath(".");
     QFileInfoList files = mInputDir.entryInfoList(QDir::Files);
     foreach (QFileInfo qfi, files)
     {

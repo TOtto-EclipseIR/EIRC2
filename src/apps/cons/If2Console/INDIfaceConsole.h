@@ -8,6 +8,7 @@
 
 #include <eirExe/Console.h>
 #include <eirQtCV/QtOpenCV.h>
+#include <eirQtCV/HaarClassifier.h>
 
 class Settings;
 
@@ -47,7 +48,7 @@ private:
     QFileInfoList mPendingFiles;
     QDir mInputDir;
     QDir mBaseDir;
-//    QDir mOutputDir;
+    HaarClassifier mClassifier;
 
 };
 

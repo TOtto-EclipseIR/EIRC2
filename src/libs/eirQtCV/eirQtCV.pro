@@ -18,13 +18,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../libs.pri)
 
-INCLUDEPATH *= D:\git\github.com\EIRC2\src\3rd\OpenCV4\install\include
-INCLUDEPATH *= D:\git\github.com\EIRC2\src\3rd\OpenCV4
-#INCLUDEPATH *= F:\Qt5\Tools\QtCreator\bin\clang\lib\clang\8.0.1\include
-
-LIBS *= -LD:\git\github.com\EIRC2\src\3rd\OpenCV4\lib
-LIBS *= -lopencv_objdetect420
-
 LIBS *= -leirBase
 LIBS *= -leirType
 LIBS *= -leirExe
@@ -40,6 +33,7 @@ SOURCES += \
     QtCVimgproc.cpp \
     QtCVobjdetect.cpp \
     QtOpenCV.cpp \
+    Session.cpp \
     cvInputArray.cpp \
     cvString.cpp \
     eirQtCV.cpp
@@ -55,6 +49,7 @@ HEADERS += \
     QtCVimgproc.h \
     QtCVobjdetect.h \
     QtOpenCV.h \
+    Session.h \
     cvInputArray.h \
     cvString.h \
     eirQtCV_global.h \
@@ -65,3 +60,6 @@ unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    OpenCV.pri

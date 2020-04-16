@@ -7,6 +7,7 @@
 #include <eirBase/Uid.h>
 #include <eirBase/VarMap.h>
 #include <eirType/QQRect.h>
+#include <eirQtCV/ObjectType.h>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/objdetect.hpp>
@@ -14,11 +15,10 @@
 #include "QtOpenCV.h"
 #include "cvInputArray.h"
 
-#if false
 class HaarCascade
 {
 public:
-    HaarCascade(const QtOpenCV::ObjectType objType,
+    HaarCascade(const ObjectType objType,
                 const VarMap &config);
     ErrorHandler::Item errorItem() const;
     bool load(QFileInfo xmlFileInfo);
@@ -33,8 +33,7 @@ private:
 
 private:
     const Uid mUid;
-    QtOpenCV::ObjectType mObjType
-        =QtOpenCV::ObjectType::nullObjectType;
+    ObjectType mObjType=ObjectType::null;
     VarMap mConfig;
     ErrorHandler::Item mErrorItem;
     cv::CascadeClassifier * mpCascade=nullptr;
@@ -45,4 +44,3 @@ private:
     QQRect::List mRectangles;
     VarMap mObjectResultMap; // for now
 };
-#endif
