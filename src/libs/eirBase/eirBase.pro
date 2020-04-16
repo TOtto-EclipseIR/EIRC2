@@ -23,8 +23,11 @@ SOURCES += \
     ErrorHandler.cpp \
     Id.cpp \
     Milliseconds.cpp \
+    MultiNamMap.cpp \
     MultiName.cpp \
+    MultiNameMap.cpp \
     Success.cpp \
+    UInt128.cpp \
     Uid.cpp \
     Var.cpp \
     VarMap.cpp \
@@ -40,8 +43,11 @@ HEADERS += \
     ErrorHandler.h \
     Id.h \
     Milliseconds.h \
+    MultiNamMap.h \
     MultiName.h \
+    MultiNameMap.h \
     Success.h \
+    UInt128.h \
     Uid.h \
     Var.h \
     VarMap.h \
