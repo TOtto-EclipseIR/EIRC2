@@ -16,8 +16,12 @@ public:
     explicit Console(QObject *parent = nullptr);
 
 public slots:
-    void writeLine(const QString &qs);
-    void writeErr(const QString &qs);
+    void writeLine(const QString &qs,
+                   const bool andFlush=true);
+    void writeLines(const QStringList &qsl);
+    void writeErr(const QString &qs,
+                  const bool andFlush=true);
+    void writeErrs(const QStringList &qsl);
 
 signals:
 

@@ -23,7 +23,6 @@ SOURCES += \
     ErrorHandler.cpp \
     Id.cpp \
     Milliseconds.cpp \
-    MultiNamMap.cpp \
     MultiName.cpp \
     MultiNameMap.cpp \
     Success.cpp \
@@ -43,7 +42,6 @@ HEADERS += \
     ErrorHandler.h \
     Id.h \
     Milliseconds.h \
-    MultiNamMap.h \
     MultiName.h \
     MultiNameMap.h \
     Success.h \

@@ -8,7 +8,7 @@
 
 #include <eirExe/Console.h>
 #include <eirQtCV/QtOpenCV.h>
-#include <eirQtCV/HaarClassifier.h>
+#include <eirQtCV/HaarCascade.h>
 
 class Settings;
 
@@ -23,8 +23,10 @@ protected:
     int calculateScale(const QSize sz);
     QDir setBaseDir(QString basePath);
     QDir outputDir(const QString &subdirName) const;
-    QImage processImage(const QImage & inImage,
+    QImage processInputImage(const QImage & inImage,
                         const int scale) const;
+    void findFaces(const QFileInfo qfi,
+                   const QImage &inImage);
 
 public slots:
     void initApplication();
@@ -48,7 +50,9 @@ private:
     QFileInfoList mPendingFiles;
     QDir mInputDir;
     QDir mBaseDir;
-    HaarClassifier mClassifier;
+    HaarCascade * mFrontal=nullptr;
+    HaarCascade * mLeftEye=nullptr;
+    HaarCascade * mRightEye=nullptr;
 
 };
 

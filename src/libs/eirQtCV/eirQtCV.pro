@@ -17,39 +17,44 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../libs.pri)
+include(./OpenCV.pri)
 
 LIBS *= -leirBase
 LIBS *= -leirType
 LIBS *= -leirExe
 
 SOURCES += \
+#    AbstractResource.cpp \
     HaarCascade.cpp \
-    HaarClassifier.cpp \
-    HaarDetector.cpp \
-    HaarRectangles.cpp \
+#    HaarClassifier.cpp \
+#    HaarDetector.cpp \
+#    HaarRectangles.cpp \
     ObjectType.cpp \
     QtCVcore.cpp \
     QtCVhighgui.cpp \
     QtCVimgproc.cpp \
     QtCVobjdetect.cpp \
     QtOpenCV.cpp \
-    Session.cpp \
+#    Session.cpp \
+#    SessionManager.cpp \
     cvInputArray.cpp \
     cvString.cpp \
     eirQtCV.cpp
 
 HEADERS += \
+#    AbstractResource.h \
     HaarCascade.h \
-    HaarClassifier.h \
-    HaarDetector.h \
-    HaarRectangles.h \
+#    HaarClassifier.h \
+#    HaarDetector.h \
+#    HaarRectangles.h \
     ObjectType.h \
     QtCVcore.h \
     QtCVhighgui.h \
     QtCVimgproc.h \
     QtCVobjdetect.h \
     QtOpenCV.h \
-    Session.h \
+#    Session.h \
+#    SessionManager.h \
     cvInputArray.h \
     cvString.h \
     eirQtCV_global.h \

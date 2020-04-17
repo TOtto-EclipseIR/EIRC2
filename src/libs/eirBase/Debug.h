@@ -10,6 +10,7 @@
 #define TIME QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
 #define DEBUG(qmt, pfx) qmt() << pfx << TIME << __LINE__
 #define DEBUGQFI(qmt, pfx) qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__
+#define DEBUGQOB(qmt, pfx, mom) qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << (mom ? mom->objectName() : "{orphan}");
 #define DEBUGFN(qmt, pfx) { qmt() << pfx << TIME   << Q_FUNC_INFO << __LINE__; }
 #define DEBUGPSZ(qmt, pfx, psz) { qmt(pfx << TIME  << __LINE__ psz); }
 #define DEBUGQST(qmt, pfx, qst) { qmt(pfx << TIME << __LINE__  qPrintable(qst)); }
@@ -48,6 +49,7 @@
 #define DUMP                    DEBUG(qDebug, PDUMP) // << stuff
 #define TRACE                   DEBUG(qDebug, PTRACE) // << stuff
 #define TRACEQFI                DEBUGQFI(qDebug, PTRACE) // << stuff
+#define TRACEQOB(mom)           DEBUGQOB(qDebug, PTRACE, mom);
 #define TRACEFN                 DEBUGFN(qDebug, PTRACE);
 #define TRACEPSZ(psz)           DEBUGPSZ(qDebug, PTRACE, psz);
 #define TRACEQST(qst)           DEBUGQST(qDebug, PTRACE, qPrintable(qst));

@@ -21,16 +21,29 @@ Console::Console(QObject *parent)
     EXPECT(mpErr->open(stderr, QIODevice::WriteOnly))
 }
 
-void Console::writeLine(const QString &qs)
+void Console::writeLine(const QString &qs,
+                        const bool andFlush)
 {
     mpOut->write(qs.toLocal8Bit());
     mpOut->write("\n");
+    if (andFlush) mpOut->flush();
+}
+
+void Console::writeLines(const QStringList &qsl)
+{
+    foreach (QString qs, qsl) writeLine(qs, false);
     mpOut->flush();
 }
 
-void Console::writeErr(const QString &qs)
+void Console::writeErr(const QString &qs, const bool andFlush)
 {
     mpErr->write(qs.toLocal8Bit());
     mpErr->write("\n");
+    if (andFlush) mpErr->flush();
+}
+
+void Console::writeErrs(const QStringList &qsl)
+{
+    foreach (QString qs, qsl) writeErr(qs, false);
     mpErr->flush();
 }

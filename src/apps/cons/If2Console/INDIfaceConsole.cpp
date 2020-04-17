@@ -61,7 +61,7 @@ QDir INDIfaceConsole::outputDir(const QString &subdirName) const
     return outDir;
 }
 
-QImage INDIfaceConsole::processImage(const QImage &inImage,
+QImage INDIfaceConsole::processInputImage(const QImage &inImage,
                                      const int scale) const
 {
     TRACEQFI << inImage;
@@ -78,6 +78,14 @@ QImage INDIfaceConsole::processImage(const QImage &inImage,
                 qGray(inImage.pixel(col*scale, row*scale)));
 
     return outImage;
+}
+
+void INDIfaceConsole::findFaces(const QFileInfo qfi,
+                                const QImage &inImage)
+{
+    BEXPECT(mFrontal);
+    BEXPECT(mFrontal->isLoaded());
+    mFrontal->setImages(inImage);
 }
 
 void INDIfaceConsole::initApplication()
@@ -100,8 +108,23 @@ void INDIfaceConsole::initApplication()
 void INDIfaceConsole::initResources()
 {
     TRACEFN
-    writeLine("INDIfaceConsole initialized");
-    NEEDDO(Lots)
+
+    mFrontal = new HaarCascade(ObjectType::FrontalFace,
+                               VarPak());
+    TSTALLOC(mFrontal)
+    TRACE << "Frontal Cascade shell created";
+    mFrontal->load(QFileInfo(QDir("../Detectors"),
+                             "DefaultFrontalFace.xml"));
+    if (mFrontal->isError())
+    {
+        TRACE << "mFrontal->isError()";
+        writeErrs(mFrontal->errorItem().messages());
+        errorHandler->submit(mFrontal->errorItem());
+    }
+    TRACE << "mFrontal no error";
+    NEEDDO(mLeftEye)
+    NEEDDO(mRightEye)
+
     emit resoursesInitd();
 }
 
@@ -141,10 +164,11 @@ void INDIfaceConsole::nextImage()
         QDir outDir = outputDir("GreyInput");
         QImage imageIn = QImage(qfi.filePath());
         int downScale = calculateScale(imageIn.size());
-        QImage imageOut = processImage(imageIn, downScale);
+        QImage imageGreyIn = processInputImage(imageIn, downScale);
         QFileInfo outFI = outDir.filePath(qfi.fileName());
         TRACE << outFI.filePath();
-        WEXPECT(imageOut.save(outFI.filePath()));
+        WEXPECT(imageGreyIn.save(outFI.filePath()));
+        findFaces(qfi, imageIn);
         QTimer::singleShot(100, this, &INDIfaceConsole::nextImage);
     }
 }

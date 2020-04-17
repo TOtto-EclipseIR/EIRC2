@@ -13,6 +13,7 @@ public:
     typedef QList<QQRect> List;
 public:
     QQRect();
+    QQRect(int x, int y, int width, int height);
     QQRect(const QSize size, const QPoint center);
 };
 

@@ -19,7 +19,8 @@ include(../cons.pri)
 target = If2Console
 depends = eirExe
 
-
+LIBS *= -leirBase
+LIBS *= -leirType
 LIBS *= -leirExe
 LIBS *= -leirQtCV
 
