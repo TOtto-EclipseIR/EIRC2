@@ -25,6 +25,7 @@ SOURCES += \
     Milliseconds.cpp \
     MultiName.cpp \
     MultiNameMap.cpp \
+    SetError.cpp \
     Success.cpp \
     UInt128.cpp \
     Uid.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     Milliseconds.h \
     MultiName.h \
     MultiNameMap.h \
+    SetError.h \
     Success.h \
     UInt128.h \
     Uid.h \
@@ -62,4 +64,8 @@ unix {
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    ../../../depends.pri \
+    ../../../ourdest.pri \
+    ../../apps/apps.pri \
+    ../../apps/cons/cons.pri \
     ../../depends.pri
