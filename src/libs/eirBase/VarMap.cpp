@@ -56,9 +56,23 @@ void VarMap::insert(const MultiName &groupName,
     }
 }
 
-void VarMap::insert(const VarMap &other, const bool uaeMapName)
+void VarMap::insert(const VarMap &other, const bool useMapName)
 {
-    foreach (Var var, other.values()) insert(var);
+    if (useMapName)
+    {
+        MultiName mapName = other.name();
+        foreach (Var var, other.values())
+        {
+            Var mapVar = var;
+            mapVar.prependName(mapName);
+            insert(mapVar);
+        }
+
+    }
+    else
+    {
+        foreach (Var var, other.values()) insert(var);
+    }
 }
 
 Var::List VarMap::values() const

@@ -27,7 +27,7 @@ public:
     VarMap extract(const MultiName & groupName) const;
     void insert(const MultiName &groupName,
                 const VarMap &groupVars);
-    void insert(const VarMap &other, const bool uaeMapName);
+    void insert(const VarMap &other, const bool useMapName);
     Var::List values() const;
     BasicName::List firstSegmentKeys() const;
     VarMap operator << (const Var &var);
