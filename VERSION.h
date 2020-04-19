@@ -2,7 +2,7 @@
 
 #define EIRC2_VER_MAJOR 2
 #define EIRC2_VER_MINOR 6
-#define EIRC2_VER_RELEASE 1
+#define EIRC2_VER_RELEASE 2
 #define EIRC2_VER_BRANCH 0
 #define EIRC2_VER_STRING "v2.06B"
 #define EIRC2_VER_TRUNKNAME "develop"

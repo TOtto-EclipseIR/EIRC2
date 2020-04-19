@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    ConsApp \
+#    ConsApp \
     If2Console
