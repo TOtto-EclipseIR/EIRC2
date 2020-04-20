@@ -83,6 +83,7 @@ QImage INDIfaceConsole::processInputImage(const QImage &inImage,
 void INDIfaceConsole::findFaces(const QFileInfo qfi,
                                 const QImage &inImage)
 {
+    TRACEQFI << qfi << inImage;
     BEXPECT(mFrontal);
     BEXPECT(mFrontal->isLoaded());
     mFrontal->setImages(inImage);
@@ -108,7 +109,7 @@ void INDIfaceConsole::initApplication()
 void INDIfaceConsole::initResources()
 {
     TRACEFN
-
+/*
     mFrontal = new HaarCascade(ObjectType::FrontalFace,
                                VarPak());
     TSTALLOC(mFrontal)
@@ -124,7 +125,7 @@ void INDIfaceConsole::initResources()
     TRACE << "mFrontal no error";
     NEEDDO(mLeftEye)
     NEEDDO(mRightEye)
-
+*/
     emit resoursesInitd();
 }
 

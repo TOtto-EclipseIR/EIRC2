@@ -11,9 +11,6 @@
 #include <eirType/QQRect.h>
 #include <eirQtCV/ObjectType.h>
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/objdetect.hpp>
-
 #include "QtOpenCV.h"
 #include "cvInputArray.h"
 

@@ -1,5 +1,5 @@
 // file: {EIRC2 Repo}./src/libs/eirQtCV/HaarCascade.cpp
-#include "HaarCascade.h"
+#include "del-HaarCascade.h"
 
 #include <eirBase/Debug.h>
 #include <eirBase/ErrorHandler.h>
@@ -83,7 +83,7 @@ void HaarCascade::findRectangles()
     mpCascade->detectMultiScale(mGreyInput, rects, 1.1, 1);
 
     QVector<cv::Rect> qvrect
-            = QVector<cv::Rect>::fromStdVector(rects);
+            = QVector<cv::Rect>(rects.begin(), rects.end());
     foreach (cv::Rect cvrect, rects)
     {
         int x = cvrect.x;

@@ -7,9 +7,8 @@
 #include <QList>
 
 #include <eirExe/Console.h>
-#include <eirQtCV/QtOpenCV.h>
-#include <eirQtCV/HaarCascade.h>
 
+//class HaarCascade;
 class Settings;
 
 class INDIfaceConsole : public Console
@@ -50,9 +49,9 @@ private:
     QFileInfoList mPendingFiles;
     QDir mInputDir;
     QDir mBaseDir;
-    HaarCascade * mFrontal=nullptr;
-    HaarCascade * mLeftEye=nullptr;
-    HaarCascade * mRightEye=nullptr;
+//    HaarCascade * mFrontal=nullptr;
+  //  HaarCascade * mLeftEye=nullptr;
+    //HaarCascade * mRightEye=nullptr;
 
 };
 

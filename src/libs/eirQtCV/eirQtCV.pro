@@ -1,4 +1,4 @@
-#QT -= gui ## for QImage
+#QT -= gui ### for QImage
 
 TEMPLATE = lib
 DEFINES += EIRQTCV_LIBRARY
@@ -19,13 +19,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include(../libs.pri)
 include(./OpenCV.pri)
 
-LIBS *= -leirBase
-LIBS *= -leirType
-LIBS *= -leirExe
+LIBS *= -leirBase2
+LIBS *= -leirType2
+LIBS *= -leirExe2
 
 SOURCES += \
 #    AbstractResource.cpp \
-    HaarCascade.cpp \
 #    HaarClassifier.cpp \
 #    HaarDetector.cpp \
 #    HaarRectangles.cpp \
@@ -39,14 +38,21 @@ SOURCES += \
 #    SessionManager.cpp \
     cvInputArray.cpp \
     cvString.cpp \
-    eirQtCV.cpp
+#    del-HaarCascade.cpp \
+    eirQtCV.cpp \
+    Detector.cpp
+
 
 HEADERS += \
 #    AbstractResource.h \
-    HaarCascade.h \
 #    HaarClassifier.h \
 #    HaarDetector.h \
 #    HaarRectangles.h \
+    ../../3rd/OpenCV4/install/include/opencv2/core.hpp \
+    ../../3rd/OpenCV4/install/include/opencv2/core/mat.hpp \
+    ../../3rd/OpenCV4/install/include/opencv2/objdetect.hpp \
+    ../../3rd/OpenCV4/install/include/opencv2/opencv.hpp \
+    ../../3rd/OpenCV4/install/include/opencv2/opencv_modules.hpp \
     ObjectType.h \
     QtCVcore.h \
     QtCVhighgui.h \
@@ -57,8 +63,11 @@ HEADERS += \
 #    SessionManager.h \
     cvInputArray.h \
     cvString.h \
+    del-HaarCascade.h \
     eirQtCV_global.h \
-    eirQtCV.h
+    eirQtCV.h \
+    Detector.h
+
 
 # Default rules for deployment.
 unix {

@@ -5,7 +5,7 @@
 
 #include <eirBase/Debug.h>
 
-#include "HaarCascade.h"
+//#include "del-HaarCascade.h"
 
 QtOpenCV::QtOpenCV(QObject *parent) : QObject(parent)
 {

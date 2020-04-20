@@ -18,8 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../libs.pri)
 
-LIBS *= -leirBase
-LIBS *= -leirType
+LIBS *= -leirBase2
+LIBS *= -leirType2
 
 SOURCES += \
     ApplicationHelper.cpp \
