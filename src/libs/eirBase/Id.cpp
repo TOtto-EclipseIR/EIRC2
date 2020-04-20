@@ -28,3 +28,8 @@ Id::Id(const MultiName &name,
     , mNameKey(name)
     , mDescription(desc)
     , mData(data) {;}
+
+MultiName Id::name() const
+{
+    return mNameKey;
+}

@@ -31,6 +31,7 @@ public:
     void set(const MultiName name);
     void set(const QString desc);
     void set(const QVariant data);
+    MultiName name() const;
 
 private:
     Uid mUid;

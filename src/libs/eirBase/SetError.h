@@ -1,8 +1,10 @@
+// file: {EIRC2 repo}./src/lib/eirBase/SetError.h
 #pragma once
+#include "eirBase.h"
 
 #include "ErrorHandler.h"
 
-class SetError
+class EIRBASE_EXPORT SetError
 {
 public:
     SetError();

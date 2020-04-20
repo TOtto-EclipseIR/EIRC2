@@ -1,3 +1,4 @@
+// file: {EIRC2 repo}./src/lib/eirBase/SetError.cpp
 #include "SetError.h"
 
 SetError::SetError() {;}

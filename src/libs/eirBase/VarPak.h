@@ -25,7 +25,7 @@ public:
     void append(const Var &listItem);
     void insert(const Var &mapItem);
     Id id() const;
-    Id & id();
+    Id &id();
     QByteArray bytes() const;
     VarList list() const;
     VarList & list(); // non-const
