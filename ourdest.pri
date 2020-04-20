@@ -10,4 +10,4 @@ else {
     OURDEST = $$replace(OURDEST, <dbg>, bin)
 }
 OURDEST = $$replace(OURDEST, <ver>, $$EIRC2_VER_STRING)
-#message(OURDEST = $$OURDEST)
+message(OURDEST = $$OURDEST)

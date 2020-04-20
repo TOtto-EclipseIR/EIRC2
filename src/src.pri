@@ -2,7 +2,7 @@
 
 include(version.pri)
 include(../ourbld.pri)
-BASEDESTDIR = /bin
+BASEDESTDIR = T:/bin
 include(../ourdest.pri)
 DESTDIR = $$OURDEST
 LIBS += -L$$OURDEST

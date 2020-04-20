@@ -1,0 +1,15 @@
+# file: {EIRC2 repo}./src/version.pri
+
+EIRC2_VER_MAJOR = 2
+EIRC2_VER_MINOR = 6
+EIRC2_VER_RELEASE = 2
+EIRC2_VER_BRANCH = 0
+EIRC2_VER_STRING = "v2.06B"
+EIRC2_VER_TRUNKNAME = "develop"
+
+windows:VERSION = 2.6.2.0
+!windows:VERSION = 2.6.0
+VER_MAJ = 2
+VER_MIN = 6
+Ver_MIC = 2
+VER_PAT = 0
