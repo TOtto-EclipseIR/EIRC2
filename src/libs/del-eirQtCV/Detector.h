@@ -15,6 +15,8 @@
 #include "cvInputArray.h"
 #include "ObjectType.h"
 
+namespace cv { class CascadeClassifier; };
+
 class EIRQTCV_EXPORT Detector : public QObject, public SetError
 {
     Q_OBJECT
