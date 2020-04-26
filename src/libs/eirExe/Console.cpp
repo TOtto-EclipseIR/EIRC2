@@ -18,7 +18,12 @@ Console::Console(QObject *parent)
     setObjectName("Console");
     EXPECT(mpIn->open(stdin, QIODevice::ReadOnly))
     EXPECT(mpOut->open(stdout, QIODevice::WriteOnly))
-    EXPECT(mpErr->open(stderr, QIODevice::WriteOnly))
+            EXPECT(mpErr->open(stderr, QIODevice::WriteOnly))
+}
+
+CommandLine *Console::commandLine()
+{
+    return ApplicationHelper::commandLine();
 }
 
 void Console::writeLine(const QString &qs,
@@ -46,4 +51,10 @@ void Console::writeErrs(const QStringList &qsl)
 {
     foreach (QString qs, qsl) writeErr(qs, false);
     mpErr->flush();
+}
+
+void Console::commandLineComplete()
+{
+    TRACEFN
+    emit commamdLineScanned();
 }

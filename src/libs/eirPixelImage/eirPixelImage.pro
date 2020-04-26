@@ -19,16 +19,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../libs.pri)
 
-LIBS *= -leirBase
+LIBS *= -leirBase2
+LIBS *= -leirType2
 
 SOURCES += \
     BaseImage.cpp \
+    ImageMarker.cpp \
     ImagePak.cpp \
     ImageType.cpp \
     eirPixelImage.cpp
 
 HEADERS += \
     BaseImage.h \
+    ImageMarker.h \
     ImagePak.h \
     ImageType.h \
     eirPixelImage_global.h \

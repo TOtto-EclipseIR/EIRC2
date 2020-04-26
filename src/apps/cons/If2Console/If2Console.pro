@@ -16,13 +16,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../cons.pri)
 
-target = If2Console
-depends = eirExe
+###target = If2Console
+###depends = eirExe
 
-LIBS *= -leirBase
-LIBS *= -leirType
-LIBS *= -leirExe
-LIBS *= -leirQtCV
+LIBS *= -leirBase2
+LIBS *= -leirType2
+LIBS *= -leirExe2
+LIBS *= -leirQtCV42
 
 SOURCES += \
         INDIfaceConsole.cpp \

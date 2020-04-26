@@ -8,7 +8,7 @@
 #include <eirBase/ErrorHandler.h>
 #include <eirBase/Uid.h>
 #include <eirBase/VarPak.h>
-#include <eirType/QQRect.h>
+#include <eirType/QQRectList.h>
 #include <eirQtCV/ObjectType.h>
 
 #include "QtOpenCV.h"
@@ -43,6 +43,6 @@ private:
     QImage mGreyImage;
     cvInputArray mGreyInput;
     cvInputArray mEqualizedInput;
-    QQRect::List mRectangles;
+    QQRectList mRectangles;
     VarPak mObjectResultMap; // for now
 };

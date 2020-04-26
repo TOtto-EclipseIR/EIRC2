@@ -10,7 +10,7 @@
 #include <eirBase/SetError.h>
 //#include <eirBase/Uid.h>
 #include <eirBase/VarPak.h>
-#include <eirType/QQRect.h>
+#include <eirType/QQRectList.h>
 
 #include "cvInputArray.h"
 #include "ObjectType.h"
@@ -29,7 +29,9 @@ public:
     bool setImage(const QImage &image);
     bool setGreyImage(const QImage &greyImage);
     bool findRectangles(const QQRect &region=QQRect());
-    QQRect::List rectangles() const;
+    QQRectList rectangles() const;
+    QImage markRectangles(const bool inLivingColor=false,
+                          const QDir &rectangleDir=QDir()) const;
 
 signals:
 
@@ -42,6 +44,6 @@ private:
     QImage mImage;
     QImage mGreyImage;
     cvInputArray mGreyMat;
-    QQRect::List mRectangles;
+    QQRectList mRectangles;
 };
 

@@ -21,6 +21,9 @@ include(../libs.pri)
 SOURCES += \
     Enumeration.cpp \
     QQRect.cpp \
+    QQRectF.cpp \
+    QQRectList.cpp \
+    Region.cpp \
     eirType.cpp
 
 HEADERS += \
@@ -32,6 +35,9 @@ HEADERS += \
     NamedEnum.h \
     NamedMap.h \
     QQRect.h \
+    QQRectF.h \
+    QQRectList.h \
+    Region.h \
     eirType_global.h \
     eirType.h
 

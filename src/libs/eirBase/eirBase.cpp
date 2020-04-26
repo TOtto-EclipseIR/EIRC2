@@ -2,6 +2,7 @@
 
 #include "ErrorHandler.h"
 #include "Var.h"
+#include "VarMap.h"
 
 eirBase::eirBase()
 {

@@ -10,10 +10,13 @@ CommandLine::CommandLine(QObject *parent)
 {
     TRACEQFI << cmArguments;
     setObjectName("CommandLine");
+
     mExeFileInfo.setFile(cmArguments.first());
-    if (cmArguments.size() > 1)
-        mFirstArgument = cmArguments.at(1);
+    mArgIndex = 1;
+    if (cmArguments.size() > mArgIndex)
+        mFirstArgument = cmArguments.at(mArgIndex++);
     process();
+    emit processComplete();
 }
 
 QString CommandLine::orgName() const
@@ -24,6 +27,11 @@ QString CommandLine::orgName() const
 QString CommandLine::appName() const
 {
     return mAppName;
+}
+
+QFileInfoList CommandLine::argumentInfoList() const
+{
+    return mArgumentsInfo;
 }
 
 void CommandLine::process()
@@ -41,4 +49,7 @@ void CommandLine::process()
         }
     }
     TODO("MS02~03 mSettings");
+    while (mArgIndex < qApp->arguments().size())
+        mArgumentsInfo << QFileInfo(qApp->arguments()
+                                    .at(mArgIndex++));
 }

@@ -3,8 +3,9 @@ TEMPLATE = subdirs
 SUBDIRS += \
     eirBase \
     eirExe \
-#    eirPixelImage \
-    eirQtCV \
+    eirPixelImage \
+###    eirQtCV \
 #    eirResource \
 #    eirTask \
+    eirQtCV4 \
     eirType

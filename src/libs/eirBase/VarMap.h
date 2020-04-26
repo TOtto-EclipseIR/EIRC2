@@ -9,7 +9,7 @@
 #include "MultiName.h"
 #include "Var.h"
 
-class EIRBASE_EXPORT VarMap : private Var::Map
+class EIRBASE_EXPORT VarMap
 {
 public:
     typedef QList<VarMap> List;
@@ -29,11 +29,13 @@ public:
                 const VarMap &groupVars);
     void insert(const VarMap &other, const bool useMapName);
     Var::List values() const;
+    Var &at(const MultiName &name);
     BasicName::List firstSegmentKeys() const;
     VarMap operator << (const Var &var);
     void dump() const;
 
 private:
     MultiName mName;
+    Var::Map mVarMap;
 };
 

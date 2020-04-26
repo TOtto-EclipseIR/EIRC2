@@ -19,6 +19,8 @@ public:
     explicit ApplicationHelper(QObject *parent = nullptr);
     QFile * tempFile(const QString &ext,
                      QObject * parent=nullptr);
+    CommandLine * commandLine(void);
+
 
 public slots:
     void run();
@@ -28,11 +30,13 @@ protected:
 protected slots:
     void initCommandLine();
     void initSettings();
+    void commamdLineScanned();
 
 public: // static
 
 signals:
     void initFinished();
+    void scanComplete();
 
 private:
     QTemporaryDir * mpTempDir=nullptr;

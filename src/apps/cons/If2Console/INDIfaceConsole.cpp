@@ -4,9 +4,9 @@
 #include <QTimer>
 
 #include <eirBase/Debug.h>
+#include <eirExe/CommandLine.h>
 #include <eirExe/Settings.h>
-#include <eirQtCV/eirQtCV.h>
-#include <eirQtCV/QtOpenCV.h>
+#include <eirQtCV4/Detector.h>
 
 
 INDIfaceConsole::INDIfaceConsole(Console *parent)
@@ -14,8 +14,143 @@ INDIfaceConsole::INDIfaceConsole(Console *parent)
 {
     TRACEFN
     setObjectName("INDIfaceConsole");
+    CONNECT(this, &INDIfaceConsole::applicationInitd,
+            this, &INDIfaceConsole::initializeResources);
+    CONNECT(this, &INDIfaceConsole::resoursesInitd,
+            this, &INDIfaceConsole::processCommandLine);
+    CONNECT(this, &INDIfaceConsole::pendingFilesSet,
+            this, &INDIfaceConsole::scanInputDir);
+    CONNECT(this, &INDIfaceConsole::inputScanned,
+            this, &INDIfaceConsole::nextImage);
+    TRACERTV()
 }
 
+void INDIfaceConsole::configure(const VarPak &config)
+{
+    TRACEQFI << config.id().name()();
+    mConfiguration = config;
+}
+
+QString INDIfaceConsole::configString(const MultiName &key) const
+{
+    return mConfiguration.value(key).toString();
+}
+
+QDir INDIfaceConsole::outputDir(const QDir &baseDir,
+                                const MultiName &configKey)
+{
+    QDir outputDir(baseDir);
+    QString outputPath = configString(configKey);
+    WEXPECT(outputDir.mkdir(outputPath));
+    WEXPECT(outputDir.cd(outputPath));
+    return outputDir;
+}
+
+void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
+{
+    TRACEQFI << inFileInfo;
+    QImage inImage = QImage(inFileInfo.filePath());
+    QImage greyImage = toGrey(inImage);
+    TSTALLOC(mpFFDetector);
+    mpFFDetector->setGreyImage(greyImage);
+    mpFFDetector->findRectangles();
+    mRectList = mpFFDetector->rectangles();
+    QImage rectangleImage
+            = mpFFDetector->markRectangles(false,
+                                mMarkedRectangleDir);
+    emit imageProcessed(inFileInfo);
+}
+
+QImage INDIfaceConsole::toGrey(const QImage &inputImage)
+{
+    if (inputImage.isGrayscale())
+        return inputImage;
+    QImage outputImage(inputImage.size(),
+                       QImage::Format_Grayscale8);
+    QImage rgbImage = inputImage;
+    if ( ! rgbImage.format() == QImage::Format_RGB32)
+        rgbImage.toPixelFormat(QImage::Format_RGB32);
+    for (int r = 0; r < rgbImage.height(); ++r)
+        for (int c = 0; c < rgbImage.width(); ++c)
+            outputImage.setPixel(c, r,
+                qGray(rgbImage.pixel(c, r)));
+    return outputImage;
+}
+
+void INDIfaceConsole::findFFRectangles(const Region region)
+{
+
+}
+
+CommandLine *INDIfaceConsole::commandLine()
+{
+    return Console::commandLine();
+}
+
+void INDIfaceConsole::initializeApplication()
+{
+    TRACEFN
+    mpObjdetect = new QtCVobjdetect(this);
+    TSTALLOC(mpObjdetect);
+    emit applicationInitd();
+}
+
+void INDIfaceConsole::initializeResources()
+{
+    TRACEFN
+    mpFFDetector = new Detector(ObjectType::FrontalFace, mpObjdetect);
+    TSTALLOC(mpFFDetector);
+    WANTDO("LEDetector")
+    WANTDO("REDetector")
+    emit resoursesInitd();
+}
+
+void INDIfaceConsole::processCommandLine()
+{
+    TRACEFN
+    QFileInfoList files = commandLine()->argumentInfoList();
+    TRACE << files;
+    mPendingFiles = files;
+    emit pendingFilesSet();
+}
+
+void INDIfaceConsole::setOutputDirs(void)
+{
+    mBaseDir = outputDir(QDir(), "Output/BaseDir");
+    mGreyInputDir = outputDir(mBaseDir, "Output/GreyInputDir");
+    mMarkedRectangleDir = outputDir(mBaseDir,
+                                    "Output/MarkedRectangleDir");
+}
+
+void INDIfaceConsole::scanInputDir()
+{
+    TRACEFN
+    if (mPendingFiles.isEmpty())
+    {
+        emit inputDirEmpty();
+    }
+    else
+    {
+        emit inputScanned();
+    }
+}
+
+void INDIfaceConsole::nextImage()
+{
+    TRACEFN
+    if (mPendingFiles.isEmpty())
+    {
+        emit processingComplete();
+    }
+    else
+    {
+        QFileInfo qfi = mPendingFiles.takeFirst();
+        TRACE << qfi;
+        processInputImage(qfi);
+    }
+}
+
+#if false
 void INDIfaceConsole::startWork()
 {
     TRACEFN
@@ -61,8 +196,7 @@ QDir INDIfaceConsole::outputDir(const QString &subdirName) const
     return outDir;
 }
 
-QImage INDIfaceConsole::processInputImage(const QImage &inImage,
-                                     const int scale) const
+QImage INDIfaceConsole::processInputImage(const QImage &inImage) const
 {
     TRACEQFI << inImage;
     QImage outImage(inImage.size() / scale, QImage::Format_Indexed8);
@@ -80,13 +214,15 @@ QImage INDIfaceConsole::processInputImage(const QImage &inImage,
     return outImage;
 }
 
-void INDIfaceConsole::findFaces(const QFileInfo qfi,
+void INDIfaceConsole::findRectangles(const QFileInfo qfi,
                                 const QImage &inImage)
 {
     TRACEQFI << qfi << inImage;
-    BEXPECT(mFrontal);
-    BEXPECT(mFrontal->isLoaded());
-    mFrontal->setImages(inImage);
+#ifdef STUB_OPENCV4
+    MUSTDO(setImage) MUSTDO(findRectamgles)
+#else
+    MUSTDO(setImage) MUSTDO(findRectamgles)
+#endif
 }
 
 void INDIfaceConsole::initApplication()
@@ -94,55 +230,25 @@ void INDIfaceConsole::initApplication()
     TRACEFN
     writeLine("Welcome to INDIfaceConsole");
     CONNECT(this, &ApplicationHelper::initFinished,
-            this, &INDIfaceConsole::initResources);
+            this, &INDIfaceConsole::initialize);
     CONNECT(this, &INDIfaceConsole::applicationInitd,
-            this, &INDIfaceConsole::initResources);
+            this, &INDIfaceConsole::initialize);
     CONNECT(this, &INDIfaceConsole::resoursesInitd,
-            this, &INDIfaceConsole::initTaskLine);
-    CONNECT(this, &INDIfaceConsole::taskLineInitd,
-            this, &INDIfaceConsole::startTaskLine);
-    CONNECT(this, &INDIfaceConsole::processed,
+            this, &INDIfaceConsole::process);
             qApp, &QCoreApplication::quit);
     QTimer::singleShot(100, this, &ApplicationHelper::run);
 }
 
-void INDIfaceConsole::initResources()
+void INDIfaceConsole::initialize()
 {
     TRACEFN
-/*
-    mFrontal = new HaarCascade(ObjectType::FrontalFace,
-                               VarPak());
-    TSTALLOC(mFrontal)
-    TRACE << "Frontal Cascade shell created";
-    mFrontal->load(QFileInfo(QDir("../Detectors"),
-                             "DefaultFrontalFace.xml"));
-    if (mFrontal->isError())
-    {
-        TRACE << "mFrontal->isError()";
-        writeErrs(mFrontal->errorItem().messages());
-        errorHandler->submit(mFrontal->errorItem());
-    }
-    TRACE << "mFrontal no error";
-    NEEDDO(mLeftEye)
-    NEEDDO(mRightEye)
-*/
+            writeLine("Initializing Frontal Face Detector");
+#ifdef STUB_OPENCV4
+    WANTDO("initialize detector")
+#else
+    WANTDO("initialize detector")
+#endif
     emit resoursesInitd();
-}
-
-void INDIfaceConsole::initTaskLine()
-{
-    TRACEFN
-    writeLine("INDIfaceConsole loaded");
-    NEEDDO(Lots)
-    emit taskLineInitd();
-}
-
-void INDIfaceConsole::startTaskLine()
-{
-    TRACEFN
-    writeLine("INDIfaceConsole ready");
-    NEEDDO(Lots)
-    process();
 }
 
 void INDIfaceConsole::process()
@@ -169,7 +275,9 @@ void INDIfaceConsole::nextImage()
         QFileInfo outFI = outDir.filePath(qfi.fileName());
         TRACE << outFI.filePath();
         WEXPECT(imageGreyIn.save(outFI.filePath()));
-        findFaces(qfi, imageIn);
-        QTimer::singleShot(100, this, &INDIfaceConsole::nextImage);
+/*      findRectangles(qfi, imageIn);
+        MUSTDO(drawRectangles)
+*/      QTimer::singleShot(100, this, &INDIfaceConsole::nextImage);
     }
 }
+#endif // 0

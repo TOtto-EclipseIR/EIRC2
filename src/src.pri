@@ -5,7 +5,7 @@ include(../ourbld.pri)
 BASEDESTDIR = T:/bin
 include(../ourdest.pri)
 DESTDIR = $$OURDEST
-LIBS += -L$$OURDEST
+LIBS *= -L$$OURDEST
 include(depends.pri)
 
 

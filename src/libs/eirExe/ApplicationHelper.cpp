@@ -6,7 +6,7 @@
 #include <eirBase/Debug.h>
 #include <eirBase/ErrorHandler.h>
 #include <eirBase/Milliseconds.h>
-#include <eirBase/Uid.h>
+//#include <eirBase/Uid.h>
 
 #include "CommandLine.h"
 #include "Settings.h"
@@ -26,7 +26,9 @@ ApplicationHelper::ApplicationHelper(QObject *parent)
 QFile *ApplicationHelper::tempFile(const QString &ext,
                                    QObject *parent)
 {
-    QString fileBaseName = Uid::create().toString();
+    //QString fileBaseName = Uid::create().toString();
+    QString fileBaseName = Milliseconds::current()
+            .toByteArray().toHex();
     QFile * f = new QFile(parent ? parent : this);
     TSTALLOC(f);
     f->setFileName(mpTempDir->filePath(fileBaseName + ext));
@@ -35,6 +37,11 @@ QFile *ApplicationHelper::tempFile(const QString &ext,
     // but is not responsible for deleting the file.
     mTempFiles.append(f);
     return f;
+}
+
+CommandLine *ApplicationHelper::commandLine()
+{
+    return mpCommandLine;
 }
 
 void ApplicationHelper::run()
@@ -51,6 +58,8 @@ void ApplicationHelper::initCommandLine()
     TRACEFN
     mpCommandLine = new CommandLine(this);
     TSTALLOC(mpCommandLine);
+    CONNECT(mpCommandLine, &CommandLine::processComplete,
+            this, &ApplicationHelper::commamdLineScanned);
     QTimer::singleShot(100, this, &ApplicationHelper::initSettings);
 }
 
@@ -69,4 +78,9 @@ void ApplicationHelper::initSettings()
     WANTDO("Take the smell out");
 
     emit initFinished();
+}
+
+void ApplicationHelper::commamdLineScanned()
+{
+
 }

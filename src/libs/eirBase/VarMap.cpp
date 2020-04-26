@@ -19,18 +19,18 @@ MultiName VarMap::name() const
 
 bool VarMap::contains(const MultiName &name) const
 {
-    return Var::Map::contains(name.sortable());
+    return mVarMap.contains(name.sortable());
 }
 
 VarMap VarMap::insert(const Var &var)
 {
-    Var::Map::insert(var.name().sortable(), var);
+    mVarMap.insert(var.name().sortable(), var);
     return *this;
 }
 
 Var VarMap::value(const MultiName &name) const
 {
-    return Var::Map::value(name.sortable());
+    return mVarMap.value(name.sortable());
 }
 
 VarMap VarMap::extract(const MultiName &groupName) const
@@ -77,7 +77,12 @@ void VarMap::insert(const VarMap &other, const bool useMapName)
 
 Var::List VarMap::values() const
 {
-    return Var::Map::values();
+    return mVarMap.values();
+}
+
+Var &VarMap::at(const MultiName &name)
+{
+    return mVarMap[name.sortable()];
 }
 
 BasicName::List VarMap::firstSegmentKeys() const
@@ -100,6 +105,6 @@ VarMap VarMap::operator <<  (const Var &var)
 void VarMap::dump() const
 {
     mName.dump();
-    foreach (Var var, Var::Map::values()) var.dump();
+    foreach (Var var, mVarMap.values()) var.dump();
 }
 

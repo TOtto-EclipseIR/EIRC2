@@ -8,6 +8,11 @@ cvString::cvString(const QString &qs)
     set(qs.toUtf8());
 }
 
+cvString::cvString(const MultiName &qs)
+{
+    set(qs.toString().toLocal8Bit());
+}
+
 void cvString::set(const QByteArray &qba)
 {
     *this = qba.toStdString();

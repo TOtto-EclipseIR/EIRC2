@@ -21,7 +21,9 @@ include(../libs.pri)
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
-LIBS *= -leirExe2
+###LIBS *= -leirExe2
+LIBS *= -leirPixelImage2
+LIBS *= -leirQtCV42
 
 SOURCES += \
     Detector.cpp \

@@ -10,9 +10,11 @@ class cvInputArray
 {
 public:
     cvInputArray();
+    void clear();
     void setGreyImage(const QImage &greyImage);
+    cv::_InputArray * array() const;
 
 private:
-    cv::_InputArray * mpArray;
+    cv::_InputArray * mpArray=nullptr;
 };
 

@@ -8,7 +8,7 @@ void HaarRectangles::append(const QQRect rect)
     mRects.insert(rect.area(), rect);
 }
 
-void HaarRectangles::append(const QQRect::List rects)
+void HaarRectangles::append(const QQRectList rects)
 {
     foreach (QQRect rc, rects) append(rc);
 }
@@ -18,7 +18,7 @@ void HaarRectangles::operator <<(const QQRect rect)
     append(rect);
 }
 
-void HaarRectangles::operator <<(const QQRect::List rects)
+void HaarRectangles::operator <<(const QQRectList rects)
 {
     append(rects);
 }

@@ -33,10 +33,11 @@ bool Success::expect(const bool isTrue)
     return is();
 }
 
-void Success::test(const bool isTrue)
+bool Success::test(const bool isTrue)
 {
     mIsInitialized = true;
     if ( ! isTrue)  mSuccess = false;
+    return isTrue;
 }
 
 Success Success::tested(void)

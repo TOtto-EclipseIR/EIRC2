@@ -24,6 +24,9 @@ public:
     void set(const int index, const Var &listItem);
     void append(const Var &listItem);
     void insert(const Var &mapItem);
+    Var &at(const MultiName &name);
+    Var var(const MultiName &name) const;
+    QVariant value(const MultiName &name) const;
     Id id() const;
     Id &id();
     QByteArray bytes() const;

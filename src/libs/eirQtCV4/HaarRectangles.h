@@ -4,7 +4,7 @@
 
 #include <QMap>
 
-#include <eirType/QQRect.h>
+#include <eirType/QQRectList.h>
 
 class EIRQTCV4_EXPORT HaarRectangles
 {
@@ -14,9 +14,9 @@ public:
     bool isEmpty() const;
     void clear();
     void append(const QQRect rect);
-    void append(const QQRect::List rects);
+    void append(const QQRectList rects);
     void operator << (const QQRect rect);
-    void operator << (const QQRect::List rects);
+    void operator << (const QQRectList rects);
 
 private:
     QMap<int /*area*/, QQRect> mRects;

@@ -24,11 +24,11 @@ SOURCES += \
     Id.cpp \
     Milliseconds.cpp \
     MultiName.cpp \
-    MultiNameMap.cpp \
+###    MultiNameMap.cpp \
     SetError.cpp \
     Success.cpp \
     UInt128.cpp \
-    Uid.cpp \
+###    Uid.cpp \
     Var.cpp \
     VarMap.cpp \
     VarMapMap.cpp \
@@ -44,11 +44,11 @@ HEADERS += \
     Id.h \
     Milliseconds.h \
     MultiName.h \
-    MultiNameMap.h \
+###    MultiNameMap.h \
     SetError.h \
     Success.h \
     UInt128.h \
-    Uid.h \
+###    Uid.h \
     Var.h \
     VarMap.h \
     VarMapMap.h \
