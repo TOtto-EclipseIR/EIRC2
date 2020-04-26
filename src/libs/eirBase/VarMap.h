@@ -27,11 +27,12 @@ public:
     VarMap extract(const MultiName & groupName) const;
     void insert(const MultiName &groupName,
                 const VarMap &groupVars);
-    void insert(const VarMap &other, const bool useMapName);
+    void insert(const VarMap &other, const bool useMapName=false);
     Var::List values() const;
     Var &at(const MultiName &name);
     BasicName::List firstSegmentKeys() const;
     VarMap operator << (const Var &var);
+    QStringList dumpList() const;
     void dump() const;
 
 private:

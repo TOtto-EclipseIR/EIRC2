@@ -1,11 +1,14 @@
+// file: {EIRC2 repo}./src/libs/eirType/Region.h
 #pragma once
+#include "eirType.h"
+
 
 #include <QSize>
 
 #include "QQRect.h"
 #include "QQRectF.h"
 
-class Region : public QQRect
+class EIRTYPE_EXPORT Region : public QQRect
 {
 public:
     Region();

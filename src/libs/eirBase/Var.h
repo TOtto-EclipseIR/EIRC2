@@ -29,7 +29,8 @@ public:
     QVariant current() const;
     QVariant value() const;
     bool operator == (const Var & other);
-    void dump();
+    QString dumpString() const;
+    void dump() const;
 
 private:
     MultiName mName;

@@ -24,7 +24,7 @@
 #define DEBUGXNE(qmt, pfx, expt, var) { if (expt == var) qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << "Expectation FAILED:" << #expt << expt << "!=" << #var << var; }
 #define DEBUGXPTR(qmt, pfx, ptr) if (nullptr == ptr) qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << "Pointer FAILED:" <<  #ptr;
 #define DEBUGPTR(qmt, pfx, ptr, expr)     if (ptr) ptr->expr else DEBUG(qmt, pfx) "Pointer" << #ptr << "FAILED for" << #expr;
-#define DEBUGFNR(qmt, pfx, expr) { qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << "Return:" << #expr; return expr; }
+#define DEBUGFNR(qmt, pfx, expr) { qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << "Return:" << #expr << QString(expr); return expr; }
 #define DEBUGRTV(qmt, pfx) { qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << "Return(void)"; return; }
 #define DEBUGQUIT Q_ASSERT(false);
 #define DEBUGCON(qmt, pfx, src, sig, rec, slt) TSTALLOC(src); TSTALLOC(rec); if ( ! connect(src,sig,rec,slt)) DEBUG(qmt, pfx) << "Connect FAILED:" << #src << #sig << #rec << #slt;

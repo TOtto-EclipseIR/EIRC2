@@ -16,11 +16,15 @@
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
     , mpTempDir(new QTemporaryDir())
+    , mpCommandLine(new CommandLine(parent))
 {
     TRACEFN
     setObjectName("Application");
     TSTALLOC(mpTempDir);
+    TSTALLOC(mpCommandLine);
     EXPECT(mpTempDir->isValid())
+    CONNECT(mpCommandLine, &CommandLine::processComplete,
+            this, &ApplicationHelper::commamdLineScanned);
 }
 
 QFile *ApplicationHelper::tempFile(const QString &ext,
@@ -56,10 +60,7 @@ void ApplicationHelper::run()
 void ApplicationHelper::initCommandLine()
 {
     TRACEFN
-    mpCommandLine = new CommandLine(this);
     TSTALLOC(mpCommandLine);
-    CONNECT(mpCommandLine, &CommandLine::processComplete,
-            this, &ApplicationHelper::commamdLineScanned);
     QTimer::singleShot(100, this, &ApplicationHelper::initSettings);
 }
 

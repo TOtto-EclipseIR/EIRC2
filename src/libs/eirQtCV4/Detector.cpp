@@ -50,7 +50,6 @@ bool Detector::initialize(const QFileInfo &qfiXml,
     WANTDO(Refactor ErrorHandler::tryFileMode())
     if (nullptr == mpCascade)
     {
-
         ErrorHandler::Item ei("eirQtCV/Detector/CtorCascade");
         setError(ei);
         return false;
@@ -71,23 +70,25 @@ bool Detector::setGreyImage(const QImage &greyImage)
 {
     TRACEQFI << greyImage;
     Success success(true);
-    WEXPECT(success.test(greyImage.isGrayscale()));
+    EXPECT(success.test(greyImage.isGrayscale()));
     mGreyImage = greyImage;
-    mGreyMat.setGreyImage(mGreyImage);
-    return success;
+    TRACEFNR(success);
+//    return success;
 }
 
-bool Detector::findRectangles(const QQRect &region)
+bool Detector::findRectangles(const Region &region)
 {
     TRACEQFI << region;
-    Success succcess(true);
+    Success success(true);
     TSTALLOC(mpCascade)
-    WEXPECTNOT(succcess.test(mGreyImage.isNull()))
-    WEXPECTNOT(succcess.test(mGreyImage.isGrayscale()))
+    EXPECTNOT(success.test(mGreyImage.isNull()))
+    EXPECTNOT(success.test(mGreyImage.isGrayscale()))
     std::vector<cv::Rect> outputVector;
     mRectangles.clear();
+    WANTDO(region)
+    mGreyInput.setGreyImage(mGreyImage);
 
-    mpCascade->detectMultiScale(*mGreyMat.array(),
+    mpCascade->detectMultiScale(mGreyInput.mat(),
                                 outputVector, // rectList
                                 1.1,        // factor
                                 1,          // neighbors
@@ -96,8 +97,7 @@ bool Detector::findRectangles(const QQRect &region)
                                 cv::Size());    // maxSize
     foreach(cv::Rect rc, outputVector)
         mRectangles << QQRect(cvRect(rc));
-
-    return succcess;
+    return success;
 }
 
 QQRectList Detector::rectangles() const
@@ -113,7 +113,11 @@ QImage Detector::markRectangles(const bool inLivingColor,
     ImageMarker marker(rectImage);
     marker.markRectangles(rectangles());
     if (rectangleDir != QDir())
-        marker.marked().save(QFileInfo(rectangleDir,
-                    mInitFileInfo.fileName()).filePath());
+    {
+        QFileInfo qfi(rectangleDir,
+                       mInitFileInfo.fileName());
+        TRACE << qfi;
+        WEXPECT(marker.marked().save(qfi.filePath()));
+    }
     return marker.marked();
 }

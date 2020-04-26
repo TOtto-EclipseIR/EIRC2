@@ -56,11 +56,6 @@ void Success::nullify(void)
     mIsInitialized = mSuccess = false;
 }
 
-Success::operator bool (void) const
-{
-    return is();
-}
-
 QString Success::toString(void) const
 {
     return toString("OK", "FAIL", "UNKNOWN");
@@ -72,4 +67,14 @@ QString Success::toString(const QString & trueString,
 {
     return isNull() ? unknownString
                     : is() ? trueString : falseString;
+}
+
+Success::operator bool (void) const
+{
+    return is();
+}
+
+Success::operator QString() const
+{
+    return toString();
 }

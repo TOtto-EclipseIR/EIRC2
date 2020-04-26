@@ -24,8 +24,8 @@ public:
 protected:
     void configure(const VarPak &config);
     QString configString(const MultiName &key) const;
-    QDir outputDir(const QDir &baseDir,
-                   const MultiName &configKey);
+    void setOutputDirs(const VarPak &config);
+    QDir outputDir(QDir baseDir, QString dirName);
     void processInputImage(const QFileInfo & inFileInfo);
     static QImage toGrey(const QImage & inputImage);
     void findFFRectangles(const Region region=Region());
@@ -37,7 +37,6 @@ public slots:
 private slots:
     void initializeResources();
     void processCommandLine();
-    void setOutputDirs();
     void scanInputDir();
     void nextImage();
 

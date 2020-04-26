@@ -15,27 +15,31 @@ cvInputArray::cvInputArray()
 
 void cvInputArray::clear()
 {
-    if (mpArray)
-    {
-        delete mpArray;
-        mpArray = nullptr;
-    }
+    mMat.create(0,0,0);
+    mArray = cv::_InputArray(mMat);
 }
 
 void cvInputArray::setGreyImage(const QImage &greyImage)
 {
     TRACEQFI << greyImage;
     clear();
+    EXPECTEQ(QImage::Format_Grayscale8, greyImage.format());
     cv::Mat greyMat(greyImage.height(),
                     greyImage.width(),
                     CV_8U,
                     (void *)greyImage.bits());
-    cv::_InputArray * pArray = new cv::_InputArray(greyMat);
-    TSTALLOC(pArray);
-    mpArray = pArray;
+    mMat = greyMat;
+    mArray = cv::_InputArray(greyMat);
+    TRACE << mArray.size().height << mArray.size().width;
+    EXPECTNE(0, mArray.size().area());
 }
 
-cv::_InputArray *cvInputArray::array() const
+cv::Mat cvInputArray::mat() const
 {
-    return mpArray;
+    return mMat;
+}
+
+cv::_InputArray cvInputArray::array() const
+{
+    return mArray;
 }

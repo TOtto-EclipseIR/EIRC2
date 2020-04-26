@@ -18,6 +18,8 @@ public:
     BasicName(const char * cName);
     BasicName(const QByteArray & baName);
     void set(const QString & name);
+    bool isEmpty() const;
+    bool notEmpty() const;
     QString toString(void) const;
     QByteArray toByteArray() const;
     operator QString (void) const;

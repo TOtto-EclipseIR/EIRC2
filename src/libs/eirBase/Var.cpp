@@ -51,7 +51,13 @@ bool Var::operator ==(const Var &other)
     return name() == other.name() && value() == other.value();
 }
 
-void Var::dump()
+QString Var::dumpString() const
 {
-    DUMP << mName() << mDefault << mCurrent;
+    return QString("%1 = %2 [$3]").arg(mName)
+            .arg(mCurrent.toString()).arg(mDefault.toString());
+}
+
+void Var::dump() const
+{
+    DUMP << dumpString();
 }

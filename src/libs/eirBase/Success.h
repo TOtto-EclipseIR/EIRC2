@@ -17,11 +17,12 @@ public:
     bool isNull(void) const;
     void nullify(void);
     Success tested(void);
-    operator bool (void) const;
     QString toString(void) const;
     QString toString(const QString & trueString,
                      const QString & falseString,
                      const QString & unknownString) const;
+    operator bool (void) const;
+    operator QString () const;
 
 private:
     bool mSuccess = false;

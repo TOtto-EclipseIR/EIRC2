@@ -65,7 +65,7 @@ public:
     bool is(const int value) const;
     void set(const int value);
     void set(const QString & value);
-    void setInvalid(void);
+    void invalidate(void);
     bool operator == (const Enumeration & other) const;
     bool operator < (const Enumeration & other) const;
     operator int (void) const;

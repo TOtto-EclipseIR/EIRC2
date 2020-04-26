@@ -11,6 +11,7 @@
 //#include <eirBase/Uid.h>
 #include <eirBase/VarPak.h>
 #include <eirType/QQRectList.h>
+#include <eirType/Region.h>
 
 #include "cvInputArray.h"
 #include "ObjectType.h"
@@ -28,7 +29,7 @@ public:
                     const VarPak &config);
     bool setImage(const QImage &image);
     bool setGreyImage(const QImage &greyImage);
-    bool findRectangles(const QQRect &region=QQRect());
+    bool findRectangles(const Region &region=Region());
     QQRectList rectangles() const;
     QImage markRectangles(const bool inLivingColor=false,
                           const QDir &rectangleDir=QDir()) const;
@@ -43,7 +44,7 @@ private:
     cv::CascadeClassifier * mpCascade=nullptr;
     QImage mImage;
     QImage mGreyImage;
-    cvInputArray mGreyMat;
+    cvInputArray mGreyInput;
     QQRectList mRectangles;
 };
 

@@ -154,7 +154,7 @@ void Enumeration::set(const QString & name)
     }
 }
 
-void Enumeration::setInvalid(void)
+void Enumeration::invalidate(void)
 {
     TRACEFN
     value_i = 0, name_s.clear(), name_map = 0;
@@ -232,14 +232,16 @@ QList<Enumeration> Enumeration::all(void)
     QList<Enumeration> result;
     foreach (int i, values())
         result.append(Enumeration(name_map, i));
-    TRACEFNR(result);
+    //TRACEFNR(result);
+    return result;
 }
 
 QList<int> Enumeration::values(void) const
 {
     TRACEFN
     QList<int> result = name_map ? name_map->keys() : QList<int>();
-    TRACEFNR(result);
+//    TRACEFNR(result);
+    return result;
 }
 
 QStringList Enumeration::nameFlags(int f)
@@ -253,7 +255,8 @@ QStringList Enumeration::nameFlags(int f)
             if (i && i == (i & f))
                 nameList << name_map->name(i);
     }
-    TRACEFNR(nameList);
+    //TRACEFNR(nameList);
+    return nameList;
 }
 
 bool Enumeration::isValid(const QString & name)
@@ -360,7 +363,7 @@ QList<Enumeration> Enumeration::parse(const QString & string)
                 WARN << "Enumeration(%s) invalid" << s;
         }
     }
-    TRACEFNR(result);
+    //TRACEFNR(result);
 }
 
 int Enumeration::parseFlags(const QString & string)

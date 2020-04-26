@@ -41,7 +41,7 @@ public:
     QString appName() const;
     void loadFromFile(const QFileInfo qfi);
     void loadFromUrl(const QUrl url);
-    QFileInfoList argumentInfoList() const;
+    QFileInfoList fileArgumentInfoList() const;
 
     static void add(const QCommandLineOption &option);
     static void add(const QJsonObject &jsonObject);
@@ -82,13 +82,15 @@ signals:
     void allResults(VarPak results);
 
 private:
-    const QStringList cmArguments;
+    const QStringList cmExeArguments;
+    QStringList mParsedArguments;
     QFileInfo mExeFileInfo;
-    QString mFirstArgument;
+//    QString mFirstArgument;
     BasicName mOrgName;
     BasicName mAppName;
     VarMap mSettings;
-    int mArgIndex = 0;
-    QFileInfoList mArgumentsInfo;
+//    int mArgIndex = 0;
+    QStringList mPositionalArguments;
+    QFileInfoList mFileArgumentsInfo;
 };
 

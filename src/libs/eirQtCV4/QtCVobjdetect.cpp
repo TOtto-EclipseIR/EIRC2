@@ -21,6 +21,7 @@ QtCVobjdetect::~QtCVobjdetect()
 Detector *QtCVobjdetect::newDetector(const ObjectType objType)
 {
     TRACEQFI << objType.name();
+    NEEDDO(objType switch);
     Detector * objDet = new Detector(objType, this);
     TSTALLOC(objDet)
     mDetectorList.append(objDet);

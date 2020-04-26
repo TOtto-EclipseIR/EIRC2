@@ -8,10 +8,10 @@
 #include <eirType/QQRectList.h>
 
 ImageMarker::ImageMarker(const QImage &image)
-    : mImage(image)
-    , mpPainter(new QPainter())
+    : mpPainter(new QPainter())
 {
     TRACEQFI << image;
+    mImage = image.convertToFormat(QImage::Format_ARGB32);
 }
 
 void ImageMarker::markRectangles(const QQRectList &rectangles,

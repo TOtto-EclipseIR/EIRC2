@@ -1,22 +1,17 @@
 // file: {repo: EIRC2}./src/libs/eirExe/CommandLine.cpp
 #include "CommandLine.h"
 
+#include <QFileInfo>
+
 #include <eirBase/Debug.h>
 
 
 CommandLine::CommandLine(QObject *parent)
     : QObject(parent)
-    , cmArguments(qApp->arguments())
+    , cmExeArguments(qApp->arguments())
 {
-    TRACEQFI << cmArguments;
+    TRACEQFI << cmExeArguments;
     setObjectName("CommandLine");
-
-    mExeFileInfo.setFile(cmArguments.first());
-    mArgIndex = 1;
-    if (cmArguments.size() > mArgIndex)
-        mFirstArgument = cmArguments.at(mArgIndex++);
-    process();
-    emit processComplete();
 }
 
 QString CommandLine::orgName() const
@@ -29,27 +24,60 @@ QString CommandLine::appName() const
     return mAppName;
 }
 
-QFileInfoList CommandLine::argumentInfoList() const
+QFileInfoList CommandLine::fileArgumentInfoList() const
 {
-    return mArgumentsInfo;
+    TRACEQFI << "mArgumentsInfo.size()" << mFileArgumentsInfo.size();
+    return mFileArgumentsInfo;
 }
 
 void CommandLine::process()
 {
-    if (mFirstArgument.startsWith(QChar('%'))
-             || mFirstArgument.startsWith('_'))
+    TRACEQFI << qApp->arguments();
+/*
+    mExeFileInfo.setFile(cmArguments.first());
+    mArgIndex = 1;
+    if (cmArguments.size() > mArgIndex)
+        mFirstArgument = cmArguments.at(mArgIndex++);
+    process();
+    emit processComplete();
+*/
+    WANTDO(Parser::parse())
+    mParsedArguments = cmExeArguments;
+    mExeFileInfo = QFileInfo(mParsedArguments.takeFirst());
+    foreach (QString arg, mParsedArguments)
     {
-        int x = mFirstArgument.indexOf(QChar('/'));
-        if (x < 0)
-            mAppName = mFirstArgument.mid(1);
+        if (arg.startsWith(QChar('%'))
+                 || arg.startsWith('_'))
+        {
+            int x = arg.indexOf(QChar('/'));
+            if (x < 0)
+                mAppName = arg.mid(1);
+            else
+            {
+                mOrgName = arg.mid(1, x-1);
+                mAppName = arg.mid(x+1);
+            }
+        }
         else
         {
-            mOrgName = mFirstArgument.mid(1, x-1);
-            mAppName = mFirstArgument.mid(x+1);
+            mPositionalArguments << arg;
+            QFileInfo qfi(arg);
+            if (qfi.isFile() || qfi.isDir())
+                mFileArgumentsInfo << qfi;
+            else
+                mFileArgumentsInfo << QString();
         }
     }
+
+    if (mOrgName.notEmpty())
+        qApp->setOrganizationName(mOrgName);
+    if (mAppName.notEmpty())
+        qApp->setApplicationName(mAppName);
+            /*
     TODO("MS02~03 mSettings");
     while (mArgIndex < qApp->arguments().size())
-        mArgumentsInfo << QFileInfo(qApp->arguments()
+        mFileArgumentsInfo << QFileInfo(qApp->arguments()
                                     .at(mArgIndex++));
+*/
+    TRACE << mFileArgumentsInfo;
 }

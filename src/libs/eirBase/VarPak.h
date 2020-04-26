@@ -20,10 +20,11 @@ public:
     VarPak(const Id id=Id());
     void set(const QByteArray &qba);
     void set(const Var::List &varList);
-    void set(const VarMap &varMap);
+    void insert(const VarMap &varMap);
     void set(const int index, const Var &listItem);
     void append(const Var &listItem);
     void insert(const Var &mapItem);
+    void insert(const MultiName &key, const QVariant &value);
     Var &at(const MultiName &name);
     Var var(const MultiName &name) const;
     QVariant value(const MultiName &name) const;

@@ -3,8 +3,10 @@
 
 cvRect::cvRect() {;}
 
-//cvRect::cvRect(const cvRect &cvrc)
-  //  : QQRect(cvrc.size(), cvrc.center()) { set(cvrc); }
+cvRect::cvRect(const cv::Rect &cvrc)
+{
+    set(cvrc);
+}
 
 void cvRect::set(const cv::Rect &cvrc)
 {

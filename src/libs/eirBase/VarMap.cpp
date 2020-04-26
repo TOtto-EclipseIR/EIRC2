@@ -102,9 +102,17 @@ VarMap VarMap::operator <<  (const Var &var)
     return insert(var);
 }
 
+QStringList VarMap::dumpList() const
+{
+    QStringList qsl;
+    foreach(Var var, values())
+        qsl << var.dumpString();
+    return qsl;
+}
+
 void VarMap::dump() const
 {
     mName.dump();
-    foreach (Var var, mVarMap.values()) var.dump();
+    DUMP << dumpList();
 }
 

@@ -2,9 +2,9 @@
 
 
 class QImage;
+
+#include <opencv2/core/mat.hpp>
 namespace cv { class _InputArray; };
-
-
 
 class cvInputArray
 {
@@ -12,9 +12,11 @@ public:
     cvInputArray();
     void clear();
     void setGreyImage(const QImage &greyImage);
-    cv::_InputArray * array() const;
+    cv::Mat mat() const;
+    cv::_InputArray array() const;
 
 private:
-    cv::_InputArray * mpArray=nullptr;
+    cv::Mat mMat;
+    cv::_InputArray mArray;
 };
 
