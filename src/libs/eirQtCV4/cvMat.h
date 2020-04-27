@@ -11,6 +11,7 @@ class EIRQTCV4_EXPORT cvMat : public cv::Mat
 public:
     cvMat();
     cvMat(const cv::Mat &mat);
+    cvMat(const int height, const int width, const int cvFmt);
     QImage toImage(const QImage::Format qiFormat) const;
 };
 

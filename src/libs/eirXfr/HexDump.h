@@ -1,24 +1,34 @@
+// file: {EIRC2 repo}./src/libs/eirXfr/HexDump.h
 #pragma once
+#include "eirXfr.h"
 
 #include <QByteArray>
 #include <QStringList>
+class QImage;
 
 #include <eirBase/MultiName.h>
 
-class HexDump
+class EIRXFR_EXPORT HexDump
 {
 public:
+
+public:
     HexDump();
-    HexDump(const void * data, const int bytes,
+    HexDump(void * data, const int bytes,
             const MultiName &name=MultiName());
     HexDump(const QByteArray &ba,
             const MultiName &name=MultiName());
-    void format();
-    QStringList strings() const;
+    HexDump(const QImage & img, const int bytes=-1);
+    QStringList strings();
     QString string(const QChar &joinChar=QChar('\n'));
 
+
 private:
-    const qptrdiff * cmpData=nullptr;
+    void format();
+    QString printable(unsigned u);
+
+private:
+    unsigned * mpData=nullptr;
     const int cmBytes=0;
     const MultiName cmName;
     QStringList mStrings;

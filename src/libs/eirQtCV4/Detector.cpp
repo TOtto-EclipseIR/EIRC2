@@ -14,7 +14,9 @@
 #include <eirBase/Debug.h>
 #include <eirBase/Success.h>
 #include <eirPixelImage/ImageMarker.h>
+#include <eirXfr/HexDump.h>
 
+#include "cvMat.h"
 #include "cvRect.h"
 #include "cvString.h"
 
@@ -86,7 +88,11 @@ bool Detector::findRectangles(const Region &region)
     std::vector<cv::Rect> outputVector;
     mRectangles.clear();
     WANTDO(region)
+    HexDump imgHex(mGreyImage, 256);
+    DUMP << imgHex.string();
     mGreyInput.setGreyImage(mGreyImage);
+    HexDump matDump(mGreyInput.mat().ptr(0), 256);
+    DUMP << matDump.string();
 
     mpCascade->detectMultiScale(mGreyInput.mat(),
                                 outputVector, // rectList
@@ -97,6 +103,10 @@ bool Detector::findRectangles(const Region &region)
                                 cv::Size());    // maxSize
     foreach(cv::Rect rc, outputVector)
         mRectangles << QQRect(cvRect(rc));
+
+    cvMat outMat(mGreyInput.mat());
+    QImage cvOutImage = outMat.toImage(QImage::Format_Grayscale8);
+    cvOutImage.save("./Output/cvOutImage.png");
     return success;
 }
 

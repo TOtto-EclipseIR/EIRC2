@@ -3,13 +3,20 @@
 
 cvRect::cvRect() {;}
 
-cvRect::cvRect(const cv::Rect &cvrc)
+cvRect::cvRect(const cv::Rect &cvrc) : cv::Rect(cvrc) {;}
+
+void cvRect::set(const QQRect &qqrc)
 {
-    set(cvrc);
+    cv::Rect cvrc(qqrc.x(), qqrc.y(), qqrc.width(), qqrc.height());
+    *this = cvrc;
 }
 
-void cvRect::set(const cv::Rect &cvrc)
+QQRect cvRect::qRect() const
 {
-    setX(cvrc.x), setY(cvrc.y),
-         setWidth(width()), setHeight(height());
+    return QQRect(x, y, width, height);
+}
+
+cvRect::operator QQRect() const
+{
+    return qRect();
 }

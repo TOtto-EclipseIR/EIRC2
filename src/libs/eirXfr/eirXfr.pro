@@ -1,4 +1,4 @@
-QT -= gui
+### QT -= gui
 
 TEMPLATE = lib
 DEFINES += EIRXFR_LIBRARY

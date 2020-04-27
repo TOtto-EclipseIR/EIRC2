@@ -20,9 +20,8 @@ include(../libs.pri)
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
-###LIBS *= -leirExe2
+LIBS *= -leirXfr2
 LIBS *= -leirPixelImage2
-LIBS *= -leirQtCV42
 
 SOURCES += \
     Detector.cpp \
@@ -32,11 +31,15 @@ SOURCES += \
     QtCVhighgui.cpp \
     QtCVimgproc.cpp \
     QtCVobjdetect.cpp \
+    cvFormat.cpp \
     cvInputArray.cpp \
     cvMat.cpp \
     cvRect.cpp \
+    cvSize.cpp \
     cvString.cpp \
-    eirQtCV4.cpp
+    eirQtCV4.cpp \
+    qImage.cpp \
+    qRect.cpp
 
 HEADERS += \
     Detector.h \
@@ -46,12 +49,16 @@ HEADERS += \
     QtCVhighgui.h \
     QtCVimgproc.h \
     QtCVobjdetect.h \
+    cvFormat.h \
     cvInputArray.h \
     cvMat.h \
     cvRect.h \
+    cvSize.h \
     cvString.h \
     eirQtCV4_global.h \
-    eirQtCV4.h
+    eirQtCV4.h \
+    qImage.h \
+    qRect.h
 
 # Default rules for deployment.
 unix {

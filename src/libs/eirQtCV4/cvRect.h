@@ -6,11 +6,13 @@
 
 #include <eirType/QQRect.h>
 
-class EIRQTCV4_EXPORT cvRect : public QQRect
+class EIRQTCV4_EXPORT cvRect : public cv::Rect
 {
 public:
     cvRect();
     cvRect(const cv::Rect &cvrc);
-    void set(const cv::Rect &cvrc);
+    void set(const QQRect &qqrc);
+    QQRect qRect() const;
+    operator QQRect() const;
 };
 
