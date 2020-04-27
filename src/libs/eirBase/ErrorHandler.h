@@ -43,6 +43,7 @@ public:
         static bool isValid(const MultiName & name);
         static bool isValid(const Code code);
         bool isFatal() const;
+        bool notError() const;
         static Code registeredCode(const MultiName & name);
         static Item item(const MultiName & name);
         static Item item(const Code code);

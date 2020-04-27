@@ -253,6 +253,19 @@ bool ErrorHandler::Item::isFatal() const
     }
 }
 
+bool ErrorHandler::Item::notError() const
+{
+    switch (mMsgType)
+    {
+    case QtDebugMsg:    /*0*/
+    case QtInfoMsg:     /*4*/ return false;
+    case QtWarningMsg:  /*1*/
+    case QtCriticalMsg: /*2*/
+    case QtFatalMsg:    /*3*/
+    default:                  return true;
+    }
+}
+
 void ErrorHandler::Item::setFatal(const QtMsgType qmt)
 {
     smFatalMsgType = qmt;

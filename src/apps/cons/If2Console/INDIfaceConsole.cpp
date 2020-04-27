@@ -123,7 +123,7 @@ void INDIfaceConsole::initializeResources()
     mpFFDetector = mpObjdetect->newDetector(ObjectType::FrontalFace);
     TSTALLOC(mpFFDetector);
     mpFFDetector->initialize(QFileInfo(QDir("../detectors"),
-                                       "Aim8A001-32-NoSplit.xml"),
+                                       "DefaultFrontalFace.xml"),
                              cfg);
     WANTDO("LEDetector")
     WANTDO("REDetector")
