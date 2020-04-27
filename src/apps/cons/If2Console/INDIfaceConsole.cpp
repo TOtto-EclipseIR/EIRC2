@@ -1,5 +1,7 @@
 #include "INDIfaceConsole.h"
 
+#include <QDateTime>
+#include <QDir>
 #include <QImage>
 #include <QTimer>
 
@@ -36,14 +38,16 @@ QString INDIfaceConsole::configString(const MultiName &key) const
     return mConfiguration.value(key).toString();
 }
 
-QDir INDIfaceConsole::outputDir(const QDir &baseDir,
-                                const MultiName &configKey)
+QDir INDIfaceConsole::outputDir(QDir baseDir,
+                                QString dirName)
 {
-    QDir outputDir(baseDir);
-    QString outputPath = configString(configKey);
-    WEXPECT(outputDir.mkdir(outputPath));
-    WEXPECT(outputDir.cd(outputPath));
-    return outputDir;
+    TRACEQFI << baseDir.absolutePath() << dirName;
+    dirName.replace('@', QDateTime::currentDateTime().toString("DyyyyMMdd-Thhmm"));
+    QDir outDir = baseDir;
+    EXPECT(outDir.mkpath(dirName));
+    EXPECT(outDir.cd(dirName));
+    EXPECT(outDir.exists());
+    return outDir;
 }
 
 void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
@@ -51,6 +55,8 @@ void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
     TRACEQFI << inFileInfo;
     QImage inImage = QImage(inFileInfo.filePath());
     QImage greyImage = toGrey(inImage);
+    greyImage.save(QFileInfo(mGreyInputDir,
+                             inFileInfo.fileName()).filePath());
     TSTALLOC(mpFFDetector);
     mpFFDetector->setGreyImage(greyImage);
     mpFFDetector->findRectangles();
@@ -63,6 +69,8 @@ void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
 
 QImage INDIfaceConsole::toGrey(const QImage &inputImage)
 {
+    TRACEQFI << inputImage;
+    WANTDO("move to pixel library")
     if (inputImage.isGrayscale())
         return inputImage;
     QImage outputImage(inputImage.size(),
@@ -79,11 +87,15 @@ QImage INDIfaceConsole::toGrey(const QImage &inputImage)
 
 void INDIfaceConsole::findFFRectangles(const Region region)
 {
-
+    TRACEQFI << region;
+    mpFFDetector->findRectangles(region);
 }
 
 CommandLine *INDIfaceConsole::commandLine()
 {
+    TRACEQFI << (Console::commandLine()
+                ? Console::commandLine()->objectName()
+                : "{null}");
     return Console::commandLine();
 }
 
@@ -98,8 +110,21 @@ void INDIfaceConsole::initializeApplication()
 void INDIfaceConsole::initializeResources()
 {
     TRACEFN
-    mpFFDetector = new Detector(ObjectType::FrontalFace, mpObjdetect);
+    TSTALLOC(mpObjdetect);
+
+    VarPak cfg(Id("QuickConfig"));
+    cfg.insert("Output/BaseDir", "./Output/@");
+    cfg.insert("Output/GreyInputDir", "GreyInput");
+    cfg.insert("Output/MarkedDetectDir", "MarkedDetect");
+    cfg.insert("Detect/Face/RectanglesDir", "DetectFace/Rectangles");
+    cfg.insert("Detect/Face/HeatMapDir", "DetectFace/HeatMap");
+    setOutputDirs(cfg);
+
+    mpFFDetector = mpObjdetect->newDetector(ObjectType::FrontalFace);
     TSTALLOC(mpFFDetector);
+    mpFFDetector->initialize(QFileInfo(QDir("../detectors"),
+                                       "Aim8A001-32-NoSplit.xml"),
+                             cfg);
     WANTDO("LEDetector")
     WANTDO("REDetector")
     emit resoursesInitd();
@@ -108,23 +133,27 @@ void INDIfaceConsole::initializeResources()
 void INDIfaceConsole::processCommandLine()
 {
     TRACEFN
-    QFileInfoList files = commandLine()->argumentInfoList();
-    TRACE << files;
+    TSTALLOC(commandLine());
+    TODO(setup Options & pos Args)
+    commandLine()->process();
+    QFileInfoList files = commandLine()->fileArgumentInfoList();
     mPendingFiles = files;
+    TRACE << "emit pendingFilesSet()" << files;
     emit pendingFilesSet();
 }
 
-void INDIfaceConsole::setOutputDirs(void)
+void INDIfaceConsole::setOutputDirs(const VarPak &config)
 {
-    mBaseDir = outputDir(QDir(), "Output/BaseDir");
-    mGreyInputDir = outputDir(mBaseDir, "Output/GreyInputDir");
+    mBaseDir = outputDir(QDir(), config.value("Output/BaseDir").toString());
+    mGreyInputDir = outputDir(mBaseDir, config.value("Output/GreyInputDir").toString());
     mMarkedRectangleDir = outputDir(mBaseDir,
-                                    "Output/MarkedRectangleDir");
+                                    config.value("Detect/Face/RectanglesDir").toString());
+    mHeatmapDir = outputDir(mBaseDir, config.value("Detect/Face/HeatMapDir").toString());
 }
 
 void INDIfaceConsole::scanInputDir()
 {
-    TRACEFN
+    TRACEQFI << "mPendingFiles.size()=" << mPendingFiles.size();
     if (mPendingFiles.isEmpty())
     {
         emit inputDirEmpty();

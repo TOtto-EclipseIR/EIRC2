@@ -4,8 +4,8 @@ SUBDIRS += \
     eirBase \
     eirExe \
     eirPixelImage \
-###    eirQtCV \
-#    eirResource \
-#    eirTask \
+###    eirResource \
+###    eirTask \
     eirQtCV4 \
-    eirType
+    eirType \
+    eirXfr
