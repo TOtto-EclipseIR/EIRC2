@@ -11,7 +11,7 @@ If2Console.subdir   = ./apps/cons/If2Console
 
 eirType.depends     = eirBase
 eirExe.depends      = eirBase eirType
-eirPixel.depemds    = eirType
+eirPixel.depemds    = eirBase eirType
 eirQtCV.depends     = eirBase eirType eirPixel
 eirPixel.depemds    = eirType eirQtCV
 eirXfr.depends      = eirBase

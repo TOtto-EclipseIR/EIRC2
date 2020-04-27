@@ -23,19 +23,29 @@ LIBS *= -leirBase2
 LIBS *= -leirType2
 
 SOURCES += \
+    AbstractImageInterface.cpp \
     BaseImage.cpp \
+    ImageClass.cpp \
     ImageMarker.cpp \
     ImagePak.cpp \
     ImageType.cpp \
-    eirPixelImage.cpp
+    cvFormat.cpp \
+    eirPixelImage.cpp \
+    qiFormat.cpp \
+    qvfFormat.cpp
 
 HEADERS += \
+    AbstractImageInterface.h \
     BaseImage.h \
+    ImageClass.h \
     ImageMarker.h \
     ImagePak.h \
     ImageType.h \
+    cvFormat.h \
     eirPixelImage_global.h \
-    eirPixelImage.h
+    eirPixelImage.h \
+    qiFormat.h \
+    qvfFormat.h
 
 # Default rules for deployment.
 unix {
