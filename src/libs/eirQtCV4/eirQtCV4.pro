@@ -33,6 +33,7 @@ SOURCES += \
     QtCVimgproc.cpp \
     QtCVobjdetect.cpp \
     cvInputArray.cpp \
+    cvMat.cpp \
     cvRect.cpp \
     cvString.cpp \
     eirQtCV4.cpp
@@ -46,6 +47,7 @@ HEADERS += \
     QtCVimgproc.h \
     QtCVobjdetect.h \
     cvInputArray.h \
+    cvMat.h \
     cvRect.h \
     cvString.h \
     eirQtCV4_global.h \

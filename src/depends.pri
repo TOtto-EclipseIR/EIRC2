@@ -15,4 +15,4 @@ eirPixel.depemds    = eirType
 eirQtCV.depends     = eirBase eirType eirPixel
 eirPixel.depemds    = eirType eirQtCV
 eirXfr.depends      = eirBase
-If2Console.depends  = eirBase eirType eirExe eirPixel eirQtCV
+If2Console.depends  = eirBase eirType eirExe eirPixel eirQtCV eirXfr
