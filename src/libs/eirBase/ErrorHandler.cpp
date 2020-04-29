@@ -81,7 +81,7 @@ bool ErrorHandler::tryFileMode(const QIODevice::OpenMode mode,
                                const QFileInfo &fileInfo,
                                const QString &what)
 {
-    Success success(true);
+    Success success;
     VarMap vars;
     vars << Var("What", what);
     vars << Var("ModesTested", QString::number(mode)

@@ -68,10 +68,19 @@ bool Detector::initialize(const QFileInfo &qfiXml,
     return true;
 }
 
-bool Detector::setGreyImage(const QImage &greyImage)
+bool Detector::setGreyImage(const QImage &greyImage,
+                            const QFileInfo &fileInfo)
 {
-    TRACEQFI << greyImage;
+    TRACEQFI << fileInfo << greyImage;
+    mInitFileInfo = fileInfo;
     Success success(true);
+    if (QImage::Format_Grayscale8 != greyImage.format())
+    {
+        GreyAverageImage gaImage;
+        gaImage.create(greyImage);
+        EXPECT(gaImage.isGrey())
+        EXPECT(gaImage.image().save("./Output/gaImage.png"));
+    }
     EXPECT(success.test(greyImage.isGrayscale()));
     mGreyImage = greyImage;
     TRACEFNR(success);
@@ -81,18 +90,20 @@ bool Detector::setGreyImage(const QImage &greyImage)
 bool Detector::findRectangles(const Region &region)
 {
     TRACEQFI << region;
-    Success success(true);
+    Success success;
     TSTALLOC(mpCascade)
-    EXPECTNOT(success.test(mGreyImage.isNull()))
-    EXPECTNOT(success.test(mGreyImage.isGrayscale()))
+    EXPECT(success.test(mGreyImage.isNull()))
+    EXPECT(success.test(mGreyImage.isGrayscale()))
     std::vector<cv::Rect> outputVector;
     mRectangles.clear();
     WANTDO(region)
-    HexDump imgHex(mGreyImage, 256);
-    DUMP << imgHex.string();
+
+//    HexDump imgHex(mGreyImage, 256);
+  //  DUMP << imgHex.string();
+
     mGreyInput.setGreyImage(mGreyImage);
-    HexDump matDump(mGreyInput.mat().ptr(0), 256);
-    DUMP << matDump.string();
+//  HexDump matDump(mGreyInput.mat().ptr(0), 256);
+  //DUMP << matDump.string();
 
     mpCascade->detectMultiScale(mGreyInput.mat(),
                                 outputVector, // rectList
@@ -103,6 +114,7 @@ bool Detector::findRectangles(const Region &region)
                                 cv::Size());    // maxSize
     foreach(cv::Rect rc, outputVector)
         mRectangles << QQRect(cvRect(rc));
+    TRACE << mRectangles;
 
     cvMat outMat(mGreyInput.mat());
     QImage cvOutImage = outMat.toImage(QImage::Format_Grayscale8);

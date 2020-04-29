@@ -12,6 +12,8 @@
 #include <eirBase/VarPak.h>
 #include <eirType/QQRectList.h>
 #include <eirType/Region.h>
+#include <eirPixelImage/GreyAverageImage.h>
+#include <eirPixelImage/GreyAverageImage.h>
 
 #include "cvInputArray.h"
 #include "ObjectType.h"
@@ -28,7 +30,8 @@ public:
     bool initialize(const QFileInfo &qfiXml,
                     const VarPak &config);
     bool setImage(const QImage &image);
-    bool setGreyImage(const QImage &greyImage);
+    bool setGreyImage(const QImage &greyImage,
+                      const QFileInfo &fileInfo);
     bool findRectangles(const Region &region=Region());
     QQRectList rectangles() const;
     QImage markRectangles(const bool inLivingColor=false,

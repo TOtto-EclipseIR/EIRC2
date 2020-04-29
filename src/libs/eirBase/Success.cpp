@@ -15,6 +15,11 @@ bool Success::is(void) const
     return mIsInitialized ? mSuccess : false;
 }
 
+bool Success::result() const
+{
+    return mIsInitialized ? mSuccess : true;
+}
+
 bool Success::yes(void)
 {
     set(true);

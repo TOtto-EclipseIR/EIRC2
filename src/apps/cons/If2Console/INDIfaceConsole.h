@@ -56,6 +56,7 @@ private:
     QFileInfoList mPendingFiles;
     QDir mInputDir;
     QDir mBaseDir;
+    QDir mCapture2Dir;
     QDir mGreyInputDir;
     QDir mMarkedRectangleDir;
     QDir mHeatmapDir;

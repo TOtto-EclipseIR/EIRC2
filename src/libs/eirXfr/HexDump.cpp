@@ -1,7 +1,10 @@
 // file: {EIRC2 repo}./src/libs/eirXfr/HexDump.h
 #include "HexDump.h"
 
+#include <QByteArray>
 #include <QImage>
+
+#include <eirBase/Debug.h>
 
 HexDump::HexDump()
 {
@@ -14,7 +17,7 @@ HexDump::HexDump(void *data, const int bytes,
     , cmBytes(bytes)
     , cmName(name)
 {
-
+    TRACEQFI << name();
 }
 
 HexDump::HexDump(const QByteArray &ba, const MultiName &name)
@@ -22,28 +25,32 @@ HexDump::HexDump(const QByteArray &ba, const MultiName &name)
     , cmBytes(ba.size())
     , cmName(name)
 {
-
+    TRACEQFI << name();
 }
 
 HexDump::HexDump(const QImage &img, const int bytes)
     : mpData((unsigned *)(img.bits()))
     , cmBytes((bytes < 0) ? img.sizeInBytes() : bytes)
 {
+    TRACEQFI << img << bytes;
 }
 
 QStringList HexDump::strings()
 {
+    TRACEFN
     if (mStrings.isEmpty()) format();
     return mStrings;
 }
 
 QString HexDump::string(const QChar &joinChar)
 {
+    TRACEFN
     return mStrings.join(joinChar);
 }
 
 void HexDump::format()
 {
+    TRACEFN
     QStringList qsl;
 
     qsl << QString("@0x%2 L%3 0x%4 %1").arg(cmName())

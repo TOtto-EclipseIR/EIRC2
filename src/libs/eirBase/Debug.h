@@ -29,12 +29,17 @@
 #define DEBUGQUIT Q_ASSERT(false);
 #define DEBUGCON(qmt, pfx, src, sig, rec, slt) TSTALLOC(src); TSTALLOC(rec); if ( ! connect(src,sig,rec,slt)) DEBUG(qmt, pfx) << "Connect FAILED:" << #src << #sig << #rec << #slt;
 
-#define PINFO   "=INFO>"
-#define PDUMP   "~DUMP>"
+#define PINFO   "= INFO"
+#define PDUMP   "~ DUMP"
 #define PTRACE  "-TRACE"
-#define PWARN   "*WARN>"
+#define PWARN   "* WARN"
 #define PERROR  "#ERROR"
 #define PABORT  "@FATAL"
+#define PITODO  "=ITODO"
+#define PTODO   "- TODO"
+#define PWTODO  "*WTODO"
+#define PETODO  "#ETODO"
+#define PBTODO  "@FTODO"
 
 #define INFO                    DEBUG(qInfo, PINFO) // << stuff
 #define INFOQFI                 DEBUGQFI(qInfo, PINFO) // << stuff
@@ -44,7 +49,7 @@
 #define NEXPECT(bexpr)          DEBUGEXP(qInfo, PINFO, bexpr)
 #define NEXPECTEQ(expt, var)    DEBUGXEQ(qInfo, PINFO, expt, var)
 #define NEXPECTNE(expt, var)    DEBUGXNE(qInfo, PINFO, expt, var)
-#define LIKEDO(msg)             DEBUGDO(qInfo, PINFO, msg)
+#define LIKEDO(msg)             DEBUGDO(qInfo, PITODO, msg)
 
 #define DUMP                    DEBUG(qDebug, PDUMP) // << stuff
 #define TRACE                   DEBUG(qDebug, PTRACE) // << stuff
@@ -58,9 +63,9 @@
 #define TEXPECTNE(expt, var)    DEBUGXNE(qDebug, PTRACE, expt, var)
 #define TRACERTV()              DEBUGRTV(qDebug, PTRACE)
 #define TRACEFNR(expr)          DEBUGFNR(qDebug, PTRACE, expr)
-#define TODO(msg)               DEBUGDO(qDebug, PTRACE, msg)
-#define TOUSE(msg)              DEBUGUSE(qDebug, PTRACE, msg)
-#define TORTN(msg)              DEBUGRTN(qDebug, PTRACE, msg)
+#define TODO(msg)               DEBUGDO(qDebug, PTODO, msg)
+#define TOUSE(msg)              DEBUGUSE(qDebug, PTODO, msg)
+#define TORTN(msg)              DEBUGRTN(qDebug, PTODO, msg)
 #define UNUSED(var)             Q_UNUSED(var)
 
 #define WARN                    DEBUG(qWarning, PWARN) // << stuff
@@ -74,9 +79,9 @@
 #define WEXPECTNOT(bexpr)       DEBUGXN(qWarning, PWARN, bexpr)
 #define WEXPECTEQ(expt, var)    DEBUGXEQ(qWarning, PWARN, expt, var)
 #define WEXPECTNE(expt, var)    DEBUGXNE(qWarning, PWARN, expt, var)
-#define WANTDO(msg)             DEBUGDO(qWarning, PWARN, msg)
-#define WANTUSE(msg)            DEBUGUSE(qWarning, PWARN, msg)
-#define WANTRTN(msg)            DEBUGRTN(qWarning, PWARN, msg)
+#define WANTDO(msg)             DEBUGDO(qWarning, PWTODO, msg)
+#define WANTUSE(msg)            DEBUGUSE(qWarning, PWTODO, msg)
+#define WANTRTN(msg)            DEBUGRTN(qWarning, PWTODO, msg)
 #define WPTR(ptr, expr)         DEBUGPTR(qWarning, PWARN, ptr, expr)
 
 #define ERROR                   DEBUG(qCritical, PERROR) // << stuff
@@ -89,11 +94,11 @@
 #define EXPECTEQ(expt, var)     DEBUGXEQ(qCritical, PERROR, expt, var)
 #define EXPECTNE(expt, var)     DEBUGXNE(qCritical, PERROR, expt, var)
 #define CONNECT(src, sig, dst, slt)    DEBUGCON(qCritical,  PERROR, src, sig, dst, slt)
-#define NEEDDO(msg)             DEBUGDO(qCritical, PERROR, msg)
-#define NEEDUSE(msg)            DEBUGUSE(qCritical, PERROR, msg)
-#define NEEDRTN(msg)            DEBUGRTN(qCritical, PERROR, msg)
-#define NEEDFNR(expr)           DEBUGFNR(qCritical, PERROR, expr)
-#define NEEDRTV()               DEBUGRTV(qCritical, PERROR)
+#define NEEDDO(msg)             DEBUGDO(qCritical, PETODO, msg)
+#define NEEDUSE(msg)            DEBUGUSE(qCritical, PETODO, msg)
+#define NEEDRTN(msg)            DEBUGRTN(qCritical, PETODO, msg)
+#define NEEDFNR(expr)           DEBUGFNR(qCritical, PETODO, expr)
+#define NEEDRTV()               DEBUGRTV(qCritical, PETODO)
 #define PTR(ptr, expr)          DEBUGPTR(qCritical, PERROR, ptr, expr)
 
 #define ABORT(strm)             DEBUG(qCritical, PABORT) << strm; DEBUGQUIT
@@ -107,9 +112,9 @@
 #define BEXPECTEQ(expt, var)    DEBUGXEQ(qCritical, PABORT, expt, var); DEBUGQUIT
 #define BEXPECTNE(expt, var)    DEBUGXNE(qCritical, PABORT, expt, var); DEBUGQUIT
 #define BEXPECTPTR(ptr)         DEBUGXPTR(qCritical, PABORT, ptr); DEBUGQUIT
-#define MUSTDO(msg)             DEBUGDO(qCritical, PABORT, msg); DEBUGQUIT
-#define MUSTUSE(msg)            DEBUGUSE(qCritical, PABORT, msg); DEBUGQUIT
-#define MUSTRTN(msg)            DEBUGRTN(qCritical, PABORT, msg); DEBUGQUIT
+#define MUSTDO(msg)             DEBUGDO(qCritical, PBTODO, msg); DEBUGQUIT
+#define MUSTUSE(msg)            DEBUGUSE(qCritical, PBTODO, msg); DEBUGQUIT
+#define MUSTRTN(msg)            DEBUGRTN(qCritical, PBTODO, msg); DEBUGQUIT
 #define BPTR(ptr, expr)         DEBUGPTR(qCritical, PERROR, ptr, expr); DEBUGQUIT
 
 #define TSTALLOC(ptr)           DEBUGXPTR(qCritical, PABORT, ptr);

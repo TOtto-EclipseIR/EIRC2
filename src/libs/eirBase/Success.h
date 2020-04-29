@@ -10,6 +10,7 @@ public:
     Success(const bool yes);
     bool set(const bool isTrue=true);
     bool is(void) const;
+    bool result(void) const;
     bool yes(void);
     bool no(void);
     bool expect(const bool isTrue);

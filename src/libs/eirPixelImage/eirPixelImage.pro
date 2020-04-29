@@ -24,7 +24,14 @@ LIBS *= -leirType2
 
 SOURCES += \
     AbstractImageInterface.cpp \
+    BaseDeviation.cpp \
     BaseImage.cpp \
+    ColorImage.cpp \
+    DeviationImage.cpp \
+    GreyAverageImage.cpp \
+    GreyImage.cpp \
+    GreySelfDeviation.cpp \
+    Image.cpp \
     ImageClass.cpp \
     ImageMarker.cpp \
     ImagePak.cpp \
@@ -36,7 +43,14 @@ SOURCES += \
 
 HEADERS += \
     AbstractImageInterface.h \
+    BaseDeviation.h \
     BaseImage.h \
+    ColorImage.h \
+    DeviationImage.h \
+    GreyAverageImage.h \
+    GreyImage.h \
+    GreySelfDeviation.h \
+    Image.h \
     ImageClass.h \
     ImageMarker.h \
     ImagePak.h \
