@@ -108,7 +108,7 @@ bool Detector::findRectangles(const Region &region)
     mpCascade->detectMultiScale(mGreyInput.mat(),
                                 outputVector, // rectList
                                 1.1,        // factor
-                                1,          // neighbors
+                                0,          // neighbors
                                 0,      // flags
                                 cv::Size(),     // minSize
                                 cv::Size());    // maxSize
