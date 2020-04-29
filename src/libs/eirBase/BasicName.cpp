@@ -37,7 +37,7 @@ BasicName::BasicName(const QString & sName)
  * \param cName is the initial name
  * \since v1.02
  */
-BasicName::BasicName(const char * cName)
+BasicName::BasicName(const char *cName)
 {
     set(QString::fromLocal8Bit(cName));
 }

@@ -31,7 +31,7 @@ MultiName::MultiName(const QString & qsNames)
     set(qsNames);
 }
 
-MultiName::MultiName(char * cNames)
+MultiName::MultiName(const char *cNames)
 {
     set(QString::fromLocal8Bit(cNames));
 }

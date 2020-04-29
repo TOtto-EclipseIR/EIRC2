@@ -20,7 +20,7 @@ public:
 public:
     MultiName(void);
     MultiName(const QString & stringNames);
-    MultiName(char * cNames);
+    MultiName(const char * cNames);
     MultiName(const QByteArray & baNames);
     MultiName(const BasicName &segment);
     MultiName(const BasicName::List & other);

@@ -72,13 +72,8 @@ public:
     bool expect(const bool is,
                 const QString & what=QString(),
                 Item item=Item());
-/*  bool expect(const bool is,
-                const Code code,
-                const QString & what=QString());
-    bool expect(const bool is,
-                const MultiName &name,
-                const QString & what=QString());
-*/  bool tryFileMode(const QIODevice::OpenMode mode,
+
+    bool tryFileMode(const QIODevice::OpenMode mode,
                       const QString &fileName,
                      const QString & what=QString(),
                       const QDir & dir=QDir());
