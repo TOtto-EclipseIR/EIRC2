@@ -15,14 +15,22 @@ ImageMarker::ImageMarker(const QImage &image)
 }
 
 void ImageMarker::markRectangles(const QQRectList &rectangles,
-                             const QColor & color,
-                             const int width)
+                                 const QColor & color,
+                                 const int transparency,
+                                 const int width)
 {
-    TRACEQFI << rectangles << color << width;
+    TRACEQFI << rectangles.size()
+             << color << transparency << width;
     if (mImage.isNull() || nullptr == mpPainter)
         return;
+    QRgb rgb = color.rgb();
+    QColor brushColor;
+    brushColor.setRgb(qRed(rgb), qGreen(rgb), qBlue(rgb),
+                           (100 - transparency) * 255 / 100);
+    TRACE << brushColor;
+    QPen pen(brushColor, width);
     mpPainter->begin(&mImage);
-    mpPainter->setPen(QPen(QBrush(color), width));
+    mpPainter->setPen(pen);
     mpPainter->drawRects(rectangles.vector());
     mpPainter->end();
 }

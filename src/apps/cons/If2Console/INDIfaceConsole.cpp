@@ -24,6 +24,10 @@ INDIfaceConsole::INDIfaceConsole(Console *parent)
             this, &INDIfaceConsole::scanInputDir);
     CONNECT(this, &INDIfaceConsole::inputScanned,
             this, &INDIfaceConsole::nextImage);
+    CONNECT(this, &INDIfaceConsole::imageProcessed,
+            this, &INDIfaceConsole::nextImage);
+    CONNECT(this, &INDIfaceConsole::processingComplete,
+            this, &QCoreApplication::quit);
     TRACERTV()
 }
 
@@ -67,7 +71,6 @@ void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
     QImage rectangleImage
             = mpFFDetector->markRectangles(false,
                                 mMarkedRectangleDir);
-    emit imageProcessed(inFileInfo);
 }
 
 QImage INDIfaceConsole::toGrey(const QImage &inputImage)
@@ -181,6 +184,7 @@ void INDIfaceConsole::nextImage()
         QFileInfo qfi = mPendingFiles.takeFirst();
         TRACE << qfi;
         processInputImage(qfi);
+        emit imageProcessed(qfi);
     }
 }
 

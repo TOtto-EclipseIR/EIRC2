@@ -105,13 +105,25 @@ bool Detector::findRectangles(const Region &region)
 //  HexDump matDump(mGreyInput.mat().ptr(0), 256);
   //DUMP << matDump.string();
 
+#ifdef QT_NO_DEBUG // Release
     mpCascade->detectMultiScale(mGreyInput.mat(),
                                 outputVector, // rectList
-                                1.1,        // factor
+                                1.10,        // factor
+                                2,          // neighbors
+                                0,      // flags
+                                cv::Size(),     // minSize
+                                cv::Size());    // maxSize
+    TRACE << "Release" << outputVector.size() << "rectangles";
+#else // Debug
+    mpCascade->detectMultiScale(mGreyInput.mat(),
+                                outputVector, // rectList
+                                1.05,        // factor
                                 0,          // neighbors
                                 0,      // flags
                                 cv::Size(),     // minSize
                                 cv::Size());    // maxSize
+    TRACE << "Debug" << outputVector.size() << "rectangles";
+#endif
     foreach(cv::Rect rc, outputVector)
         mRectangles << QQRect(cvRect(rc));
     TRACE << mRectangles;

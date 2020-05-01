@@ -15,7 +15,13 @@ public:
     ImageMarker(const QImage &image=QImage());
     void markRectangles(const QQRectList & markRectangles,
                     const QColor & color=Qt::blue,
+#ifdef QT_NO_DEBUG // Release
+                    const int transparency=50,
+                    const int width=3);
+#else // Debug
+                    const int transparency=75,
                     const int width=1);
+#endif
     QImage marked(void) const;
 
 private:
