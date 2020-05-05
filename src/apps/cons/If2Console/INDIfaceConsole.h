@@ -29,7 +29,7 @@ protected:
     void processInputImage(const QFileInfo & inFileInfo);
     static QImage toGrey(const QImage & inputImage);
     void findFFRectangles(const Region region=Region());
-    CommandLine * commandLine();
+    CmdLineObject * commandLine();
 
 public slots:
     void initializeApplication();

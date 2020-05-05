@@ -18,7 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../libs.pri)
 
-LIBS *= -leirBase
+LIBS *= -leirBase2
 
 SOURCES += \
     Enumeration.cpp \

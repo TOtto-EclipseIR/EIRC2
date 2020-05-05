@@ -8,7 +8,7 @@ class BasicName;
 class MultiName;
 class QQRect;
 
-class Sortable : public QString
+class EIRTYPE_EXPORT Sortable : public QString
 {
 public:
     Sortable();

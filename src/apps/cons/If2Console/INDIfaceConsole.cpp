@@ -6,7 +6,7 @@
 #include <QTimer>
 
 #include <eirBase/Debug.h>
-#include <eirExe/CommandLine.h>
+#include <eirExe/CmdLineObject.h>
 #include <eirExe/Settings.h>
 #include <eirQtCV4/Detector.h>
 
@@ -53,7 +53,6 @@ QDir INDIfaceConsole::outputDir(QDir baseDir,
     EXPECT(outDir.exists());
     return outDir;
 }
-
 void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
 {
     TRACEQFI << inFileInfo;
@@ -97,7 +96,7 @@ void INDIfaceConsole::findFFRectangles(const Region region)
     mpFFDetector->findRectangles(region);
 }
 
-CommandLine *INDIfaceConsole::commandLine()
+CmdLineObject *INDIfaceConsole::commandLine()
 {
     TRACEQFI << (Console::commandLine()
                 ? Console::commandLine()->objectName()
@@ -141,16 +140,21 @@ void INDIfaceConsole::processCommandLine()
 {
     TRACEFN
     TSTALLOC(commandLine());
-    //commandLine()->addHelp();
-    //commandLine()->addVersion();
+    commandLine()->addHelpOption();
+    commandLine()->addVersionOption();
+    commandLine()->addPositionalArgument(MultiName("FilesAndDirs"));
+
+    commandLine()->process();
+/*
     //commandLine()->addArg("input files and/or directories");
     TODO(setup Options & pos Args)
     commandLine()->process();
     QFileInfoList files = commandLine()->fileArgumentInfoList();
-//    QFileInfoList files  = QFileInfoList() << QFileInfo("/INDIface/INDIin/Console");
+    QFileInfoList files  = QFileInfoList() << QFileInfo("/INDIface/INDIin/Console");
     mPendingFiles = files;
     TRACE << "emit pendingFilesSet()" << files;
     emit pendingFilesSet();
+*/
 }
 
 void INDIfaceConsole::setOutputDirs(const VarPak &config)

@@ -363,7 +363,8 @@ QList<Enumeration> Enumeration::parse(const QString & string)
                 WARN << "Enumeration(%s) invalid" << s;
         }
     }
-    //TRACEFNR(result);
+    TRACERTN(result)
+    return result;
 }
 
 int Enumeration::parseFlags(const QString & string)

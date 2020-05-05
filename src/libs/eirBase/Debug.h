@@ -62,6 +62,7 @@
 #define TEXPECTEQ(expt, var)    DEBUGXEQ(qDebug, PTRACE, expt, var)
 #define TEXPECTNE(expt, var)    DEBUGXNE(qDebug, PTRACE, expt, var)
 #define TRACERTV()              DEBUGRTV(qDebug, PTRACE)
+#define TRACERTN(expr)          TRACE << "return" << #expr << expr;
 #define TRACEFNR(expr)          DEBUGFNR(qDebug, PTRACE, expr)
 #define TODO(msg)               DEBUGDO(qDebug, PTODO, msg)
 #define TOUSE(msg)              DEBUGUSE(qDebug, PTODO, msg)

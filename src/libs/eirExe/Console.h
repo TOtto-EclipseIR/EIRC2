@@ -8,7 +8,7 @@
 
 class QFile;
 
-class CommandLine;
+class CmdLineObject;
 
 
 class EIREXE_EXPORT Console : public ApplicationHelper
@@ -16,7 +16,7 @@ class EIREXE_EXPORT Console : public ApplicationHelper
     Q_OBJECT
 public:
     explicit Console(QObject *parent = nullptr);
-    CommandLine * commandLine();
+    CmdLineObject * commandLine();
 
 public slots:
     void writeLine(const QString &qs,

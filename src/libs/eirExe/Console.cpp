@@ -21,7 +21,7 @@ Console::Console(QObject *parent)
             EXPECT(mpErr->open(stderr, QIODevice::WriteOnly))
 }
 
-CommandLine *Console::commandLine()
+CmdLineObject *Console::commandLine()
 {
     return ApplicationHelper::commandLine();
 }
@@ -56,5 +56,5 @@ void Console::writeErrs(const QStringList &qsl)
 void Console::commandLineComplete()
 {
     TRACEFN
-    emit commamdLineScanned();
+    EMIT(commamdLineScanned());
 }

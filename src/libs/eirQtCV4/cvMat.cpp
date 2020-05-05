@@ -21,6 +21,7 @@ cvMat::cvMat(const cv::Mat &mat)
 
 cvMat::cvMat(const int height, const int width, const int cvFmt)
 {
+    NEEDDO(cvMat ctor) NEEDUSE(height) NEEDUSE(width) NEEDUSE(cvFmt)
     //cv::Mat newMat = create(height, width, cvFmt);
 }
 

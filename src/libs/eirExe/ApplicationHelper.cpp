@@ -8,7 +8,7 @@
 #include <eirBase/Milliseconds.h>
 //#include <eirBase/Uid.h>
 
-#include "CommandLine.h"
+#include "CmdLineObject.h"
 #include "Settings.h"
 
 #include "../../../VERSION.h"
@@ -16,14 +16,14 @@
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
     , mpTempDir(new QTemporaryDir())
-    , mpCommandLine(new CommandLine(parent))
+    , mpCmdLineObject(new CmdLineObject(parent))
 {
     TRACEFN
     setObjectName("Application");
     TSTALLOC(mpTempDir);
-    TSTALLOC(mpCommandLine);
+    TSTALLOC(mpCmdLineObject);
     EXPECT(mpTempDir->isValid())
-    CONNECT(mpCommandLine, &CommandLine::processComplete,
+    CONNECT(mpCmdLineObject, &CmdLineObject::processingFinished,
             this, &ApplicationHelper::commamdLineScanned);
 }
 
@@ -43,9 +43,9 @@ QFile *ApplicationHelper::tempFile(const QString &ext,
     return f;
 }
 
-CommandLine *ApplicationHelper::commandLine()
+CmdLineObject *ApplicationHelper::commandLine()
 {
-    return mpCommandLine;
+    return mpCmdLineObject;
 }
 
 void ApplicationHelper::run()
@@ -60,7 +60,7 @@ void ApplicationHelper::run()
 void ApplicationHelper::initCommandLine()
 {
     TRACEFN
-    TSTALLOC(mpCommandLine);
+    TSTALLOC(mpCmdLineObject);
     QTimer::singleShot(100, this, &ApplicationHelper::initSettings);
 }
 
@@ -68,12 +68,15 @@ void ApplicationHelper::initSettings()
 {
     TRACEFN
 
-    TSTALLOC(mpCommandLine)
-    if ( ! mpCommandLine->orgName().isNull())
-         qApp->setOrganizationName(mpCommandLine->orgName());
-    if ( ! mpCommandLine->appName().isNull())
-         qApp->setApplicationName(mpCommandLine->appName());
-
+    TSTALLOC(mpCmdLineObject)
+#if 1
+    MUSTDO(OrgName AppName)
+#else
+    if ( ! mpCmdLineObject->orgName().isNull())
+         qApp->setOrganizationName(mpCmdLineObject->orgName());
+    if ( ! mpCmdLineObject->appName().isNull())
+         qApp->setApplicationName(mpCmdLineObject->appName());
+#endif
     mpSettings = new Settings(this);
     TSTALLOC(mpSettings);
     WANTDO("Take the smell out");
