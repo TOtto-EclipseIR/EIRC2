@@ -2,6 +2,7 @@
 #include "CommandLine.h"
 
 #include <QFileInfo>
+#include <QStringList>
 
 #include <eirBase/Debug.h>
 
@@ -24,12 +25,32 @@ QString CommandLine::appName() const
     return mAppName;
 }
 
+void CommandLine::loadFromFile(const QFileInfo qfi)
+{
+    TRACEQFI << qfi;
+    NEEDDO(it)
+}
+
+void CommandLine::loadFromUrl(const QUrl url)
+{
+    TRACEQFI << url;
+    WANTDO(it)
+}
+
 QFileInfoList CommandLine::fileArgumentInfoList() const
 {
     TRACEQFI << "mArgumentsInfo.size()" << mFileArgumentsInfo.size();
     return mFileArgumentsInfo;
 }
-
+/*
+void CommandLine::addArg(const BasicName argName,
+                         const QString argDesc,
+                         const QString syntax)
+{
+    TRACEQFI << argName() << argDesc << syntax;
+    mPositionalArguments.append(argName);
+}
+*/
 void CommandLine::process()
 {
     TRACEQFI << qApp->arguments();

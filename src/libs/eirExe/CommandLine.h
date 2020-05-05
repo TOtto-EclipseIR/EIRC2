@@ -10,6 +10,7 @@
 #include <QJsonObject>
 #include <QSettings>
 #include <QUrl>
+class QStringList;
 
 #include <eirBase/BasicName.h>
 #include <eirBase/Var.h>
@@ -54,9 +55,7 @@ public:
     static void multiAdd(QList<QCommandLineOption> &options);
     static void multiAdd(const QJsonArray &JsonObjectList);
     static void multiAdd(const VarMap &VarItems);
-    static void addArg(const BasicName argName,
-                       const QString argDesc=QString(),
-                       const QString syntax=QString());
+//    void addArg(const BasicName argName, const QString argDesc=QString(), const QString syntax=QString());
     static void multiAddArgs(const QStringList &argNameList);
     static Option addHelp();
     static Option addVersion();
@@ -83,13 +82,12 @@ signals:
 
 private:
     const QStringList cmExeArguments;
+    //Parser mParser;
     QStringList mParsedArguments;
     QFileInfo mExeFileInfo;
-//    QString mFirstArgument;
     BasicName mOrgName;
     BasicName mAppName;
     VarMap mSettings;
-//    int mArgIndex = 0;
     QStringList mPositionalArguments;
     QFileInfoList mFileArgumentsInfo;
 };

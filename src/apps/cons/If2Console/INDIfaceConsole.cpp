@@ -82,7 +82,7 @@ QImage INDIfaceConsole::toGrey(const QImage &inputImage)
     QImage outputImage(inputImage.size(),
                        QImage::Format_Grayscale8);
     QImage rgbImage = inputImage;
-    if ( ! rgbImage.format() == QImage::Format_RGB32)
+    if (QImage::Format_RGB32 != rgbImage.format())
         rgbImage.toPixelFormat(QImage::Format_RGB32);
     for (int r = 0; r < rgbImage.height(); ++r)
         for (int c = 0; c < rgbImage.width(); ++c)
@@ -141,9 +141,13 @@ void INDIfaceConsole::processCommandLine()
 {
     TRACEFN
     TSTALLOC(commandLine());
+    //commandLine()->addHelp();
+    //commandLine()->addVersion();
+    //commandLine()->addArg("input files and/or directories");
     TODO(setup Options & pos Args)
     commandLine()->process();
     QFileInfoList files = commandLine()->fileArgumentInfoList();
+//    QFileInfoList files  = QFileInfoList() << QFileInfo("/INDIface/INDIin/Console");
     mPendingFiles = files;
     TRACE << "emit pendingFilesSet()" << files;
     emit pendingFilesSet();
