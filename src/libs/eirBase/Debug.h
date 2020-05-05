@@ -67,6 +67,7 @@
 #define TOUSE(msg)              DEBUGUSE(qDebug, PTODO, msg)
 #define TORTN(msg)              DEBUGRTN(qDebug, PTODO, msg)
 #define UNUSED(var)             Q_UNUSED(var)
+#define EMIT(expr)              DEBUG(qDebug, PTRACE) << #expr; expr
 
 #define WARN                    DEBUG(qWarning, PWARN) // << stuff
 #define WARNQFI                 DEBUGQFI(qWarning, PWARN) // << stuff

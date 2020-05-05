@@ -24,7 +24,6 @@ SOURCES += \
     Id.cpp \
     Milliseconds.cpp \
     MultiName.cpp \
-###    MultiNameMap.cpp \
     SetError.cpp \
     Success.cpp \
     UInt128.cpp \
@@ -44,7 +43,7 @@ HEADERS += \
     Id.h \
     Milliseconds.h \
     MultiName.h \
-###    MultiNameMap.h \
+###    MultiNameMap`e`.h \
     SetError.h \
     Success.h \
     UInt128.h \

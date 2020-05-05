@@ -106,7 +106,7 @@ BasicName::operator QString(void) const
  * \return the stored QString().
  * \since v1.01
  */
-inline QString BasicName::operator () (void) const
+QString BasicName::operator () (void) const
 {
     return toString();
 }

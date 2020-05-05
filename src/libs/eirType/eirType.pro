@@ -18,12 +18,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../libs.pri)
 
+LIBS *= -leirBase
+
 SOURCES += \
     Enumeration.cpp \
     QQRect.cpp \
     QQRectF.cpp \
     QQRectList.cpp \
     Region.cpp \
+    Sortable.cpp \
     eirType.cpp
 
 HEADERS += \
@@ -38,6 +41,7 @@ HEADERS += \
     QQRectF.h \
     QQRectList.h \
     Region.h \
+    Sortable.h \
     eirType_global.h \
     eirType.h
 

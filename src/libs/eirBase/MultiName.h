@@ -16,6 +16,7 @@ class EIRBASE_EXPORT MultiName
 {
 public:
     typedef QList<MultiName> List;
+    typedef QMap<QString /*sortable*/, QVariant> Map;
 
 public:
     MultiName(void);

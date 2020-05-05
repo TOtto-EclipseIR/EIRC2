@@ -23,6 +23,7 @@ LIBS *= -leirType2
 
 SOURCES += \
     ApplicationHelper.cpp \
+    CmdLineObject.cpp \
     CommandLine.cpp \
     Console.cpp \
     Settings.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
 
 HEADERS += \
     ApplicationHelper.h \
+    CmdLineObject.h \
     CommandLine.h \
     Console.h \
     Settings.h \
