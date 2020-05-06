@@ -8,7 +8,7 @@
 #include <QTemporaryDir>
 
 #include <eirBase/Var.h>
-class CmdLineObject;
+class BaseCommandLine;
 class ErrorHandler;
 class Settings;
 
@@ -19,7 +19,7 @@ public:
     explicit ApplicationHelper(QObject *parent = nullptr);
     QFile * tempFile(const QString &ext,
                      QObject * parent=nullptr);
-    CmdLineObject * commandLine(void);
+    BaseCommandLine * commandLine(void);
 
 
 public slots:
@@ -27,7 +27,7 @@ public slots:
 
 protected:
 
-protected slots:
+public slots:
     void initCommandLine();
     void initSettings();
     void commamdLineScanned();
@@ -41,7 +41,6 @@ signals:
 private:
     QTemporaryDir * mpTempDir=nullptr;
     Settings * mpSettings=nullptr;
-    CmdLineObject * mpCmdLineObject=nullptr;
     QList<QFile *> mTempFiles;
 };
 

@@ -1,4 +1,4 @@
-// file: {EIRC2 Repo}./src/libs/eirExe/CmdLineObject.h
+// file: {EIRC2 Repo}./src/libs/eirExe/BaseCommandLine.h
 #pragma once
 #include "eirExe.h"
 
@@ -6,17 +6,18 @@
 
 #include <QCommandLineParser>
 #include <QCommandLineOption>
+#include <QFileInfoList>
 
 #include <eirBase/MultiName.h>
 #include <eirBase/Var.h>
 #include <eirBase/VarMap.h>
 #include <eirType/Sortable.h>
 
-class EIREXE_EXPORT CmdLineObject : public QObject
+class EIREXE_EXPORT BaseCommandLine : public QObject
 {
     Q_OBJECT
 public:
-    class CommandLineArgument
+    class EIREXE_EXPORT CommandLineArgument
     {
     public:
         CommandLineArgument(const MultiName & name);
@@ -40,14 +41,22 @@ public:
 
 enum Option
 {
-    NullFlag = 0,
-    EnableHelp = 0x01,
-    EnableVersion = 0x02,
+    NullOptions = 0,
+    EnableHelp                  = 0x01,
+    EnableVersion               = 0x02,
+    EnableSettingValues         = 0x0100,
+    EnableSettingsOrgApp        = 0x0200,
+    EnableFileImportTXT         = 0x00010000,
+    EnableFileImportJSON        = 0x00020000,
+    EnableFileImportINI         = 0x00040000,
+    EnableFileImportXML         = 0x00080000,
+
 };
 Q_DECLARE_FLAGS(Options, Option);
 
 public:
-    explicit CmdLineObject(QObject *parent = nullptr);
+    explicit BaseCommandLine(QObject *parent = nullptr);
+    QFileInfoList positionalFileInfoList() const;
 
 
 public slots:
@@ -59,12 +68,26 @@ public slots:
                                const bool takeAll=false);
     void addHelpOption();
     void addVersionOption();
+    Options &rwrefOptions();
 
+
+    virtual void setupApplicationValues();
+    virtual void setupSettings();
+    virtual void setupArguments();
+    virtual void setup() = 0;
     void process();
 
 protected slots:
-    void setupApplicationValues();
     void processAddOptions();
+    void processAddArguments();
+    void processSecondPass();
+    void processThirdPass();
+    void processFourthPass();
+    virtual void handleAmpersandArgument(const QString &arg);
+    virtual void handleBangArgument(const QString &arg);
+    virtual void handlePercentArgument(const QString &arg);
+    virtual void handlePositionalArguments();
+    virtual void handlePositionalFileDir(const QString &arg);
 
 signals:
     void constructed(void);
@@ -83,17 +106,20 @@ public:
 
 private:
     // inputs
+    const QStringList cmExeArgumentList;
     Options mOptions=0;
     Var::List mApplicationValues;
     QMap<Sortable, QCommandLineOption> mOptionMap;
     QList<CommandLineArgument *> mArguments;
     // processing
     QCommandLineParser mParser;
+    QStringList mThirdPassArguments;
     QString mOrgName;
     QString mAppName;
     // results
     Var::List mPositionalArgumentResult;
+    QFileInfoList mPositionalFileDirInfoList;
     VarMap mOptionValues;
-    VarMap mSettings;
+    VarMap mConfiguration;
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(CmdLineObject::Options)
+Q_DECLARE_OPERATORS_FOR_FLAGS(BaseCommandLine::Options)

@@ -8,7 +8,7 @@
 #include <eirBase/Milliseconds.h>
 //#include <eirBase/Uid.h>
 
-#include "CmdLineObject.h"
+#include "BaseCommandLine.h"
 #include "Settings.h"
 
 #include "../../../VERSION.h"
@@ -16,15 +16,11 @@
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
     , mpTempDir(new QTemporaryDir())
-    , mpCmdLineObject(new CmdLineObject(parent))
 {
     TRACEFN
     setObjectName("Application");
     TSTALLOC(mpTempDir);
-    TSTALLOC(mpCmdLineObject);
     EXPECT(mpTempDir->isValid())
-    CONNECT(mpCmdLineObject, &CmdLineObject::processingFinished,
-            this, &ApplicationHelper::commamdLineScanned);
 }
 
 QFile *ApplicationHelper::tempFile(const QString &ext,
@@ -43,11 +39,6 @@ QFile *ApplicationHelper::tempFile(const QString &ext,
     return f;
 }
 
-CmdLineObject *ApplicationHelper::commandLine()
-{
-    return mpCmdLineObject;
-}
-
 void ApplicationHelper::run()
 {
     TRACEFN
@@ -60,7 +51,6 @@ void ApplicationHelper::run()
 void ApplicationHelper::initCommandLine()
 {
     TRACEFN
-    TSTALLOC(mpCmdLineObject);
     QTimer::singleShot(100, this, &ApplicationHelper::initSettings);
 }
 
@@ -68,7 +58,6 @@ void ApplicationHelper::initSettings()
 {
     TRACEFN
 
-    TSTALLOC(mpCmdLineObject)
 #if 1
     MUSTDO(OrgName AppName)
 #else
@@ -86,5 +75,6 @@ void ApplicationHelper::initSettings()
 
 void ApplicationHelper::commamdLineScanned()
 {
-
+    TRACEFN
+    NEEDDO(it);
 }

@@ -1,8 +1,8 @@
 // file: {eirC2 repo}./src/apps/cons/If2Console/INDIfaceConsole.h
 #pragma once
 
-
 #include <QObject>
+#include <eirExe/Console.h>
 
 #include <QDir>
 #include <QFileInfo>
@@ -11,9 +11,12 @@
 #include <eirBase/VarPak.h>
 #include <eirType/QQRectList.h>
 #include <eirType/Region.h>
-#include <eirExe/Console.h>
+#include <eirExe/ApplicationHelper.h>
 #include <eirQtCV4/QtCVobjdetect.h>
 #include <eirQtCV4/Detector.h>
+
+class CommandLine;
+class FileInfoQueue;
 
 class INDIfaceConsole : public Console
 {
@@ -29,7 +32,7 @@ protected:
     void processInputImage(const QFileInfo & inFileInfo);
     static QImage toGrey(const QImage & inputImage);
     void findFFRectangles(const Region region=Region());
-    CmdLineObject * commandLine();
+    CommandLine * commandLine();
 
 public slots:
     void initializeApplication();
@@ -44,6 +47,7 @@ signals:
     void applicationInitd();
     void resoursesInitd();
     void pendingFilesSet();
+    void fileDirsPendingNotEmpty();
     void inputDirEmpty();
     void inputScanned();
     void processingImage(QFileInfo qfi);
@@ -52,8 +56,11 @@ signals:
     void processingComplete();
 
 private:
+    CommandLine * mpCommandLine=nullptr;
+    FileInfoQueue * mpFileInfoQueue=nullptr;
     VarPak mConfiguration;
     QFileInfoList mPendingFiles;
+    QFileInfoList mPendingFileDirs;
     QDir mInputDir;
     QDir mBaseDir;
     QDir mCapture2Dir;

@@ -21,11 +21,6 @@ Console::Console(QObject *parent)
             EXPECT(mpErr->open(stderr, QIODevice::WriteOnly))
 }
 
-CmdLineObject *Console::commandLine()
-{
-    return ApplicationHelper::commandLine();
-}
-
 void Console::writeLine(const QString &qs,
                         const bool andFlush)
 {

@@ -25,6 +25,7 @@ LIBS *= -leirExe2
 LIBS *= -leirQtCV42
 
 SOURCES += \
+        CommandLine.cpp \
         INDIfaceConsole.cpp \
         main.cpp
 
@@ -35,4 +36,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     ../../../../VERSION.h \
+    CommandLine.h \
     INDIfaceConsole.h

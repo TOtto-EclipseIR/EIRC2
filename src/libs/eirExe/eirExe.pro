@@ -23,18 +23,22 @@ LIBS *= -leirType2
 
 SOURCES += \
     ApplicationHelper.cpp \
-    CmdLineObject.cpp \
-    CommandLine.cpp \
+    BaseCommandLine.cpp \
     Console.cpp \
+    FileExtension.cpp \
+    FileInfoQueue.cpp \
+    QQDirIterator.cpp \
     Settings.cpp \
     StdStreams.cpp \
     eirExe.cpp
 
 HEADERS += \
     ApplicationHelper.h \
-    CmdLineObject.h \
-    CommandLine.h \
+    BaseCommandLine.h \
     Console.h \
+    FileExtension.h \
+    FileInfoQueue.h \
+    QQDirIterator.h \
     Settings.h \
     StdStreams.h \
     eirExe_global.h \
