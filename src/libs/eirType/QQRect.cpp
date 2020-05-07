@@ -1,6 +1,10 @@
 // file: {EIRC2 repo)./src/libs/eirType/QQRect.cpp
 #include "QQRect.h"
 
+#include <eirBase/Debug.h>
+
+#include "QQRectF.h"
+
 QQRect::QQRect() {;}
 
 QQRect::QQRect(int x, int y, int width, int height)
@@ -30,5 +34,15 @@ void QQRect::set(const QSize size, const QPoint center)
 int QQRect::area() const
 {
     return height() * width();
+}
+
+qreal QQRect::overlap(const QQRect other)
+{
+    QRect intersection = intersected(other);
+    TRACEQFI  << *this << area()
+              << intersection << QQRect(intersection).area()
+              << other << other.area()
+              << QQRectF(intersection).area() / qreal(area());
+    return QQRectF(intersection).area() / qreal(area());
 }
 

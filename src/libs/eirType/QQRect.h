@@ -20,5 +20,6 @@ public:
     QQRect set(const QRectF rcf);
     void set(const QSize size, const QPoint center);
     int area() const;
+    qreal overlap(const QQRect other);
 };
 

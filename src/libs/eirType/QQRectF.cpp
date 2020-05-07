@@ -7,8 +7,12 @@ QQRectF::QQRectF(qreal x, qreal y, qreal width, qreal height)
 
 QQRectF::QQRectF(const QSizeF size, const QPointF center)
     : QRectF(center.x() - size.width()  / 2,
-            center.y() - size.height() / 2,
-            size.height(), size.width()) {;}
+             center.y() - size.height() / 2,
+             size.height(), size.width()) {;}
+
+QQRectF::QQRectF(const QRect qrect)
+    : QRectF(qreal(qrect.x()), qreal(qrect.y()),
+             qreal(qrect.width()), qreal(qrect.height())) {;}
 
 void QQRectF::set(const QSizeF size, const QPointF center)
 {

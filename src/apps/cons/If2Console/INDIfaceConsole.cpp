@@ -10,17 +10,18 @@
 #include <eirExe/FileInfoQueue.h>
 #include <eirExe/Settings.h>
 #include <eirQtCV4/Detector.h>
+#include <eirQtCV4/HaarRectangles.h>
 
 #include "CommandLine.h"
 
 INDIfaceConsole::INDIfaceConsole(Console *parent)
     : Console(parent)
-    , mpCommandLine(new CommandLine(this))
+//    , mpCommandLine(new CommandLine(this))
     , mpFileInfoQueue(new FileInfoQueue(this))
 {
     TRACEFN
     setObjectName("INDIfaceConsole");
-    TSTALLOC(mpCommandLine)
+  //  TSTALLOC(mpCommandLine)
     TSTALLOC(mpFileInfoQueue)
     CONNECT(this, &INDIfaceConsole::applicationInitd,
             this, &INDIfaceConsole::initializeResources);
@@ -34,8 +35,8 @@ INDIfaceConsole::INDIfaceConsole(Console *parent)
             this, &INDIfaceConsole::nextImage);
     CONNECT(this, &INDIfaceConsole::processingComplete,
             this, &QCoreApplication::quit);
-    CONNECT(mpCommandLine, &BaseCommandLine::processingFinished,
-            this, &ApplicationHelper::commamdLineScanned);
+//    CONNECT(mpCommandLine, &BaseCommandLine::processingFinished,
+  //          this, &ApplicationHelper::commamdLineScanned);
     TRACERTV()
 }
 
@@ -75,9 +76,17 @@ void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
     mpFFDetector->setGreyImage(greyImage, inFileInfo);
     mpFFDetector->findRectangles();
     mRectList = mpFFDetector->rectangles();
+    HaarRectangles hRect;
+    hRect << mRectList;
+    hRect.group();
+    QList<HaarRectangles::HaarRectangleResult> groupedCandidates
+            = hRect.groupedCandidates();
     QImage rectangleImage
             = mpFFDetector->markRectangles(false,
                                 mMarkedRectangleDir);
+    QImage candidateImage = hRect.markCandidates(greyImage,
+                                                 inFileInfo,
+                                mMarkedCandidateDir);
 }
 
 QImage INDIfaceConsole::toGrey(const QImage &inputImage)
@@ -106,7 +115,7 @@ void INDIfaceConsole::findFFRectangles(const Region region)
 
 CommandLine *INDIfaceConsole::commandLine()
 {
-    return mpCommandLine;
+    return nullptr; // mpCommandLine;
 }
 
 void INDIfaceConsole::initializeApplication()
@@ -128,6 +137,7 @@ void INDIfaceConsole::initializeResources()
     cfg.insert("Output/GreyInputDir", "GreyInput");
     cfg.insert("Output/MarkedDetectDir", "MarkedDetect");
     cfg.insert("Detect/Face/RectanglesDir", "DetectFace/Rectangles");
+    cfg.insert("Detect/Face/CandidatesDir", "DetectFace/Candidates");
     cfg.insert("Detect/Face/HeatMapDir", "DetectFace/HeatMap");
     setOutputDirs(cfg);
 
@@ -144,6 +154,7 @@ void INDIfaceConsole::initializeResources()
 void INDIfaceConsole::processCommandLine()
 {
     TRACEFN
+#if 0
     TSTALLOC(commandLine());
     commandLine()->addHelpOption();
     commandLine()->addVersionOption();
@@ -151,8 +162,10 @@ void INDIfaceConsole::processCommandLine()
 
     commandLine()->process();
 
-    mPendingFileDirs = commandLine()->positionalFileInfoList();
-    TRACE << "emit pendingFilesSet()" << mPendingFiles;
+//    mPendingFileDirs = commandLine()->positionalFileInfoList();
+#endif
+    mpFileInfoQueue->append(QFileInfo(QDir("/INDIface/INDIin/console"), "*.JPG"));
+    TRACE << "emit pendingFilesSet()"; // << mPendingFiles;
     emit pendingFilesSet();
 }
 
@@ -164,12 +177,14 @@ void INDIfaceConsole::setOutputDirs(const VarPak &config)
     mMarkedRectangleDir = outputDir(mBaseDir,
                                     config.value("Detect/Face/RectanglesDir").toString());
     mHeatmapDir = outputDir(mBaseDir, config.value("Detect/Face/HeatMapDir").toString());
+    mMarkedCandidateDir = outputDir(mBaseDir, config.value(
+                                         "Detect/Face/CandidatesDir").toString());
 }
 
 void INDIfaceConsole::scanInputDir()
 {
-    TRACEQFI << "mPendingFiles.size()=" << mPendingFiles.size();
-    if (mPendingFiles.isEmpty())
+//    TRACEQFI << "mPendingFiles.size()=" << mPendingFiles.size();
+    if (mpFileInfoQueue->isPendingEmpty())
     {
         emit inputDirEmpty();
     }
@@ -181,14 +196,15 @@ void INDIfaceConsole::scanInputDir()
 
 void INDIfaceConsole::nextImage()
 {
-    TRACEFN
-    if (mPendingFiles.isEmpty())
+    TRACEQFI << mpFileInfoQueue->pendingCount();
+    if (mpFileInfoQueue->isPendingEmpty())
     {
-        emit processingComplete();
+        NEEDDO(emit_processingComplete());
+        mpFileInfoQueue->processIncoming();
     }
     else
     {
-        QFileInfo qfi = mPendingFiles.takeFirst();
+        QFileInfo qfi = mpFileInfoQueue->takeFirstPending();
         TRACE << qfi;
         processInputImage(qfi);
         emit imageProcessed(qfi);

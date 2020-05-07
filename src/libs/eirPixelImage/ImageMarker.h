@@ -8,6 +8,7 @@ class QPainter;
 class QQRectList;
 
 #include <eirType/QQRect.h>
+#include <eirQtCV4/HaarRectangles.h>
 
 class EIRPIXELIMAGE_EXPORT ImageMarker
 {
@@ -22,6 +23,11 @@ public:
                     const int transparency=75,
                     const int width=1);
 #endif
+    void markCandidates(const QList<HaarRectangles::
+                        HaarRectangleResult> & rectGroupResults,
+                    const QColor & color=Qt::green,
+                    const int transparency=50,
+                    const int width=7);
     QImage marked(void) const;
 
 private:

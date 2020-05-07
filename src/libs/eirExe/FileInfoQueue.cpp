@@ -1,5 +1,7 @@
 #include "FileInfoQueue.h"
 
+#include <QDir>
+
 #include <eirBase/Debug.h>
 
 FileInfoQueue::FileInfoQueue(QObject *parent)
@@ -31,6 +33,17 @@ bool FileInfoQueue::isPendingEmpty() const
     return ! pendingCount();
 }
 
+QFileInfo FileInfoQueue::peekFirstPending() const
+{
+    return mPendingQueue.first();
+}
+
+QFileInfo FileInfoQueue::takeFirstPending()
+{
+    TRACEQFI << peekFirstPending();
+    return mPendingQueue.takeFirst();
+}
+
 void FileInfoQueue::clearInput()
 {
     TRACEFN
@@ -53,6 +66,12 @@ void FileInfoQueue::cancelPending()
 void FileInfoQueue::append(const QFileInfo &fileInfo)
 {
     TRACEQFI << fileInfo;
+#if 1
+    QDir inDir("/INDIface/INDIin/console");
+    QFileInfoList files = inDir
+            .entryInfoList(QDir::Files | QDir::Readable);
+    mPendingQueue.append(files);
+#else
     if ( ! fileInfo.exists())           return;
     if ( ! fileInfo.isWritable())       return;
 
@@ -60,6 +79,7 @@ void FileInfoQueue::append(const QFileInfo &fileInfo)
 
     mIncomingQueue.enqueue(fileInfo);
     EMIT(incomingAdded(fileInfo));
+#endif
 }
 
 void FileInfoQueue::append(const QFileInfoList &fileInfoList)
@@ -70,7 +90,9 @@ void FileInfoQueue::append(const QFileInfoList &fileInfoList)
 
 void FileInfoQueue::processIncoming()
 {
+    TRACEFN
     // Change mPendingFull status as necessary
+#if 0
     if (mPendingFull
             && pendingCount() < mMaxPending - (mMaxPending >> 2))
     {
@@ -88,13 +110,14 @@ void FileInfoQueue::processIncoming()
                            &FileInfoQueue::processIncoming);
         return;
     }
-
+#endif
     // More on this incoming directory?
     //if ()
 
 
     // Take next from incoming
-    QFileInfo qfi = mIncomingQueue.dequeue();
+//    QFileInfo qfi = mIncomingQueue.dequeue();
+    QFileInfo qfi = QFileInfo(QDir("/INDIface/INDIin/console/"),"");
     TRACE << "emit" << "incomingTaken(qfi)" << qfi;
     emit incomingTaken(qfi);
     if (qfi.isFile())
@@ -104,6 +127,13 @@ void FileInfoQueue::processIncoming()
     }
     if (qfi.isDir())
     {
-        TODO(startIterator)
+        NEEDDO(startIterator)
+        mIncomingDirIterator.start(qfi.dir());
+        // fornow process all here
+        while (mIncomingDirIterator.hasNext())
+        {
+            mIncomingDirIterator.goNext();
+            mPendingQueue.enqueue(mIncomingDirIterator.fileInfo());
+        }
     }
 }

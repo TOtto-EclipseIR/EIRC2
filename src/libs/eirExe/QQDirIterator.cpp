@@ -34,6 +34,7 @@ bool QQDirIterator::start(const QDir &dir)
     {
         mpDirIterator = pdi;
     }
+    TRACEQFI << "return" << notNull();
     return notNull();
 }
 

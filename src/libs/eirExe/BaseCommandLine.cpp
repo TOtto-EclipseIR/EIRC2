@@ -72,7 +72,7 @@ BaseCommandLine::Options &BaseCommandLine::rwrefOptions()
 void BaseCommandLine::setupApplicationValues()
 {
     TRACEFN
-    MUSTDO(OrgName AppName)
+    NEEDDO(OrgName AppName)
     NEEDDO(setupApplicationValues)
             NEEDDO(const MultiName cmAhoValueKey)
 }

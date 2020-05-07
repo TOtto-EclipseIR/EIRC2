@@ -2,4 +2,5 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     apps \
-    libs
+    libs \
+    plugins

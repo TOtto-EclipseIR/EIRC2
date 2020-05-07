@@ -126,11 +126,18 @@ bool Detector::findRectangles(const Region &region)
 #endif
     foreach(cv::Rect rc, outputVector)
         mRectangles << QQRect(cvRect(rc));
-    TRACE << mRectangles;
+    TRACE << mRectangles.size();
 
+
+
+
+
+#if 0
     cvMat outMat(mGreyInput.mat());
     QImage cvOutImage = outMat.toImage(QImage::Format_Grayscale8);
     cvOutImage.save("./Output/cvOutImage.png");
+#endif
+    TRACEQFI << "return" << success.toString();
     return success;
 }
 

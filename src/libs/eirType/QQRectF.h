@@ -16,6 +16,7 @@ public:
     QQRectF();
     QQRectF(qreal x, qreal y, qreal width, qreal height);
     QQRectF(const QSizeF size, const QPointF center);
+    QQRectF(const QRect qrect);
     void set(const QSizeF size, const QPointF center);
     bool isUnit() const;
     qreal area() const;
