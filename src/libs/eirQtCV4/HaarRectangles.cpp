@@ -177,13 +177,13 @@ QImage HaarRectangles::markCandidates(const QImage &frameImage,
     return marker.marked();
 }
 
-QImage HaarRectangles::markCandidatesOnly(const QImage &frameImage, const QFileInfo &fileInfo, const QDir &candidateDir) const
+QImage HaarRectangles::markAllCandidates(const QImage &frameImage, const QFileInfo &fileInfo, const QDir &candidateDir) const
 {
     TRACEQFI << candidateDir;
     QImage rectImage = frameImage;
     ImageMarker marker(rectImage);
-   marker.markCandidatesOnly(groupedCandidates());
-    marker.markRectangles(mUnused, Qt::black, 20, 7);
+    marker.markAllCandidates(groupedCandidates());
+    marker.markRectangles(mUnused, Qt::blue, 20, 1);
     if (candidateDir != QDir())
     {
         QFileInfo qfi(candidateDir,

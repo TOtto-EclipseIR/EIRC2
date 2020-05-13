@@ -23,11 +23,11 @@ public:
                     QColor color=Qt::green,
                     const int transparency=20,
                     const int width=7);
-    void markCandidatesOnly(const QList<HaarRectangles::
+    void markAllCandidates(const QList<HaarRectangles::
                         HaarRectangleResult> & rectGroupResults,
                     const QColor & color=Qt::green,
                     const int transparency=20,
-                    const int width=7);
+                    const int width=3);
     QImage marked(void) const;
 
 private:

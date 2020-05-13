@@ -44,7 +44,7 @@ public:
     QImage markCandidates(const QImage &frameImage,
                           const QFileInfo &fileInfo,
                           const QDir &candidateDir=QDir()) const;
-    QImage markCandidatesOnly(const QImage &frameImage,
+    QImage markAllCandidates(const QImage &frameImage,
                           const QFileInfo &fileInfo,
                           const QDir &candidateDir=QDir()) const;
 
