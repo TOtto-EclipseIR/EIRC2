@@ -21,22 +21,6 @@ INDIfaceConsole::INDIfaceConsole(Console *parent)
     TRACEFN
     setObjectName("INDIfaceConsole");
     TSTALLOC(mpFileInfoQueue)
-/*
-    CONNECT(this, &INDIfaceConsole::applicationInitd,
-            this, &INDIfaceConsole::initializeResources);
-    CONNECT(this, &INDIfaceConsole::resoursesInitd,
-            this, &INDIfaceConsole::processCommandLine);
-    CONNECT(this, &INDIfaceConsole::pendingFilesSet,
-            this, &INDIfaceConsole::scanInputDir);
-    CONNECT(this, &INDIfaceConsole::pendingFilesSet,
-            this, &INDIfaceConsole::nextImage);
-    CONNECT(this, &INDIfaceConsole::imageProcessed,
-            this, &INDIfaceConsole::nextImage);
-    CONNECT(this, &INDIfaceConsole::processingComplete,
-            this, &QCoreApplication::quit);
-    CONNECT(mpCommandLine, &BaseCommandLine::processingFinished,
-            this, &ApplicationHelper::commamdLineScanned);
-*/
     QTimer::singleShot(100, this,
                        &INDIfaceConsole::initializeResources);
     TRACERTV()
@@ -64,6 +48,7 @@ QDir INDIfaceConsole::outputDir(QDir baseDir,
     EXPECT(outDir.exists());
     return outDir;
 }
+
 void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
 {
     TRACEQFI << inFileInfo;
@@ -88,11 +73,9 @@ void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
     QImage rectangleImage
             = mpFFDetector->markRectangles(colorizedImage,
                                 mMarkedRectangleDir);
-    hRect.markCandidates(colorizedImage,
-                                                 inFileInfo,
+    hRect.markCandidates(colorizedImage, inFileInfo,
                                 mMarkedCandidateDir);
-    QImage candidateImage = hRect.markCandidatesOnly(inImage,
-                                                 inFileInfo,
+    QImage candidateImage = hRect.markAllCandidates(inImage, inFileInfo,
                                 mMarkedDetectDir);
 #if 1
     foreach (HaarRectangles::HaarRectangleResult hrr, groupedCandidates)
@@ -101,12 +84,12 @@ void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
         QQRect overCrop = candidateRect * 1.25;
         QString baseFileName = inFileInfo.completeBaseName();
         QString outputFileName = QString("%1+%2.%3").arg(baseFileName)
-                .arg(hrr.rank, 2, 10, QChar('0')).arg("PNG");
+                .arg(hrr.rank, 2, 10, QChar('0')).arg("JPG");
         WANTDO("Convert grey back to color for Rgb writing; save PNG")
-        QImage detectFace = candidateImage.copy(overCrop);
-        QImage markedFace = inImage.copy(overCrop);
-        WEXPECT(markedFace.save(mMarkedFaceDir.filePath(outputFileName)))
-        WEXPECT(detectFace.save(mFaceDetectDir.filePath(outputFileName)))
+        QImage markedFace = candidateImage.copy(overCrop);
+        QImage detectFace = inImage.copy(overCrop);
+        WEXPECT(detectFace.save(mMarkedFaceDir.filePath(outputFileName)))
+        WEXPECT(markedFace.save(mFaceDetectDir.filePath(outputFileName)))
     }
 #endif
 }
@@ -157,12 +140,12 @@ void INDIfaceConsole::initializeResources()
     cfg.insert("Output/BaseDir", "/INDIface/INDIout/console/@");
     cfg.insert("Output/Capture2Dir", "Capture2");
     cfg.insert("Output/GreyInputDir", "GreyInput");
-    cfg.insert("Output/MarkedDetectDir", "MarkedDetect");
-    cfg.insert("Output/MarkedFaceDir", "MarkedFace");
-    cfg.insert("Output/FaceDetectDir", "DetectFace");
-    cfg.insert("Detect/Face/RectanglesDir", "DetectFace/Rectangles");
-    cfg.insert("Detect/Face/CandidatesDir", "DetectFace/Candidates");
-    cfg.insert("Detect/Face/HeatMapDir", "DetectFace/HeatMap");
+    cfg.insert("Output/MarkedDetectDir", "MarkedDetect"); //+
+    cfg.insert("Output/MarkedFaceDir", "MarkedFace"); //-unmarked
+    cfg.insert("Output/FaceDetectDir", "FaceDetect"); //-marked,Width
+    cfg.insert("Output/MarkedRectangleDir", "Rectangles"); //+
+    cfg.insert("Output/MarkedCandidateDir", "Candidates"); //-Colors
+    cfg.insert("Output/HeatMapDir", "HeatMap"); //x
     setOutputDirs(cfg);
 
     mpFFDetector = mpObjdetect->newDetector(ObjectType::FrontalFace);
@@ -201,26 +184,31 @@ void INDIfaceConsole::processCommandLine()
 
 void INDIfaceConsole::setOutputDirs(const VarPak &config)
 {
-    mBaseDir = outputDir(QDir(), config.value("Output/BaseDir").toString());
-    mCapture2Dir = outputDir(mBaseDir, config.value("Output/Capture2").toString());
-    mGreyInputDir = outputDir(mBaseDir, config.value("Output/GreyInputDir").toString());
-    mMarkedDetectDir = outputDir(mBaseDir, config.value("Output/MarkedDetectDir").toString());
-    mMarkedFaceDir = outputDir(mBaseDir, config.value("Output/MarkedFaceDir").toString());
-    mFaceDetectDir = outputDir(mBaseDir, config.value("Output/FaceDetectDir").toString());
+    mBaseDir = outputDir(QDir(),
+                    config.value("Output/BaseDir").toString());
+    mCapture2Dir = outputDir(mBaseDir,
+                    config.value("Output/Capture2Dir").toString());
+    mGreyInputDir = outputDir(mBaseDir,
+                    config.value("Output/GreyInputDir").toString());
+    mMarkedDetectDir = outputDir(mBaseDir,
+                    config.value("Output/MarkedDetectDir").toString());
+    mMarkedFaceDir = outputDir(mBaseDir,
+                    config.value("Output/MarkedFaceDir").toString());
+    mFaceDetectDir = outputDir(mBaseDir,
+                    config.value("Output/FaceDetectDir").toString());
     mMarkedRectangleDir = outputDir(mBaseDir,
-                                    config.value("Detect/Face/RectanglesDir").toString());
-    mHeatmapDir = outputDir(mBaseDir, config.value("Detect/Face/HeatMapDir").toString());
-    mMarkedCandidateDir = outputDir(mBaseDir, config.value(
-                                         "Detect/Face/CandidatesDir").toString());
+                    config.value("Output/MarkedRectangleDir").toString());
+    mHeatmapDir = outputDir(mBaseDir,
+                    config.value("Output/HeatMapDir").toString());
+    mMarkedCandidateDir = outputDir(mBaseDir,
+                    config.value("Output/MarkedCandidateDir").toString());
 }
 
 void INDIfaceConsole::scanInputDir()
 {
-//    TRACEQFI << "mPendingFiles.size()=" << mPendingFiles.size();
     if (mpFileInfoQueue->isPendingEmpty())
     {
         mpFileInfoQueue->processIncoming();
-//        emit inputDirEmpty();
     }
     else
     {
@@ -241,7 +229,6 @@ void INDIfaceConsole::nextImage()
         QFileInfo qfi = mpFileInfoQueue->takeFirstPending();
         TRACE << qfi;
         processInputImage(qfi);
-        //emit imageProcessed(qfi);
         QTimer::singleShot(100, this, &INDIfaceConsole::nextImage);
     }
 }
