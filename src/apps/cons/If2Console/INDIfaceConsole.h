@@ -56,11 +56,8 @@ signals:
     void processingComplete();
 
 private:
-//    CommandLine * mpCommandLine=nullptr;
     FileInfoQueue * mpFileInfoQueue=nullptr;
     VarPak mConfiguration;
-//    QFileInfoList mPendingFiles;
-  //  QFileInfoList mPendingFileDirs;
     QDir mInputDir;
     QDir mBaseDir;
     QDir mCapture2Dir;
