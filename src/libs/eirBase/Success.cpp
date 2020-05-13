@@ -45,9 +45,17 @@ bool Success::test(const bool isTrue)
     return isTrue;
 }
 
+bool Success::testNot(const bool isFalse)
+{
+    mIsInitialized = true;
+    if (isFalse)  mSuccess = false;
+    return ! isFalse;
+}
+
 Success Success::tested(void)
 {
-    if ( ! mIsInitialized) mIsInitialized = mSuccess = true;
+    if ( ! mIsInitialized)
+        mIsInitialized = mSuccess = true;
     return *this;
 }
 

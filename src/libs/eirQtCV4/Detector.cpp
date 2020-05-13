@@ -23,7 +23,6 @@
 
 Detector::Detector(const ObjectType objType, QObject *parent)
     : QObject(parent)
-//    , cmUid(Uid::create())
     , cmObjectType(objType)
 {
     TRACEQFI << objType.name()
@@ -31,12 +30,7 @@ Detector::Detector(const ObjectType objType, QObject *parent)
     setObjectName("Detector:" + objType.name());
     WANTDO(Implement asynch slot/signals);
 }
-/*
-Uid Detector::uid() const
-{
-    return cmUid;
-}
-*/
+
 ObjectType Detector::objectType() const
 {
     return cmObjectType;
@@ -79,64 +73,34 @@ bool Detector::setGreyImage(const QImage &greyImage,
         GreyAverageImage gaImage;
         gaImage.create(greyImage);
         EXPECT(gaImage.isGrey())
-        EXPECT(gaImage.image().save("./Output/gaImage.png"));
     }
     EXPECT(success.test(greyImage.isGrayscale()));
     mGreyImage = greyImage;
     TRACEFNR(success);
-//    return success;
 }
 
 bool Detector::findRectangles(const Region &region)
 {
     TRACEQFI << region;
-    Success success;
+    Success success(true);
     TSTALLOC(mpCascade)
-    EXPECT(success.test(mGreyImage.isNull()))
+    EXPECTNOT(success.testNot(mGreyImage.isNull()))
     EXPECT(success.test(mGreyImage.isGrayscale()))
     std::vector<cv::Rect> outputVector;
     mRectangles.clear();
     WANTDO(region)
-
-//    HexDump imgHex(mGreyImage, 256);
-  //  DUMP << imgHex.string();
-
     mGreyInput.setGreyImage(mGreyImage);
-//  HexDump matDump(mGreyInput.mat().ptr(0), 256);
-  //DUMP << matDump.string();
-
-#ifdef QT_NO_DEBUG // Release
     mpCascade->detectMultiScale(mGreyInput.mat(),
                                 outputVector, // rectList
                                 1.10,        // factor
-                                2,          // neighbors
-                                0,      // flags
-                                cv::Size(),     // minSize
-                                cv::Size());    // maxSize
-    TRACE << "Release" << outputVector.size() << "rectangles";
-#else // Debug
-    mpCascade->detectMultiScale(mGreyInput.mat(),
-                                outputVector, // rectList
-                                1.05,        // factor
                                 0,          // neighbors
                                 0,      // flags
                                 cv::Size(),     // minSize
                                 cv::Size());    // maxSize
-    TRACE << "Debug" << outputVector.size() << "rectangles";
-#endif
+    TRACE << outputVector.size() << "rectangles";
     foreach(cv::Rect rc, outputVector)
         mRectangles << QQRect(cvRect(rc));
     TRACE << mRectangles.size();
-
-
-
-
-
-#if 0
-    cvMat outMat(mGreyInput.mat());
-    QImage cvOutImage = outMat.toImage(QImage::Format_Grayscale8);
-    cvOutImage.save("./Output/cvOutImage.png");
-#endif
     TRACEQFI << "return" << success.toString();
     return success;
 }
@@ -146,11 +110,11 @@ QQRectList Detector::rectangles() const
     return mRectangles;
 }
 
-QImage Detector::markRectangles(const bool inLivingColor,
+QImage Detector::markRectangles(const QImage frameImage,
                                 const QDir &rectangleDir) const
 {
     TRACEQFI << rectangleDir;
-    QImage rectImage = inLivingColor? mImage : mGreyImage;
+    QImage rectImage = frameImage;
     ImageMarker marker(rectImage);
     marker.markRectangles(rectangles());
     if (rectangleDir != QDir())

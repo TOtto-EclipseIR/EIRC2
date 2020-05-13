@@ -39,10 +39,27 @@ int QQRect::area() const
 qreal QQRect::overlap(const QQRect other)
 {
     QRect intersection = intersected(other);
+/*
     TRACEQFI  << *this << area()
               << intersection << QQRect(intersection).area()
               << other << other.area()
               << QQRectF(intersection).area() / qreal(area());
+*/
     return QQRectF(intersection).area() / qreal(area());
+}
+
+QQRect QQRect::expandedBy(const qreal factor) const
+{
+    WANTDO(TrimmedToSize);
+    QSizeF szf = QSizeF(size());
+    QQRect expanded(QSize(qRound(szf.width() * factor),
+                          qRound(szf.height() * factor)),
+                    center());
+    return expanded;
+}
+
+QQRect QQRect::operator *(const qreal factor) const
+{
+    return  expandedBy(factor);
 }
 

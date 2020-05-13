@@ -14,8 +14,8 @@ QtCVobjdetect::QtCVobjdetect(QObject *parent)
 
 QtCVobjdetect::~QtCVobjdetect()
 {
-    while ( ! mDetectorList.isEmpty())
-        delete mDetectorList.takeFirst();
+//    while ( ! mDetectorList.isEmpty())
+  //      delete mDetectorList.takeFirst();
 }
 
 Detector *QtCVobjdetect::newDetector(const ObjectType objType)
@@ -24,11 +24,11 @@ Detector *QtCVobjdetect::newDetector(const ObjectType objType)
     NEEDDO(objType switch);
     Detector * objDet = new Detector(objType, this);
     TSTALLOC(objDet)
-    mDetectorList.append(objDet);
+//    mDetectorList.append(objDet);
     return objDet;
 }
 
 void QtCVobjdetect::release(Detector *det)
 {
-    mDetectorList.removeAll(det);
+//    mDetectorList.removeAll(det);
 }

@@ -15,6 +15,7 @@ public:
     bool no(void);
     bool expect(const bool isTrue);
     bool test(const bool isTrue);
+    bool testNot(const bool isFalse);
     bool isNull(void) const;
     void nullify(void);
     Success tested(void);

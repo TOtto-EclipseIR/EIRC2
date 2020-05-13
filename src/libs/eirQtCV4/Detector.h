@@ -25,7 +25,6 @@ class EIRQTCV4_EXPORT Detector : public QObject, public SetError
 public:
     explicit Detector(const ObjectType objType,
                       QObject *parent = nullptr);
-//    Uid uid() const;
     ObjectType objectType() const;
     bool initialize(const QFileInfo &qfiXml,
                     const VarPak &config);
@@ -34,13 +33,12 @@ public:
                       const QFileInfo &fileInfo);
     bool findRectangles(const Region &region=Region());
     QQRectList rectangles() const;
-    QImage markRectangles(const bool inLivingColor=false,
+    QImage markRectangles(const QImage frameImage,
                           const QDir &rectangleDir=QDir()) const;
 
 signals:
 
 private:
-//    const Uid cmUid;
     const ObjectType cmObjectType = ObjectType::null;
     QFileInfo mInitFileInfo;
     VarPak mConfiguration;

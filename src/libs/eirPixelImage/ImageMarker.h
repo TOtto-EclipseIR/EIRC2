@@ -16,17 +16,17 @@ public:
     ImageMarker(const QImage &image=QImage());
     void markRectangles(const QQRectList & markRectangles,
                     const QColor & color=Qt::blue,
-#ifdef QT_NO_DEBUG // Release
-                    const int transparency=50,
-                    const int width=3);
-#else // Debug
-                    const int transparency=75,
+                    const int transparency=20,
                     const int width=1);
-#endif
     void markCandidates(const QList<HaarRectangles::
                         HaarRectangleResult> & rectGroupResults,
+                    QColor color=Qt::green,
+                    const int transparency=20,
+                    const int width=7);
+    void markCandidatesOnly(const QList<HaarRectangles::
+                        HaarRectangleResult> & rectGroupResults,
                     const QColor & color=Qt::green,
-                    const int transparency=50,
+                    const int transparency=20,
                     const int width=7);
     QImage marked(void) const;
 

@@ -21,5 +21,7 @@ public:
     void set(const QSize size, const QPoint center);
     int area() const;
     qreal overlap(const QQRect other);
+    QQRect expandedBy(const qreal factor) const;
+    QQRect operator * (const qreal factor) const;
 };
 

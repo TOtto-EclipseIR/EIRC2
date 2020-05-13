@@ -65,13 +65,16 @@ void FileInfoQueue::cancelPending()
 
 void FileInfoQueue::append(const QFileInfo &fileInfo)
 {
-    TRACEQFI << fileInfo;
 #if 1
+    TRACEFN
+    WANTUSE(fileInfo)
     QDir inDir("/INDIface/INDIin/console");
     QFileInfoList files = inDir
             .entryInfoList(QDir::Files | QDir::Readable);
     mPendingQueue.append(files);
+    TRACE << mPendingQueue;
 #else
+    TRACEQFI << fileInfo;
     if ( ! fileInfo.exists())           return;
     if ( ! fileInfo.isWritable())       return;
 

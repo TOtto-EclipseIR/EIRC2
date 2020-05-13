@@ -1,16 +1,18 @@
 // file: {EIRC2 repo}./src/libs/eirQtCV/HaarRectangles.cpp
 #include "HaarRectangles.h"
 
+#include <QMutableMapIterator>
+
 #include <cmath>
 
 #include <eirBase/Debug.h>
+#include <eirType/Sortable.h>
 #include <eirPixelImage/ImageMarker.h>
 
 HaarRectangles::HaarRectangles() {TRACEFN}
 
 void HaarRectangles::append(const QQRect rect)
 {
-    //TRACEQFI << rect;
     mRects.insert( - rect.area(), rect);
 }
 
@@ -33,53 +35,118 @@ void HaarRectangles::operator <<(const QQRectList rects)
 void HaarRectangles::group()
 {
     TRACEFN
-    QMutableMapIterator<int, QQRect> i(mRects);
-    HaarRectangleResult hrr;
-    while ( ! mRects.isEmpty())
+    groupInnerOuter();
+    groupGroups();
+}
+
+void HaarRectangles::groupInnerOuter()
+{
+    TRACEFN
+    QQRectList rectList;
+    QQRectList refillList;
+    QQRectList orphanList;
+    QList<HaarRectangleResult> nonOrphanList;
+    HaarRectangleResult outerHrr; // Result for outer loop
+    QQRect outerRect; // outer loop looking for similar rects
+    QQRect innerRect; // inner loop subject rectangle
+
+    //===== Outer Loop
+    rectList = mRects.values();
+    while ( ! rectList.isEmpty())
     {
-        TRACE << "mRects.size()" << mRects.size();
-        hrr.clear();
-        i.toFront();
-        if ( ! i.hasNext()) break;              //----------
-        i.next();
-        QQRect outerRect = i.value();
-        hrr.accumulate(outerRect);
-        int minInnerArea = i.key() - (i.key() >> 2);
-        TRACE << "outerRect" << outerRect << i.key() << minInnerArea;
-        i.remove();
-//        EXPECT(i.hasNext())
-  //      if ( ! i.hasNext()) break;              //----------
-//        i.next();
-  //      TRACE << "middleRect" << i.value() << i.key();
-        while (i.hasNext())
+        outerHrr.clear();
+        refillList.clear();
+        outerRect = rectList.takeFirst();
+        outerHrr.candidate = outerRect;
+
+        //===== InnerLoop
+        while ( ! rectList.isEmpty())
         {
-            i.next();
-            if (i.key() > minInnerArea) break;  //----------
-            if ( ! outerRect.intersects(i.value()))
-                continue;                       //==========
-            if (outerRect.overlap(i.value()) > 0.70)
-            {
-                TRACE << "innerRect" << i.value() << i.key()
-                      << outerRect.overlap(i.value());
-                hrr.accumulate(i.value());
-                i.remove();
-            }
-        }
-        if (hrr.quality /*count*/ > 16)
-        {
-            hrr.candidate = hrr.calculateCandidate();
-            hrr.rank = mGrouped.size() + 1;
-            mGrouped.insert(hrr.area / hrr.detected.size(), hrr);
-            TRACE << "rank" << hrr.rank;
-        }
+            innerRect = rectList.takeFirst();
+            // TRACE << innerRect << rectList.size() << outerHrr.candidate;
+            if (isSimilar(outerRect, innerRect))
+                outerHrr.accumulate(innerRect);
+            else
+                refillList << innerRect;
+        } // Inner Loop
+
+        if (outerHrr.quality/*count*/ < 2)
+            orphanList << outerHrr.candidate;
         else
+            nonOrphanList << outerHrr;
+        rectList << refillList;
+        TRACE << outerRect
+              << outerHrr.candidate << rectList.size();
+    } // Outer Loop
+
+    //===== Post Results
+    mUnused = orphanList;
+    foreach (HaarRectangleResult hrr, nonOrphanList)
+        mGrouped.insert(hrr.area, hrr);
+    TRACE << "exit groupInnerOuter()" << mGrouped.size();
+}
+
+void HaarRectangles::groupGroups()
+{
+    TRACEFN
+    QList<HaarRectangleResult> hrrList;
+    QList<HaarRectangleResult> refillList;
+    QList<HaarRectangleResult> orphanList;
+    QList<HaarRectangleResult> nonOrphanList;
+    HaarRectangleResult outerHrr; // Result for outer loop
+    HaarRectangleResult innerHrr; // Result for inner loop
+    QQRect outerRect; // outer loop looking for similar rects
+    QQRect innerRect; // inner loop subject rectangle
+
+    //===== Outer Loop
+    hrrList = mGrouped.values();
+    while ( ! hrrList.isEmpty())
+    {
+        refillList.clear();
+        outerHrr = hrrList.takeFirst();
+        outerRect = outerHrr.candidate;
+
+        //===== InnerLoop
+        while ( ! hrrList.isEmpty())
         {
-            TRACE << "mUnused" << hrr.detected.first();
-            mUnused << hrr.detected.takeFirst();
-            append(hrr.detected);
-        }
+            innerHrr = hrrList.takeFirst();
+            innerRect = innerHrr.candidate;
+            if (isSimilar(outerRect, innerRect))
+                outerHrr.merge(innerHrr);
+            else
+                refillList << innerHrr;
+        } // Inner Loop
+
+        if (outerHrr.quality/*count*/ < 2)
+            orphanList << outerHrr;
+        else
+            nonOrphanList << outerHrr;
+        hrrList << refillList;
+    } // Outer Loop
+
+    //===== Post Results
+    foreach (HaarRectangleResult hrr, orphanList)
+        mUnused << hrr.detected << hrr.candidate;
+    mGrouped.clear();
+    foreach (HaarRectangleResult hrr, nonOrphanList)
+    {
+        hrr.calculateCandidate();
+        mGrouped.insert(hrr.area, hrr);
+        TRACE << hrr.candidate << hrr.detected.size();
     }
-    mUnused = mRects.values();
+} //  groupGroups()
+
+// static
+bool HaarRectangles::isSimilar(const QQRect rc1, const QQRect rc2)
+{
+    if ( ! rc1.intersects(rc2))     return false;
+    qreal ratio = qreal(rc1.width()) / qreal(rc2.width());
+    int centerDistance = qAbs(rc1.center().x() - rc2.center().x())
+                              + qAbs(rc1.center().y() - rc2.center().y());
+    if (ratio < 0.60 || ratio > 1.4)        return false;
+    if (ratio > 1.0 && centerDistance > rc1.width())   return false;
+    if (ratio < 1.0 && centerDistance > rc2.width())   return false;
+    return true;
 }
 
 QList<HaarRectangles::HaarRectangleResult>
@@ -97,7 +164,9 @@ QImage HaarRectangles::markCandidates(const QImage &frameImage,
     QImage rectImage = frameImage;
     ImageMarker marker(rectImage);
     marker.markCandidates(groupedCandidates());
-    marker.markRectangles(mUnused, Qt::black, 50, 1);
+    TRACE << "mUnused.size()" << mUnused.size();
+    marker.markRectangles(mUnused, Qt::blue, 20, 1);
+    NEEDDO(mUnused);
     if (candidateDir != QDir())
     {
         QFileInfo qfi(candidateDir,
@@ -106,14 +175,30 @@ QImage HaarRectangles::markCandidates(const QImage &frameImage,
         WEXPECT(marker.marked().save(qfi.filePath()));
     }
     return marker.marked();
+}
 
+QImage HaarRectangles::markCandidatesOnly(const QImage &frameImage, const QFileInfo &fileInfo, const QDir &candidateDir) const
+{
+    TRACEQFI << candidateDir;
+    QImage rectImage = frameImage;
+    ImageMarker marker(rectImage);
+   marker.markCandidatesOnly(groupedCandidates());
+    marker.markRectangles(mUnused, Qt::black, 20, 7);
+    if (candidateDir != QDir())
+    {
+        QFileInfo qfi(candidateDir,
+                       fileInfo.fileName());
+        TRACE << qfi;
+        WEXPECT(marker.marked().save(qfi.filePath()));
+    }
+    return marker.marked();
 }
 
 
 
 void HaarRectangles::HaarRectangleResult::clear()
 {
-    TRACEFN
+//    TRACEFN
     rank = quality = area = centerX = centerY = 0;
     candidate = QQRect();
     detected.clear();
@@ -144,4 +229,13 @@ QQRect HaarRectangles::HaarRectangleResult
              << "ty" << centerY << "ay" << centerY / nDetected
              << qqr;
     return qqr;
+}
+
+void HaarRectangles::HaarRectangleResult::merge(const HaarRectangles::HaarRectangleResult other)
+{
+    quality += other.quality; // count
+    area += other.area;
+    centerX += other.centerX;
+    centerY += other.centerY;
+    detected << other.detected;
 }

@@ -17,6 +17,7 @@ public:
         void clear();
         void accumulate(QQRect detectRect);
         QQRect calculateCandidate() const;
+        void merge(const HaarRectangleResult other);
 
     public:
         int rank;
@@ -38,11 +39,23 @@ public:
     void operator << (const QQRect rect);
     void operator << (const QQRectList rects);
 
-    void group();
     QList<HaarRectangleResult> groupedCandidates() const;
+    void group();
     QImage markCandidates(const QImage &frameImage,
                           const QFileInfo &fileInfo,
                           const QDir &candidateDir=QDir()) const;
+    QImage markCandidatesOnly(const QImage &frameImage,
+                          const QFileInfo &fileInfo,
+                          const QDir &candidateDir=QDir()) const;
+
+private:
+    void groupInnerOuter();
+    void groupGroups();
+
+    static bool isSimilar(const QQRect rc1, const QQRect rc2);
+
+
+
 
 
 private:

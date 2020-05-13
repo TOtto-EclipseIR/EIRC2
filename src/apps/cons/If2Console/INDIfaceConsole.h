@@ -65,6 +65,9 @@ private:
     QDir mBaseDir;
     QDir mCapture2Dir;
     QDir mGreyInputDir;
+    QDir mMarkedDetectDir;
+    QDir mMarkedFaceDir;
+    QDir mFaceDetectDir;
     QDir mMarkedRectangleDir;
     QDir mMarkedCandidateDir;
     QDir mHeatmapDir;
@@ -72,4 +75,3 @@ private:
     Detector * mpFFDetector=nullptr;
     QQRectList mRectList;
 };
-

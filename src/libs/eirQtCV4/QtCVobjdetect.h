@@ -23,6 +23,6 @@ public:
     void release(Detector * det);
 
 private:
-    QList<Detector *> mDetectorList;
+//    QList<Detector *> mDetectorList;
 };
 

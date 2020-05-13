@@ -37,7 +37,7 @@ void ImageMarker::markRectangles(const QQRectList &rectangles,
 
 void ImageMarker::markCandidates(const QList<HaarRectangles::
         HaarRectangleResult> &rectGroupResults,
-        const QColor &color, const int transparency,
+        QColor color, const int transparency,
         const int width)
 {
     TRACEQFI << rectGroupResults.size()
@@ -46,28 +46,42 @@ void ImageMarker::markCandidates(const QList<HaarRectangles::
         return;
     mpPainter->begin(&mImage);
     QColor brushColor;
-    QColor brushColor0;
-    QColor brushColor1;
     QRgb rgb = color.rgb();
-    QRgb rgb1 = QColor(Qt::blue).rgb();
-    QRgb rgb0 = QColor(Qt::black).rgb();
     brushColor.setRgb(qRed(rgb), qGreen(rgb), qBlue(rgb),
                            (100 - transparency) * 255 / 100);
-    TRACE << brushColor;
-    brushColor1.setRgb(qRed(rgb1), qGreen(rgb1), qBlue(rgb1),
-                           (100 - transparency) * 255 / 100);
-    brushColor0.setRgb(qRed(rgb0), qGreen(rgb0), qBlue(rgb0),
-                           (100 - transparency) * 255 / 100);
-    QPen pen(brushColor, width);
-    QPen pen1(brushColor1, 1);
-    QPen pen0(brushColor0, 1);
+//    TRACE << brushColor;
     foreach (HaarRectangles::HaarRectangleResult hhr, rectGroupResults)
     {
+        QPen pen(brushColor, width);
+        QPen pen1(brushColor, 1);
         mpPainter->setPen(pen1);
         mpPainter->drawRects(hhr.detected.vector());
         mpPainter->setPen(pen);
         mpPainter->drawRect(hhr.candidate);
+        brushColor = brushColor.lighter(hhr.quality);
     }
+    mpPainter->end();
+}
+
+void ImageMarker::markCandidatesOnly(const QList<HaarRectangles::HaarRectangleResult> &rectGroupResults, const QColor &color, const int transparency, const int width)
+{
+    TRACEQFI << rectGroupResults.size()
+             << color << transparency << width;
+    if (mImage.isNull() || nullptr == mpPainter)
+        return;
+    mpPainter->begin(&mImage);
+    QColor brushColor;
+    QRgb rgb = color.rgb();
+    brushColor.setRgb(qRed(rgb), qGreen(rgb), qBlue(rgb),
+                           (100 - transparency) * 255 / 100);
+    TRACE << brushColor;
+    QPen pen(brushColor, width);
+    foreach (HaarRectangles::HaarRectangleResult hhr, rectGroupResults)
+    {
+        mpPainter->setPen(pen);
+        mpPainter->drawRect(hhr.candidate);
+    }
+    WANTDO(overMark)
     mpPainter->end();
 }
 
