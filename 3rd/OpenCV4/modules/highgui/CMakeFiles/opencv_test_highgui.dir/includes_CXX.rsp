@@ -1,0 +1,1 @@
+-ID:/git/github.com/opencv/modules/ts/include -ID:/git/github.com/opencv/modules/highgui/include -ID:/git/github.com/opencv/modules/imgcodecs/include -ID:/git/github.com/opencv/modules/videoio/include -ID:/git/github.com/opencv/modules/core/include -ID:/git/github.com/opencv/modules/imgproc/include -isystem D:/git/github.com/Pixmatica/Build/OpenCV4 
