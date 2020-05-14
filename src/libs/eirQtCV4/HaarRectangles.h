@@ -7,9 +7,11 @@
 #include <QMultiMap>
 
 #include <eirType/QQRectList.h>
+//#include <eirPixelImage/ImageMarker.h>
 
 class EIRQTCV4_EXPORT HaarRectangles
 {
+#if 0
 public:
     class HaarRectangleResult
     {
@@ -28,6 +30,7 @@ public:
         QQRect candidate;
         QQRectList detected;
     };
+#endif
 
 public:
     explicit HaarRectangles();
@@ -38,7 +41,7 @@ public:
     void append(const QQRectList rects);
     void operator << (const QQRect rect);
     void operator << (const QQRectList rects);
-
+#if 0
     QList<HaarRectangleResult> groupedCandidates() const;
     void group();
     QImage markCandidates(const QImage &frameImage,
@@ -51,7 +54,7 @@ public:
 private:
     void groupInnerOuter();
     void groupGroups();
-
+#endif
     static bool isSimilar(const QQRect rc1, const QQRect rc2);
 
 
@@ -60,7 +63,7 @@ private:
 
 private:
     QMultiMap<int /*area*/, QQRect> mRects;
-    QMultiMap<int /*area*/, HaarRectangleResult> mGrouped;
+//    QMultiMap<int /*area*/, HaarRectangleResult> mGrouped;
     QQRectList mUnused;
 };
 

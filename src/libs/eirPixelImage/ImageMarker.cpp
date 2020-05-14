@@ -35,6 +35,7 @@ void ImageMarker::markRectangles(const QQRectList &rectangles,
     mpPainter->end();
 }
 
+#if 0
 void ImageMarker::markCandidates(const QList<HaarRectangles::
         HaarRectangleResult> &rectGroupResults,
         QColor color, const int transparency,
@@ -88,6 +89,7 @@ void ImageMarker::markAllCandidates(
     WANTDO(overMark)
     mpPainter->end();
 }
+#endif
 
 QImage ImageMarker::marked() const
 {

@@ -1,18 +1,19 @@
 # file: {EIRC2 repo}./src/depends.pri
 
-eirBase.subdir      = ./libs/eirBase
-eirType.subdir      = ./libs/eirType
-eirExe.subdir       = ./libs/eirExe
-eirQtCV.subdir      = ./libs/eirQtCV
-eirPixel.subdir     = ./libs/eirPixelImage
-eirXfr.subdir       = ./libs/eirXfr
+#eirBase.subdir      = ./libs/eirBase
+#eirType.subdir      = ./libs/eirType
+#eirExe.subdir       = ./libs/eirExe
+#eirQtCV.subdir      = ./libs/eirQtCV
+#eirPixel.subdir     = ./libs/eirPixelImage
+#eirXfr.subdir       = ./libs/eirXfr
 
-If2Console.subdir   = ./apps/cons/If2Console
+#If2Console.subdir   = ./apps/cons/If2Console
 
 eirType.depends     = eirBase
 eirExe.depends      = eirBase eirType
 eirPixel.depends    = eirBase eirType
 eirQtCV.depends     = eirBase eirType eirXfr eirPixel
-eirPixel.depends    = eirType eirQtCV
+eirPixelImage.depends    = eirType
+#eirPixelImage.depends    = eirQtCV
 eirXfr.depends      = eirBase eirType
 If2Console.depends  = eirBase eirType eirXfr eirExe eirPixel eirQtCV

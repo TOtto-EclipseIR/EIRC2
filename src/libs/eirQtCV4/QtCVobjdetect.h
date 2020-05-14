@@ -13,7 +13,8 @@
 
 class Detector;
 
-class EIRQTCV4_EXPORT QtCVobjdetect : public QObject, public SetError
+class EIRQTCV4_EXPORT QtCVobjdetect
+        : public QObject, public SetError
 {
     Q_OBJECT
 public:

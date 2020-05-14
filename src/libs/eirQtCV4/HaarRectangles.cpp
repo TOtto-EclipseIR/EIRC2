@@ -31,7 +31,7 @@ void HaarRectangles::operator <<(const QQRectList rects)
 {
     append(rects);
 }
-
+#if 0
 void HaarRectangles::group()
 {
     TRACEFN
@@ -135,7 +135,7 @@ void HaarRectangles::groupGroups()
         TRACE << hrr.candidate << hrr.detected.size();
     }
 } //  groupGroups()
-
+#endif
 // static
 bool HaarRectangles::isSimilar(const QQRect rc1, const QQRect rc2)
 {
@@ -149,6 +149,7 @@ bool HaarRectangles::isSimilar(const QQRect rc1, const QQRect rc2)
     return true;
 }
 
+#if 0
 QList<HaarRectangles::HaarRectangleResult>
     HaarRectangles::groupedCandidates() const
 {
@@ -230,7 +231,6 @@ QQRect HaarRectangles::HaarRectangleResult
              << qqr;
     return qqr;
 }
-
 void HaarRectangles::HaarRectangleResult::merge(const HaarRectangles::HaarRectangleResult other)
 {
     quality += other.quality; // count
@@ -239,3 +239,4 @@ void HaarRectangles::HaarRectangleResult::merge(const HaarRectangles::HaarRectan
     centerY += other.centerY;
     detected << other.detected;
 }
+#endif

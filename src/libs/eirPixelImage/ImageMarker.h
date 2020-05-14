@@ -18,6 +18,7 @@ public:
                     const QColor & color=Qt::blue,
                     const int transparency=20,
                     const int width=1);
+#if 0
     void markCandidates(const QList<HaarRectangles::
                         HaarRectangleResult> & rectGroupResults,
                     QColor color=Qt::green,
@@ -28,6 +29,7 @@ public:
                     const QColor & color=Qt::green,
                     const int transparency=20,
                     const int width=3);
+#endif
     QImage marked(void) const;
 
 private:

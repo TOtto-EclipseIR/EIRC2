@@ -65,6 +65,7 @@ void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
     mpFFDetector->setGreyImage(greyImage, inFileInfo);
     mpFFDetector->findRectangles();
     mRectList = mpFFDetector->rectangles();
+#if 0
     HaarRectangles hRect;
     hRect << mRectList;
     hRect.group();
@@ -77,7 +78,6 @@ void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
                                 mMarkedCandidateDir);
     QImage candidateImage = hRect.markAllCandidates(inImage, inFileInfo,
                                 mMarkedDetectDir);
-#if 1
     foreach (HaarRectangles::HaarRectangleResult hrr, groupedCandidates)
     {
         QQRect candidateRect = hrr.candidate;
