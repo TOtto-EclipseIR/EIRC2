@@ -29,7 +29,9 @@ public:
         int centerY;
         QQRect candidate;
         QQRectList detected;
-    };
+    }; // sub-class HarrRectangleResult
+private:
+        QMultiMap<int /*area*/, HaarRectangleResult> mGrouped;
 #endif
 
 public:
@@ -63,7 +65,6 @@ private:
 
 private:
     QMultiMap<int /*area*/, QQRect> mRects;
-//    QMultiMap<int /*area*/, HaarRectangleResult> mGrouped;
     QQRectList mUnused;
 };
 

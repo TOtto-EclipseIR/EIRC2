@@ -62,9 +62,9 @@ void INDIfaceConsole::processInputImage(const QFileInfo &inFileInfo)
     EXPECT(greyImage.save(QFileInfo(mGreyInputDir,
                              inFileInfo.fileName()).filePath()));
     TSTALLOC(mpFFDetector);
-    mpFFDetector->setGreyImage(greyImage, inFileInfo);
-    mpFFDetector->findRectangles();
-    mRectList = mpFFDetector->rectangles();
+    //mpFFDetector->setGreyImage(greyImage, inFileInfo);
+    //mpFFDetector->findRectangles();
+    //mRectList = mpFFDetector->rectangles();
 #if 0
     HaarRectangles hRect;
     hRect << mRectList;
@@ -115,7 +115,7 @@ QImage INDIfaceConsole::toGrey(const QImage &inputImage)
 void INDIfaceConsole::findFFRectangles(const Region region)
 {
     TRACEQFI << region;
-    mpFFDetector->findRectangles(region);
+    //mpFFDetector->findRectangles(region);
 }
 
 CommandLine *INDIfaceConsole::commandLine()
@@ -148,12 +148,12 @@ void INDIfaceConsole::initializeResources()
     cfg.insert("Output/HeatMapDir", "HeatMap"); //x
     setOutputDirs(cfg);
 
-    mpFFDetector = mpObjdetect->newDetector(ObjectType::FrontalFace);
+    //mpFFDetector = mpObjdetect->newDetector(ObjectType::FrontalFace);
     TSTALLOC(mpFFDetector);
     QFileInfo detectorFile = QFileInfo(QDir("../detectors"),
                                        "DefaultFrontalFace.xml");
     TRACE << detectorFile.absoluteFilePath();
-    EXPECT(mpFFDetector->initialize(detectorFile, cfg));
+    //EXPECT(mpFFDetector->initialize(detectorFile, cfg));
     WANTDO("LEDetector")
     WANTDO("REDetector")
 //    emit resoursesInitd();

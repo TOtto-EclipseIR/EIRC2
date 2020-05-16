@@ -3,8 +3,8 @@
 #include <QCoreApplication>
 #include <QTimer>
 
-#include <eirBase/Debug.h>
-#include <eirBase/Success.h>
+#include "Debug.h"
+#include "Success.h"
 
 ErrorHandler::ErrorHandler()
     : QObject(qApp->parent())

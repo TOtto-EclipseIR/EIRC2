@@ -2,6 +2,7 @@
 #include "QQRect.h"
 
 #include <eirBase/Debug.h>
+//#include "../../libs/eirBase/Debug.h"
 
 #include "QQRectF.h"
 

@@ -1,7 +1,8 @@
 #pragma once
 
 #include <QObject>
-#include <eirExe/BaseCommandLine.h>
+//#include <eirExe/BaseCommandLine.h>
+#include "../../src/libs/eirExe/BaseCommandLine.h"
 
 #include <eirBase/MultiName.h>
 

@@ -7,13 +7,13 @@
 #eirPixel.subdir     = ./libs/eirPixelImage
 #eirXfr.subdir       = ./libs/eirXfr
 
-#If2Console.subdir   = ./apps/cons/If2Console
+#If2Console.subdir   = ./cons/If2Console
 
 eirType.depends     = eirBase
 eirExe.depends      = eirBase eirType
+eirXfr.depends      = eirBase eirType
 eirPixel.depends    = eirBase eirType
 eirQtCV.depends     = eirBase eirType eirXfr eirPixel
-eirPixelImage.depends    = eirType
+eirPixelImage.depends    = eirBase eirType
 #eirPixelImage.depends    = eirQtCV
-eirXfr.depends      = eirBase eirType
 If2Console.depends  = eirBase eirType eirXfr eirExe eirPixel eirQtCV

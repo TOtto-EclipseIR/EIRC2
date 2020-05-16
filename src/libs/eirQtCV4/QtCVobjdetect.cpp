@@ -17,7 +17,7 @@ QtCVobjdetect::~QtCVobjdetect()
 //    while ( ! mDetectorList.isEmpty())
   //      delete mDetectorList.takeFirst();
 }
-
+#if 0
 Detector *QtCVobjdetect::newDetector(const ObjectType objType)
 {
     TRACEQFI << objType.name();
@@ -27,7 +27,7 @@ Detector *QtCVobjdetect::newDetector(const ObjectType objType)
 //    mDetectorList.append(objDet);
     return objDet;
 }
-
+#endif
 void QtCVobjdetect::release(Detector *det)
 {
 //    mDetectorList.removeAll(det);

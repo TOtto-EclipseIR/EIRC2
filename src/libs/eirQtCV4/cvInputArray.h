@@ -12,11 +12,11 @@ public:
     cvInputArray();
     void clear();
     void setGreyImage(const QImage &greyImage);
-    cv::Mat mat() const;
-    cv::_InputArray array() const;
+//    cv::Mat mat() const;
+  //  cv::_InputArray array() const;
 
 private:
-    cv::Mat mMat;
-    cv::_InputArray mArray;
+//    cv::Mat mMat;
+  //  cv::_InputArray mArray;
 };
 

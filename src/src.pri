@@ -6,8 +6,12 @@ BASEDESTDIR = T:/bin
 include(ourdest.pri)
 DESTDIR = $$OURDEST
 LIBS *= -L$$OURDEST
-include(depends.pri)
+
+#INCLUDEPATH *= ../eirBase
+
+INCLUDEPATH *= ../../src/libs   # TODO: for apps
+INCLUDEPATH *= ../../libs       # TODO: for libs
 
 ### TODO: Fix Bad Smell
-include(./libs/eirQtCV4/OpenCV4.pri)
+include(../src/libs/eirQtCV4/OpenCV4.pri)
 

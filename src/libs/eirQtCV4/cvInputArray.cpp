@@ -12,7 +12,7 @@ cvInputArray::cvInputArray()
 {
     TRACEFN
 }
-
+#if 0
 void cvInputArray::clear()
 {
     mMat.create(0,0,0);
@@ -43,3 +43,4 @@ cv::_InputArray cvInputArray::array() const
 {
     return mArray;
 }
+#endif

@@ -7,6 +7,7 @@
 
 #include "cvSize.h"
 
+#if 0
 cvMat::cvMat()
 {
     TRACEFN;
@@ -48,3 +49,4 @@ QImage cvMat::toImage(const QImage::Format qiFormat) const
 
     return image; // .convertTo(qiFormat);
 }
+#endif

@@ -1,7 +1,7 @@
 // file: {repo: EIRC2}./src/libs/eirBase/VarMap.cpp
 #include "VarMap.h"
 
-#include <eirBase/Debug.h>
+#include "Debug.h"
 
 VarMap::VarMap(const MultiName &name) : mName(name) {;}
 

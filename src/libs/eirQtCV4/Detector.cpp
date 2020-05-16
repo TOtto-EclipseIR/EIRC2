@@ -20,6 +20,7 @@
 #include "cvRect.h"
 #include "cvString.h"
 
+#if 0
 
 Detector::Detector(const ObjectType objType, QObject *parent)
     : QObject(parent)
@@ -126,3 +127,4 @@ QImage Detector::markRectangles(const QImage frameImage,
     }
     return marker.marked();
 }
+#endif

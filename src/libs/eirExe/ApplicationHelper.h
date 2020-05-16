@@ -8,6 +8,7 @@
 #include <QTemporaryDir>
 
 #include <eirBase/Var.h>
+//#include "../EIRC2/src/libs/eirBase/Var.h"
 class BaseCommandLine;
 class ErrorHandler;
 class Settings;
