@@ -57,6 +57,7 @@ Q_DECLARE_FLAGS(Options, Option);
 public:
     explicit BaseCommandLine(QObject *parent = nullptr);
     QFileInfoList positionalFileInfoList() const;
+    const QStringList exeArguments() const;
 
 
 public slots:

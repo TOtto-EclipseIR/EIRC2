@@ -24,6 +24,11 @@ QFileInfoList BaseCommandLine::positionalFileInfoList() const
     return mPositionalFileDirInfoList;
 }
 
+const QStringList BaseCommandLine::exeArguments() const
+{
+    return cmExeArgumentList;
+}
+
 void BaseCommandLine::addOption(const MultiName &name,
                               const QCommandLineOption &option)
 {
@@ -74,7 +79,7 @@ void BaseCommandLine::setupApplicationValues()
     TRACEFN
     NEEDDO(OrgName AppName)
     NEEDDO(setupApplicationValues)
-            NEEDDO(const MultiName cmAhoValueKey)
+    NEEDDO(const MultiName cmAhoValueKey)
 }
 
 void BaseCommandLine::setupSettings()
