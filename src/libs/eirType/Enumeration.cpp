@@ -1,5 +1,4 @@
-/*! @file Enumeration.cpp Definitions for Enumeration base class
-*/
+// file: {EIRC2 repo}./src/libs/eirTypes/Enumeration.cpp
 
 #include "Enumeration.h"
 

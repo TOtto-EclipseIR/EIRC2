@@ -2,4 +2,5 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     cons \
-    desk
+    libs \
+    plugins
