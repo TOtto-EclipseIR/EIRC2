@@ -1,9 +1,9 @@
-QT -= gui
+QT += gui
 
 TEMPLATE = lib
-DEFINES += EIRTYPE_LIBRARY
+DEFINES += EIRIMAGE_LIBRARY
 
-CONFIG += c++17
+CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -18,33 +18,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../../EIRC2.pri)
 
-LIBS *= -leirBase2
+LIBS *= -eirType2
 
 SOURCES += \
-    Enumeration.cpp \
-    QQRect.cpp \
-    QQRectF.cpp \
-    QQRectList.cpp \
-    Region.cpp \
-    Sortable.cpp \
-    eirType.cpp
+    BaseImage.cpp \
+    BitImage.cpp \
+    Image.cpp \
+    ImageFormat.cpp \
+    eirImage.cpp
 
 HEADERS += \
-    DualMap.h \
-    Enumeration.h \
-    EnumerationArray.h \
-    EnumerationMask.h \
-    Named.h \
-    NamedArray.h \
-    NamedEnum.h \
-    NamedMap.h \
-    QQRect.h \
-    QQRectF.h \
-    QQRectList.h \
-    Region.h \
-    Sortable.h \
-    eirType_global.h \
-    eirType.h
+    BaseImage.h \
+    BitImage.h \
+    Image.h \
+    ImageFormat.h \
+    eirImage_global.h \
+    eirImage.h
 
 # Default rules for deployment.
 unix {

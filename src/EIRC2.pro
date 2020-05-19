@@ -12,10 +12,12 @@ SUBDIRS += \
     ./libs/eirType \
     ./libs/eirXfr \
     ./cons/If2Console \
+    libs/eirImage \
 
 eirType.depends     = eirBase
 eirExe.depends      = eirBase eirType
 #eirPixelImage.depends    = eirBase eirType
 #eirQtCV.depends     = eirBase eirType eirXfr eirPixelImage
 eirXfr.depends      = eirBase
+eirImage.depends    = eirType
 If2Console.depends  = eirBase eirType eirXfr eirExe #eirQtCV

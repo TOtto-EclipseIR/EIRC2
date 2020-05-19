@@ -36,7 +36,7 @@ SOURCES += \
     eirBase.cpp
 
 HEADERS += \
-    ../../VERSION.h \
+    ../../version.h \
     BasicName.h \
     Debug.h \
     ErrorHandler.h \
