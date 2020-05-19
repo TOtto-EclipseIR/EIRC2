@@ -1,4 +1,4 @@
-QT -= gui
+QT -= gui scxml
 
 TEMPLATE = lib
 DEFINES += EIREXE_LIBRARY
@@ -18,13 +18,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../../EIRC2.pri)
 
-
 LIBS *= -leirBase2
 LIBS *= -leirType2
+
+STATECHARTS += \
+    CommandLine.scxml
 
 SOURCES += \
     ApplicationHelper.cpp \
     BaseCommandLine.cpp \
+    CommandLineMachine.cpp \
+    ConfigObject.cpp \
     Console.cpp \
     FileExtension.cpp \
     FileInfoQueue.cpp \
@@ -36,6 +40,8 @@ SOURCES += \
 HEADERS += \
     ApplicationHelper.h \
     BaseCommandLine.h \
+    CommandLineMachine.h \
+    ConfigObject.h \
     Console.h \
     FileExtension.h \
     FileInfoQueue.h \

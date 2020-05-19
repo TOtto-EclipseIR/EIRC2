@@ -8,13 +8,11 @@ CommandLine::CommandLine(QObject *parent)
 
 void CommandLine::setup()
 {
-    addHelpOption();
-    addVersionOption();
-    addPositionalArgument(CommandLineArgument(filesDirsArgName,
-        "Files-and-Dirs", "File names (wild cards allowed)"
+    addPositionalArgument(filesDirsArgName,
+         "File names (wild cards allowed)"
             " and Directory Names to be used as input",
-            "../input/FileName.JPG ../incoming ../nopng/*.JPG"));
-    addOption(maxFileDirsOptionName(), QCommandLineOption(
+            "../input/FileName.JPG ../incoming ../nopng/*.JPG");
+    addOption(QCommandLineOption("MaxFilesDirs"
                   "Maximum Pending Files and/or Directories"));
 
 }

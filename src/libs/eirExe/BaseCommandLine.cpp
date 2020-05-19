@@ -1,3 +1,4 @@
+// file: {EIRC2 repo}/./src/libs/eirExe/BaseCommandLine.cpp
 #include "BaseCommandLine.h"
 
 #include <QCoreApplication>
@@ -5,8 +6,11 @@
 
 #include <eirBase/Debug.h>
 
+#include "CommandLineMachine.h"
+
 BaseCommandLine::BaseCommandLine(QObject *parent)
     : QObject(parent)
+    , cmpMachine(new CommandLineMachine(this))
     , cmExeArgumentList(QCoreApplication::arguments())
 {
     TRACEFN
@@ -19,6 +23,11 @@ BaseCommandLine::BaseCommandLine(QObject *parent)
     EMIT(constructed());
 }
 
+CommandLineMachine *BaseCommandLine::machine() const
+{
+    return cmpMachine;
+}
+
 QFileInfoList BaseCommandLine::positionalFileInfoList() const
 {
     return mPositionalFileDirInfoList;
@@ -29,48 +38,39 @@ const QStringList BaseCommandLine::exeArguments() const
     return cmExeArgumentList;
 }
 
-void BaseCommandLine::addOption(const MultiName &name,
-                              const QCommandLineOption &option)
+void BaseCommandLine::addOption(const QCommandLineOption &option)
 {
-    TRACEQFI << name();
-    mOptionMap.insert(Sortable(name), option);
-    EMIT(optionSet(name));
+    TRACEQFI << option.names();
+    mParser.addOption(option);
+    EMIT(optionSet(option.names().first()));
 }
 
 void BaseCommandLine::addPositionalArgument(const MultiName &name,
-                                          const bool takeAll)
+                                            const QString &desc,
+                                            const QString &syntax)
 {
-    BaseCommandLine::CommandLineArgument arg(name);
-    addPositionalArgument(arg, takeAll);
+    TRACEQFI << name();
+    mParser.addPositionalArgument(name(), desc, syntax);
 }
 
-void BaseCommandLine::addPositionalArgument(
-        const BaseCommandLine::CommandLineArgument &arg,
-        const bool takeAll)
-{
-    BaseCommandLine::CommandLineArgument * cla
-            = new BaseCommandLine::CommandLineArgument(arg);
-    if (takeAll) cla->setTakeAll();
-    mArguments.append(cla);
-    EMIT(argumentSet(mArguments.size(), cla->name()));
-}
-
-void BaseCommandLine::addHelpOption()
+void BaseCommandLine::noHelpOption()
 {
     TRACEFN
-    mOptions.setFlag(EnableHelp);
+    mOptions.setFlag(DisableHelp);
     EMIT(optionSet(helpOptionName));
 }
 
-void BaseCommandLine::addVersionOption()
+void BaseCommandLine::noVersionOption()
 {
     TRACEFN
-    mOptions.setFlag(EnableVersion);
+    mOptions.setFlag(DisableVersion);
     EMIT(optionSet(versionOptionName));
 }
 
 BaseCommandLine::Options &BaseCommandLine::rwrefOptions()
 {
+    TRACEFN
+    WARN << "Writable";
     return mOptions;
 }
 
@@ -102,38 +102,12 @@ void BaseCommandLine::process()
     setupApplicationValues();
     setupSettings();
     setup();
-    processAddOptions();
-    processAddArguments();
     processSecondPass();
     processThirdPass();
     processFourthPass();
     EMIT(processingFinished());
 }
 
-void BaseCommandLine::processAddOptions()
-{
-    TRACEFN
-    if (rwrefOptions().testFlag(EnableHelp))
-        mParser.addHelpOption();
-    if (rwrefOptions().testFlag(EnableVersion))
-        mParser.addVersionOption();
-    mParser.addOptions(mOptionMap.values());
-    foreach (QCommandLineOption opt, mOptionMap.values())
-    {
-        EMIT(processingOptionAdded(opt));
-    } // D20200505aho braces required by EMIT macro TODO?
-}
-
-void BaseCommandLine::processAddArguments()
-{
-    TRACEFN
-    foreach (CommandLineArgument * arg, mArguments)
-    {
-        TRACE << arg->name()();
-        mParser.addPositionalArgument(arg->argument(),
-            arg->description(), arg->syntax());
-    }
-}
 
 void BaseCommandLine::processSecondPass()
 {
@@ -188,44 +162,3 @@ void BaseCommandLine::handlePositionalFileDir(const QString &arg)
     NEEDUSE(arg)
     TODO(If QFI.exists() append QfI else null QFI())
 }
-
-BaseCommandLine::CommandLineArgument::
-    CommandLineArgument(const MultiName &name)
-    : cmName(name)
-    , cmArgument(name()) {;}
-
-BaseCommandLine::CommandLineArgument
-    ::CommandLineArgument(const MultiName &name,
-                          const QString &argument,
-                          const QString &description,
-                          const QString &syntax)
-    : cmName(name)
-    , cmArgument(argument)
-    , cmDescription(description)
-    , cmSyntax(syntax) {;}
-
-MultiName BaseCommandLine::CommandLineArgument::name() const
-{
-    return cmName;
-}
-
-QString BaseCommandLine::CommandLineArgument::argument() const
-{
-
-}
-
-QString BaseCommandLine::CommandLineArgument::description() const
-{
-
-}
-
-QString BaseCommandLine::CommandLineArgument::syntax() const
-{
-
-}
-
-void BaseCommandLine::CommandLineArgument::setTakeAll(bool yes)
-{
-    mTakeAll = yes;
-}
-
