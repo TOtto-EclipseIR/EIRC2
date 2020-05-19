@@ -3,8 +3,19 @@
 
 #include <eirBase/Debug.h>
 
-Image::Image(ImageFormat format)
-    : QImage(QSize(), format.toQImage())
+Image::Image(const QSize size,
+             const QImage::Format format)
+    : mFormat(format)
+    , mImage(size, format)
 {
-    TRACEQFI << format;
+    TRACEQFI << size << format;
 }
+
+Image::Image(const QImage &image,
+             const QImage::Format newFormat)
+    : mFormat(newFormat)
+    , mImage(image)
+{
+    TRACEQFI << image << newFormat;
+}
+

@@ -7,6 +7,11 @@
 class EIRIMAGE_EXPORT BitImage : public Image
 {
 public:
-    BitImage();
+    BitImage(const QSize size=QSize(),
+          const QImage::Format format
+          =QImage::Format_Mono);
+    BitImage(const QImage &image,
+          const QImage::Format newFormat
+          =QImage::Format_Invalid);
 };
 

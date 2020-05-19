@@ -4,11 +4,19 @@
 
 #include <QImage>
 
-#include "ImageFormat.h"
-
-class EIRIMAGE_EXPORT Image : public QImage
+class EIRIMAGE_EXPORT Image
 {
 public:
-    Image(ImageFormat format=ImageFormat::nullFormat);
+    Image(const QSize size=QSize(),
+          const QImage::Format format
+          =QImage::Format_Invalid);
+    Image(const QImage &image,
+          const QImage::Format newFormat
+          =QImage::Format_Invalid);
+
+private:
+    QImage::Format mFormat=QImage::Format_Invalid;
+    QImage mImage;
+
 };
 

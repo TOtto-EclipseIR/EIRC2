@@ -18,22 +18,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../../EIRC2.pri)
 
-LIBS *= -eirType2
+LIBS *= -leirType2
 
 SOURCES += \
-    BaseImage.cpp \
     BitImage.cpp \
+    GreyImage.cpp \
     Image.cpp \
-    ImageFormat.cpp \
-    eirImage.cpp
+    eirImage.cpp \
 
 HEADERS += \
-    BaseImage.h \
     BitImage.h \
+    GreyImage.h \
     Image.h \
-    ImageFormat.h \
     eirImage_global.h \
-    eirImage.h
+    eirImage.h \
 
 # Default rules for deployment.
 unix {
