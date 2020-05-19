@@ -1,6 +1,4 @@
-/*! @file Enumeration.h Declarations for Enumeration base class
-*
-*/
+// file: {EIRC2 repo}./src/libs/eirTypes/Enumeration.h
 #pragma once
 #include "eirType.h"
 

@@ -6,17 +6,22 @@
 
 #include <QDir>
 #include <QFileInfo>
+#include <QImage>
 #include <QList>
 
 #include <eirBase/VarPak.h>
 #include <eirType/QQRectList.h>
 #include <eirType/Region.h>
 #include <eirExe/ApplicationHelper.h>
-#include <eirQtCV4/QtCVobjdetect.h>
-#include <eirQtCV4/Detector.h>
+//#include <eirQtCV4/QtCVobjdetect.h>
+//include <eirQtCV4/Detector.h>
+class Detector;
+class QtCVobjdetect;
 
 class CommandLine;
 class FileInfoQueue;
+
+
 
 class INDIfaceConsole : public Console
 {
