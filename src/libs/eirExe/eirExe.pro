@@ -29,6 +29,7 @@ SOURCES += \
     BaseCommandLine.cpp \
     CommandLineMachine.cpp \
     ConfigObject.cpp \
+    Configuration.cpp \
     Console.cpp \
     FileExtension.cpp \
     FileInfoQueue.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     BaseCommandLine.h \
     CommandLineMachine.h \
     ConfigObject.h \
+    Configuration.h \
     Console.h \
     FileExtension.h \
     FileInfoQueue.h \

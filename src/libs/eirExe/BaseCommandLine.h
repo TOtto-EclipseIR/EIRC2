@@ -14,6 +14,7 @@
 #include <eirBase/VarMap.h>
 #include <eirType/Sortable.h>
 
+#include "Configuration.h"
 class CommandLineMachine;
 
 class EIREXE_EXPORT BaseCommandLine : public QObject
@@ -40,7 +41,11 @@ public:
     CommandLineMachine * machine() const;
     QFileInfoList positionalFileInfoList() const;
     const QStringList exeArguments() const;
+    Configuration configuration() const;
 
+protected:
+    void parseConfigArgument(const QString &arg);
+    QStringList readTxtFileArguments(const QString &arg);
 
 public slots:
     void addOption(const QCommandLineOption & option);
@@ -61,6 +66,8 @@ protected slots:
     void processSecondPass();
     void processThirdPass();
     void processFourthPass();
+    void processFifthPass();
+    void processSixthPass();
     virtual void setup() = 0;
     virtual void handleAmpersandArgument(const QString &arg);
     virtual void handleBangArgument(const QString &arg);
@@ -91,12 +98,14 @@ private:
     // processing
     QCommandLineParser mParser;
     QStringList mThirdPassArguments;
+    QStringList mFifthPassArguments;
+    QStringList mSixthPassArguments;
     QString mOrgName;
     QString mAppName;
     // results
     Var::List mPositionalArgumentResult;
     QFileInfoList mPositionalFileDirInfoList;
     VarMap mOptionValues;
-    VarMap mConfiguration;
+    Configuration mConfiguration;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BaseCommandLine::Options)

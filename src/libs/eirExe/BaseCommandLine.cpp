@@ -18,8 +18,8 @@ BaseCommandLine::BaseCommandLine(QObject *parent)
                 QCommandLineParser::ParseAsOptions);
     mParser.setSingleDashWordOptionMode(
                 QCommandLineParser::ParseAsCompactedShortOptions);
-    QTimer::singleShot(100, this,
-                       &BaseCommandLine::setupApplicationValues);
+//    QTimer::singleShot(100, this, &BaseCommandLine::setupApplicationValues);
+    QTimer::singleShot(100, this, &BaseCommandLine::processFourthPass);
     EMIT(constructed());
 }
 
@@ -36,6 +36,33 @@ QFileInfoList BaseCommandLine::positionalFileInfoList() const
 const QStringList BaseCommandLine::exeArguments() const
 {
     return cmExeArgumentList;
+}
+
+Configuration BaseCommandLine::configuration() const
+{
+    return mConfiguration;
+}
+
+void BaseCommandLine::parseConfigArgument(const QString &arg)
+{
+    QStringList qsl = arg.split('=');
+    MultiName key = qsl[0].mid(1);
+    if (qsl.size() > 1)
+        mConfiguration.insert(key, QVariant(qsl[1]));
+    else
+        mConfiguration.insert(key, QVariant(true));
+
+}
+
+QStringList BaseCommandLine::readTxtFileArguments(const QString &arg)
+{
+    QStringList newArgs;
+    QFile file(arg, this);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray qba = file.readAll();
+    QString args = qba;
+    newArgs = args.simplified().split(' ');
+    return newArgs;
 }
 
 void BaseCommandLine::addOption(const QCommandLineOption &option)
@@ -126,6 +153,35 @@ void BaseCommandLine::processFourthPass()
 {
     TRACEFN
     NEEDDO(it);
+    foreach (QString arg, cmExeArgumentList)
+    {
+        if (arg.startsWith('@'))
+            foreach (QString fileArg, readTxtFileArguments(arg))
+                mFifthPassArguments.prepend(fileArg);
+        else
+            mFifthPassArguments.append(arg);
+    }
+}
+
+void BaseCommandLine::processFifthPass()
+{
+    TRACEFN
+    NEEDDO(it);
+    foreach (QString arg, mFifthPassArguments)
+        if (arg.startsWith('/'))
+            parseConfigArgument(arg);
+        else
+            mSixthPassArguments.append(arg);
+}
+
+void BaseCommandLine::processSixthPass()
+{
+    TRACEFN
+    NEEDDO(it);
+    foreach (QString arg, mFifthPassArguments)
+    {
+        mPositionalFileDirInfoList << QFileInfo(arg);
+    }
 }
 
 void BaseCommandLine::handleAmpersandArgument(const QString &arg)
