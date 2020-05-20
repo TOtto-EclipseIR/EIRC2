@@ -22,14 +22,20 @@ LIBS *= -leirType2
 
 SOURCES += \
     BitImage.cpp \
+    ColorImage.cpp \
+    ColorTable.cpp \
     GreyImage.cpp \
     Image.cpp \
+    IndexedImage.cpp \
     eirImage.cpp \
 
 HEADERS += \
     BitImage.h \
+    ColorImage.h \
+    ColorTable.h \
     GreyImage.h \
     Image.h \
+    IndexedImage.h \
     eirImage_global.h \
     eirImage.h \
 

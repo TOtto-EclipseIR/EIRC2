@@ -17,5 +17,27 @@ Image::Image(const QImage &image,
     , mImage(image)
 {
     TRACEQFI << image << newFormat;
+    if (mImage.format() != newFormat)
+        mImage.convertTo(newFormat);
+}
+
+QImage Image::constImage() const
+{
+    return mImage;
+}
+
+QImage &Image::image()
+{
+    return mImage;
+}
+
+Image::Option Image::constOptions() const
+{
+    return mOptions;
+}
+
+Image::Option &Image::options()
+{
+    return mOptions;
 }
 
