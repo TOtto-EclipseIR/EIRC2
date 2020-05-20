@@ -10,6 +10,9 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+    a.setApplicationName("If2Console");
+    a.setApplicationVersion(EIRC2_VER_STRING " " EIRC2_VER_TRUNKNAME);
+    a.setOrganizationName(EIRC2_VER_ORGNAME);
     INDIfaceConsole * c = new INDIfaceConsole();
     QTimer::singleShot(100, c, &INDIfaceConsole::initializeApplication);
     return a.exec();

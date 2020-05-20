@@ -6,7 +6,7 @@
 
 Console::Console(QObject *parent)
     : ApplicationHelper(parent)
-    , mpCoreApp(QCoreApplication::instance())
+    , cmpCoreApp(QCoreApplication::instance())
     , mpIn(new QFile(this))
     , mpOut(new QFile(this))
     , mpErr(new QFile(this))
@@ -19,6 +19,11 @@ Console::Console(QObject *parent)
     EXPECT(mpIn->open(stdin, QIODevice::ReadOnly))
     EXPECT(mpOut->open(stdout, QIODevice::WriteOnly))
             EXPECT(mpErr->open(stderr, QIODevice::WriteOnly))
+}
+
+QCoreApplication *Console::core()
+{
+    return cmpCoreApp;
 }
 
 void Console::writeLine(const QString &qs,

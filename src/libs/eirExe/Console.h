@@ -17,6 +17,7 @@ class EIREXE_EXPORT Console : public ApplicationHelper
 public:
     explicit Console(QObject *parent = nullptr);
     BaseCommandLine * commandLine();
+    QCoreApplication * core();
 
 public slots:
     void writeLine(const QString &qs,
@@ -31,7 +32,7 @@ signals:
     void commandLineScanned();
 
 private:
-    QCoreApplication * mpCoreApp=nullptr;
+    QCoreApplication * const cmpCoreApp=nullptr;
     QFile * mpIn=nullptr;
     QFile * mpOut=nullptr;
     QFile * mpErr=nullptr;

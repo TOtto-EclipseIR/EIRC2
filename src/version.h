@@ -6,9 +6,9 @@
 #define EIRC2_VER_MINOR 7
 #define EIRC2_VER_RELEASE 1
 #define EIRC2_VER_BRANCH 25
-#define EIRC2_VER_STRING "v2.07A+25"
+#define EIRC2_VER_STRING "v2.07A+23"
 #define EIRC2_VER_TRUNKNAME "develop"
-#define EIRC2_VER_BRANCHNAME "eirImage"
+#define EIRC2_VER_BRANCHNAME "MS03"
 #define EIRC2_VER_APPVER EIRC2_VER_STRING
 #ifdef NDEBUG
 #define EIRC2_VER_ORGNAME "EclipseIR"
@@ -16,4 +16,5 @@
 #define EIRC2_VER_ORGNAME "EclipseRD"
 #endif
 
+#define EIRC2_IF2CONSOLE_TAKETWO23
 

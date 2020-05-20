@@ -7,11 +7,10 @@
 #include <eirExe/BaseCommandLine.h>
 #include <eirExe/FileInfoQueue.h>
 #include <eirExe/Settings.h>
-//#include <eirQtCV4/Detector.h>
-//#include <eirQtCV4/HaarRectangles.h>
 
 #include "CommandLine.h"
 
+#ifdef EIRC2_IF2CONSOLE_TAKETWO23
 INDIfaceConsole::INDIfaceConsole(Console *parent)
     : Console(parent)
     , mpFileInfoQueue(new FileInfoQueue(parent))
@@ -19,11 +18,24 @@ INDIfaceConsole::INDIfaceConsole(Console *parent)
     TRACEFN
     setObjectName("INDIfaceConsole");
     TSTALLOC(mpFileInfoQueue)
-    QTimer::singleShot(100, this,
-                       &INDIfaceConsole::initializeResources);
+//    QTimer::singleShot(100, this, &INDIfaceConsole::initializeApplication);
     TRACERTV()
 }
 
+void INDIfaceConsole::initializeApplication()
+{
+    TRACEFN
+    writeLine("Hello INDI Console from initializeApplication() at "
+                       + QDateTime::currentDateTime().toString());
+    writeLine(QString("%1 %2 from %3")
+              .arg(core()->applicationName())
+              .arg(core()->applicationVersion())
+              .arg(core()->organizationName()));
+    emit applicationInitd();
+    QTimer::singleShot(1000, core(), &QCoreApplication::quit);
+}
+
+#else // TAKEONE
 void INDIfaceConsole::configure(const VarPak &config)
 {
     TRACEQFI << config.id().name()();
@@ -121,16 +133,6 @@ void INDIfaceConsole::findFFRectangles(const Region region)
 CommandLine *INDIfaceConsole::commandLine()
 {
     return nullptr; // mpCommandLine;
-}
-
-void INDIfaceConsole::initializeApplication()
-{
-    TRACEFN
-#if 0
-    mpObjdetect = new QtCVobjdetect(this);
-    TSTALLOC(mpObjdetect);
-#endif
-    emit applicationInitd();
 }
 
 void INDIfaceConsole::initializeResources()
@@ -236,3 +238,4 @@ void INDIfaceConsole::nextImage()
     }
 }
 
+#endif

@@ -13,15 +13,11 @@
 #include <eirType/QQRectList.h>
 #include <eirType/Region.h>
 #include <eirExe/ApplicationHelper.h>
-//#include <eirQtCV4/QtCVobjdetect.h>
-//include <eirQtCV4/Detector.h>
-class Detector;
-class QtCVobjdetect;
 
 class CommandLine;
 class FileInfoQueue;
 
-
+#include "../../version.h"
 
 class INDIfaceConsole : public Console
 {
@@ -29,24 +25,9 @@ class INDIfaceConsole : public Console
 public:
     explicit INDIfaceConsole(Console *parent = nullptr);
 
-protected:
-    void configure(const VarPak &config);
-    QString configString(const MultiName &key) const;
-    void setOutputDirs(const VarPak &config);
-    QDir outputDir(QDir baseDir, QString dirName);
-    void processInputImage(const QFileInfo & inFileInfo);
-    static QImage toGrey(const QImage & inputImage);
-    void findFFRectangles(const Region region=Region());
-    CommandLine * commandLine();
-
+#ifdef EIRC2_IF2CONSOLE_TAKETWO23
 public slots:
     void initializeApplication();
-
-private slots:
-    void initializeResources();
-    void processCommandLine();
-    void scanInputDir();
-    void nextImage();
 
 signals:
     void applicationInitd();
@@ -60,8 +41,28 @@ signals:
     void imageProcessed(QFileInfo qfi);
     void processingComplete();
 
+protected:
+
+#else // TAKEONE
+    void configure(const VarPak &config);
+    QString configString(const MultiName &key) const;
+    void setOutputDirs(const VarPak &config);
+    QDir outputDir(QDir baseDir, QString dirName);
+    void processInputImage(const QFileInfo & inFileInfo);
+    static QImage toGrey(const QImage & inputImage);
+    void findFFRectangles(const Region region=Region());
+    CommandLine * commandLine();
+
+private slots:
+    void initializeResources();
+    void processCommandLine();
+    void scanInputDir();
+    void nextImage();
+#endif
+#ifdef EIRC2_IF2CONSOLE_TAKETWO23
 private:
     FileInfoQueue * mpFileInfoQueue=nullptr;
+#else // PASSONE
     VarPak mConfiguration;
     QDir mInputDir;
     QDir mBaseDir;
@@ -76,4 +77,5 @@ private:
     QtCVobjdetect * mpObjdetect=nullptr;
     Detector * mpFFDetector=nullptr;
     QQRectList mRectList;
+#endif
 };
