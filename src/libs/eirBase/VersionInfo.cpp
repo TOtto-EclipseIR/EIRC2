@@ -1,6 +1,6 @@
 #include "VersionInfo.h"
 
-#include "../../../VERSION.h"
+#include "../../version.h"
 
 #include "Var.h"
 

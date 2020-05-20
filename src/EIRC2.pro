@@ -1,14 +1,23 @@
 TEMPLATE = subdirs
 
-include(src.pri)
+include(./EIRC2.pri)
 
 SUBDIRS += \
-    ../src/libs/eirBase \
-    ../src/libs/eirType \
-    ../src/libs/eirExe  \
-    ../src/libs/eirQtCV4 \
-    ../src/libs/eirPixelImage \
-    ../src/cons/If2Console \
+    ./libs/eirBase \
+    ./libs/eirExe \
+#    ./libs/eirPixelImage \
+###    ./libs/eirResource \
+###    ./libs/eirTask \
+#    ./libs/eirQtCV4 \
+    ./libs/eirType \
+    ./libs/eirXfr \
+    ./cons/If2Console \
+    libs/eirImage \
 
-
-
+eirType.depends     = eirBase
+eirExe.depends      = eirBase eirType
+#eirPixelImage.depends    = eirBase eirType
+#eirQtCV.depends     = eirBase eirType eirXfr eirPixelImage
+eirXfr.depends      = eirBase
+eirImage.depends    = eirType
+If2Console.depends  = eirBase eirType eirXfr eirExe #eirQtCV

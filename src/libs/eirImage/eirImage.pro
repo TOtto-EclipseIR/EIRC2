@@ -1,7 +1,9 @@
-#QT -= gui ### get QImage back
+QT += gui
 
-CONFIG += c++17 console
-CONFIG -= app_bundle
+TEMPLATE = lib
+DEFINES += EIRIMAGE_LIBRARY
+
+CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -14,28 +16,31 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-
-###target = If2Console
-###depends = eirExe
-
 include(../../EIRC2.pri)
 
-LIBS *= -leirBase2
 LIBS *= -leirType2
-LIBS *= -leirExe2
-#LIBS *= -leirQtCV42
 
 SOURCES += \
-        CommandLine.cpp \
-        INDIfaceConsole.cpp \
-        main.cpp \
+    BitImage.cpp \
+    ColorImage.cpp \
+    ColorTable.cpp \
+    GreyImage.cpp \
+    Image.cpp \
+    IndexedImage.cpp \
+    eirImage.cpp \
 
 HEADERS += \
-    ../../version.h \
-    CommandLine.h \
-    INDIfaceConsole.h
+    BitImage.h \
+    ColorImage.h \
+    ColorTable.h \
+    GreyImage.h \
+    Image.h \
+    IndexedImage.h \
+    eirImage_global.h \
+    eirImage.h \
 
 # Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
+unix {
+    target.path = /usr/lib
+}
 !isEmpty(target.path): INSTALLS += target

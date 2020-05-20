@@ -1,7 +1,9 @@
+// file: {EIRC2 repo}./src/cons/If2Console/main.cpp
+
 #include <QCoreApplication>
 #include "INDIfaceConsole.h"
 
-#include "../../../../VERSION.h"
+#include "../../version.h"
 
 #include <QTimer>
 

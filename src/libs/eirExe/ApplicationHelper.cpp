@@ -11,7 +11,7 @@
 #include "BaseCommandLine.h"
 #include "Settings.h"
 
-#include "../../../VERSION.h"
+#include "../../version.h"
 
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)

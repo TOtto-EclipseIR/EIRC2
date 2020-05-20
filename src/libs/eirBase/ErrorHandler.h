@@ -9,9 +9,11 @@
 #include <QString>
 #include <QStringList>
 
-#include "MultiName.h"
-#include "VarMap.h"
-#include "Milliseconds.h"
+//#include <eirBase/MultiName.h>
+#include <eirBase/VarMap.h>
+#include <eirBase/Milliseconds.h>
+
+#include "../../libs/eirBase/MultiName.h"
 
 class EIRBASE_EXPORT ErrorHandler : public QObject
 {

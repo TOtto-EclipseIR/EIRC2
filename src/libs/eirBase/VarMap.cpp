@@ -28,6 +28,12 @@ VarMap VarMap::insert(const Var &var)
     return *this;
 }
 
+void VarMap::insert(const MultiName &key, const QVariant &var)
+{
+    Var v(key, var);
+    insert(v);
+}
+
 Var VarMap::value(const MultiName &name) const
 {
     return mVarMap.value(name.sortable());

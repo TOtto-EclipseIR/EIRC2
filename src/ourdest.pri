@@ -17,4 +17,4 @@ CONFIG(profile, debug|release|profile) {
 }
 OURDEST = $$replace(OURDEST, <ver>, $$EIRC2_VER_STRING)
 
-###message(OURDEST = $$OURDEST)
+message(OURDEST = $$OURDEST)

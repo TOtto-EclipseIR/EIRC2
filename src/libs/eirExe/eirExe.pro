@@ -1,4 +1,4 @@
-QT -= gui
+QT -= gui scxml
 
 TEMPLATE = lib
 DEFINES += EIREXE_LIBRARY
@@ -16,15 +16,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-#include(../libs.pri)
-#include(../../src.pri)
+include(../../EIRC2.pri)
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
 
+STATECHARTS += \
+    CommandLine.scxml
+
 SOURCES += \
     ApplicationHelper.cpp \
     BaseCommandLine.cpp \
+    CommandLineMachine.cpp \
+    ConfigObject.cpp \
+    Configuration.cpp \
     Console.cpp \
     FileExtension.cpp \
     FileInfoQueue.cpp \
@@ -36,6 +41,9 @@ SOURCES += \
 HEADERS += \
     ApplicationHelper.h \
     BaseCommandLine.h \
+    CommandLineMachine.h \
+    ConfigObject.h \
+    Configuration.h \
     Console.h \
     FileExtension.h \
     FileInfoQueue.h \
