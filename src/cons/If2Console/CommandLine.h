@@ -1,3 +1,4 @@
+// file: {EIRC2 repo}./crc/cons/If2Console/CommandLine.j
 #pragma once
 
 #include <QObject>
