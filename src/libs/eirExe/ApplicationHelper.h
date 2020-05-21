@@ -9,6 +9,7 @@
 
 #include <eirBase/Var.h>
 class CommandLine;
+class CommandLineClientInterface;
 class ConfigObject;
 class ErrorHandler;
 class Settings;
@@ -18,6 +19,7 @@ class EIREXE_EXPORT ApplicationHelper : public QObject
     Q_OBJECT
 public:
     explicit ApplicationHelper(QObject *parent = nullptr);
+    void set(CommandLineClientInterface const * client) const;
     QFile * tempFile(const QString &ext,
                      QObject * parent=nullptr);
     CommandLine * commandLine() const;

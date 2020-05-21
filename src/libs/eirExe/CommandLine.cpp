@@ -10,37 +10,60 @@
 
 CommandLine::CommandLine(QObject *parent)
     : QObject(parent)
-//    , cmpMachine(new CommandLineMachine(this))
     , cmExeArgumentList(QCoreApplication::arguments())
 {
+#ifdef EIRC2_IF2CONSOLE_TAKETWO23
     TRACEFN
+#else
     mParser.setOptionsAfterPositionalArgumentsMode(
                 QCommandLineParser::ParseAsOptions);
     mParser.setSingleDashWordOptionMode(
                 QCommandLineParser::ParseAsCompactedShortOptions);
-//    QTimer::singleShot(100, this, &CommandLine::setupApplicationValues);
-    QTimer::singleShot(100, this, &CommandLine::processFourthPass);
+    QTimer::singleShot(100, this, &CommandLine::setupApplicationValues);
     EMIT(constructed());
-}
-/*
-CommandLineMachine *CommandLine::machine() const
-{
-    return cmpMachine;
-}
-*/
-QFileInfoList CommandLine::positionalFileInfoList() const
-{
-    return mPositionalFileDirInfoList;
+#endif
+    QTimer::singleShot(100, this, &CommandLine::processFourthPass);
 }
 
+#ifdef EIRC2_IF2CONSOLE_TAKETWO23
 const QStringList CommandLine::exeArguments() const
 {
     return cmExeArgumentList;
 }
 
-Configuration CommandLine::configuration() const
+void CommandLine::processFourthPass()
 {
-    return mConfiguration;
+    TRACEFN
+    NEEDDO(it);
+    foreach (QString arg, cmExeArgumentList)
+    {
+        if (arg.startsWith('@'))
+            foreach (QString fileArg, readTxtFileArguments(arg))
+                mFifthPassArguments.prepend(fileArg);
+        else
+            mFifthPassArguments.append(arg);
+    }
+}
+
+void CommandLine::processFifthPass()
+{
+    TRACEFN
+    NEEDDO(it);
+    foreach (QString arg, mFifthPassArguments)
+        if (arg.startsWith('/'))
+            parseConfigArgument(arg);
+        else
+            mSixthPassArguments.append(arg);
+}
+
+void CommandLine::processSixthPass()
+{
+    TRACEFN
+    NEEDDO(it);
+    foreach (QString arg, mFifthPassArguments)
+    {
+        mPositionalFileDirInfoList << QFileInfo(arg);
+    }
 }
 
 void CommandLine::parseConfigArgument(const QString &arg)
@@ -63,6 +86,17 @@ QStringList CommandLine::readTxtFileArguments(const QString &arg)
     QString args = qba;
     newArgs = args.simplified().split(' ');
     return newArgs;
+}
+
+#else
+QFileInfoList CommandLine::positionalFileInfoList() const
+{
+    return mPositionalFileDirInfoList;
+}
+
+Configuration CommandLine::configuration() const
+{
+    return mConfiguration;
 }
 
 void CommandLine::addOption(const QCommandLineOption &option)
@@ -149,40 +183,6 @@ void CommandLine::processThirdPass()
     NEEDDO(it);
 }
 
-void CommandLine::processFourthPass()
-{
-    TRACEFN
-    NEEDDO(it);
-    foreach (QString arg, cmExeArgumentList)
-    {
-        if (arg.startsWith('@'))
-            foreach (QString fileArg, readTxtFileArguments(arg))
-                mFifthPassArguments.prepend(fileArg);
-        else
-            mFifthPassArguments.append(arg);
-    }
-}
-
-void CommandLine::processFifthPass()
-{
-    TRACEFN
-    NEEDDO(it);
-    foreach (QString arg, mFifthPassArguments)
-        if (arg.startsWith('/'))
-            parseConfigArgument(arg);
-        else
-            mSixthPassArguments.append(arg);
-}
-
-void CommandLine::processSixthPass()
-{
-    TRACEFN
-    NEEDDO(it);
-    foreach (QString arg, mFifthPassArguments)
-    {
-        mPositionalFileDirInfoList << QFileInfo(arg);
-    }
-}
 
 void CommandLine::handleAmpersandArgument(const QString &arg)
 {
@@ -218,3 +218,4 @@ void CommandLine::handlePositionalFileDir(const QString &arg)
     NEEDUSE(arg)
     TODO(If QFI.exists() append QfI else null QFI())
 }
+#endif

@@ -38,10 +38,6 @@ signals:
     void applicationInitd();
     void resoursesInitd();
     void commandLinePocessed();
-    void pendingFilesSet();
-    void fileDirsPendingNotEmpty();
-    void inputDirEmpty();
-    void inputScanned();
     void processingImage(QFileInfo qfi);
     void imageWritten(const QFileInfo qfi, QImage image);
     void imageProcessed(QFileInfo qfi);
@@ -56,15 +52,25 @@ private:
     FileInfoQueue * mpFileInfoQueue=nullptr;
 
 #else // TAKEONE
+protected slots:
     void configure(const VarPak &config);
-    QString configString(const MultiName &key) const;
     void setOutputDirs(const VarPak &config);
-    QDir outputDir(QDir baseDir, QString dirName);
     void processInputImage(const QFileInfo & inFileInfo);
-    static QImage toGrey(const QImage & inputImage);
     void scanInputDir();
     void nextImage();
 
+protected:
+    QString configString(const MultiName &key) const;
+    QDir outputDir(QDir baseDir, QString dirName);
+    static QImage toGrey(const QImage & inputImage);
+
+signals:
+    void pendingFilesSet();
+    void fileDirsPendingNotEmpty();
+    void inputDirEmpty();
+    void inputScanned();
+
+private:
     CommandLine * mpCommandLine=nullptr;
     VarPak mConfiguration;
     QDir mInputDir;

@@ -27,11 +27,13 @@ LIBS *= -leirExe2
 
 SOURCES += \
         INDIfaceConsole.cpp \
+    If2CommandLine.cpp \
         main.cpp \
 
 HEADERS += \
     ../../version.h \
-    INDIfaceConsole.h
+    INDIfaceConsole.h \
+    If2CommandLine.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
