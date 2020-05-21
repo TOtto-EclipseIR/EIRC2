@@ -14,26 +14,83 @@
 INDIfaceConsole::INDIfaceConsole(Console *parent)
     : Console(parent)
     , mpFileInfoQueue(new FileInfoQueue(parent))
+    , mpCommandLine(new CommandLine(parent))
 {
     TRACEFN
     setObjectName("INDIfaceConsole");
     TSTALLOC(mpFileInfoQueue)
-//    QTimer::singleShot(100, this, &INDIfaceConsole::initializeApplication);
+    TSTALLOC(mpCommandLine)
+    QTimer::singleShot(100, this, &INDIfaceConsole::initializeApplication);
     TRACERTV()
+}
+
+CommandLine *INDIfaceConsole::commandLine()
+{
+    TSTALLOC(mpCommandLine);
+    return mpCommandLine;
 }
 
 void INDIfaceConsole::initializeApplication()
 {
     TRACEFN
-    writeLine("Hello INDI Console from initializeApplication() at "
+    writeLine(">>>Hello INDI Console from initializeApplication() at "
                        + QDateTime::currentDateTime().toString());
-    writeLine(QString("%1 %2 from %3")
+    writeLine(QString("   %1 %2 from %3")
               .arg(core()->applicationName())
               .arg(core()->applicationVersion())
               .arg(core()->organizationName()));
-    emit applicationInitd();
+    writeLine("===Raw Executable Arguments:");
+    foreach (QString arg, commandLine()->exeArguments())
+        writeLine("---{{" + arg + "}");
+    EMIT(applicationInitd());
+    QTimer::singleShot(100, this, &INDIfaceConsole::initializeResources);
+}
+
+void INDIfaceConsole::initializeResources()
+{
+    TRACEFN
+
+    VarPak cfg(Id("QuickConfig"));
+    cfg.insert("Output/BaseDir", "/INDIface/INDIout/console/@");
+    cfg.insert("Output/Capture2Dir", "Capture2");
+    cfg.insert("Output/GreyInputDir", "GreyInput");
+    cfg.insert("Output/MarkedDetectDir", "MarkedDetect"); //+
+    cfg.insert("Output/MarkedFaceDir", "MarkedFace"); //-unmarked
+    cfg.insert("Output/FaceDetectDir", "FaceDetect"); //-marked,Width
+    cfg.insert("Output/MarkedRectangleDir", "Rectangles"); //+
+    cfg.insert("Output/MarkedCandidateDir", "Candidates"); //-Colors
+    cfg.insert("Output/HeatMapDir", "HeatMap"); //x
+//    setOutputDirs(cfg);
+
+     emit resoursesInitd();
+    QTimer::singleShot(100, this, &INDIfaceConsole::processCommandLine);
+}
+
+void INDIfaceConsole::processCommandLine()
+{
+    TRACEFN
+#if 0
+    TSTALLOC(commandLine());
+    commandLine()->addHelpOption();
+    commandLine()->addVersionOption();
+    commandLine()->addPositionalArgument(MultiName("FilesAndDirs"));
+
+    commandLine()->process();
+
+//    mPendingFileDirs = commandLine()->positionalFileInfoList();
+#endif
+    mpFileInfoQueue->append(QFileInfo(
+                QDir("/INDIface/INDIin/console"), "*.JPG"));
+    TRACE << mpFileInfoQueue->pendingCount();
+//    QTimer::singleShot(1000, this, &INDIfaceConsole::nextImage);
+//    TRACE << "emit pendingFilesSet()"; // << mPendingFiles;
+  //  emit pendingFilesSet();
+    EMIT(commandLinePocessed());
+    writeLine("Quitting.....");
+    writeErr("Quitting.....");
     QTimer::singleShot(1000, core(), &QCoreApplication::quit);
 }
+
 
 #else // TAKEONE
 void INDIfaceConsole::configure(const VarPak &config)
@@ -130,62 +187,7 @@ void INDIfaceConsole::findFFRectangles(const Region region)
     mpFFDetector->findRectangles(region);
 }
 #endif
-CommandLine *INDIfaceConsole::commandLine()
-{
-    return nullptr; // mpCommandLine;
-}
 
-void INDIfaceConsole::initializeResources()
-{
-    TRACEFN
-    TSTALLOC(mpObjdetect);
-
-    VarPak cfg(Id("QuickConfig"));
-    cfg.insert("Output/BaseDir", "/INDIface/INDIout/console/@");
-    cfg.insert("Output/Capture2Dir", "Capture2");
-    cfg.insert("Output/GreyInputDir", "GreyInput");
-    cfg.insert("Output/MarkedDetectDir", "MarkedDetect"); //+
-    cfg.insert("Output/MarkedFaceDir", "MarkedFace"); //-unmarked
-    cfg.insert("Output/FaceDetectDir", "FaceDetect"); //-marked,Width
-    cfg.insert("Output/MarkedRectangleDir", "Rectangles"); //+
-    cfg.insert("Output/MarkedCandidateDir", "Candidates"); //-Colors
-    cfg.insert("Output/HeatMapDir", "HeatMap"); //x
-    setOutputDirs(cfg);
-#if 0
-    mpFFDetector = mpObjdetect->newDetector(ObjectType::FrontalFace);
-    TSTALLOC(mpFFDetector);
-    QFileInfo detectorFile = QFileInfo(QDir("../detectors"),
-                                       "DefaultFrontalFace.xml");
-    TRACE << detectorFile.absoluteFilePath();
-    EXPECT(mpFFDetector->initialize(detectorFile, cfg));
-    WANTDO("LEDetector")
-    WANTDO("REDetector")
-#endif
-//    emit resoursesInitd();
-    QTimer::singleShot(100, this,
-                       &INDIfaceConsole::processCommandLine);
-}
-
-void INDIfaceConsole::processCommandLine()
-{
-    TRACEFN
-#if 0
-    TSTALLOC(commandLine());
-    commandLine()->addHelpOption();
-    commandLine()->addVersionOption();
-    commandLine()->addPositionalArgument(MultiName("FilesAndDirs"));
-
-    commandLine()->process();
-
-//    mPendingFileDirs = commandLine()->positionalFileInfoList();
-#endif
-    mpFileInfoQueue->append(QFileInfo(
-                QDir("/INDIface/INDIin/console"), "*.JPG"));
-    TRACE << mpFileInfoQueue->pendingCount();
-    QTimer::singleShot(1000, this, &INDIfaceConsole::nextImage);
-//    TRACE << "emit pendingFilesSet()"; // << mPendingFiles;
-  //  emit pendingFilesSet();
-}
 
 void INDIfaceConsole::setOutputDirs(const VarPak &config)
 {

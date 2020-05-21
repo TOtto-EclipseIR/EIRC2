@@ -36,9 +36,14 @@ void Var::prependName(const MultiName &groupName)
     mName.prependName(groupName);
 }
 
-QVariant Var::current() const
+QVariant Var::currentVari() const
 {
     return mCurrent;
+}
+
+QVariant Var::defaultVari() const
+{
+
 }
 
 QVariant Var::value() const
@@ -48,7 +53,8 @@ QVariant Var::value() const
 
 bool Var::operator ==(const Var &other)
 {
-    return name() == other.name() && value() == other.value();
+    return name() == other.name()
+            && value() == other.value();
 }
 
 QString Var::dumpString() const

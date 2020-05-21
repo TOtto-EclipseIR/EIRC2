@@ -23,10 +23,12 @@ public:
         const QVariant &defValue,
         const QVariant &curValue=QVariant());
     bool isNull() const;
+    bool isDefault() const;
     MultiName name() const;
     void set(const MultiName &newName);
     void prependName(const MultiName &groupName);
-    QVariant current() const;
+    QVariant currentVari() const;
+    QVariant defaultVari() const;
     QVariant value() const;
     bool operator == (const Var & other);
     QString dumpString() const;
