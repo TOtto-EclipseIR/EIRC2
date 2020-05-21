@@ -26,29 +26,29 @@ STATECHARTS += \
 
 SOURCES += \
     ApplicationHelper.cpp \
-    BaseCommandLine.cpp \
-    CommandLineMachine.cpp \
+    CommandLine.cpp \
+    CommandLineClientInterface.cpp \
     ConfigObject.cpp \
     Configuration.cpp \
     Console.cpp \
     FileExtension.cpp \
     FileInfoQueue.cpp \
+    LegacySettings.cpp \
     QQDirIterator.cpp \
-    Settings.cpp \
     StdStreams.cpp \
     eirExe.cpp
 
 HEADERS += \
     ApplicationHelper.h \
-    BaseCommandLine.h \
-    CommandLineMachine.h \
+    CommandLine.h \
+    CommandLineClientInterface.h \
     ConfigObject.h \
     Configuration.h \
     Console.h \
     FileExtension.h \
     FileInfoQueue.h \
+    LegacySettings.h \
     QQDirIterator.h \
-    Settings.h \
     StdStreams.h \
     eirExe_global.h \
     eirExe.h

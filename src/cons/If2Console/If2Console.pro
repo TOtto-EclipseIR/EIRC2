@@ -26,13 +26,11 @@ LIBS *= -leirExe2
 #LIBS *= -leirQtCV42
 
 SOURCES += \
-        CommandLine.cpp \
         INDIfaceConsole.cpp \
         main.cpp \
 
 HEADERS += \
     ../../version.h \
-    CommandLine.h \
     INDIfaceConsole.h
 
 # Default rules for deployment.

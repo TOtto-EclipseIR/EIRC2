@@ -1,3 +1,4 @@
+// file: {repo: EIRC2}./src/libs/eirExe/QQDirIterator.cpp
 #include "QQDirIterator.h"
 
 #include <eirBase/Debug.h>

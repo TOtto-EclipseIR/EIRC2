@@ -1,35 +1,36 @@
+// file: {repo: EIRC2}./src/cons/INDIfaceConsole.cpp
 #include "INDIfaceConsole.h"
 
 #include <QDateTime>
 #include <QTimer>
 
 #include <eirBase/Debug.h>
-#include <eirExe/BaseCommandLine.h>
+#include <eirExe/CommandLine.h>
 #include <eirExe/FileInfoQueue.h>
-#include <eirExe/Settings.h>
+#include <eirExe/LegacySettings.h>
 
-#include "CommandLine.h"
+//#include "CommandLine.h"
 
 #ifdef EIRC2_IF2CONSOLE_TAKETWO23
 INDIfaceConsole::INDIfaceConsole(Console *parent)
     : Console(parent)
     , mpFileInfoQueue(new FileInfoQueue(parent))
-    , mpCommandLine(new CommandLine(parent))
+//    , mpCommandLine(new CommandLine(parent))
 {
     TRACEFN
     setObjectName("INDIfaceConsole");
     TSTALLOC(mpFileInfoQueue)
-    TSTALLOC(mpCommandLine)
+    //TSTALLOC(mpCommandLine)
     QTimer::singleShot(100, this, &INDIfaceConsole::initializeApplication);
     TRACERTV()
 }
-
+/*
 CommandLine *INDIfaceConsole::commandLine()
 {
     TSTALLOC(mpCommandLine);
     return mpCommandLine;
 }
-
+*/
 void INDIfaceConsole::initializeApplication()
 {
     TRACEFN
@@ -40,8 +41,8 @@ void INDIfaceConsole::initializeApplication()
               .arg(core()->applicationVersion())
               .arg(core()->organizationName()));
     writeLine("===Raw Executable Arguments:");
-    foreach (QString arg, commandLine()->exeArguments())
-        writeLine("---{{" + arg + "}");
+//    foreach (QString arg, commandLine()->exeArguments())
+  //      writeLine("---{{" + arg + "}");
     EMIT(applicationInitd());
     QTimer::singleShot(100, this, &INDIfaceConsole::initializeResources);
 }

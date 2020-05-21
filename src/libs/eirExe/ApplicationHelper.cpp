@@ -8,8 +8,8 @@
 #include <eirBase/Milliseconds.h>
 //#include <eirBase/Uid.h>
 
-#include "BaseCommandLine.h"
-#include "Settings.h"
+#include "CommandLine.h"
+#include "LegacySettings.h"
 
 #include "../../version.h"
 
@@ -39,7 +39,7 @@ QFile *ApplicationHelper::tempFile(const QString &ext,
     return f;
 }
 
-BaseCommandLine *ApplicationHelper::commandLine() const
+CommandLine *ApplicationHelper::commandLine() const
 {
 
 }

@@ -1,3 +1,4 @@
+// file: {repo: EIRC2}./src/libs/eirExe/QQDirIterator.h
 #pragma once
 
 #include <QDirIterator>

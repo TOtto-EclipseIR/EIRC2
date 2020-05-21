@@ -54,7 +54,6 @@ private:
 
 private:
     FileInfoQueue * mpFileInfoQueue=nullptr;
-    CommandLine * mpCommandLine=nullptr;
 
 #else // TAKEONE
     void configure(const VarPak &config);
@@ -63,9 +62,10 @@ private:
     QDir outputDir(QDir baseDir, QString dirName);
     void processInputImage(const QFileInfo & inFileInfo);
     static QImage toGrey(const QImage & inputImage);
-
     void scanInputDir();
     void nextImage();
+
+    CommandLine * mpCommandLine=nullptr;
     VarPak mConfiguration;
     QDir mInputDir;
     QDir mBaseDir;

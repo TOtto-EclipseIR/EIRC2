@@ -1,104 +1,220 @@
-// file: {repo: EIRC2}./src/libs/eirExe/CommandLine.cpp
+// file: {EIRC2 repo}/./src/libs/eirExe/CommandLine.cpp
 #include "CommandLine.h"
 
-#include <QFileInfo>
-#include <QStringList>
+#include <QCoreApplication>
+#include <QTimer>
 
 #include <eirBase/Debug.h>
 
+//#include "CommandLineMachine.h"
 
 CommandLine::CommandLine(QObject *parent)
     : QObject(parent)
-    , cmExeArguments(qApp->arguments())
+//    , cmpMachine(new CommandLineMachine(this))
+    , cmExeArgumentList(QCoreApplication::arguments())
 {
-    TRACEQFI << cmExeArguments;
-    setObjectName("CommandLine");
-}
-
-QString CommandLine::orgName() const
-{
-    return  mOrgName;
-}
-
-QString CommandLine::appName() const
-{
-    return mAppName;
-}
-
-void CommandLine::loadFromFile(const QFileInfo qfi)
-{
-    TRACEQFI << qfi;
-    NEEDDO(it)
-}
-
-void CommandLine::loadFromUrl(const QUrl url)
-{
-    TRACEQFI << url;
-    WANTDO(it)
-}
-
-QFileInfoList CommandLine::fileArgumentInfoList() const
-{
-    TRACEQFI << "mArgumentsInfo.size()" << mFileArgumentsInfo.size();
-    return mFileArgumentsInfo;
+    TRACEFN
+    mParser.setOptionsAfterPositionalArgumentsMode(
+                QCommandLineParser::ParseAsOptions);
+    mParser.setSingleDashWordOptionMode(
+                QCommandLineParser::ParseAsCompactedShortOptions);
+//    QTimer::singleShot(100, this, &CommandLine::setupApplicationValues);
+    QTimer::singleShot(100, this, &CommandLine::processFourthPass);
+    EMIT(constructed());
 }
 /*
-void CommandLine::addArg(const BasicName argName,
-                         const QString argDesc,
-                         const QString syntax)
+CommandLineMachine *CommandLine::machine() const
 {
-    TRACEQFI << argName() << argDesc << syntax;
-    mPositionalArguments.append(argName);
+    return cmpMachine;
 }
 */
+QFileInfoList CommandLine::positionalFileInfoList() const
+{
+    return mPositionalFileDirInfoList;
+}
+
+const QStringList CommandLine::exeArguments() const
+{
+    return cmExeArgumentList;
+}
+
+Configuration CommandLine::configuration() const
+{
+    return mConfiguration;
+}
+
+void CommandLine::parseConfigArgument(const QString &arg)
+{
+    QStringList qsl = arg.split('=');
+    MultiName key = qsl[0].mid(1);
+    if (qsl.size() > 1)
+        mConfiguration.insert(key, QVariant(qsl[1]));
+    else
+        mConfiguration.insert(key, QVariant(true));
+
+}
+
+QStringList CommandLine::readTxtFileArguments(const QString &arg)
+{
+    QStringList newArgs;
+    QFile file(arg, this);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray qba = file.readAll();
+    QString args = qba;
+    newArgs = args.simplified().split(' ');
+    return newArgs;
+}
+
+void CommandLine::addOption(const QCommandLineOption &option)
+{
+    TRACEQFI << option.names();
+    mParser.addOption(option);
+    EMIT(optionSet(option.names().first()));
+}
+
+void CommandLine::addPositionalArgument(const MultiName &name,
+                                            const QString &desc,
+                                            const QString &syntax)
+{
+    TRACEQFI << name();
+    mParser.addPositionalArgument(name(), desc, syntax);
+}
+
+void CommandLine::noHelpOption()
+{
+    TRACEFN
+    mOptions.setFlag(DisableHelp);
+    EMIT(optionSet(helpOptionName));
+}
+
+void CommandLine::noVersionOption()
+{
+    TRACEFN
+    mOptions.setFlag(DisableVersion);
+    EMIT(optionSet(versionOptionName));
+}
+
+CommandLine::Options &CommandLine::rwrefOptions()
+{
+    TRACEFN
+    WARN << "Writable";
+    return mOptions;
+}
+
+void CommandLine::setupApplicationValues()
+{
+    TRACEFN
+    NEEDDO(OrgName AppName)
+    NEEDDO(setupApplicationValues)
+    NEEDDO(const MultiName cmAhoValueKey)
+}
+
+void CommandLine::setupSettings()
+{
+    TRACEFN
+    NEEDDO(setupSettings);
+}
+
+void CommandLine::setupArguments()
+{
+    TRACEFN
+    NEEDDO(setupArguments);
+}
+
+
 void CommandLine::process()
 {
-    TRACEQFI << qApp->arguments();
-/*
-    mExeFileInfo.setFile(cmArguments.first());
-    mArgIndex = 1;
-    if (cmArguments.size() > mArgIndex)
-        mFirstArgument = cmArguments.at(mArgIndex++);
-    process();
-    emit processComplete();
-*/
-    WANTDO(Parser::parse())
-    mParsedArguments = cmExeArguments;
-    mExeFileInfo = QFileInfo(mParsedArguments.takeFirst());
-    foreach (QString arg, mParsedArguments)
-    {
-        if (arg.startsWith(QChar('%'))
-                 || arg.startsWith('_'))
-        {
-            int x = arg.indexOf(QChar('/'));
-            if (x < 0)
-                mAppName = arg.mid(1);
-            else
-            {
-                mOrgName = arg.mid(1, x-1);
-                mAppName = arg.mid(x+1);
-            }
-        }
-        else
-        {
-            mPositionalArguments << arg;
-            QFileInfo qfi(arg);
-            if (qfi.isFile() || qfi.isDir())
-                mFileArgumentsInfo << qfi;
-            else
-                mFileArgumentsInfo << QString();
-        }
-    }
+    TRACEFN
+    EMIT(processingStarted());
+    setupApplicationValues();
+    setupSettings();
+    setup();
+    processSecondPass();
+    processThirdPass();
+    processFourthPass();
+    EMIT(processingFinished());
+}
 
-    if (mOrgName.notEmpty())
-        qApp->setOrganizationName(mOrgName);
-    if (mAppName.notEmpty())
-        qApp->setApplicationName(mAppName);
-            /*
-    TODO("MS02~03 mSettings");
-    while (mArgIndex < qApp->arguments().size())
-        mFileArgumentsInfo << QFileInfo(qApp->arguments()
-                                    .at(mArgIndex++));
-*/
-    TRACE << mFileArgumentsInfo;
+
+void CommandLine::processSecondPass()
+{
+    TRACEFN
+    mParser.process(cmExeArgumentList);
+    mThirdPassArguments = mParser.positionalArguments();
+}
+
+void CommandLine::processThirdPass()
+{
+    TRACEFN
+    NEEDDO(it);
+}
+
+void CommandLine::processFourthPass()
+{
+    TRACEFN
+    NEEDDO(it);
+    foreach (QString arg, cmExeArgumentList)
+    {
+        if (arg.startsWith('@'))
+            foreach (QString fileArg, readTxtFileArguments(arg))
+                mFifthPassArguments.prepend(fileArg);
+        else
+            mFifthPassArguments.append(arg);
+    }
+}
+
+void CommandLine::processFifthPass()
+{
+    TRACEFN
+    NEEDDO(it);
+    foreach (QString arg, mFifthPassArguments)
+        if (arg.startsWith('/'))
+            parseConfigArgument(arg);
+        else
+            mSixthPassArguments.append(arg);
+}
+
+void CommandLine::processSixthPass()
+{
+    TRACEFN
+    NEEDDO(it);
+    foreach (QString arg, mFifthPassArguments)
+    {
+        mPositionalFileDirInfoList << QFileInfo(arg);
+    }
+}
+
+void CommandLine::handleAmpersandArgument(const QString &arg)
+{
+    TRACEFN
+    NEEDDO(it);
+    NEEDUSE(arg)
+}
+
+void CommandLine::handleBangArgument(const QString &arg)
+{
+    TRACEFN
+    NEEDDO(it);
+    NEEDUSE(arg)
+}
+
+void CommandLine::handlePercentArgument(const QString &arg)
+{
+    TRACEFN
+    NEEDDO(it);
+    NEEDUSE(arg)
+}
+
+void CommandLine::handlePositionalArguments()
+{
+    TRACEFN
+    NEEDDO(it);
+}
+
+void CommandLine::handlePositionalFileDir(const QString &arg)
+{
+    TRACEFN
+    NEEDDO(it);
+    NEEDUSE(arg)
+    TODO(If QFI.exists() append QfI else null QFI())
 }
