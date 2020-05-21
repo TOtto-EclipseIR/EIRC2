@@ -24,7 +24,8 @@ public:
     void set(const int index, const Var &listItem);
     void append(const Var &listItem);
     void insert(const Var &mapItem);
-    void insert(const MultiName &key, const QVariant &value);
+    void insert(const MultiName &key,
+                const QVariant &value);
     Var &at(const MultiName &name);
     Var var(const MultiName &name) const;
     QVariant value(const MultiName &name) const;

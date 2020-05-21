@@ -16,7 +16,7 @@ class EIREXE_EXPORT Console : public ApplicationHelper
     Q_OBJECT
 public:
     explicit Console(QObject *parent = nullptr);
-    BaseCommandLine * commandLine();
+//    BaseCommandLine * commandLine();
     QCoreApplication * core();
 
 public slots:

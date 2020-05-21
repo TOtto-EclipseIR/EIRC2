@@ -8,8 +8,8 @@
 #include <QTemporaryDir>
 
 #include <eirBase/Var.h>
-//#include "../EIRC2/src/libs/eirBase/Var.h"
 class BaseCommandLine;
+class ConfigObject;
 class ErrorHandler;
 class Settings;
 
@@ -20,8 +20,8 @@ public:
     explicit ApplicationHelper(QObject *parent = nullptr);
     QFile * tempFile(const QString &ext,
                      QObject * parent=nullptr);
-    BaseCommandLine * commandLine(void);
-
+    BaseCommandLine * commandLine() const;
+    ConfigObject *config() const;
 
 public slots:
     void run();

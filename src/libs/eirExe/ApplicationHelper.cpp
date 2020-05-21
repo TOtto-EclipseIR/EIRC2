@@ -39,6 +39,16 @@ QFile *ApplicationHelper::tempFile(const QString &ext,
     return f;
 }
 
+BaseCommandLine *ApplicationHelper::commandLine() const
+{
+
+}
+
+ConfigObject *ApplicationHelper::config() const
+{
+
+}
+
 void ApplicationHelper::run()
 {
     TRACEFN
