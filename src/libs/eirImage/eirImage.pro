@@ -27,8 +27,12 @@ SOURCES += \
     ColorTable.cpp \
     GreyImage.cpp \
     Image.cpp \
-    ImageFileQueueManager.cpp \
+    ImageDirectoryQueue.cpp \
+    ImageQueueManager.cpp \
+    ImageFlags.cpp \
     ImageQueueObject.cpp \
+    ImageReaderQueue.cpp \
+    ImageWriterQueue.cpp \
     IndexedImage.cpp \
     eirImage.cpp \
 
@@ -39,8 +43,12 @@ HEADERS += \
     ColorTable.h \
     GreyImage.h \
     Image.h \
-    ImageFileQueueManager.h \
+    ImageDirectoryQueue.h \
+    ImageQueueManager.h \
+    ImageFlags.h \
     ImageQueueObject.h \
+    ImageReaderQueue.h \
+    ImageWriterQueue.h \
     IndexedImage.h \
     eirImage_global.h \
     eirImage.h \

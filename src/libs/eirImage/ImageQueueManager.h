@@ -13,14 +13,14 @@ class ImageWriterQueue;
 class ImageReaderQueue;
 class ImageDirectoryQueue;
 
-class ImageFileQueueManager : public QObject
+class ImageQueueManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit ImageFileQueueManager(QObject *parent = nullptr);
-    ImageWriterQueue * newWriterQueue(const QFileInfo &fileInfo);
-    ImageReaderQueue * newReaderQueue(const QFileInfo &fileInfo);
-    ImageDirectoryQueue * newDirectoryQueue(const QFileInfo &fileInfo);
+    explicit ImageQueueManager(QObject *parent = nullptr);
+    ImageWriterQueue *newWriterQueue(const QFileInfo &fileInfo);
+    ImageReaderQueue *newReaderQueue(const QFileInfo &fileInfo);
+    ImageDirectoryQueue *newDirectoryQueue(const QFileInfo &fileInfo);
 
 signals:
 

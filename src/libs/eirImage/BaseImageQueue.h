@@ -2,6 +2,7 @@
 #pragma once
 #include "eirImage.h"
 
+#include <QDir>
 #include <QFileInfo>
 #include <QImage>
 #include <QQueue>
@@ -13,11 +14,11 @@ class ImageQueueObject;
 class EIRIMAGE_EXPORT BaseImageQueue
 {
 public:
-    BaseImageQueue(const QFileInfo &fileInfo,
-                   ImageQueueObject *imageQueueObject);
+    BaseImageQueue(ImageQueueObject *imageQueueObject=nullptr);
     ImageQueueObject *queueObject();
 
 protected: // functions
+    void setInputDir(const QDir &dir);
     bool isEmpty() const;
     int size() const;
     void contains(const QFileInfo &fileInfo) const;
@@ -32,13 +33,9 @@ protected: // functions
     void enqueue(const QFileInfo &fileInfo,
                  const QImage &image);
 
-public slots:
-
-protected slots:
-
 protected: // data
-    const QFileInfo cmFileInfo;
     ImageQueueObject * mpQueueObject;
+    QDir mInputDir;
     QQueue<QFileInfo> mFileInfoQueue;
     QMap<QFileInfo, QImage> mFileInfoImageMap;
 

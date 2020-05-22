@@ -1,4 +1,4 @@
-//! \file BaseImageQueue.h
+//! \file Flags.h
 #pragma once
 #include "eirType.h"
 

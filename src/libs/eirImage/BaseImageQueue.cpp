@@ -1,11 +1,15 @@
+//! \file BaseImageQueue.cpp
+
 #include "BaseImageQueue.h"
 
 #include <eirBase/Debug.h>
 
-BaseImageQueue::BaseImageQueue(const QFileInfo &fileInfo,
-                        ImageQueueObject *imageQueueObject)
-    : cmFileInfo(fileInfo)
-    , mpQueueObject(imageQueueObject)
+#include "ImageQueueObject.h"
+
+BaseImageQueue::BaseImageQueue(ImageQueueObject *imageQueueObject)
+    : mpQueueObject(imageQueueObject
+                    ? imageQueueObject
+                    : new ImageQueueObject())
 {
     TRACEFN
 }
@@ -13,4 +17,10 @@ BaseImageQueue::BaseImageQueue(const QFileInfo &fileInfo,
 ImageQueueObject *BaseImageQueue::queueObject()
 {
     return mpQueueObject;
+}
+
+void BaseImageQueue::setInputDir(const QDir &dir)
+{
+    TRACEQFI << dir;
+    mInputDir = dir;
 }

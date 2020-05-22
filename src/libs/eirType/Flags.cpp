@@ -1,3 +1,4 @@
+//! \file Flags.cpp
 #include "Flags.h"
 
 #include <eirBase/Debug.h>
