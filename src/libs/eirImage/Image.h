@@ -1,4 +1,4 @@
-// file:{EIRC2 repo}./src/libs/eirImage/Image.h
+//! \file Image.h
 #pragma once
 #include "eirImage.h"
 
@@ -21,7 +21,7 @@ public:
           =QImage::Format_Invalid);
     Image(const QImage &image,
           const QImage::Format newFormat
-          =QImage::Format_Invalid);
+            =QImage::Format_Invalid);
     QImage constImage() const;
     QImage &image();
     Option constOptions() const;

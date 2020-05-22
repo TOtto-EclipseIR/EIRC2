@@ -1,3 +1,4 @@
+//! \file FileInfoQueue.h
 #pragma once
 #include "eirExe.h"
 

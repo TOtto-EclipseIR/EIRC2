@@ -1,8 +1,10 @@
+//! \file BasicName.h
 #pragma once
 #include "eirBase.h"
 
 #include <QByteArray>
 #include <QList>
+#include <QMap>
 #include <QString>
 #include <QVariant>
 

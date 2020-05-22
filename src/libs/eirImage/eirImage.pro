@@ -21,20 +21,26 @@ include(../../EIRC2.pri)
 LIBS *= -leirType2
 
 SOURCES += \
+    BaseImageQueue.cpp \
     BitImage.cpp \
     ColorImage.cpp \
     ColorTable.cpp \
     GreyImage.cpp \
     Image.cpp \
+    ImageFileQueueManager.cpp \
+    ImageQueueObject.cpp \
     IndexedImage.cpp \
     eirImage.cpp \
 
 HEADERS += \
+    BaseImageQueue.h \
     BitImage.h \
     ColorImage.h \
     ColorTable.h \
     GreyImage.h \
     Image.h \
+    ImageFileQueueManager.h \
+    ImageQueueObject.h \
     IndexedImage.h \
     eirImage_global.h \
     eirImage.h \
