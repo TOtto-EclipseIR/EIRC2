@@ -34,6 +34,7 @@ public:
 
 public slots:
     void process();
+    void expandDirectories(const int recurseDepth=-1);
 
 signals:
     void constructed(void);
@@ -52,6 +53,9 @@ protected:
                              const MultiName &prefix=MultiName());
     QStringList readTxtFileArguments(const QFileInfo &argFileInfo);
     void setFileInfoArgs();
+
+private slots:
+    void dumpPositionalArgs() const;
 
 private:
     const QStringList cmExeArgumentList;

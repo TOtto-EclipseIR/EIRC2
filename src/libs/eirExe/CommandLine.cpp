@@ -6,6 +6,7 @@
 #include <QTimer>
 
 #include <eirBase/Debug.h>
+#include <eirType/QQFileInfo.h>
 
 #include "CommandLineClientInterface.h"
 
@@ -66,6 +67,37 @@ void CommandLine::process()
                 << ((qfi.exists()) ? qfi : QFileInfo());
     }
 }
+
+void CommandLine::expandDirectories(const int recurseDepth)
+{
+    TRACEQFI << "recurseDepth:" << recurseDepth;
+    dumpPositionalArgs();
+    WANTUSE(recurseDepth)
+    WARN << "Only recurseDepth=1 for  now";
+
+    QStringList expandedArgs;
+    QFileInfoList expandedInfo;
+    foreach (QQFileInfo fileInfoIn, mPositionalFileDirInfoList)
+    {
+        QString argIn = mPositionalArgumentList.takeFirst();
+        if (fileInfoIn.isNull() ||  ! fileInfoIn.isDir())
+        {
+            expandedArgs << argIn;
+            expandedInfo << fileInfoIn;
+            continue;
+        }
+        WEXPECT(fileInfoIn.isDir());
+        QFileInfoList insertInfoList
+            =  fileInfoIn.dir().entryInfoList(QDir::Files);
+        foreach (QFileInfo insertInfo, insertInfoList)
+            expandedArgs << insertInfo.absoluteFilePath();
+        expandedInfo << insertInfoList;
+    }
+
+    TRACEQFI << "Output Files:";
+    dumpPositionalArgs();
+}
+
 
 QStringList CommandLine::expandFileArguments(const QStringList arguments,
                                              const QChar trigger)
@@ -159,6 +191,15 @@ QStringList CommandLine::readTxtFileArguments(const QFileInfo &argFileInfo)
 void CommandLine::setFileInfoArgs()
 {
     NEEDDO(foreach qfi isValid << qfi ! QFI())
+}
+
+void CommandLine::dumpPositionalArgs() const
+{
+    DUMP << "eirExe : CommandLine PositionalArgs";
+    int nArgs = qMin(mPositionalArgumentList.size(), mPositionalFileDirInfoList.size());
+    for (int index=0; index < nArgs; ++index)
+        DUMP << index << mPositionalArgumentList[index]
+                << mPositionalFileDirInfoList[index].absolutePath();
 }
 
 

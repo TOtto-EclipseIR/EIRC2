@@ -23,6 +23,7 @@ LIBS *= -leirBase2
 SOURCES += \
     Enumeration.cpp \
     Flags.cpp \
+    QQFileInfo.cpp \
     QQRect.cpp \
     QQRectF.cpp \
     QQRectList.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     NamedArray.h \
     NamedEnum.h \
     NamedMap.h \
+    QQFileInfo.h \
     QQRect.h \
     QQRectF.h \
     QQRectList.h \
