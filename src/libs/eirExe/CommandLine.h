@@ -8,6 +8,7 @@
 #include <QCommandLineOption>
 #include <QFileInfoList>
 #include <QStateMachine>
+class QCommandLineParser;
 
 #include <eirBase/MultiName.h>
 #include <eirBase/Var.h>
@@ -15,6 +16,8 @@
 #include <eirType/Sortable.h>
 
 #include "Configuration.h"
+class CommandLineClientInterface;
+class LegacySettings;
 
 #include "../../version.h"
 
@@ -22,8 +25,46 @@ class EIREXE_EXPORT CommandLine : public QObject
 {
     Q_OBJECT
 public:
+    explicit CommandLine(QObject *parent = nullptr);
+    void set(CommandLineClientInterface * interface);
+    QStringList positionalArgumentList() const;
+    QFileInfoList positionalFileInfoList() const;
+    const QStringList exeArguments() const;
+    Configuration configuration() const;
+
+public slots:
+    void process();
+
+signals:
+    void constructed(void);
+
+protected:
+    // processiing
+    QStringList expandFileArguments(const QStringList qsl,
+                                    const QChar trigger=QChar('@'));
+    QStringList extractDirectiveArguments(const QStringList &currentArgs);
+    QStringList parseQtOptions(const QStringList &currentArgs);
+    QStringList stripConfiguration(const QStringList &expandedArgs,
+                                   const MultiName &prefix=MultiName(),
+                                   const QChar &trigger=QChar('/'));
+    // utility
+    void parseConfigArgument(const QString &arg,
+                             const MultiName &prefix=MultiName());
+    QStringList readTxtFileArguments(const QFileInfo &argFileInfo);
+    void setFileInfoArgs();
+
+private:
+    const QStringList cmExeArgumentList;
+    QFileInfo mExeFileInfo;
+    CommandLineClientInterface * mpInterface=nullptr;
+    LegacySettings * mpLegacySettings=nullptr;
+    QStringList mPositionalArgumentList;
+    QFileInfoList mPositionalFileDirInfoList;
+    Configuration mConfiguration;
+
 #ifdef EIRC2_IF2CONSOLE_TAKETWO23
 #else
+public:
     enum Option
     {
         NullOptions = 0,
@@ -38,24 +79,7 @@ public:
 
     }; // enum Option
     Q_DECLARE_FLAGS(Options, Option);
-#endif
-#ifdef EIRC2_IF2CONSOLE_TAKETWO23
-public:
-    explicit CommandLine(QObject *parent = nullptr);
-    QFileInfoList positionalFileInfoList() const;
-    const QStringList exeArguments() const;
-    Configuration configuration() const;
 
-protected:
-    void parseConfigArgument(const QString &arg);
-    QStringList readTxtFileArguments(const QString &arg);
-
-protected slots:
-    void processFourthPass();
-    void processFifthPass();
-    void processSixthPass();
-
-#else
     CommandLineMachine * machine() const;
 
 public slots:
@@ -74,6 +98,10 @@ public slots:
     void process();
 
 protected slots:
+protected slots:
+    void processFourthPass();
+    void processFifthPass();
+    void processSixthPass();
     void processSecondPass();
     void processThirdPass();
     virtual void setup() = 0;
@@ -97,20 +125,11 @@ signals:
 public:
     const MultiName helpOptionName=MultiName("QtOption/Help");
     const MultiName versionOptionName=MultiName("QtOption/Version");
-#endif
-    //    CommandLineMachine * const cmpMachine=nullptr;
-#ifdef EIRC2_IF2CONSOLE_TAKETWO23
-private:
-    // inputs
-    const QStringList cmExeArgumentList;
-    QStringList mFifthPassArguments;
-    QStringList mSixthPassArguments;
-    QFileInfoList mPositionalFileDirInfoList;
-    Configuration mConfiguration;
-#else
     Options mOptions=0;
     // processing
     QStringList mThirdPassArguments;
+    QStringList mFifthPassArguments;
+    QStringList mSixthPassArguments;
     QCommandLineParser mParser;
     QString mOrgName;
     QString mAppName;

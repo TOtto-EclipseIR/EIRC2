@@ -39,3 +39,10 @@ HEADERS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    ../../../../../../INDIface/detectors/Detectors.xml \
+    DetectCascades.txt \
+    DetectRD.txt \
+    Input01.txt \
+    OutputRD.txt \

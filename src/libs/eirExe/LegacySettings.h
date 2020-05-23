@@ -11,11 +11,11 @@
 
 class ApplicationHelper;
 
-class EIREXE_EXPORT Settings : protected QSettings
+class EIREXE_EXPORT LegacySettings : protected QSettings
 {
     Q_OBJECT
 public:
-    explicit Settings(ApplicationHelper *parent);
+    explicit LegacySettings(ApplicationHelper *parent);
     ApplicationHelper * helper();
     void set(const MultiName &key,
              const QVariant &value);

@@ -65,8 +65,8 @@ void FileInfoQueue::cancelPending()
 
 void FileInfoQueue::append(const QFileInfo &fileInfo)
 {
-#if 1
     TRACEFN
+#if 0
     WANTUSE(fileInfo)
     QDir inDir("/INDIface/INDIin/console");
     QFileInfoList files = inDir
@@ -95,7 +95,6 @@ void FileInfoQueue::processIncoming()
 {
     TRACEFN
     // Change mPendingFull status as necessary
-#if 0
     if (mPendingFull
             && pendingCount() < mMaxPending - (mMaxPending >> 2))
     {
@@ -113,14 +112,8 @@ void FileInfoQueue::processIncoming()
                            &FileInfoQueue::processIncoming);
         return;
     }
-#endif
-    // More on this incoming directory?
-    //if ()
-
-
     // Take next from incoming
-//    QFileInfo qfi = mIncomingQueue.dequeue();
-    QFileInfo qfi = QFileInfo(QDir("/INDIface/INDIin/console/"),"");
+    QFileInfo qfi = mIncomingQueue.dequeue();
     TRACE << "emit" << "incomingTaken(qfi)" << qfi;
     emit incomingTaken(qfi);
     if (qfi.isFile())

@@ -2,35 +2,168 @@
 #include "CommandLine.h"
 
 #include <QCoreApplication>
+#include <QDir>
 #include <QTimer>
 
 #include <eirBase/Debug.h>
 
-//#include "CommandLineMachine.h"
+#include "CommandLineClientInterface.h"
 
 CommandLine::CommandLine(QObject *parent)
     : QObject(parent)
     , cmExeArgumentList(QCoreApplication::arguments())
 {
-#ifdef EIRC2_IF2CONSOLE_TAKETWO23
     TRACEFN
-#else
-    mParser.setOptionsAfterPositionalArgumentsMode(
-                QCommandLineParser::ParseAsOptions);
-    mParser.setSingleDashWordOptionMode(
-                QCommandLineParser::ParseAsCompactedShortOptions);
-    QTimer::singleShot(100, this, &CommandLine::setupApplicationValues);
+    setObjectName("CommandLine");
     EMIT(constructed());
-#endif
-    QTimer::singleShot(100, this, &CommandLine::processFourthPass);
 }
 
-#ifdef EIRC2_IF2CONSOLE_TAKETWO23
+void CommandLine::set(CommandLineClientInterface *interface)
+{
+    TRACEFN
+            mpInterface = interface;
+}
+
+QStringList CommandLine::positionalArgumentList() const
+{
+    return mPositionalArgumentList;
+}
+
+QFileInfoList CommandLine::positionalFileInfoList() const
+{
+    return mPositionalFileDirInfoList;
+}
+
 const QStringList CommandLine::exeArguments() const
 {
     return cmExeArgumentList;
 }
 
+void CommandLine::process()
+{
+    TRACEQFI << "ExeArgs:" << cmExeArgumentList;
+    QStringList arguments;
+    mExeFileInfo = QFileInfo(cmExeArgumentList.first());
+    arguments = expandFileArguments(cmExeArgumentList.mid(1), '@');
+    TRACE << "Expanded:" << arguments;
+    arguments = stripConfiguration(arguments);
+    TRACE << "Configuration:";
+    mConfiguration.dump();
+    TRACE << "Post Configuration:" << arguments;
+    arguments = extractDirectiveArguments(arguments);
+    TRACE << "Post Extract:" << arguments;
+    if (mpInterface) arguments = parseQtOptions(arguments);
+    TRACE << "virtual setup() complete";
+
+    TODO(?)
+    mPositionalArgumentList = arguments;
+    TRACE << "PosArgs:" << mPositionalArgumentList;
+    mPositionalFileDirInfoList.clear();
+    foreach (QString arg, mPositionalArgumentList)
+    {
+        QFileInfo qfi(arg);
+        mPositionalFileDirInfoList
+                << ((qfi.exists()) ? qfi : QFileInfo());
+    }
+}
+
+QStringList CommandLine::expandFileArguments(const QStringList arguments,
+                                             const QChar trigger)
+{
+    TRACEQFI << arguments;
+    QStringList expanded;
+    foreach (QString arg, arguments)
+    {
+        if (arg.startsWith(trigger))
+        {
+            QFileInfo argFileInfo(arg.mid(1));
+            TRACE << "Expanding" << argFileInfo.absoluteFilePath();
+            TEXPECT(argFileInfo.exists());
+            TEXPECT(argFileInfo.isReadable());
+            TEXPECT(argFileInfo.isFile());
+            expanded << readTxtFileArguments(argFileInfo);
+        }
+        else
+        {
+            expanded << arg;
+        }
+        TRACE << expanded;
+    }
+    return expanded;
+}
+
+QStringList CommandLine::extractDirectiveArguments(
+        const QStringList &currentArgs)
+{
+    TRACEQFI << currentArgs;
+    TODO(it)
+    return currentArgs;
+}
+
+QStringList CommandLine::parseQtOptions(
+        const QStringList &currentArgs)
+{
+    QCommandLineParser parser;
+
+    mpInterface->setup(&parser);
+
+    NEEDDO(Extract from parser)
+
+            return currentArgs;
+}
+
+QStringList CommandLine::stripConfiguration(const QStringList &expandedArgs,
+                                            const MultiName &prefix,
+                                            const QChar &trigger)
+{
+    TRACEQFI << expandedArgs << prefix() << trigger;
+    QStringList remainingArgs;
+    foreach (QString arg, expandedArgs)
+        if (arg.startsWith(trigger))
+            parseConfigArgument(arg, prefix);
+        else
+            remainingArgs << arg;
+    return remainingArgs;
+}
+
+
+void CommandLine::parseConfigArgument(const QString &arg,
+                                      const MultiName &prefix)
+{
+    QStringList qsl = arg.split('=');
+    MultiName key = qsl[0].mid(1);
+    key.prependName(prefix);
+    mConfiguration.insert(key,
+        (qsl.size() > 1) ? QVariant(qsl[1]) : QVariant(true));
+}
+
+QStringList CommandLine::readTxtFileArguments(const QFileInfo &argFileInfo)
+{
+    TRACEQFI << argFileInfo.absoluteFilePath();
+    QStringList newArgs;
+    QFile file(argFileInfo.absoluteFilePath(), this);
+    WEXPECT(file.open(QIODevice::ReadOnly | QIODevice::Text))
+    WEXPECT(file.exists() && file.isReadable())
+    while ( ! file.atEnd())
+    {
+        QByteArray fileLine = file.readLine().simplified();
+        TRACE << "fileLine: {>" << fileLine << "<}";
+        if (fileLine.isEmpty() || fileLine.startsWith('#'))
+            continue;
+        newArgs << fileLine;
+    }
+    TRACE << file.fileName() << "newArgs" << newArgs;
+    return newArgs;
+}
+
+void CommandLine::setFileInfoArgs()
+{
+    NEEDDO(foreach qfi isValid << qfi ! QFI())
+}
+
+
+#ifdef EIRC2_IF2CONSOLE_TAKETWO23
+#else
 void CommandLine::processFourthPass()
 {
     TRACEFN
@@ -66,29 +199,6 @@ void CommandLine::processSixthPass()
     }
 }
 
-void CommandLine::parseConfigArgument(const QString &arg)
-{
-    QStringList qsl = arg.split('=');
-    MultiName key = qsl[0].mid(1);
-    if (qsl.size() > 1)
-        mConfiguration.insert(key, QVariant(qsl[1]));
-    else
-        mConfiguration.insert(key, QVariant(true));
-
-}
-
-QStringList CommandLine::readTxtFileArguments(const QString &arg)
-{
-    QStringList newArgs;
-    QFile file(arg, this);
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-    QByteArray qba = file.readAll();
-    QString args = qba;
-    newArgs = args.simplified().split(' ');
-    return newArgs;
-}
-
-#else
 QFileInfoList CommandLine::positionalFileInfoList() const
 {
     return mPositionalFileDirInfoList;

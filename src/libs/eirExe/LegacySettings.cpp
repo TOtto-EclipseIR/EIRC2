@@ -7,7 +7,7 @@
 
 #include "ApplicationHelper.h"
 
-Settings::Settings(ApplicationHelper *parent)
+LegacySettings::LegacySettings(ApplicationHelper *parent)
     : QSettings(parent)
     , mpHelper(parent)
 {
@@ -15,7 +15,7 @@ Settings::Settings(ApplicationHelper *parent)
     setObjectName("Settings");
 }
 
-ApplicationHelper * Settings::helper()
+ApplicationHelper * LegacySettings::helper()
 {
     return mpHelper;
 }

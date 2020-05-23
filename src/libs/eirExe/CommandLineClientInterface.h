@@ -2,10 +2,13 @@
 #pragma once
 #include "eirExe.h"
 
+class QCommandLineParser;
+
+
 class EIREXE_EXPORT CommandLineClientInterface
 {
 public:
     CommandLineClientInterface();
-    virtual void setup() = 0;
+    virtual void setup(QCommandLineParser * parser) = 0;
 };
 

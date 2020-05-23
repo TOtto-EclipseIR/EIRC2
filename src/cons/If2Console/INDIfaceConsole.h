@@ -24,7 +24,6 @@ class INDIfaceConsole : public Console
     Q_OBJECT
 public:
     explicit INDIfaceConsole(Console *parent = nullptr);
-    CommandLine * commandLine();
 
 #ifdef EIRC2_IF2CONSOLE_TAKETWO23
 public slots:
@@ -32,12 +31,12 @@ public slots:
 
 private slots:
     void initializeResources();
-    void processCommandLine();
+    void setupCommandLine();
 
 signals:
     void applicationInitd();
     void resoursesInitd();
-    void commandLinePocessed();
+    void commandLineSetup();
     void processingImage(QFileInfo qfi);
     void imageWritten(const QFileInfo qfi, QImage image);
     void imageProcessed(QFileInfo qfi);
@@ -50,6 +49,7 @@ private:
 
 private:
     FileInfoQueue * mpFileInfoQueue=nullptr;
+    CommandLineClientInterface * mpCommandLineInterface=nullptr;
 
 #else // TAKEONE
 protected slots:

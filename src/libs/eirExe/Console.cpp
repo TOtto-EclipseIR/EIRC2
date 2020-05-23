@@ -52,9 +52,3 @@ void Console::writeErrs(const QStringList &qsl)
     foreach (QString qs, qsl) writeErr(qs, false);
     mpErr->flush();
 }
-
-void Console::commandLineComplete()
-{
-    TRACEFN
-    EMIT(commamdLineScanned());
-}

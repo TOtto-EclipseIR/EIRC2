@@ -6,6 +6,6 @@ class If2CommandLine : public CommandLineClientInterface
 {
 public:
     If2CommandLine();
-    virtual void setup() override;
+    virtual void setup(QCommandLineParser * parser) override;
 };
 

@@ -25,10 +25,8 @@ public slots:
     void writeErr(const QString &qs,
                   const bool andFlush=true);
     void writeErrs(const QStringList &qsl);
-    void commandLineComplete();
 
 signals:
-    void commandLineScanned();
 
 private:
     QCoreApplication * const cmpCoreApp=nullptr;

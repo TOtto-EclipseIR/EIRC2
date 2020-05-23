@@ -84,10 +84,13 @@ void MultiName::set(const QStringList & qslNames)
 
 void MultiName::prependName(const MultiName &groupName)
 {
-    BasicName::List resultNames;
-    resultNames << groupName.mBasicSegmentNames;
-    resultNames << mBasicSegmentNames;
-    mBasicSegmentNames = resultNames;
+    if ( ! groupName.isEmpty())
+    {
+        BasicName::List resultNames;
+        resultNames << groupName.mBasicSegmentNames;
+        resultNames << mBasicSegmentNames;
+        mBasicSegmentNames = resultNames;
+    }
 }
 
 MultiName MultiName::prepended(const MultiName &groupName) const

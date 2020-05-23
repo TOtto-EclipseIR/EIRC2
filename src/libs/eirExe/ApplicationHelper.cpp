@@ -6,7 +6,6 @@
 #include <eirBase/Debug.h>
 #include <eirBase/ErrorHandler.h>
 #include <eirBase/Milliseconds.h>
-//#include <eirBase/Uid.h>
 
 #include "CommandLine.h"
 #include "LegacySettings.h"
@@ -16,6 +15,7 @@
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
     , mpTempDir(new QTemporaryDir())
+    , cmpCommandLine(new CommandLine(this))
 {
     TRACEFN
     setObjectName("Application");
@@ -39,14 +39,19 @@ QFile *ApplicationHelper::tempFile(const QString &ext,
     return f;
 }
 
-CommandLine *ApplicationHelper::commandLine() const
+const CommandLine *ApplicationHelper::commandLine() const
 {
+    return cmpCommandLine;
+}
 
+CommandLine &ApplicationHelper::rCommandLine()
+{
+    return *cmpCommandLine;
 }
 
 ConfigObject *ApplicationHelper::config() const
 {
-
+    NEEDDO(nullptr)
 }
 
 void ApplicationHelper::run()
@@ -61,6 +66,9 @@ void ApplicationHelper::run()
 void ApplicationHelper::initCommandLine()
 {
     TRACEFN
+    TSTALLOC(cmpCommandLine)
+    cmpCommandLine->process();
+    NEEDDO(Report LegacySettings and Configuration values)
     QTimer::singleShot(100, this, &ApplicationHelper::initSettings);
 }
 
@@ -69,14 +77,14 @@ void ApplicationHelper::initSettings()
     TRACEFN
 
 #if 1
-    MUSTDO(OrgName AppName)
+    NEEDDO(OrgName AppName)
 #else
     if ( ! mpCmdLineObject->orgName().isNull())
          qApp->setOrganizationName(mpCmdLineObject->orgName());
     if ( ! mpCmdLineObject->appName().isNull())
          qApp->setApplicationName(mpCmdLineObject->appName());
 #endif
-    mpSettings = new Settings(this);
+    mpSettings = new LegacySettings(this);
     TSTALLOC(mpSettings);
     WANTDO("Take the smell out");
 

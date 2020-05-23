@@ -12,7 +12,7 @@ class CommandLine;
 class CommandLineClientInterface;
 class ConfigObject;
 class ErrorHandler;
-class Settings;
+class LegacySettings;
 
 class EIREXE_EXPORT ApplicationHelper : public QObject
 {
@@ -22,7 +22,8 @@ public:
     void set(CommandLineClientInterface const * client) const;
     QFile * tempFile(const QString &ext,
                      QObject * parent=nullptr);
-    CommandLine * commandLine() const;
+    const CommandLine *commandLine() const;
+    CommandLine &rCommandLine();
     ConfigObject *config() const;
 
 public slots:
@@ -43,7 +44,8 @@ signals:
 
 private:
     QTemporaryDir * mpTempDir=nullptr;
-    Settings * mpSettings=nullptr;
+    LegacySettings * mpSettings=nullptr;
+    CommandLine * const cmpCommandLine=nullptr;
     QList<QFile *> mTempFiles;
 };
 

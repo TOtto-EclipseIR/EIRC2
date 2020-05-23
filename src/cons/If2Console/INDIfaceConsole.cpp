@@ -6,31 +6,24 @@
 
 #include <eirBase/Debug.h>
 #include <eirExe/CommandLine.h>
+#include <eirExe/CommandLineClientInterface.h>
 #include <eirExe/FileInfoQueue.h>
 #include <eirExe/LegacySettings.h>
 
-//#include "CommandLine.h"
+#include "If2CommandLine.h"
 
 #ifdef EIRC2_IF2CONSOLE_TAKETWO23
 INDIfaceConsole::INDIfaceConsole(Console *parent)
     : Console(parent)
     , mpFileInfoQueue(new FileInfoQueue(parent))
-//    , mpCommandLine(new CommandLine(parent))
 {
     TRACEFN
     setObjectName("INDIfaceConsole");
     TSTALLOC(mpFileInfoQueue)
-    //TSTALLOC(mpCommandLine)
     QTimer::singleShot(100, this, &INDIfaceConsole::initializeApplication);
     TRACERTV()
 }
-/*
-CommandLine *INDIfaceConsole::commandLine()
-{
-    TSTALLOC(mpCommandLine);
-    return mpCommandLine;
-}
-*/
+
 void INDIfaceConsole::initializeApplication()
 {
     TRACEFN
@@ -41,8 +34,8 @@ void INDIfaceConsole::initializeApplication()
               .arg(core()->applicationVersion())
               .arg(core()->organizationName()));
     writeLine("===Raw Executable Arguments:");
-//    foreach (QString arg, commandLine()->exeArguments())
-  //      writeLine("---{{" + arg + "}");
+    foreach (QString arg, commandLine()->exeArguments())
+        writeLine("---{" + arg + "}");
     EMIT(applicationInitd());
     QTimer::singleShot(100, this, &INDIfaceConsole::initializeResources);
 }
@@ -50,7 +43,7 @@ void INDIfaceConsole::initializeApplication()
 void INDIfaceConsole::initializeResources()
 {
     TRACEFN
-
+/*
     VarPak cfg(Id("QuickConfig"));
     cfg.insert("Output/BaseDir", "/INDIface/INDIout/console/@");
     cfg.insert("Output/Capture2Dir", "Capture2");
@@ -61,32 +54,25 @@ void INDIfaceConsole::initializeResources()
     cfg.insert("Output/MarkedRectangleDir", "Rectangles"); //+
     cfg.insert("Output/MarkedCandidateDir", "Candidates"); //-Colors
     cfg.insert("Output/HeatMapDir", "HeatMap"); //x
-//    setOutputDirs(cfg);
-
-     emit resoursesInitd();
-    QTimer::singleShot(100, this, &INDIfaceConsole::processCommandLine);
+    setOutputDirs(cfg);
+*/
+    EMIT(resoursesInitd());
+    QTimer::singleShot(100, this, &INDIfaceConsole::setupCommandLine);
 }
 
-void INDIfaceConsole::processCommandLine()
+void INDIfaceConsole::setupCommandLine()
 {
     TRACEFN
-#if 0
-    TSTALLOC(commandLine());
-    commandLine()->addHelpOption();
-    commandLine()->addVersionOption();
-    commandLine()->addPositionalArgument(MultiName("FilesAndDirs"));
+    If2CommandLine interface;
+    rCommandLine().set(&interface);
+    rCommandLine().process();
+    rCommandLine().set(nullptr);
+    EMIT(commandLineSetup());
 
-    commandLine()->process();
-
-//    mPendingFileDirs = commandLine()->positionalFileInfoList();
-#endif
-    mpFileInfoQueue->append(QFileInfo(
-                QDir("/INDIface/INDIin/console"), "*.JPG"));
-    TRACE << mpFileInfoQueue->pendingCount();
-//    QTimer::singleShot(1000, this, &INDIfaceConsole::nextImage);
-//    TRACE << "emit pendingFilesSet()"; // << mPendingFiles;
-  //  emit pendingFilesSet();
-    EMIT(commandLinePocessed());
+    QFileInfoList filesAndDirs
+            = commandLine()->positionalFileInfoList();
+    TSTALLOC(mpFileInfoQueue)
+    mpFileInfoQueue->append(filesAndDirs);
     writeLine("Quitting.....");
     writeErr("Quitting.....");
     QTimer::singleShot(1000, core(), &QCoreApplication::quit);
