@@ -30,7 +30,7 @@ public:
     explicit CommandLine(QObject *parent = nullptr);
     void set(CommandLineClientInterface * interface);
     QStringList positionalArgumentList() const;
-    QQFileInfoList positionalFileInfoList() const;
+//    QQFileInfoList positionalFileInfoList() const;
     const QStringList exeArguments() const;
     const QQFileInfo exeFileInfo() const;
     Configuration configuration() const;
@@ -67,7 +67,7 @@ private:
     CommandLineClientInterface * mpInterface=nullptr;
     LegacySettings * mpLegacySettings=nullptr;
     QStringList mPositionalArgumentList;
-    QQFileInfoList mPositionalFileDirInfoList;
+    //QQFileInfoList mPositionalFileDirInfoList;
     Configuration mConfiguration;
 
 #ifdef EIRC2_IF2CONSOLE_TAKETWO23

@@ -75,19 +75,20 @@ void INDIfaceConsole::initializeResources()
 void INDIfaceConsole::startProcessing()
 {
     TRACEFN
-    mImageFileQueue = commandLine()->positionalFileInfoList();
+    mImageFileQueue = commandLine()->positionalArgumentList();
+    TRACE << mImageFileQueue;
     TODO(?)
     QTimer::singleShot(100, this, &INDIfaceConsole::nextFile);
 }
 
 void INDIfaceConsole::nextFile()
 {
-    TRACEFN
+    TRACEQFI << "mImageFileQueue.size()" << mImageFileQueue.size();
     while ( ! mImageFileQueue.isEmpty())
     {
-        QQFileInfo fileInfo = mImageFileQueue.takeFirst();
-        if (fileInfo.isNull())  continue;
-        mCurrentImageFile = fileInfo;
+        QString filePathName = mImageFileQueue.takeFirst();
+        if (filePathName.isEmpty())  continue;
+        mCurrentImageFile = filePathName;
         QTimer::singleShot(100, this, &INDIfaceConsole::processFile);
         return;
     }

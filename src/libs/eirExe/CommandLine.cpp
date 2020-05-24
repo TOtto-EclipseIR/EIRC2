@@ -30,12 +30,12 @@ QStringList CommandLine::positionalArgumentList() const
 {
     return mPositionalArgumentList;
 }
-
+/*
 QQFileInfoList CommandLine::positionalFileInfoList() const
 {
     return mPositionalFileDirInfoList;
 }
-
+*/
 const QStringList CommandLine::exeArguments() const
 {
     return cmExeArgumentList;
@@ -70,15 +70,6 @@ void CommandLine::process()
     TODO(?)
     mPositionalArgumentList = arguments;
     TRACE << "PosArgs:" << mPositionalArgumentList;
-    mPositionalFileDirInfoList.clear();
-    foreach (QString arg, mPositionalArgumentList)
-    {
-        QQFileInfo qfi(arg);
-        TRACE << qfi.absolutePath() << qfi.attributes();
-        mPositionalFileDirInfoList
-                << ((qfi.tryIsFile() || qfi.tryIsDir())
-                        ? qfi : QFileInfo());
-    }
     dump();
 } // process()
 
@@ -90,17 +81,23 @@ void CommandLine::expandDirectories(const int recurseDepth)
     WARN << "Only recurseDepth=1 for  now";
 
     QStringList expandedArgs;
-    QFileInfoList expandedInfo;
 #if 1
     foreach (QString argIn, mPositionalArgumentList)
     {
         if (QQFileInfo::tryIsFile(argIn))
         {
-            MUSTDO(it);
+            expandedArgs << argIn;
         }
         else if (QQFileInfo::tryIsDir(argIn))
         {
-            MUSTDO(it);
+            QDir dir(argIn);
+            QStringList fileNames
+                = dir.entryList(QDir::Files, QDir::NoSort);
+            foreach (QString fileName, fileNames)
+            {
+                QFileInfo fi(dir, fileName);
+                expandedArgs << fi.absoluteFilePath();
+            }
         }
         else
         {
@@ -131,6 +128,7 @@ void CommandLine::expandDirectories(const int recurseDepth)
         }
     }
 #endif
+    mPositionalArgumentList = expandedArgs;
     TRACEQFI << "Output Files:";
     dumpPositionalArgs();
 }
@@ -245,12 +243,10 @@ void CommandLine::setFileInfoArgs()
 
 void CommandLine::dumpPositionalArgs() const
 {
-    int nArgs = qMin(mPositionalArgumentList.size(), mPositionalFileDirInfoList.size());
+    int nArgs = mPositionalArgumentList.size();
     DUMP << "eirExe : CommandLine PositionalArgs n=" << nArgs;
     for (int index=0; index < nArgs; ++index)
-        DUMP << index << mPositionalArgumentList[index]
-                << mPositionalFileDirInfoList.at(index)
-                << mPositionalFileDirInfoList.at(index).attributes();
+        DUMP << index << mPositionalArgumentList[index];
 }
 
 #ifdef EIRC2_IF2CONSOLE_TAKETWO23

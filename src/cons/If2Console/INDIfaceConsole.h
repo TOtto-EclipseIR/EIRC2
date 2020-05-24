@@ -54,11 +54,10 @@ signals:
 protected:
 private:
 private:
-//    FileInfoQueue * mpFileInfoQueue=nullptr;
     CommandLineClientInterface * mpCommandLineInterface=nullptr;
     ConfigObject * mpConfig=nullptr;
-    QQFileInfoList mImageFileQueue;
-    QQFileInfo mCurrentImageFile;
+    QStringList mImageFileQueue;
+    QString mCurrentImageFile;
 
 #else // TAKEONE
 protected slots:
