@@ -73,11 +73,14 @@ void CommandLine::process()
     mPositionalFileDirInfoList.clear();
     foreach (QString arg, mPositionalArgumentList)
     {
-        QFileInfo qfi(arg);
+        QQFileInfo qfi(arg);
+        TRACE << qfi.absolutePath() << qfi.attributes();
         mPositionalFileDirInfoList
-                << ((qfi.exists()) ? qfi : QFileInfo());
+                << ((qfi.tryIsFile() || qfi.tryIsDir())
+                        ? qfi : QFileInfo());
     }
-}
+    dump();
+} // process()
 
 void CommandLine::expandDirectories(const int recurseDepth)
 {
@@ -88,23 +91,46 @@ void CommandLine::expandDirectories(const int recurseDepth)
 
     QStringList expandedArgs;
     QFileInfoList expandedInfo;
+#if 1
+    foreach (QString argIn, mPositionalArgumentList)
+    {
+        if (QQFileInfo::tryIsFile(argIn))
+        {
+            MUSTDO(it);
+        }
+        else if (QQFileInfo::tryIsDir(argIn))
+        {
+            MUSTDO(it);
+        }
+        else
+        {
+            WARN << argIn << "not file or dir";
+        }
+    }
+#else
     foreach (QQFileInfo fileInfoIn, mPositionalFileDirInfoList)
     {
         QString argIn = mPositionalArgumentList.takeFirst();
-        if (fileInfoIn.isNull() ||  ! fileInfoIn.isDir())
+        TRACE << argIn << fileInfoIn.absoluteFilePath()
+              << fileInfoIn.attributes();
+        if (fileInfoIn.isNull() ||  ! fileInfoIn.tryIsDir())
         {
             expandedArgs << argIn;
             expandedInfo << fileInfoIn;
             continue;
         }
-        WEXPECT(fileInfoIn.isDir());
+        WEXPECT(fileInfoIn.tryIsDir());
         QFileInfoList insertInfoList
             =  fileInfoIn.dir().entryInfoList(QDir::Files);
+        TRACE << "insertInfoList:" << insertInfoList;
         foreach (QFileInfo insertInfo, insertInfoList)
+        {
+            TRACE << "Expanded:" << insertInfo;
             expandedArgs << insertInfo.absoluteFilePath();
-        expandedInfo << insertInfoList;
+            expandedInfo << insertInfoList;
+        }
     }
-
+#endif
     TRACEQFI << "Output Files:";
     dumpPositionalArgs();
 }
@@ -114,9 +140,8 @@ void CommandLine::dump()
     DUMP << ">>>CommandLine:";
     DUMP << "exeArgumentList:" << cmExeArgumentList;
     DUMP << "exeFileInfo:" << mExeFileInfo;
-    DUMP << "Configuration:";
-    mConfiguration.dump();
-    DUMP << "positionalArgumentList:" << mPositionalArgumentList;
+    DUMP << "positionalArgumentList:";
+    dumpPositionalArgs();
     DUMP << "Configuration:";
     mConfiguration.dump();
 }
@@ -167,9 +192,10 @@ QStringList CommandLine::parseQtOptions(
             return currentArgs;
 }
 
-QStringList CommandLine::stripConfiguration(const QStringList &expandedArgs,
-                                            const MultiName &prefix,
-                                            const QChar &trigger)
+QStringList CommandLine::stripConfiguration(
+        const QStringList &expandedArgs,
+        const MultiName &prefix,
+        const QChar &trigger)
 {
     TRACEQFI << expandedArgs << prefix() << trigger;
     QStringList remainingArgs;
@@ -178,6 +204,7 @@ QStringList CommandLine::stripConfiguration(const QStringList &expandedArgs,
             parseConfigArgument(arg, prefix);
         else
             remainingArgs << arg;
+    TRACEQFI << remainingArgs;
     return remainingArgs;
 }
 
@@ -202,7 +229,7 @@ QStringList CommandLine::readTxtFileArguments(const QFileInfo &argFileInfo)
     while ( ! file.atEnd())
     {
         QByteArray fileLine = file.readLine().simplified();
-        TRACE << "fileLine: {>" << fileLine << "<}";
+        //TRACE << "fileLine: {>" << fileLine << "<}";
         if (fileLine.isEmpty() || fileLine.startsWith('#'))
             continue;
         newArgs << fileLine;
@@ -218,13 +245,13 @@ void CommandLine::setFileInfoArgs()
 
 void CommandLine::dumpPositionalArgs() const
 {
-    DUMP << "eirExe : CommandLine PositionalArgs";
     int nArgs = qMin(mPositionalArgumentList.size(), mPositionalFileDirInfoList.size());
+    DUMP << "eirExe : CommandLine PositionalArgs n=" << nArgs;
     for (int index=0; index < nArgs; ++index)
         DUMP << index << mPositionalArgumentList[index]
-                << mPositionalFileDirInfoList[index].absolutePath();
+                << mPositionalFileDirInfoList.at(index)
+                << mPositionalFileDirInfoList.at(index).attributes();
 }
-
 
 #ifdef EIRC2_IF2CONSOLE_TAKETWO23
 #else

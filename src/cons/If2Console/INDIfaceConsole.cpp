@@ -51,8 +51,8 @@ void INDIfaceConsole::setupCommandLine()
     rCommandLine().set(&interface);
     rCommandLine().process();
     rCommandLine().set(nullptr);
+    rCommandLine().expandDirectories();
     EMIT(commandLineSetup());
-    mImageFileQueue = commandLine()->positionalFileInfoList();
     QTimer::singleShot(100, this, &INDIfaceConsole::setConfiguration);
 }
 
@@ -89,6 +89,7 @@ void INDIfaceConsole::nextFile()
         if (fileInfo.isNull())  continue;
         mCurrentImageFile = fileInfo;
         QTimer::singleShot(100, this, &INDIfaceConsole::processFile);
+        return;
     }
     QTimer::singleShot(100, this, &INDIfaceConsole::finishProcessing);
 }

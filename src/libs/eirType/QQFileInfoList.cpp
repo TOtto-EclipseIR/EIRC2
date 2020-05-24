@@ -5,7 +5,13 @@
 #include "QQFileInfo.h"
 
 QQFileInfoList::QQFileInfoList() {;}
-QQFileInfoList::QQFileInfoList(const QFileInfoList &other) : QFileInfoList(other) {;}
+QQFileInfoList::QQFileInfoList(const QFileInfoList &other)
+    : QFileInfoList(other) {;}
+
+QQFileInfo QQFileInfoList::at(const int index) const
+{
+    return QQFileInfo(QFileInfoList::at(index));
+}
 
 void QQFileInfoList::dump(const QString &title) const
 {
