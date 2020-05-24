@@ -4,10 +4,12 @@
 
 #include <QObject>
 
+#include <QDir>
 #include <QFileInfo>
 #include <QMap>
 
 #include <eirBase/BasicName.h>
+#include <eirType/Sortable.h>
 
 class ImageWriterQueue;
 class ImageReaderQueue;
@@ -18,9 +20,12 @@ class ImageQueueManager : public QObject
     Q_OBJECT
 public:
     explicit ImageQueueManager(QObject *parent = nullptr);
-    ImageWriterQueue *newWriterQueue(const QFileInfo &fileInfo);
-    ImageReaderQueue *newReaderQueue(const QFileInfo &fileInfo);
-    ImageDirectoryQueue *newDirectoryQueue(const QFileInfo &fileInfo);
+    ImageWriterQueue *newWriterQueue(const BasicName &name,
+                                     const QDir &dir);
+    ImageReaderQueue *newReaderQueue(const BasicName &name,
+                                     const QDir &dir);
+    ImageDirectoryQueue *newDirectoryQueue(const BasicName &name,
+                                           const QDir &dir);
 
 signals:
 
@@ -29,8 +34,8 @@ public slots:
 protected slots:
 
 private:
-    QMap<QFileInfo, ImageWriterQueue *> mWriterQueueMap;
-    QMap<QFileInfo, ImageReaderQueue *> mReaderQueueMap;
-    QMap<QFileInfo, ImageDirectoryQueue *> mDirectoryQueueMap;
+    QMap<Sortable, ImageWriterQueue *> mNameWriterQueueMap;
+    QMap<Sortable, ImageReaderQueue *> mNameReaderQueueMap;
+    QMap<Sortable, ImageDirectoryQueue *> mNameDirectoryQueueMap;
 };
 

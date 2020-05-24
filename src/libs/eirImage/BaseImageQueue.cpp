@@ -24,3 +24,26 @@ void BaseImageQueue::setInputDir(const QDir &dir)
     TRACEQFI << dir;
     mInputDir = dir;
 }
+
+void BaseImageQueue::setOutputDir(const QDir &dir)
+{
+    TRACEQFI << dir;
+    mOutputDir = dir;
+
+}
+/*
+void BaseImageQueue::enqueue(const QString &fileName,
+                             const QImage &image)
+{
+    TRACEQFI << fileName << image;
+}
+*/
+QQueue<QString> BaseImageQueue::fileInfoQueue() const
+{
+    return mFileNameQueue;
+}
+
+void BaseImageQueue::setFileInfoQueue(const QQueue<QString> &fileInfoQueue)
+{
+    mFileNameQueue = fileInfoQueue;
+}

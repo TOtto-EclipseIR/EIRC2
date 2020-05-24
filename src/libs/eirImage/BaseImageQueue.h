@@ -17,27 +17,22 @@ public:
     BaseImageQueue(ImageQueueObject *imageQueueObject=nullptr);
     ImageQueueObject *queueObject();
 
+    QQueue<QString> fileInfoQueue() const;
+    void setFileInfoQueue(const QQueue<QString> &fileInfoQueue);
+
 protected: // functions
     void setInputDir(const QDir &dir);
+    void setOutputDir(const QDir &dir);
     bool isEmpty() const;
     int size() const;
-    void contains(const QFileInfo &fileInfo) const;
-    QFileInfo peekFirstFileInfo() const;
-    QImage peekFirstImage() const;
-    QFileInfo dequeueFileInfo();
-    void dequeueVoid();
-    QImage takeImage(const QFileInfo &fileInfo);
-    void enqueue(const int recurseDepth=0);
-    void enqueue(const QString &fileName,
-                 const QImage &image);
-    void enqueue(const QFileInfo &fileInfo,
-                 const QImage &image);
+    void contains(const QString &fileName) const;
 
 protected: // data
     ImageQueueObject * mpQueueObject;
     QDir mInputDir;
-    QQueue<QFileInfo> mFileInfoQueue;
-    QMap<QFileInfo, QImage> mFileInfoImageMap;
+    QDir mOutputDir;
+    QQueue<QString> mFileNameQueue;
+    QMap<QString, QImage> mFileNameImageMap;
 
 private: // data
 

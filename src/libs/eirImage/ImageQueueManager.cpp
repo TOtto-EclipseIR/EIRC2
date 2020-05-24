@@ -11,26 +11,29 @@ ImageQueueManager::ImageQueueManager(QObject *parent)
     setObjectName("ImageQueueManager");
 }
 
-ImageWriterQueue *ImageQueueManager::newWriterQueue(
-        const QFileInfo &fileInfo)
+ImageWriterQueue *ImageQueueManager::newWriterQueue(const BasicName &name,
+
+        const QDir &dir)
 {
-    TRACEQFI << fileInfo;
+    TRACEQFI << dir;
     MUSTDO(it)
     return nullptr;
 }
 
-ImageReaderQueue *ImageQueueManager::newReaderQueue(
-        const QFileInfo &fileInfo)
+ImageReaderQueue *ImageQueueManager::newReaderQueue(const BasicName &name,
+
+        const QDir &dir)
 {
-    TRACEQFI << fileInfo;
+    TRACEQFI << dir;
     MUSTDO(it)
     return nullptr;
 }
 
-ImageDirectoryQueue *ImageQueueManager::newDirectoryQueue(
-        const QFileInfo &fileInfo)
+ImageDirectoryQueue *ImageQueueManager::newDirectoryQueue(const BasicName &name,
+
+        const QDir &dir)
 {
-    TRACEQFI << fileInfo;
+    TRACEQFI << dir;
     MUSTDO(it)
     return nullptr;
 }

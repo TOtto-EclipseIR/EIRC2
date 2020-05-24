@@ -8,5 +8,8 @@ class ImageWriterQueue : public BaseImageQueue
 {
 public:
     ImageWriterQueue(ImageQueueObject *imageQueueObject=nullptr);
+    void enqueue(const QString &fileName,
+                 const QImage &image);
+
 };
 
