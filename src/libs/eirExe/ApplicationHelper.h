@@ -46,6 +46,7 @@ private:
     QTemporaryDir * mpTempDir=nullptr;
     LegacySettings * mpSettings=nullptr;
     CommandLine * const cmpCommandLine=nullptr;
+    ConfigObject * const cmpConfigObject=nullptr;
     QList<QFile *> mTempFiles;
 };
 

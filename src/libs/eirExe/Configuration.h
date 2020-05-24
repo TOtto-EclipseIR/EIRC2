@@ -7,5 +7,6 @@ class Configuration : public VarMap
 {
 public:
     Configuration();
+    Configuration(const VarMap &other);
 };
 

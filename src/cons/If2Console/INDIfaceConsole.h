@@ -10,6 +10,8 @@
 #include <QList>
 
 #include <eirBase/VarPak.h>
+#include <eirType/QQFileInfo.h>
+#include <eirType/QQFileInfoList.h>
 #include <eirType/QQRectList.h>
 #include <eirType/Region.h>
 #include <eirExe/ApplicationHelper.h>
@@ -30,26 +32,33 @@ public slots:
     void initializeApplication();
 
 private slots:
-    void initializeResources();
     void setupCommandLine();
+    void setConfiguration();
+    void initializeResources();
+    void startProcessing();
+    void nextFile();
+    void processFile();
+    void finishProcessing();
 
 signals:
     void applicationInitd();
-    void resoursesInitd();
     void commandLineSetup();
+    void configurationSet();
+    void resoursesInitd();
+    void processingStarted();
     void processingImage(QFileInfo qfi);
     void imageWritten(const QFileInfo qfi, QImage image);
     void imageProcessed(QFileInfo qfi);
     void processingComplete();
 
 protected:
-
 private:
-
-
 private:
-    FileInfoQueue * mpFileInfoQueue=nullptr;
+//    FileInfoQueue * mpFileInfoQueue=nullptr;
     CommandLineClientInterface * mpCommandLineInterface=nullptr;
+    ConfigObject * mpConfig=nullptr;
+    QQFileInfoList mImageFileQueue;
+    QQFileInfo mCurrentImageFile;
 
 #else // TAKEONE
 protected slots:

@@ -7,6 +7,7 @@
 
 #include <eirBase/Debug.h>
 #include <eirType/QQFileInfo.h>
+#include <eirType/QQFileInfoList.h>
 
 #include "CommandLineClientInterface.h"
 
@@ -22,7 +23,7 @@ CommandLine::CommandLine(QObject *parent)
 void CommandLine::set(CommandLineClientInterface *interface)
 {
     TRACEFN
-            mpInterface = interface;
+    mpInterface = interface;
 }
 
 QStringList CommandLine::positionalArgumentList() const
@@ -30,7 +31,7 @@ QStringList CommandLine::positionalArgumentList() const
     return mPositionalArgumentList;
 }
 
-QFileInfoList CommandLine::positionalFileInfoList() const
+QQFileInfoList CommandLine::positionalFileInfoList() const
 {
     return mPositionalFileDirInfoList;
 }
@@ -40,11 +41,21 @@ const QStringList CommandLine::exeArguments() const
     return cmExeArgumentList;
 }
 
+const QQFileInfo CommandLine::exeFileInfo() const
+{
+    return mExeFileInfo;
+}
+
+Configuration CommandLine::configuration() const
+{
+    return mConfiguration;
+}
+
 void CommandLine::process()
 {
     TRACEQFI << "ExeArgs:" << cmExeArgumentList;
     QStringList arguments;
-    mExeFileInfo = QFileInfo(cmExeArgumentList.first());
+    mExeFileInfo = QQFileInfo(cmExeArgumentList.first());
     arguments = expandFileArguments(cmExeArgumentList.mid(1), '@');
     TRACE << "Expanded:" << arguments;
     arguments = stripConfiguration(arguments);
@@ -96,6 +107,18 @@ void CommandLine::expandDirectories(const int recurseDepth)
 
     TRACEQFI << "Output Files:";
     dumpPositionalArgs();
+}
+
+void CommandLine::dump()
+{
+    DUMP << ">>>CommandLine:";
+    DUMP << "exeArgumentList:" << cmExeArgumentList;
+    DUMP << "exeFileInfo:" << mExeFileInfo;
+    DUMP << "Configuration:";
+    mConfiguration.dump();
+    DUMP << "positionalArgumentList:" << mPositionalArgumentList;
+    DUMP << "Configuration:";
+    mConfiguration.dump();
 }
 
 

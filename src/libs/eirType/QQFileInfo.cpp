@@ -3,6 +3,9 @@
 
 QQFileInfo::QQFileInfo() {;}
 
+QQFileInfo::QQFileInfo(const QString &filePathName)
+    : QFileInfo(filePathName), mIsNull(false) {;}
+
 QQFileInfo::QQFileInfo(const QFileInfo &other)
     : QFileInfo(other), mIsNull(false) {;}
 
@@ -10,10 +13,19 @@ bool QQFileInfo::isNull() const
 {
     return mIsNull;
 }
-/*
-QQFileInfo::operator QFileInfo() const
+
+QString QQFileInfo::attributes() const
 {
-    return QFileInfo(*this);
+    if (isNull()) return "isNull ";
+    QString attribString;
+    if (isAbsolute())       attribString += "Absolute ";
+    if (isDir())            attribString += "Dir ";
+    if (isExecutable())     attribString += "Executable ";
+    if (isFile())           attribString += "File ";
+    if (isReadable())       attribString += "Readable ";
+    if (isRoot())           attribString += "Root ";
+    if (isWritable())       attribString += "Writable ";
+    return attribString;
 }
-*/
+
 

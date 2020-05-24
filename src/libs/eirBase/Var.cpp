@@ -43,7 +43,7 @@ QVariant Var::currentVari() const
 
 QVariant Var::defaultVari() const
 {
-
+    return mCurrent;
 }
 
 QVariant Var::value() const
@@ -59,7 +59,7 @@ bool Var::operator ==(const Var &other)
 
 QString Var::dumpString() const
 {
-    return QString("%1 = %2 [$3]").arg(mName)
+    return QString("%1 = %2 [%3]").arg(mName)
             .arg(mCurrent.toString()).arg(mDefault.toString());
 }
 

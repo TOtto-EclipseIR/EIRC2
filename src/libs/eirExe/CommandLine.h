@@ -14,6 +14,8 @@ class QCommandLineParser;
 #include <eirBase/Var.h>
 #include <eirBase/VarMap.h>
 #include <eirType/Sortable.h>
+#include <eirType/QQFileInfo.h>
+#include <eirType/QQFileInfoList.h>
 
 #include "Configuration.h"
 class CommandLineClientInterface;
@@ -28,13 +30,15 @@ public:
     explicit CommandLine(QObject *parent = nullptr);
     void set(CommandLineClientInterface * interface);
     QStringList positionalArgumentList() const;
-    QFileInfoList positionalFileInfoList() const;
+    QQFileInfoList positionalFileInfoList() const;
     const QStringList exeArguments() const;
+    const QQFileInfo exeFileInfo() const;
     Configuration configuration() const;
 
 public slots:
     void process();
     void expandDirectories(const int recurseDepth=-1);
+    void dump();
 
 signals:
     void constructed(void);
@@ -59,11 +63,11 @@ private slots:
 
 private:
     const QStringList cmExeArgumentList;
-    QFileInfo mExeFileInfo;
+    QQFileInfo mExeFileInfo;
     CommandLineClientInterface * mpInterface=nullptr;
     LegacySettings * mpLegacySettings=nullptr;
     QStringList mPositionalArgumentList;
-    QFileInfoList mPositionalFileDirInfoList;
+    QQFileInfoList mPositionalFileDirInfoList;
     Configuration mConfiguration;
 
 #ifdef EIRC2_IF2CONSOLE_TAKETWO23

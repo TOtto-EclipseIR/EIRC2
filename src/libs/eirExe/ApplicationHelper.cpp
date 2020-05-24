@@ -8,6 +8,7 @@
 #include <eirBase/Milliseconds.h>
 
 #include "CommandLine.h"
+#include "ConfigObject.h"
 #include "LegacySettings.h"
 
 #include "../../version.h"
@@ -16,6 +17,7 @@ ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
     , mpTempDir(new QTemporaryDir())
     , cmpCommandLine(new CommandLine(this))
+    , cmpConfigObject(new ConfigObject(this))
 {
     TRACEFN
     setObjectName("Application");
@@ -51,7 +53,7 @@ CommandLine &ApplicationHelper::rCommandLine()
 
 ConfigObject *ApplicationHelper::config() const
 {
-    NEEDDO(nullptr)
+    return cmpConfigObject;
 }
 
 void ApplicationHelper::run()

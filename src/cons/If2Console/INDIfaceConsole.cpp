@@ -5,8 +5,10 @@
 #include <QTimer>
 
 #include <eirBase/Debug.h>
+#include <eirType/QQFileInfo.h>
 #include <eirExe/CommandLine.h>
 #include <eirExe/CommandLineClientInterface.h>
+#include <eirExe/ConfigObject.h>
 #include <eirExe/FileInfoQueue.h>
 #include <eirExe/LegacySettings.h>
 
@@ -15,11 +17,12 @@
 #ifdef EIRC2_IF2CONSOLE_TAKETWO23
 INDIfaceConsole::INDIfaceConsole(Console *parent)
     : Console(parent)
-    , mpFileInfoQueue(new FileInfoQueue(parent))
+    , mpConfig(new ConfigObject(parent))
+//    , mpFileInfoQueue(new FileInfoQueue(parent))
 {
     TRACEFN
     setObjectName("INDIfaceConsole");
-    TSTALLOC(mpFileInfoQueue)
+//    TSTALLOC(mpFileInfoQueue)
     QTimer::singleShot(100, this, &INDIfaceConsole::initializeApplication);
     TRACERTV()
 }
@@ -37,28 +40,9 @@ void INDIfaceConsole::initializeApplication()
     foreach (QString arg, commandLine()->exeArguments())
         writeLine("---{" + arg + "}");
     EMIT(applicationInitd());
-    QTimer::singleShot(100, this, &INDIfaceConsole::initializeResources);
-}
-
-void INDIfaceConsole::initializeResources()
-{
-    TRACEFN
-/*
-    VarPak cfg(Id("QuickConfig"));
-    cfg.insert("Output/BaseDir", "/INDIface/INDIout/console/@");
-    cfg.insert("Output/Capture2Dir", "Capture2");
-    cfg.insert("Output/GreyInputDir", "GreyInput");
-    cfg.insert("Output/MarkedDetectDir", "MarkedDetect"); //+
-    cfg.insert("Output/MarkedFaceDir", "MarkedFace"); //-unmarked
-    cfg.insert("Output/FaceDetectDir", "FaceDetect"); //-marked,Width
-    cfg.insert("Output/MarkedRectangleDir", "Rectangles"); //+
-    cfg.insert("Output/MarkedCandidateDir", "Candidates"); //-Colors
-    cfg.insert("Output/HeatMapDir", "HeatMap"); //x
-    setOutputDirs(cfg);
-*/
-    EMIT(resoursesInitd());
     QTimer::singleShot(100, this, &INDIfaceConsole::setupCommandLine);
 }
+
 
 void INDIfaceConsole::setupCommandLine()
 {
@@ -68,16 +52,60 @@ void INDIfaceConsole::setupCommandLine()
     rCommandLine().process();
     rCommandLine().set(nullptr);
     EMIT(commandLineSetup());
-
-    QFileInfoList filesAndDirs
-            = commandLine()->positionalFileInfoList();
-    TSTALLOC(mpFileInfoQueue)
-    mpFileInfoQueue->append(filesAndDirs);
-    writeLine("Quitting.....");
-    writeErr("Quitting.....");
-    QTimer::singleShot(1000, core(), &QCoreApplication::quit);
+    mImageFileQueue = commandLine()->positionalFileInfoList();
+    QTimer::singleShot(100, this, &INDIfaceConsole::setConfiguration);
 }
 
+void INDIfaceConsole::setConfiguration()
+{
+    TRACEFN
+    mpConfig->set(commandLine()->configuration());
+    QTimer::singleShot(100, this, &INDIfaceConsole::initializeResources);
+
+}
+
+void INDIfaceConsole::initializeResources()
+{
+    TRACEFN
+    NEEDDO("rectFinder::initialize() x 3~5")
+    EMIT(resoursesInitd());
+    QTimer::singleShot(100, this, &INDIfaceConsole::startProcessing);
+}
+
+void INDIfaceConsole::startProcessing()
+{
+    TRACEFN
+    mImageFileQueue = commandLine()->positionalFileInfoList();
+    TODO(?)
+    QTimer::singleShot(100, this, &INDIfaceConsole::nextFile);
+}
+
+void INDIfaceConsole::nextFile()
+{
+    TRACEFN
+    while ( ! mImageFileQueue.isEmpty())
+    {
+        QQFileInfo fileInfo = mImageFileQueue.takeFirst();
+        if (fileInfo.isNull())  continue;
+        mCurrentImageFile = fileInfo;
+        QTimer::singleShot(100, this, &INDIfaceConsole::processFile);
+    }
+    QTimer::singleShot(100, this, &INDIfaceConsole::finishProcessing);
+}
+
+void INDIfaceConsole::processFile()
+{
+    TRACEQFI << "mCurrentImageFile:" << mCurrentImageFile;
+    NEEDDO(it)
+    QTimer::singleShot(100, this, &INDIfaceConsole::nextFile);
+}
+
+void INDIfaceConsole::finishProcessing()
+{
+    TRACEFN
+    NEEDDO(it)
+    QTimer::singleShot(100, core(), &QCoreApplication::quit);
+}
 
 #else // TAKEONE
 void INDIfaceConsole::configure(const VarPak &config)

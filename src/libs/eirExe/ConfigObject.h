@@ -1,4 +1,6 @@
+// file: {EIRC2 Repo}./src/libs/eirExe/ConfigObject.h
 #pragma once
+#include "eirExe.h"
 
 #include <QObject>
 
@@ -7,7 +9,7 @@
 
 #include "Configuration.h"
 
-class ConfigObject : public QObject
+class EIREXE_EXPORT ConfigObject : public QObject
 {
     Q_OBJECT
 public:
@@ -18,6 +20,8 @@ public:
     QVariant currentValue(const MultiName &key);
     QVariant defaultValue(const MultiName &key);
     bool isDefault(const MultiName &key) const;
+    Configuration configuration() const;
+    Configuration configuration(const MultiName &groupName) const;
 
 signals:
     void varAdded(Var var);
@@ -27,6 +31,7 @@ signals:
 
 public slots:
     void set(VarMap varMap);
+    void set(VarMap varMap, MultiName groupName);
     void set(Var var);
     void setDefault(Var var);
     void setDefault(MultiName key,

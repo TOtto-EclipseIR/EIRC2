@@ -24,6 +24,7 @@ SOURCES += \
     Enumeration.cpp \
     Flags.cpp \
     QQFileInfo.cpp \
+    QQFileInfoList.cpp \
     QQRect.cpp \
     QQRectF.cpp \
     QQRectList.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     NamedEnum.h \
     NamedMap.h \
     QQFileInfo.h \
+    QQFileInfoList.h \
     QQRect.h \
     QQRectF.h \
     QQRectList.h \

@@ -119,6 +119,6 @@ QStringList VarMap::dumpList() const
 void VarMap::dump() const
 {
     mName.dump();
-    DUMP << dumpList();
+    DUMP << dumpList().join(QChar::LineFeed);
 }
 
