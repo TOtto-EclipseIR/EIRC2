@@ -12,6 +12,7 @@ SUBDIRS += \
     ./libs/eirType \
     ./libs/eirXfr \
     ./cons/If2Console \
+    libs/eirHaar \
     libs/eirImage \
 
 eirType.depends     = eirBase

@@ -26,6 +26,8 @@ public:
     QImage &image();
     Option constOptions() const;
     Option &options();
+    bool isNull() const;
+    QSize size() const;
 
 private:
     QImage::Format mFormat=QImage::Format_Invalid;

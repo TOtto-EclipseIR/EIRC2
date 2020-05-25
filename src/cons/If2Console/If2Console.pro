@@ -22,6 +22,7 @@ include(../../EIRC2.pri)
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
+LIBS *= -leirImage2
 LIBS *= -leirExe2
 #LIBS *= -leirQtCV42
 

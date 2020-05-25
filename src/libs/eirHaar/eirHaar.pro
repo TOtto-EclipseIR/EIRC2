@@ -1,7 +1,7 @@
-QT -= gui
+QT += gui
 
 TEMPLATE = lib
-DEFINES += EIREXE_LIBRARY
+DEFINES += EIRHAAR_LIBRARY
 
 CONFIG += c++11
 
@@ -18,44 +18,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../../EIRC2.pri)
 
-LIBS *= -leirBase2
-LIBS *= -leirType2
-
-STATECHARTS += \
-    CommandLine.scxml
+LIBS *= -leirExe2
 
 SOURCES += \
-    ApplicationHelper.cpp \
-    CommandLine.cpp \
-    CommandLineClientInterface.cpp \
-    ConfigObject.cpp \
-    Configuration.cpp \
-    Console.cpp \
-    FileExtension.cpp \
-    FileInfoQueue.cpp \
-    FileName.cpp \
-    FileWriteQueue.cpp \
-    LegacySettings.cpp \
-    QQDirIterator.cpp \
-    StdStreams.cpp \
-    eirExe.cpp
+    HaarCascade.cpp \
+    HaarCatalog.cpp \
+    HaarDetector.cpp \
+    eirHaar.cpp
 
 HEADERS += \
-    ApplicationHelper.h \
-    CommandLine.h \
-    CommandLineClientInterface.h \
-    ConfigObject.h \
-    Configuration.h \
-    Console.h \
-    FileExtension.h \
-    FileInfoQueue.h \
-    FileName.h \
-    FileWriteQueue.h \
-    LegacySettings.h \
-    QQDirIterator.h \
-    StdStreams.h \
-    eirExe_global.h \
-    eirExe.h
+    HaarCascade.h \
+    HaarCatalog.h \
+    HaarDetector.h \
+    eirHaar_global.h \
+    eirHaar.h
 
 # Default rules for deployment.
 unix {
