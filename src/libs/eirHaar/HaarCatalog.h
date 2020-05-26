@@ -4,6 +4,7 @@
 
 #include "HaarBase.h"
 
+#include <QDomElement>
 #include <QMap>
 #include <QPair>
 #include <QSize>
@@ -23,6 +24,9 @@ public:
                  const BasicName &cascadeName);
         BasicName className() const;
         BasicName cascadeName() const;
+        QString toString() const;
+        operator QString () const;
+        QString operator () () const;
     }; // HaarCatalog::Names
 
 public:
@@ -33,14 +37,27 @@ public:
         Item(const BasicName &className,
              const BasicName &cascadeName,
              const QSize detectorSize,
-             const FileName xmlFileName);
+             const bool isDefault=false);
+        Item(const BasicName &className,
+             const BasicName &cascadeName,
+             const QSize detectorSize,
+             const FileName &xmlFileName,
+             const QString &description,
+             const bool isDefault=false);
+        void parseDetectorElements(const QDomElement &detector);
+        void setDescription(const QString &description);
+        void setXmlFileName(const QString &xmlFileName);
+        void dump() const;
+
+    private:
 
     private:
         BasicName mClassName;
         BasicName mCascadeName;
         QSize mDetectorSize;
         FileName mXmlFileName;
-
+        QString mDescription;
+        bool mIsDefault=false;
     }; // HaarCatalog::Item
 
 public:
@@ -56,9 +73,10 @@ public:
     FileName cascadeXmlFile(const BasicName &className,
                             const BasicName &cascadeName);
     FileName defaultXmlFile(const BasicName &className);
+    void dump() const;
 
 private:
-    QMap<Names, Item> mNamesItemMap;
+    QMap<QString, Item> mNamesItemMap;
 
 };
 

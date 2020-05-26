@@ -136,11 +136,13 @@ void CommandLine::expandDirectories(const int recurseDepth)
 void CommandLine::dump()
 {
     DUMP << ">>>CommandLine:";
-    DUMP << "exeArgumentList:" << cmExeArgumentList;
-    DUMP << "exeFileInfo:" << mExeFileInfo;
-    DUMP << "positionalArgumentList:";
+    DUMP << "===exeArgumentList:";
+    foreach (QString exeArg, cmExeArgumentList)
+        DUMP << "  " << exeArg;
+    DUMP << "---exeFileInfo:" << mExeFileInfo;
+    DUMP << "---positionalArgumentList:";
     dumpPositionalArgs();
-    DUMP << "Configuration:";
+    DUMP << "---Configuration:";
     mConfiguration.dump();
 }
 
@@ -241,6 +243,6 @@ void CommandLine::dumpPositionalArgs() const
     int nArgs = mPositionalArgumentList.size();
     DUMP << "eirExe : CommandLine PositionalArgs n=" << nArgs;
     for (int index=0; index < nArgs; ++index)
-        DUMP << index << mPositionalArgumentList[index];
+        DUMP << "  " << index << mPositionalArgumentList[index];
 }
 

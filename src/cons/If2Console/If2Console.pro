@@ -1,4 +1,5 @@
 #QT -= gui ### get QImage back
+QT *= xml
 
 CONFIG += c++17 console
 CONFIG -= app_bundle

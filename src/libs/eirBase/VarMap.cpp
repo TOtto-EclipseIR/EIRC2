@@ -119,6 +119,6 @@ QStringList VarMap::dumpList() const
 void VarMap::dump() const
 {
     mName.dump();
-    foreach (QString dstr, dumpList()) DUMP << dstr;
+    foreach (QString dstr, dumpList()) DUMP << "  " <<dstr;
 }
 
