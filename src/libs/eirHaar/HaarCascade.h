@@ -11,6 +11,8 @@ class EIRHAAR_EXPORT HaarCascade
 public:
     HaarCascade();
     HaarCascade(HaarCatalog * catalog);
+    bool set(HaarCatalog * catalog);
+
     bool load(const FileName &xmlFileName);
     bool load(const HaarCatalog::Names &names);
     bool load(const HaarCatalog::Item &item);

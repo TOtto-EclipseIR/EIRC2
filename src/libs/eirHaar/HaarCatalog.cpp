@@ -14,6 +14,11 @@ HaarCatalog::HaarCatalog(const HaarBase &haarBase)
     TRACEQFI << haarBase.baseDir();
 }
 
+int HaarCatalog::size() const
+{
+    return mNamesItemMap.size();
+}
+
 HaarCatalog::HaarCatalog(const QString &baseDirPath)
     : HaarBase(baseDirPath)
 {
@@ -53,6 +58,18 @@ bool HaarCatalog::load(const FileName &xmlFileName)
     } // for (deClass)
     dump();
     return success;
+}
+
+HaarCatalog::Names::List HaarCatalog::namePairs() const
+{
+    TRACEFN
+    HaarCatalog::Names::List pairs;
+    foreach (HaarCatalog::Item item, mNamesItemMap.values())
+    {
+        Names pair(item.className(), item.cascadeName());
+        pairs << pair;
+    }
+    return pairs;
 }
 
 void HaarCatalog::dump() const
@@ -134,6 +151,16 @@ HaarCatalog::Item::Item(const BasicName &className,
 {
     TRACEQFI << className() << cascadeName() << detectorSize
              << xmlFileName << isDefault << endl << description;
+}
+
+BasicName HaarCatalog::Item::className() const
+{
+    return mClassName;
+}
+
+BasicName HaarCatalog::Item::cascadeName() const
+{
+    return mCascadeName;
 }
 
 void HaarCatalog::Item::setDescription(const QString &description)
