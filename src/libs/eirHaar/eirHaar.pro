@@ -1,4 +1,4 @@
-QT += gui
+QT += gui xml
 
 TEMPLATE = lib
 DEFINES += EIRHAAR_LIBRARY
@@ -22,12 +22,14 @@ LIBS *= -leirBase2
 LIBS *= -leirExe2
 
 SOURCES += \
+    HaarBase.cpp \
     HaarCascade.cpp \
     HaarCatalog.cpp \
     HaarDetector.cpp \
     eirHaar.cpp
 
 HEADERS += \
+    HaarBase.h \
     HaarCascade.h \
     HaarCatalog.h \
     HaarDetector.h \
@@ -39,3 +41,6 @@ unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    ../../../../../../INDIface/detectors/Detectors.xml

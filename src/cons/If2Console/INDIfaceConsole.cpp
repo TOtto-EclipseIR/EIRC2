@@ -65,7 +65,17 @@ void INDIfaceConsole::setConfiguration()
 
 void INDIfaceConsole::initializeResources()
 {
-    TRACEFN
+    TRACEQFI << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INDIfaceConsole::initializeResources()";
+    QString baseHaarDirPath = mpConfig->
+        at("Detect/Resources/BaseDir").value().toString();
+    FileName haarCatalogXmlFile = mpConfig->
+        at("Detect/Resources/Catalog/XmlFile").value().toString();
+    TRACE << "baseHaarDirPath" << baseHaarDirPath;
+    TRACE << "haarCatalogXmlFile" << haarCatalogXmlFile;
+    mHaarCatalog.set(baseHaarDirPath);
+    EXPECT(mHaarCatalog.load(haarCatalogXmlFile));
+
+
     NEEDDO("rectFinder::initialize() x 3~5")
     EMIT(resoursesInitd());
     QTimer::singleShot(100, this, &INDIfaceConsole::startProcessing);

@@ -28,9 +28,9 @@ VarMap VarMap::insert(const Var &var)
     return *this;
 }
 
-void VarMap::insert(const MultiName &key, const QVariant &var)
+void VarMap::insert(const MultiName &key, const QVariant &vari)
 {
-    Var v(key, var);
+    Var v(key, vari, vari);
     insert(v);
 }
 
@@ -119,6 +119,6 @@ QStringList VarMap::dumpList() const
 void VarMap::dump() const
 {
     mName.dump();
-    DUMP << dumpList().join(QChar::LineFeed);
+    foreach (QString dstr, dumpList()) DUMP << dstr;
 }
 

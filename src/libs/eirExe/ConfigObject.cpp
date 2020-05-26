@@ -10,6 +10,11 @@ ConfigObject::ConfigObject(QObject *parent)
     TODO(All)
 }
 
+Var ConfigObject::at(const MultiName &key)
+{
+    return mConfiguration.at(key);
+}
+
 Configuration ConfigObject::configuration() const
 {
     return mConfiguration;

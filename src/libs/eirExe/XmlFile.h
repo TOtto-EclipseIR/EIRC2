@@ -7,12 +7,13 @@
 
 #include "FileName.h"
 
-class XmlFile
+class EIREXE_EXPORT XmlFile
 {
 public:
     XmlFile();
     XmlFile(const FileName &fileName);
     bool load(const FileName &fileName);
+    bool load();
     QDomDocument document() const;
     QDomElement rootElement() const;
 

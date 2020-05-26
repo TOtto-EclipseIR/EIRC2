@@ -2,6 +2,8 @@
 #pragma once
 #include "eirHaar.h"
 
+#include "HaarBase.h"
+
 #include <QMap>
 #include <QPair>
 #include <QSize>
@@ -10,7 +12,7 @@
 #include <eirExe/Configuration.h>
 #include <eirExe/FileName.h>
 
-class EIRHAAR_EXPORT HaarCatalog
+class EIRHAAR_EXPORT HaarCatalog : public HaarBase
 {
 public:
     class Names : QPair<BasicName, BasicName>
@@ -42,7 +44,8 @@ public:
     }; // HaarCatalog::Item
 
 public:
-    HaarCatalog();
+    HaarCatalog(const QString &baseDirPath=QString());
+    HaarCatalog(const HaarBase &haarBase);
     bool load(const FileName &xmlFileName);
     void configure(const Configuration &config); // Detect/Resources/Catalog
     BasicName::List classNames() const;

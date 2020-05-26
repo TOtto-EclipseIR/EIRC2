@@ -11,6 +11,7 @@ public:
     void set(const QString &qstr);
     QString toString() const;
     operator QString () const;
+    QString operator ()() const;
 
 private:
     QString mQString;

@@ -23,7 +23,7 @@ public:
     MultiName name() const;
     bool contains(const MultiName & name) const;
     VarMap insert(const Var &var);
-    void insert(const MultiName &key, const QVariant &var);
+    void insert(const MultiName &key, const QVariant &vari);
     Var value(const MultiName & name) const;
     VarMap extract(const MultiName & groupName) const;
     void insert(const MultiName &groupName,

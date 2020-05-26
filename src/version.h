@@ -1,4 +1,4 @@
-// file: ./VERSION.h
+// file: ./version.h
 
 #define VER_MAJOR 2
 #define VER_TRUNK "develop"
@@ -15,6 +15,4 @@
 #else
 #define EIRC2_VER_ORGNAME "EclipseRD"
 #endif
-
-#define EIRC2_IF2CONSOLE_TAKETWO23
 

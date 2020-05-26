@@ -24,6 +24,7 @@ LIBS *= -leirBase2
 LIBS *= -leirType2
 LIBS *= -leirImage2
 LIBS *= -leirExe2
+LIBS *= -leirHaar2
 #LIBS *= -leirQtCV42
 
 SOURCES += \
