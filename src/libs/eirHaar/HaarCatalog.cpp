@@ -19,6 +19,13 @@ int HaarCatalog::size() const
     return mNamesItemMap.size();
 }
 
+bool HaarCatalog::isValid() const
+{
+    TRACEFN
+    if (mNamesItemMap.isEmpty())    return false;
+    return true;
+}
+
 HaarCatalog::HaarCatalog(const QString &baseDirPath)
     : HaarBase(baseDirPath)
 {
@@ -70,6 +77,24 @@ HaarCatalog::Names::List HaarCatalog::namePairs() const
         pairs << pair;
     }
     return pairs;
+}
+
+FileName HaarCatalog::cascadeXmlFile(const BasicName &className,
+                                     const BasicName &cascadeName)
+{
+    HaarCatalog::Names names(className, cascadeName);
+    HaarCatalog::Item item = mNamesItemMap.value(names);
+    return item.xmlFileName();
+}
+
+FileName HaarCatalog::defaultXmlFile(const BasicName &className)
+{
+    foreach (HaarCatalog::Item item, mNamesItemMap.values())
+    {
+        if (item.className() == className && item.isDefault())
+            return item.xmlFileName();
+    }
+    return FileName();
 }
 
 void HaarCatalog::dump() const
@@ -161,6 +186,16 @@ BasicName HaarCatalog::Item::className() const
 BasicName HaarCatalog::Item::cascadeName() const
 {
     return mCascadeName;
+}
+
+FileName HaarCatalog::Item::xmlFileName() const
+{
+    return mXmlFileName;
+}
+
+bool HaarCatalog::Item::isDefault() const
+{
+    return mIsDefault;
 }
 
 void HaarCatalog::Item::setDescription(const QString &description)

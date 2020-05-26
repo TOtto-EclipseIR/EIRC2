@@ -26,6 +26,7 @@ SOURCES += \
     HaarCascade.cpp \
     HaarCatalog.cpp \
     HaarDetector.cpp \
+    cvVersion.cpp \
     eirHaar.cpp
 
 HEADERS += \
@@ -33,6 +34,7 @@ HEADERS += \
     HaarCascade.h \
     HaarCatalog.h \
     HaarDetector.h \
+    cvVersion.h \
     eirHaar_global.h \
     eirHaar.h
 

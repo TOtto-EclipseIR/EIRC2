@@ -48,6 +48,8 @@ public:
              const bool isDefault=false);
         BasicName className() const;
         BasicName cascadeName() const;
+        FileName xmlFileName() const;
+        bool isDefault() const;
         void parseDetectorElements(const QDomElement &detector);
         void setDescription(const QString &description);
         void setXmlFileName(const QString &xmlFileName);
@@ -68,6 +70,7 @@ public:
     HaarCatalog(const QString &baseDirPath=QString());
     HaarCatalog(const HaarBase &haarBase);
     int size() const;
+    bool isValid() const;
     bool load(const FileName &xmlFileName);
     void configure(const Configuration &config); // Detect/Resources/Catalog
     BasicName::List classNames() const;
@@ -75,7 +78,7 @@ public:
     Names::List namePairs() const;
     BasicName defaultName(const BasicName &className);
     Item item(const BasicName &className,
-                            const BasicName &cascadeName);
+              const BasicName &cascadeName);
     FileName cascadeXmlFile(const BasicName &className,
                             const BasicName &cascadeName);
     FileName defaultXmlFile(const BasicName &className);

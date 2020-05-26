@@ -17,6 +17,11 @@ MultiName VarMap::name() const
     return mName;
 }
 
+void VarMap::setName(const MultiName &name)
+{
+    mName = name;
+}
+
 bool VarMap::contains(const MultiName &name) const
 {
     return mVarMap.contains(name.sortable());
