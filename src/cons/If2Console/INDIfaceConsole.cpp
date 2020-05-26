@@ -11,6 +11,7 @@
 #include <eirExe/ConfigObject.h>
 #include <eirExe/FileInfoQueue.h>
 #include <eirExe/LegacySettings.h>
+#include <eirHaar/cvVersion.h>
 
 #include "If2CommandLine.h"
 
@@ -38,6 +39,8 @@ void INDIfaceConsole::initializeApplication()
     writeLine("===Raw Executable Arguments:");
     foreach (QString arg, commandLine()->exeArguments())
         writeLine("---{" + arg + "}");
+    cvVersion opencvVersion;
+    writeLine("==="+opencvVersion.toString());
     EMIT(applicationInitd());
     QTimer::singleShot(100, this, &INDIfaceConsole::setupCommandLine);
 }
