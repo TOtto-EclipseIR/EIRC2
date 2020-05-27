@@ -4,9 +4,9 @@
 #define VER_TRUNK "develop"
 #define EIRC2_VER_MAJOR 2
 #define EIRC2_VER_MINOR 6
-#define EIRC2_VER_RELEASE 0xA0
-#define EIRC2_VER_BRANCH 0
-#define EIRC2_VER_STRING "v2.06-Alpha"
+#define EIRC2_VER_RELEASE 0xA1
+#define EIRC2_VER_BRANCH 23
+#define EIRC2_VER_STRING "v2.06-Alpha1+23"
 #define EIRC2_VER_TRUNKNAME "current"
 #define EIRC2_VER_APPVER EIRC2_VER_STRING
 #ifdef NDEBUG
