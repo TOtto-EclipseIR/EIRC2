@@ -2,8 +2,11 @@
 
 //#include "../../../3rd/OpenCV4/install/include/opencv2/opencv.hpp"
 //#include "../../../3rd/OpenCV4/install/include/opencv2/core/core.hpp"
-#include "../../../3rd/OpenCV4/install/include/opencv2/core/version.hpp"
+//#include "../../../3rd/OpenCV4/install/include/opencv2/core/version.hpp"
 //#include "../../../3rd/OpenCV4/install/include/opencv2/objdetect/objdetect.hpp"
+
+//#include <opencv2/opencv.hpp>
+#include <opencv2/core/version.hpp>
 
 cvVersion::cvVersion()
 {

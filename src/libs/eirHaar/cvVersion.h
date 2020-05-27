@@ -1,4 +1,4 @@
-//! \file HaarBase.h
+//! \file cvVersion.h
 #pragma once
 #include "eirHaar.h"
 

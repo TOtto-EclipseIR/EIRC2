@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../../EIRC2.pri)
+include(./OpenCV.pri)
 
 LIBS *= -leirBase2
 LIBS *= -leirExe2
@@ -26,6 +27,8 @@ SOURCES += \
     HaarCascade.cpp \
     HaarCatalog.cpp \
     HaarDetector.cpp \
+    cvCascade.cpp \
+    cvString.cpp \
     cvVersion.cpp \
     eirHaar.cpp
 
@@ -34,6 +37,8 @@ HEADERS += \
     HaarCascade.h \
     HaarCatalog.h \
     HaarDetector.h \
+    cvCascade.h \
+    cvString.h \
     cvVersion.h \
     eirHaar_global.h \
     eirHaar.h
