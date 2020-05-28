@@ -1,4 +1,5 @@
-QT -= gui scxml
+QT -= gui
+QT *= xml
 
 TEMPLATE = lib
 DEFINES += EIREXE_LIBRARY
@@ -21,9 +22,6 @@ include(../../EIRC2.pri)
 LIBS *= -leirBase2
 LIBS *= -leirType2
 
-STATECHARTS += \
-    CommandLine.scxml
-
 SOURCES += \
     ApplicationHelper.cpp \
     CommandLine.cpp \
@@ -33,9 +31,12 @@ SOURCES += \
     Console.cpp \
     FileExtension.cpp \
     FileInfoQueue.cpp \
+    FileName.cpp \
+    FileWriteQueue.cpp \
     LegacySettings.cpp \
     QQDirIterator.cpp \
     StdStreams.cpp \
+    XmlFile.cpp \
     eirExe.cpp
 
 HEADERS += \
@@ -47,9 +48,12 @@ HEADERS += \
     Console.h \
     FileExtension.h \
     FileInfoQueue.h \
+    FileName.h \
+    FileWriteQueue.h \
     LegacySettings.h \
     QQDirIterator.h \
     StdStreams.h \
+    XmlFile.h \
     eirExe_global.h \
     eirExe.h
 

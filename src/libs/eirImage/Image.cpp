@@ -18,7 +18,7 @@ Image::Image(const QImage &image,
 {
     TRACEQFI << image << newFormat;
     if (mImage.format() != newFormat)
-        mImage.convertTo(newFormat);
+        mImage.convertTo(mFormat);
 }
 
 QImage Image::constImage() const
@@ -39,5 +39,15 @@ Image::Option Image::constOptions() const
 Image::Option &Image::options()
 {
     return mOptions;
+}
+
+bool Image::isNull() const
+{
+    return mImage.isNull();
+}
+
+QSize Image::size() const
+{
+    return mImage.size();
 }
 

@@ -21,9 +21,10 @@ public:
     VarMap(const MultiName &name,
            const Var::List & vars);
     MultiName name() const;
+    void setName(const MultiName &name);
     bool contains(const MultiName & name) const;
     VarMap insert(const Var &var);
-    void insert(const MultiName &key, const QVariant &var);
+    void insert(const MultiName &key, const QVariant &vari);
     Var value(const MultiName & name) const;
     VarMap extract(const MultiName & groupName) const;
     void insert(const MultiName &groupName,

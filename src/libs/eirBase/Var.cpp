@@ -11,7 +11,9 @@ Var::Var(const MultiName &name,
     , mDefault(defValue)
     , mCurrent(curValue) {;}
 
-Var::Var(const char *name, const QVariant &defValue, const QVariant &curValue)
+Var::Var(const char *name,
+         const QVariant &defValue,
+         const QVariant &curValue)
     : mName(QString(name))
     , mDefault(defValue)
     , mCurrent(curValue) {;}

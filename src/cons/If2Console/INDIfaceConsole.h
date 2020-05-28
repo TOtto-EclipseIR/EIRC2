@@ -15,7 +15,10 @@
 #include <eirType/QQRectList.h>
 #include <eirType/Region.h>
 #include <eirExe/ApplicationHelper.h>
+#include <eirImage/ColorImage.h>
+#include <eirHaar/HaarCatalog.h>
 
+class ColorImage;
 class CommandLine;
 class FileInfoQueue;
 
@@ -27,7 +30,6 @@ class INDIfaceConsole : public Console
 public:
     explicit INDIfaceConsole(Console *parent = nullptr);
 
-#ifdef EIRC2_IF2CONSOLE_TAKETWO23
 public slots:
     void initializeApplication();
 
@@ -52,45 +54,13 @@ signals:
     void processingComplete();
 
 protected:
-private:
+    void processImage();
+
 private:
     CommandLineClientInterface * mpCommandLineInterface=nullptr;
     ConfigObject * mpConfig=nullptr;
+    HaarCatalog mHaarCatalog;
     QStringList mImageFileQueue;
     QString mCurrentImageFile;
-
-#else // TAKEONE
-protected slots:
-    void configure(const VarPak &config);
-    void setOutputDirs(const VarPak &config);
-    void processInputImage(const QFileInfo & inFileInfo);
-    void scanInputDir();
-    void nextImage();
-
-protected:
-    QString configString(const MultiName &key) const;
-    QDir outputDir(QDir baseDir, QString dirName);
-    static QImage toGrey(const QImage & inputImage);
-
-signals:
-    void pendingFilesSet();
-    void fileDirsPendingNotEmpty();
-    void inputDirEmpty();
-    void inputScanned();
-
-private:
-    CommandLine * mpCommandLine=nullptr;
-    VarPak mConfiguration;
-    QDir mInputDir;
-    QDir mBaseDir;
-    QDir mCapture2Dir;
-    QDir mGreyInputDir;
-    QDir mMarkedDetectDir;
-    QDir mMarkedFaceDir;
-    QDir mFaceDetectDir;
-    QDir mMarkedRectangleDir;
-    QDir mMarkedCandidateDir;
-    QDir mHeatmapDir;
-    QQRectList mRectList;
-#endif
+    ColorImage mCurrentImage;
 };

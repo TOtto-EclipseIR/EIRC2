@@ -52,6 +52,7 @@
 #define LIKEDO(msg)             DEBUGDO(qInfo, PITODO, msg)
 
 #define DUMP                    DEBUG(qDebug, PDUMP) // << stuff
+#define DUMPVAL(val)            DUMP << #val << val;
 #define TRACE                   DEBUG(qDebug, PTRACE) // << stuff
 #define TRACEQFI                DEBUGQFI(qDebug, PTRACE) // << stuff
 #define TRACEQOB(mom)           DEBUGQOB(qDebug, PTRACE, mom);
