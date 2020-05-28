@@ -37,8 +37,9 @@ public:
     bool UnitTest(void);
 
 public: // static
-    bool isValidChar(const QChar &sChar);
+    static bool isValidChar(const QChar &sChar);
     static QStringList toStringList(BasicName::List basicList);
+    static BasicName::List listFrom(QString names);
 
 private:
     QString mName;

@@ -1,6 +1,8 @@
 #include "BasicName.h"
 
-#include <QSpecialInteger>
+#include <QChar>
+#include <QRegularExpression>
+
 #include "Debug.h"
 
 /*! \class BasicName
@@ -222,4 +224,16 @@ QStringList BasicName::toStringList(BasicName::List basicList)
         stringNames << basicName.toString();
     return stringNames;
 
+}
+
+// static
+BasicName::List BasicName::listFrom(QString names)
+{
+    BasicName::List basicNameList;
+    TRACEQFI << names;
+    names.replace(QRegularExpression("[,;]"), " ");
+    QStringList nameList = names.simplified().split(' ');
+    foreach (QString name, nameList)
+        basicNameList << BasicName(name);
+    return basicNameList;
 }

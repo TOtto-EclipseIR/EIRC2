@@ -4,7 +4,8 @@
 #include <QString>
 #include <QVariant>
 
-#include "BasicName.h"
+#include <eirBase/BasicName.h>
+#include <eirType/Flags.h>
 
 class FunctionInfo
 {
@@ -19,9 +20,13 @@ public:
         Parameter(const QString &params,
                   const int index);
         Parameter(const QString &type,
-                  const BasicName &name,
+                  const BasicName &name=BasicName(),
                   const QVariant &value=QVariant(),
                   const QString &defaultValue=QString());
+        QString type() const;
+        QString name() const;
+        QString value() const;
+        QString defaultValue() const;
 
     private:
         QString mType;
@@ -50,5 +55,6 @@ private:
     BasicName mFunctionName;
     Parameter::List mParameterList;
     QString mPostModifier;
+    Flags mFlags;
 };
 

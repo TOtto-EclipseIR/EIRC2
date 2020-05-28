@@ -1,6 +1,6 @@
 #include "FunctionInfo.h"
 
-#include "Debug.h"
+#include <eirBase/Debug.h>
 
 FunctionInfo::FunctionInfo()
 {
@@ -19,6 +19,12 @@ void FunctionInfo::parse(const QString &qFnInfo)
     TRACEQFI << qFnInfo;
     mQFuncInfoMacro = qFnInfo;
     parse();
+}
+
+void FunctionInfo::clear()
+{
+    mQFuncInfoMacro.clear();
+    parseClear();
 }
 
 void FunctionInfo::parse()
@@ -45,10 +51,9 @@ void FunctionInfo::parse()
     // 2. Parameters
     mParameterList.clear();
     QStringList qslParams = Params.split(',');
-    int ix = 0;
     while ( ! qslParams.isEmpty())
     {
-        Parameter param(qslParams.takeFirst(), ix++);
+        Parameter param(qslParams.takeFirst());
         mParameterList << param;
     }
 
@@ -66,4 +71,16 @@ void FunctionInfo::parseClear()
     mFunctionName.clear();
     mParameterList.clear();
     mPostModifier.clear();
+}
+
+FunctionInfo::Parameter::Parameter(const QString &type,
+                                   const BasicName &name,
+                                   const QVariant &value,
+                                   const QString &defaultValue)
+    : mType(type)
+    , mName(name)
+    , mValue(value)
+    , mDefaultValue(defaultValue)
+{
+    TRACEQFI << mType << mName() << mValue.toString() << mDefaultValue;
 }
