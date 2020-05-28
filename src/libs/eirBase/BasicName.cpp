@@ -1,5 +1,6 @@
 #include "BasicName.h"
 
+#include <QSpecialInteger>
 #include "Debug.h"
 
 /*! \class BasicName
@@ -72,6 +73,34 @@ bool BasicName::isEmpty() const
 bool BasicName::notEmpty() const
 {
     return ! isEmpty();
+}
+
+void BasicName::clear()
+{
+    mName.clear();
+}
+
+QString BasicName::fromBack(const QString &stuffAndName)
+{
+    TRACEQFI << stuffAndName;
+    int ix;
+    mName.clear();
+    for (ix = stuffAndName.size()-1; ix > 0; --ix)
+    {
+        QChar qch = stuffAndName[ix];
+        bool valid = isValidChar(qch);
+        TRACE << ix << qch << valid;
+        if (valid)
+        {
+            mName.prepend(qch);
+        }
+        else
+        {
+            break;                                  /*/--------\*/
+        }
+    }
+    return stuffAndName.left(ix);
+
 }
 
 /*!
@@ -169,6 +198,13 @@ bool BasicName::operator !=(const BasicName &other) const
 bool BasicName::operator <  (const BasicName &other) const
 {
     return sortable() < other.sortable();
+}
+
+// static
+bool BasicName::isValidChar(const QChar &sChar)
+{
+    WANTDO(More than space)
+    return (' ' == sChar);
 }
 
 /*!

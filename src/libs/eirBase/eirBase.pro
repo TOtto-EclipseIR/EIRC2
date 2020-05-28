@@ -21,6 +21,7 @@ include(../../EIRC2.pri)
 SOURCES += \
     BasicName.cpp \
     ErrorHandler.cpp \
+    FunctionInfo.cpp \
     Id.cpp \
     Milliseconds.cpp \
     MultiName.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     BasicName.h \
     Debug.h \
     ErrorHandler.h \
+    FunctionInfo.h \
     Id.h \
     Milliseconds.h \
     MultiName.h \
