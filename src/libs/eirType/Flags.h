@@ -40,7 +40,12 @@ public:
     void set(const BasicName &name, const bool is=true);
     void setAll();
     // setup
+    int registerFlag(const int newIndex, const BasicName &name);
     int registerFlag(const BasicName &name);
+    int registerFlags(const int newIndex, const BasicName::List &names);
+    int registerFlags(const BasicName::List &names);
+    int registerFlags(const int newIndex, const QString &names);
+    int registerFlags(const QString &names);
     BasicName name(const int index) const;
     const char *namePch(const int index) const;
     int index(const BasicName &name) const;

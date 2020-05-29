@@ -12,7 +12,7 @@ SUBDIRS += \
     ./libs/eirType \
     ./libs/eirXfr \
     ./cons/If2Console \
-    libs/eirHaar \
+ #   libs/eirHaar \
     libs/eirImage \
 
 eirType.depends     = eirBase
@@ -21,5 +21,6 @@ eirExe.depends      = eirBase eirType
 #eirQtCV.depends     = eirBase eirType eirXfr eirPixelImage
 eirXfr.depends      = eirBase
 eirImage.depends    = eirType eirExe
-eirHaar.depends     = eirBase eirType eirExe eirImage
-If2Console.depends  = eirBase eirType eirXfr eirExe eirHaar
+#eirHaar.depends     = eirBase eirType eirExe eirImage
+#If2Console.depends  = eirBase eirType eirXfr eirExe eirHaar
+If2Console.depends  = eirBase eirType eirXfr eirExe # eirHaar

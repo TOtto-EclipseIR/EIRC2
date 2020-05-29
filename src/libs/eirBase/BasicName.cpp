@@ -1,5 +1,8 @@
 #include "BasicName.h"
 
+#include <QChar>
+#include <QRegularExpression>
+
 #include "Debug.h"
 
 /*! \class BasicName
@@ -72,6 +75,34 @@ bool BasicName::isEmpty() const
 bool BasicName::notEmpty() const
 {
     return ! isEmpty();
+}
+
+void BasicName::clear()
+{
+    mName.clear();
+}
+
+QString BasicName::fromBack(const QString &stuffAndName)
+{
+    TRACEQFI << stuffAndName;
+    int ix;
+    mName.clear();
+    for (ix = stuffAndName.size()-1; ix > 0; --ix)
+    {
+        QChar qch = stuffAndName[ix];
+        bool valid = isValidChar(qch);
+        TRACE << ix << qch << valid;
+        if (valid)
+        {
+            mName.prepend(qch);
+        }
+        else
+        {
+            break;                                  /*/--------\*/
+        }
+    }
+    return stuffAndName.left(ix);
+
 }
 
 /*!
@@ -171,6 +202,13 @@ bool BasicName::operator <  (const BasicName &other) const
     return sortable() < other.sortable();
 }
 
+// static
+bool BasicName::isValidChar(const QChar &sChar)
+{
+    WANTDO(More than space)
+    return (' ' == sChar);
+}
+
 /*!
  * \brief static BasicName::toStringList
  *      converts a list if BasicName entries to a list of QStrings.
@@ -186,4 +224,16 @@ QStringList BasicName::toStringList(BasicName::List basicList)
         stringNames << basicName.toString();
     return stringNames;
 
+}
+
+// static
+BasicName::List BasicName::listFrom(QString names)
+{
+    BasicName::List basicNameList;
+    TRACEQFI << names;
+    names.replace(QRegularExpression("[,;]"), " ");
+    QStringList nameList = names.simplified().split(' ');
+    foreach (QString name, nameList)
+        basicNameList << BasicName(name);
+    return basicNameList;
 }

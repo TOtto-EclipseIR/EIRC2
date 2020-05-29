@@ -10,6 +10,7 @@
 #include <eirExe/CommandLineClientInterface.h>
 #include <eirExe/ConfigObject.h>
 #include <eirExe/FileInfoQueue.h>
+#include <eirExe/FileName.h>
 #include <eirExe/LegacySettings.h>
 #include <eirHaar/cvVersion.h>
 
@@ -39,8 +40,8 @@ void INDIfaceConsole::initializeApplication()
     writeLine("===Raw Executable Arguments:");
     foreach (QString arg, commandLine()->exeArguments())
         writeLine("---{" + arg + "}");
-    cvVersion opencvVersion;
-    writeLine("==="+opencvVersion.toString());
+//    cvVersion opencvVersion;
+  //  writeLine("==="+opencvVersion.toString());
     EMIT(applicationInitd());
     QTimer::singleShot(100, this, &INDIfaceConsole::setupCommandLine);
 }
@@ -75,8 +76,8 @@ void INDIfaceConsole::initializeResources()
         at("Detect/Resources/Catalog/XmlFile").value().toString();
     TRACE << "baseHaarDirPath" << baseHaarDirPath;
     TRACE << "haarCatalogXmlFile" << haarCatalogXmlFile;
-    mHaarCatalog.set(baseHaarDirPath);
-    EXPECT(mHaarCatalog.load(haarCatalogXmlFile));
+//    mHaarCatalog.set(baseHaarDirPath);
+  //  EXPECT(mHaarCatalog.load(haarCatalogXmlFile));
 
 
     NEEDDO("rectFinder::initialize() x 3~5")

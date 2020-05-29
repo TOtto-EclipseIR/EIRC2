@@ -43,7 +43,7 @@ HEADERS += \
     Id.h \
     Milliseconds.h \
     MultiName.h \
-###    MultiNameMap`e`.h \
+###    MultiNameMap.h \
     SetError.h \
     Success.h \
     UInt128.h \

@@ -22,6 +22,8 @@ public:
     void set(const QString & name);
     bool isEmpty() const;
     bool notEmpty() const;
+    void clear();
+    QString fromBack(const QString &stuffAndName);
     QString toString(void) const;
     QByteArray toByteArray() const;
     operator QString (void) const;
@@ -35,7 +37,9 @@ public:
     bool UnitTest(void);
 
 public: // static
+    static bool isValidChar(const QChar &sChar);
     static QStringList toStringList(BasicName::List basicList);
+    static BasicName::List listFrom(QString names);
 
 private:
     QString mName;

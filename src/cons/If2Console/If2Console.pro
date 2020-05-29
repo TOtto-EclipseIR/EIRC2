@@ -15,22 +15,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-
-###target = If2Console
-###depends = eirExe
-
 include(../../EIRC2.pri)
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
 LIBS *= -leirImage2
 LIBS *= -leirExe2
-LIBS *= -leirHaar2
-#LIBS *= -leirQtCV42
+#LIBS *= -leirHaar2
 
 SOURCES += \
         INDIfaceConsole.cpp \
-    If2CommandLine.cpp \
+        If2CommandLine.cpp \
         main.cpp \
 
 HEADERS += \
@@ -43,9 +38,4 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    ../../../../../../INDIface/detectors/Detectors.xml \
-    DetectCascades.txt \
-    DetectRD.txt \
-    Input01.txt \
-    OutputRD.txt \
+

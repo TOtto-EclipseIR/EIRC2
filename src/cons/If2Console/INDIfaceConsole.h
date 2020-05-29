@@ -16,7 +16,7 @@
 #include <eirType/Region.h>
 #include <eirExe/ApplicationHelper.h>
 #include <eirImage/ColorImage.h>
-#include <eirHaar/HaarCatalog.h>
+//#include <eirHaar/HaarCatalog.h>
 
 class ColorImage;
 class CommandLine;
@@ -59,7 +59,7 @@ protected:
 private:
     CommandLineClientInterface * mpCommandLineInterface=nullptr;
     ConfigObject * mpConfig=nullptr;
-    HaarCatalog mHaarCatalog;
+//    HaarCatalog mHaarCatalog;
     QStringList mImageFileQueue;
     QString mCurrentImageFile;
     ColorImage mCurrentImage;
