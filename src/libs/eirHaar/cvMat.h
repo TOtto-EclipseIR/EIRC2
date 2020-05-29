@@ -1,4 +1,5 @@
-//! \file cvMat.h#pragma once
+//! \file cvMat.h
+#pragma once
 #include "eirHaar.h"
 
 class QImage;
@@ -8,11 +9,11 @@ class QImage;
 #include "cvFormat.h"
 
 
-class cvMat : public cv::Mat
+class EIRHAAR_EXPORT cvMat : public cv::Mat
 {
 public:
     cvMat();
-    cvMat(const Image &image, const cvFormat cvfmt=cvFormat());
+    cvMat(const Image &image, const cvFormat &cvfmt=cvFormat());
     bool set(const Image &image, const cvFormat=cvFormat());
     Image toImage(const QImage::Format newFormat=QImage::Format_Invalid);
 };
