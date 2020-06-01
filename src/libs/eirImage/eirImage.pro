@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(../../EIRC2.pri)
 
+LIBS *= -leirBase2
 LIBS *= -leirType2
 
 SOURCES += \
@@ -28,6 +29,7 @@ SOURCES += \
     GreyImage.cpp \
     Image.cpp \
     ImageDirectoryQueue.cpp \
+    ImagePak.cpp \
     ImageQueueManager.cpp \
     ImageFlags.cpp \
     ImageQueueObject.cpp \
@@ -44,6 +46,7 @@ HEADERS += \
     GreyImage.h \
     Image.h \
     ImageDirectoryQueue.h \
+    ImagePak.h \
     ImageQueueManager.h \
     ImageFlags.h \
     ImageQueueObject.h \

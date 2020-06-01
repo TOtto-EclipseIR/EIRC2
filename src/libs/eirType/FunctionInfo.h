@@ -5,7 +5,7 @@
 #include <QVariant>
 
 #include <eirBase/BasicName.h>
-#include <eirType/Flags.h>
+#include <eirType/BitFlags.h>
 
 class FunctionInfo
 {
@@ -55,6 +55,6 @@ private:
     BasicName mFunctionName;
     Parameter::List mParameterList;
     QString mPostModifier;
-    Flags mFlags;
+    BitFlags mFlags;
 };
 

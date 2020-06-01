@@ -226,14 +226,19 @@ QStringList BasicName::toStringList(BasicName::List basicList)
 
 }
 
-// static
-BasicName::List BasicName::listFrom(QString names)
+BasicName::List BasicName::listFrom(const QStringList &names)
 {
     BasicName::List basicNameList;
+    foreach (QString name, names)
+        basicNameList << BasicName(name);
+    return basicNameList;
+}
+
+// static
+BasicName::List BasicName::listFrom(QString &names)
+{
     TRACEQFI << names;
     names.replace(QRegularExpression("[,;]"), " ");
     QStringList nameList = names.simplified().split(' ');
-    foreach (QString name, nameList)
-        basicNameList << BasicName(name);
-    return basicNameList;
+    return listFrom(nameList);
 }

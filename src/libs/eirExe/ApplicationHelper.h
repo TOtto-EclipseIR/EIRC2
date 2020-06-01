@@ -13,6 +13,7 @@ class CommandLineClientInterface;
 class ConfigObject;
 class ErrorHandler;
 class LegacySettings;
+class VersionInfo;
 
 class EIREXE_EXPORT ApplicationHelper : public QObject
 {
@@ -20,6 +21,7 @@ class EIREXE_EXPORT ApplicationHelper : public QObject
 public:
     explicit ApplicationHelper(QObject *parent = nullptr);
     void set(CommandLineClientInterface const * client) const;
+    void set(const VersionInfo & verInfo);
     QFile * tempFile(const QString &ext,
                      QObject * parent=nullptr);
     const CommandLine *commandLine() const;

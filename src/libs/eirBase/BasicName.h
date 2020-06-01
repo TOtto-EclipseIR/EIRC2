@@ -39,7 +39,8 @@ public:
 public: // static
     static bool isValidChar(const QChar &sChar);
     static QStringList toStringList(BasicName::List basicList);
-    static BasicName::List listFrom(QString names);
+    static BasicName::List listFrom(QString &names);
+    static BasicName::List listFrom(const QStringList &names);
 
 private:
     QString mName;
