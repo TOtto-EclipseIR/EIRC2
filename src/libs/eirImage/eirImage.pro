@@ -29,6 +29,7 @@ SOURCES += \
     GreyImage.cpp \
     Image.cpp \
     ImageDirectoryQueue.cpp \
+    ImageInfo.cpp \
     ImagePak.cpp \
     ImageQueueManager.cpp \
     ImageFlags.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
     GreyImage.h \
     Image.h \
     ImageDirectoryQueue.h \
+    ImageInfo.h \
     ImagePak.h \
     ImageQueueManager.h \
     ImageFlags.h \

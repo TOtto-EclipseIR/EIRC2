@@ -2,6 +2,7 @@
 #pragma once
 #include "eirBase.h"
 
+#include <QBitArray>
 #include <QList>
 #include <QMap>
 #include <QStack>
@@ -38,6 +39,7 @@ private:
 //    Uid mUid;
     quint64 mU64Key;
     MultiName mNameKey;
+    QBitArray mFlags;
     QString mDescription;
     QVariant mData;
 };

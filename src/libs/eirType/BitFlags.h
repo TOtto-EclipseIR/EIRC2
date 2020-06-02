@@ -48,6 +48,7 @@ public:
     void registerFlags(const BasicName::List &names);
     void registerFlags(const int newIndex, QString &names);
     void registerFlags(const QString &names);
+    // access
     BasicName name(const int index) const;
     const char *namePch(const int index) const;
     int index(const BasicName &name) const;

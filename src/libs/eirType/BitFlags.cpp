@@ -46,6 +46,9 @@ bool BitFlags::at(const int index) const
 
 void BitFlags::registerFlag(const int newIndex, const BasicName &name)
 {
+    TRACEQFI << newIndex << name();
+    WEXPECTNOT(mIndexNameDMap.contains(newIndex));
+    WEXPECTNOT(mIndexNameDMap.contains(name));
     mIndexNameDMap.insertUnique(newIndex, name);
     mBits[newIndex] = false;
 }
@@ -59,7 +62,8 @@ void BitFlags::registerFlags(const int newIndex, const BasicName::List &names)
 
 void BitFlags::registerFlags(const int newIndex, const QStringList &names)
 {
-
+    TRACEQFI << newIndex << names;
+    NEEDDO(it) NEEDUSE(newIndex) NEEDUSE(names)
 }
 
 void BitFlags::registerFlags(const int newIndex, QString &names)

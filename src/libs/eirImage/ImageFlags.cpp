@@ -1,3 +1,4 @@
+// file:{EIRC2 repo}./src/libs/eirImage/ImageFlags.cpp
 //! \file ImageFlags.cpp
 #include "ImageFlags.h"
 
@@ -17,7 +18,8 @@ void ImageFlags::ctorOnce()
     once=true;
 
     QString flagsBase("ImageBase ImageFrame ImageFace"
-                      "ImageBody ImageMarked ImageINDI");
+                      "ImageBody ImageMarked ImageINDI"
+                      "ImageGrey");
     QString frameBase("ImageFrameBase");
     QString faceBase("ImageFaceBase");
     QString bodyBase("ImageBodyBase");

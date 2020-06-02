@@ -12,6 +12,6 @@ public:
           =QImage::Format_Mono);
     BitImage(const QImage &image,
           const QImage::Format newFormat
-          =QImage::Format_Invalid);
+          =QImage::Format_Mono);
 };
 

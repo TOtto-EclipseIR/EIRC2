@@ -1,10 +1,13 @@
-//! \file ImageFlags.ch
+// file:{EIRC2 repo}./src/libs/eirImage/ImageFlags.h
+//! \file ImageFlags.h
+#pragma once
+#include "eirImage.h"
 
 #pragma once
 
 #include <eirType/BitFlags.h>
 
-class ImageFlags : public BitFlags
+class EIRIMAGE_EXPORT ImageFlags : public BitFlags
 {
 public:
     ImageFlags();
