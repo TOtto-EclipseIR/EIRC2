@@ -27,12 +27,13 @@ public:
     Image(const QByteArray &bytes,
           const QImage::Format newFormat
             =QImage::Format_Invalid);
-    QImage constImage() const;
+    QImage image() const;
     QImage &image();
     Option constOptions() const;
     Option &options();
     bool isNull() const;
     QSize size() const;
+    QImage::Format format() const;
     QString toString() const;
 
 private:

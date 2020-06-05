@@ -3,9 +3,19 @@
 
 VarPak::VarPak(const Id id) : mId(id) {;}
 
+void VarPak::set(const QByteArray &byteArray)
+{
+    mBA = byteArray;
+}
+
 void VarPak::insert(const VarMap &varMap)
 {
     mVarMap.insert(varMap);
+}
+
+void VarPak::set(const int index, const Var &listItem)
+{
+    mVarList[index] = listItem;
 }
 
 void VarPak::insert(const Var &mapItem)

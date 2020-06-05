@@ -18,7 +18,7 @@ class EIRBASE_EXPORT VarPak
 {
 public:
     VarPak(const Id id=Id());
-    void set(const QByteArray &qba);
+    void set(const QByteArray &byteArray);
     void set(const Var::List &varList);
     void insert(const VarMap &varMap);
     void set(const int index, const Var &listItem);

@@ -57,8 +57,14 @@ public:
     QString namesSetString(const QChar delimeter=QChar(' '));
     QList<int> indiciesSet() const;
 
+protected:
+    const int cmFlagsUserBase           = 1024;
+    const int cmImageFlagsBase          = 256 + cmFlagsUserBase;
+
 private:
     QBitArray mBits;
     DualMap<int, BasicName> mIndexNameDMap;
+
+
 };
 

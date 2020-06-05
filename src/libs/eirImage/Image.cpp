@@ -33,7 +33,7 @@ Image::Image(const QByteArray &bytes,
         mImage.convertTo(mFormat);
 }
 
-QImage Image::constImage() const
+QImage Image::image() const
 {
     return mImage;
 }
@@ -61,6 +61,11 @@ bool Image::isNull() const
 QSize Image::size() const
 {
     return mImage.size();
+}
+
+QImage::Format Image::format() const
+{
+    return mImage.format();
 }
 
 QString Image::toString() const

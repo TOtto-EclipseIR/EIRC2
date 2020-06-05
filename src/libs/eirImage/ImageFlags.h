@@ -15,11 +15,11 @@ public:
 private:
     void ctorOnce();
 
-private:
-    const int cmImageFlagsBase          = 1024 + 256;
-    const int cmImageFlagsFrameBase     = 16 + cmImageFlagsBase;
-    const int cmImageFlagsFaceBase      = 64 + cmImageFlagsFrameBase;
-    const int cmImageFlagsBodyBase      = 64 + cmImageFlagsFaceBase;
-    const int cmImageFlagsEnd           = 15 + cmImageFlagsBodyBase;
+public:
+    const int cmImageOutputFlagsFrameBase       = 64 + cmImageFlagsBase;
+    const int cmImageOutputFlagsFaceBase        = 64 + cmImageOutputFlagsFrameBase;
+    const int cmImageOutputFlagsBodyBase        = 64 + cmImageOutputFlagsFaceBase;
+    // others TBD ...
+    const int cmImageFlagsEnd                   = 15 + cmImageOutputFlagsBodyBase;
 };
 
