@@ -22,7 +22,7 @@ ImagePak::ImagePak(const QFileInfo &fileInfo,
              << encodedBytes.left(16).toHex().toUpper();
     MultiName imageName(MultiName(fileInfo.dir().path()),
                         MultiName(fileInfo.completeBaseName()));
-    id().create(imageName());
+    id().set(QUuid(imageName));
 }
 
 void ImagePak::set(const QFileInfo &fileInfo, const Image &baseImage)

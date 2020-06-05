@@ -31,6 +31,11 @@ Id::Id(const MultiName &name,
     , mDescription(desc)
     , mData(data) {;}
 
+void Id::set(const  QUuid &uuid)
+{
+    mUuid = uuid;
+}
+
 MultiName Id::name() const
 {
     return mNameKey;

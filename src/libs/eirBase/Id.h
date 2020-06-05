@@ -7,6 +7,7 @@
 #include <QMap>
 #include <QStack>
 #include <QString>
+#include <QUuid>
 #include <QVariant>
 
 #include "MultiName.h"
@@ -29,6 +30,7 @@ public:
        const QString &desc=QString(),
        const QVariant &data=QVariant());
 //    void set(const Uid uid);
+    void set(const  QUuid &uuid);
     void set(const quint64 key64);
     void set(const MultiName name);
     void set(const QString desc);
@@ -37,6 +39,7 @@ public:
 
 private:
 //    Uid mUid;
+    QUuid mUuid;
     quint64 mU64Key;
     MultiName mNameKey;
     QBitArray mFlags;
