@@ -15,6 +15,11 @@ Var ConfigObject::at(const MultiName &key)
     return mConfiguration.at(key);
 }
 
+QVariant ConfigObject::currentValue(const MultiName &key)
+{
+    return  at(key).currentVari();
+}
+
 Configuration ConfigObject::configuration() const
 {
     return mConfiguration;

@@ -31,6 +31,7 @@ SOURCES += \
     ImageDirectoryQueue.cpp \
     ImageInfo.cpp \
     ImagePak.cpp \
+    ImagePakWriterQueue.cpp \
     ImageQueueManager.cpp \
     ImageFlags.cpp \
     ImageQueueObject.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     ImageDirectoryQueue.h \
     ImageInfo.h \
     ImagePak.h \
+    ImagePakWriterQueue.h \
     ImageQueueManager.h \
     ImageFlags.h \
     ImageQueueObject.h \
