@@ -2,9 +2,9 @@
 #pragma once
 #include "eirImage.h"
 
-#include "Image.h"
+#include "BaseImage.h"
 
-class EIRIMAGE_EXPORT GreyImage : public Image
+class EIRIMAGE_EXPORT GreyImage : public BaseImage
 {
 public:
     GreyImage(const QSize size=QSize(),

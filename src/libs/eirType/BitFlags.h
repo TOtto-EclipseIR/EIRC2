@@ -60,6 +60,13 @@ public:
 protected:
     const int cmFlagsUserBase           = 1024;
     const int cmImageFlagsBase          = 256 + cmFlagsUserBase;
+    const int cmImageFormatFlagsBase    =   0 + cmImageFlagsBase;
+    const int cmImageFormatFlagsEnd     = 127 + cmImageFormatFlagsBase;
+    const int cmImageOutputFlagsBase    =   1 + cmImageFormatFlagsEnd;
+    const int cmImageFlagsEnd           = 271 + cmImageFlagsBase;
+
+    const int cmImageFlagsNext          = 272 + cmImageFlagsBase;
+
 
 private:
     QBitArray mBits;

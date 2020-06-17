@@ -22,40 +22,40 @@ LIBS *= -leirBase2
 LIBS *= -leirType2
 
 SOURCES += \
-    BaseImageQueue.cpp \
+    BaseImage.cpp \
+###    BaseImageQueue.cpp \
     BitImage.cpp \
     ColorImage.cpp \
     ColorTable.cpp \
     GreyImage.cpp \
-    Image.cpp \
-    ImageDirectoryQueue.cpp \
+###    ImageDirectoryQueue.cpp \
     ImageInfo.cpp \
     ImagePak.cpp \
     ImagePakWriterQueue.cpp \
-    ImageQueueManager.cpp \
+###    ImageQueueManager.cpp \
     ImageFlags.cpp \
-    ImageQueueObject.cpp \
-    ImageReaderQueue.cpp \
-    ImageWriterQueue.cpp \
+###    ImageQueueObject.cpp \
+###    ImageReaderQueue.cpp \
+###    ImageWriterQueue.cpp \
     IndexedImage.cpp \
     eirImage.cpp \
 
 HEADERS += \
-    BaseImageQueue.h \
+    BaseImage.h \
+###    BaseImageQueue.h \
     BitImage.h \
     ColorImage.h \
     ColorTable.h \
     GreyImage.h \
-    Image.h \
-    ImageDirectoryQueue.h \
+###    ImageDirectoryQueue.h \
     ImageInfo.h \
     ImagePak.h \
     ImagePakWriterQueue.h \
-    ImageQueueManager.h \
+###    ImageQueueManager.h \
     ImageFlags.h \
-    ImageQueueObject.h \
-    ImageReaderQueue.h \
-    ImageWriterQueue.h \
+###    ImageQueueObject.h \
+###    ImageReaderQueue.h \
+###    ImageWriterQueue.h \
     IndexedImage.h \
     eirImage_global.h \
     eirImage.h \

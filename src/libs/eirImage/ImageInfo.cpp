@@ -7,7 +7,7 @@ ImageInfo::ImageInfo()
 
 }
 
-ImageInfo::ImageInfo(const Image &baseImage, const QFileInfo &fileInfo)
+ImageInfo::ImageInfo(const BaseImage &baseImage, const QFileInfo &fileInfo)
     : mBaseImage(baseImage)
     , mFileInfo(fileInfo)
 {
@@ -22,14 +22,14 @@ bool ImageInfo::set()
     return false;
 }
 
-bool ImageInfo::set(const Image &baseImage)
+bool ImageInfo::set(const BaseImage &baseImage)
 {
     mBaseImage = baseImage;
     return set();
 }
 
 ImageInfo::ImageInfo(const QByteArray &bytes, const QFileInfo &fileInfo)
-    : mBaseImage(Image(bytes))
+    : mBaseImage(BaseImage(bytes))
     , mFileInfo(fileInfo)
 {
     TRACEQFI << bytes.size() << fileInfo;

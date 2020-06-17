@@ -26,6 +26,9 @@ public:
     VarMap insert(const Var &var);
     void insert(const MultiName &key, const QVariant &vari);
     Var value(const MultiName & name) const;
+    MultiName::List keys(const MultiName &groupName=MultiName(),
+                         const bool recurse=true);
+    BasicName::List groupKeys(const MultiName &groupName);
     VarMap extract(const MultiName & groupName) const;
     void insert(const MultiName &groupName,
                 const VarMap &groupVars);

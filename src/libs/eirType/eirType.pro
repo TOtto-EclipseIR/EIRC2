@@ -22,6 +22,7 @@ LIBS *= -leirBase2
 
 SOURCES += \
     BitFlags.cpp \
+    Boolean.cpp \
     Enumeration.cpp \
 	FunctionInfo.cpp \
     QQFileInfo.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
 
 HEADERS += \
     BitFlags.h \
+    Boolean.h \
     DualMap.h \
     Enumeration.h \
     EnumerationArray.h \

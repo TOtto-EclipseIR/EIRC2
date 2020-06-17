@@ -36,6 +36,11 @@ void Id::set(const  QUuid &uuid)
     mUuid = uuid;
 }
 
+void Id::set(const MultiName name)
+{
+    mNameKey = name;
+}
+
 MultiName Id::name() const
 {
     return mNameKey;

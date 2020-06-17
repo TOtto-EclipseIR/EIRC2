@@ -16,10 +16,14 @@ private:
     void ctorOnce();
 
 public:
-    const int cmImageOutputFlagsFrameBase       = 64 + cmImageFlagsBase;
+
+    const int cmImageQFormatFlagsBase           =  0 + cmImageFlagsBase;
+    const int cmImageUserFormatFlagsBase        = 64 + cmImageFlagsBase;
+    const int cmImageOutputFlagsFrameBase       =  0 + cmImageOutputFlagsBase;
     const int cmImageOutputFlagsFaceBase        = 64 + cmImageOutputFlagsFrameBase;
     const int cmImageOutputFlagsBodyBase        = 64 + cmImageOutputFlagsFaceBase;
+    const int cmImageOutputFlagsEnd             = 15 + cmImageOutputFlagsBodyBase;
+
     // others TBD ...
-    const int cmImageFlagsEnd                   = 15 + cmImageOutputFlagsBodyBase;
 };
 

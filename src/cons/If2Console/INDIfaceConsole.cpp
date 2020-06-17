@@ -2,6 +2,7 @@
 #include "INDIfaceConsole.h"
 
 #include <QDateTime>
+#include <QFileInfo>
 #include <QTimer>
 
 #include <eirBase/Debug.h>
@@ -13,6 +14,7 @@
 #include <eirExe/FileName.h>
 #include <eirExe/LegacySettings.h>
 #include <eirHaar/cvVersion.h>
+#include <eirImage/ImagePakWriterQueue.h>
 
 #include "If2CommandLine.h"
 
@@ -63,8 +65,19 @@ void INDIfaceConsole::setConfiguration()
 {
     TRACEFN
     mpConfig->set(commandLine()->configuration());
-    QTimer::singleShot(100, this, &INDIfaceConsole::initializeResources);
+/*
+    mWriterFlags.bitRef("ImageOutputCapture")
+            = mpConfig->contains("/Output/Dirs/Acquire/CaptureDir");
+    mWriterFlags.bitRef("ImageOutputInput")
+            = mpConfig->contains("/Output/Dirs/Acquire/InputDir");
+    mWriterFlags.bitRef("ImageOutputInputGrey")
+            = mpConfig->contains("/Output/Dirs/Acquire/InputGreyDir");
+    mWriterFlags.bitRef("ImageOutputMarked")
+            = mpConfig->contains("/Output/Dirs/Detect/MarkedDir");
+*/
 
+
+    QTimer::singleShot(100, this, &INDIfaceConsole::initializeResources);
 }
 
 void INDIfaceConsole::initializeResources()
@@ -79,6 +92,9 @@ void INDIfaceConsole::initializeResources()
 //    mHaarCatalog.set(baseHaarDirPath);
   //  EXPECT(mHaarCatalog.load(haarCatalogXmlFile));
 
+    mpPakWriter = new ImagePakWriterQueue(this);
+    TSTALLOC(mpPakWriter);
+    mpPakWriter->configureOutput(mpConfig->configuration("Output"));
 
     NEEDDO("rectFinder::initialize() x 3~5")
     EMIT(resoursesInitd());
@@ -97,11 +113,11 @@ void INDIfaceConsole::startProcessing()
 void INDIfaceConsole::nextFile()
 {
     TRACEQFI << "mImageFileQueue.size()" << mImageFileQueue.size();
-    while ( ! mImageFileQueue.isEmpty())
+    while ( ! mImageFileQueue.isEmpty())                    /* /-----\ */
     {
         QString filePathName = mImageFileQueue.takeFirst();
         TRACEQFI << filePathName << "taken" << mImageFileQueue.size();
-        if (filePathName.isEmpty())  continue;
+        if (filePathName.isEmpty())  continue;              /* \-----/ */
         mCurrentImageFile = filePathName;
         QTimer::singleShot(100, this, &INDIfaceConsole::processFile);
         return;
@@ -122,6 +138,11 @@ void INDIfaceConsole::processFile()
     QByteArray qba = file.readAll();
     QImage tempImage = QImage::fromData(qba);
     mCurrentImage = ColorImage(tempImage);
+    QFileInfo qfi(mCurrentImageFile);
+    mImagePak.set(qfi, qba);
+    mImagePak.set(mCurrentImage.image());
+    mImagePak.insert("InputImage/FileName", mCurrentImageFile);
+    mImagePak.insert("InputImage/FileInfo", QVariant());
 #endif
     EXPECTNOT(mCurrentImage.isNull());
     if ( ! mCurrentImage.isNull())
@@ -134,7 +155,7 @@ void INDIfaceConsole::finishProcessing()
 {
     TRACEFN
     NEEDDO(it)
-            QTimer::singleShot(100, core(), &QCoreApplication::quit);
+    QTimer::singleShot(100, core(), &QCoreApplication::quit);
 }
 
 void INDIfaceConsole::processImage()

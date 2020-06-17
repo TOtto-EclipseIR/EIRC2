@@ -6,7 +6,7 @@
 IndexedImage::IndexedImage(const ColorTable &colorTable,
                            const QSize size,
                            const QImage::Format format)
-    : Image(size, format)
+    : BaseImage(size, format)
     , mColorTable(colorTable)
 {
     TRACEQFI << colorTable.colorCount() << size << format;
@@ -15,7 +15,7 @@ IndexedImage::IndexedImage(const ColorTable &colorTable,
 IndexedImage::IndexedImage(const QImage &image,
                            const ColorTable &newColorTable,
                            const QImage::Format newFormat)
-    : Image(image, newFormat)
+    : BaseImage(image, newFormat)
     , mColorTable(newColorTable)
 {
     TRACEQFI << image << mColorTable.colorCount()

@@ -44,6 +44,20 @@ Var VarMap::value(const MultiName &name) const
     return mVarMap.value(name.sortable());
 }
 
+BasicName::List VarMap::groupKeys(const MultiName &groupName)
+{
+    BasicName::List keyList;
+    int nGroupSegments = groupName.segmentCount();
+    foreach (Var var, values())
+        if (var.name().startsWith(groupName))
+        {
+            MultiName key = var.name().firstSegmentsRemoved(nGroupSegments);
+            keyList.append(key.firstSegment());
+        }
+    return keyList;
+
+}
+
 VarMap VarMap::extract(const MultiName &groupName) const
 {
     VarMap extractedMap(groupName);

@@ -5,14 +5,14 @@
 
 GreyImage::GreyImage(const QImage &image,
                      const QImage::Format newFormat)
-    : Image(image, newFormat)
+    : BaseImage(image, newFormat)
 {
     TRACEQFI << image << newFormat;
 }
 
 GreyImage::GreyImage(const QSize size,
                      const QImage::Format format)
-    : Image(size, format)
+    : BaseImage(size, format)
 {
     TRACEQFI << size << format;
 }

@@ -39,6 +39,7 @@ public:
     int segmentCount() const;
     void removeFirstSegments(int count);
     void removeLastSegment();
+    BasicName lastSegment() const;
     MultiName firstSegmentsRemoved(int count) const;
     QStringList toStringList(void) const;
     QString toString(void) const;

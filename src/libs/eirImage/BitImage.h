@@ -2,9 +2,9 @@
 #pragma once
 #include "eirImage.h"
 
-#include "Image.h"
+#include "BaseImage.h"
 
-class EIRIMAGE_EXPORT BitImage : public Image
+class EIRIMAGE_EXPORT BitImage : public BaseImage
 {
 public:
     BitImage(const QSize size=QSize(),

@@ -2,10 +2,10 @@
 #pragma once
 #include "eirImage.h"
 
-#include "Image.h"
+#include "BaseImage.h"
 #include "ColorTable.h"
 
-class EIRIMAGE_EXPORT IndexedImage : public Image
+class EIRIMAGE_EXPORT IndexedImage : public BaseImage
 {
 public:
     IndexedImage(const ColorTable &colorTable=ColorTable(),

@@ -16,11 +16,14 @@
 #include <eirType/Region.h>
 #include <eirExe/ApplicationHelper.h>
 #include <eirImage/ColorImage.h>
+#include <eirImage/ImageFlags.h>
+#include <eirImage/ImagePak.h>
 //#include <eirHaar/HaarCatalog.h>
 
 class ColorImage;
 class CommandLine;
 class FileInfoQueue;
+class ImagePakWriterQueue;
 
 #include "../../version.h"
 
@@ -59,8 +62,12 @@ protected:
 private:
     CommandLineClientInterface * mpCommandLineInterface=nullptr;
     ConfigObject * mpConfig=nullptr;
+    ImagePakWriterQueue * mpPakWriter=nullptr;
+//    ImageFlags mImageFlags;
+  //  ImageFlags mWriterFlags;
 //    HaarCatalog mHaarCatalog;
     QStringList mImageFileQueue;
     QString mCurrentImageFile;
     ColorImage mCurrentImage;
+    ImagePak mImagePak;
 };

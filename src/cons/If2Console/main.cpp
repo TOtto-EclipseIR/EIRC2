@@ -14,6 +14,6 @@ int main(int argc, char *argv[])
     a.setApplicationVersion(EIRC2_VER_STRING " " EIRC2_VER_TRUNKNAME);
     a.setOrganizationName(EIRC2_VER_ORGNAME);
     INDIfaceConsole * c = new INDIfaceConsole();
-//    QTimer::singleShot(100, c, &INDIfaceConsole::initializeApplication);
+    Q_UNUSED(c);
     return a.exec();
 }

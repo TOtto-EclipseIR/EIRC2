@@ -1,12 +1,12 @@
-// file:{EIRC2 repo}./src/libs/eirImage/Image.cpp
+// file:{EIRC2 repo}./src/libs/eirImage/BaseImage.cpp
 //! \file Image.cpp
-#include "Image.h"
+#include "BaseImage.h"
 
 #include <eirBase/Debug.h>
 
 #include "ImageInfo.h"
 
-Image::Image(const QSize size,
+BaseImage::BaseImage(const QSize size,
              const QImage::Format format)
     : mFormat(format)
     , mImage(size, format)
@@ -14,7 +14,7 @@ Image::Image(const QSize size,
     TRACEQFI << size << format;
 }
 
-Image::Image(const QImage &image, const QImage::Format newFormat)
+BaseImage::BaseImage(const QImage &image, const QImage::Format newFormat)
     : mFormat(newFormat)
     , mImage(image)
 {
@@ -23,7 +23,7 @@ Image::Image(const QImage &image, const QImage::Format newFormat)
         mImage.convertTo(mFormat);
 }
 
-Image::Image(const QByteArray &bytes,
+BaseImage::BaseImage(const QByteArray &bytes,
              const QImage::Format newFormat)
     : mFormat(newFormat)
     , mImage(bytes)
@@ -33,42 +33,54 @@ Image::Image(const QByteArray &bytes,
         mImage.convertTo(mFormat);
 }
 
-QImage Image::image() const
+QImage BaseImage::image() const
 {
     return mImage;
 }
 
-QImage &Image::image()
+QImage &BaseImage::image()
 {
     return mImage;
 }
 
-Image::Option Image::constOptions() const
+BaseImage::Option BaseImage::constOptions() const
 {
     return mOptions;
 }
 
-Image::Option &Image::options()
+BaseImage::Option &BaseImage::options()
 {
     return mOptions;
 }
 
-bool Image::isNull() const
+bool BaseImage::isNull() const
 {
     return mImage.isNull();
 }
 
-QSize Image::size() const
+QSize BaseImage::size() const
 {
     return mImage.size();
 }
 
-QImage::Format Image::format() const
+QImage::Format BaseImage::format() const
 {
     return mImage.format();
 }
 
-QString Image::toString() const
+int BaseImage::formatInt() const
+{
+    int formatInt = mImage.format();
+    return formatInt;
+}
+
+QVariant BaseImage::toVariant() const
+{
+    QVariant variant = image();
+    return variant;
+}
+
+QString BaseImage::toString() const
 {
     return ImageInfo(mImage).toString();
 }
