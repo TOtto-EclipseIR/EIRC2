@@ -62,12 +62,12 @@ protected:
 private:
     CommandLineClientInterface * mpCommandLineInterface=nullptr;
     ConfigObject * mpConfig=nullptr;
-    ImagePakWriterQueue * mpPakWriter=nullptr;
+    //ImagePakWriterQueue * mpPakWriter=nullptr;
 //    ImageFlags mImageFlags;
   //  ImageFlags mWriterFlags;
 //    HaarCatalog mHaarCatalog;
     QStringList mImageFileQueue;
     QString mCurrentImageFile;
     ColorImage mCurrentImage;
-    ImagePak mImagePak;
+//    ImagePak mImagePak;
 };

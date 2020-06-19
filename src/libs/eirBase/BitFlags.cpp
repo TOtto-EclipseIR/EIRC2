@@ -46,7 +46,7 @@ bool BitFlags::at(const int index) const
 
 void BitFlags::registerFlag(const int newIndex, const BasicName &name)
 {
-    TRACEQFI << newIndex << name();
+//    TRACEQFI << newIndex << name();
     WEXPECTNOT(mIndexNameDMap.contains(newIndex));
     WEXPECTNOT(mIndexNameDMap.contains(name));
     mIndexNameDMap.insertUnique(newIndex, name);

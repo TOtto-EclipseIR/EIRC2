@@ -92,10 +92,11 @@ void INDIfaceConsole::initializeResources()
 //    mHaarCatalog.set(baseHaarDirPath);
   //  EXPECT(mHaarCatalog.load(haarCatalogXmlFile));
 
+#if 0
     mpPakWriter = new ImagePakWriterQueue(this);
     TSTALLOC(mpPakWriter);
     mpPakWriter->configureOutput(mpConfig->configuration("Output"));
-
+#endif
     NEEDDO("rectFinder::initialize() x 3~5")
     EMIT(resoursesInitd());
     QTimer::singleShot(100, this, &INDIfaceConsole::startProcessing);
@@ -129,9 +130,8 @@ void INDIfaceConsole::processFile()
 {
     TRACEQFI << "mCurrentImageFile:" << mCurrentImageFile;
     writeLine(QString("===Processing: %1").arg(mCurrentImageFile));
-#if 0
-    ColorImage inputImage;
-    inputImage.load(mCurrentImageFile);
+#if 1
+    mCurrentImage.image().load(mCurrentImageFile);
 #else
     QFile file(mCurrentImageFile, this);
     EXPECT(file.open(QIODevice::ReadOnly))
