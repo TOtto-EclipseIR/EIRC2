@@ -21,10 +21,8 @@ include(../../EIRC2.pri)
 LIBS *= -leirBase2
 
 SOURCES += \
-    BitFlags.cpp \
-    Boolean.cpp \
     Enumeration.cpp \
-	FunctionInfo.cpp \
+    FunctionInfo.cpp \
     QQFileInfo.cpp \
     QQFileInfoList.cpp \
     QQRect.cpp \
@@ -35,9 +33,6 @@ SOURCES += \
     eirType.cpp
 
 HEADERS += \
-    BitFlags.h \
-    Boolean.h \
-    DualMap.h \
     Enumeration.h \
     EnumerationArray.h \
     EnumerationMask.h \

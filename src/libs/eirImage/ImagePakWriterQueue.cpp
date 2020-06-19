@@ -134,3 +134,19 @@ void ImagePakWriterQueue::dequeueFile()
     NEEDDO();
 }
 
+
+ImagePakWriterQueue::DirItem::DirItem(const BasicName &name)
+    : mNameKey(name)
+{
+
+}
+
+BasicName ImagePakWriterQueue::DirItem::name() const
+{
+    return mNameKey;
+}
+
+void ImagePakWriterQueue::DirItem::set(const QDir dir)
+{
+    mDir = dir;
+}

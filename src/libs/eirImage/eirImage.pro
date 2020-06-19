@@ -20,6 +20,7 @@ include(../../EIRC2.pri)
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
+LIBS *= -leirExe2
 
 SOURCES += \
     BaseImage.cpp \

@@ -1,4 +1,5 @@
 #pragma once
+#include "eirImage.h"
 
 #include <eirBase/VarPak.h>
 
@@ -11,7 +12,7 @@ class QFileInfo;
 #include "GreyImage.h"
 #include "BaseImage.h"
 
-class ImagePak : public VarPak
+class EIRIMAGE_EXPORT ImagePak : public VarPak
 {
 public:
     ImagePak();

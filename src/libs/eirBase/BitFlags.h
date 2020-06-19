@@ -1,6 +1,6 @@
 //! \file Flags.h
 #pragma once
-#include "eirType.h"
+#include "eirBase.h"
 
 #include <QBitArray>
 #include <QChar>
@@ -12,7 +12,7 @@
 #include "DualMap.h"
 
 
-class EIRTYPE_EXPORT BitFlags
+class EIRBASE_EXPORT BitFlags
 {
 public:
     BitFlags(const int size=0, const bool is=false);

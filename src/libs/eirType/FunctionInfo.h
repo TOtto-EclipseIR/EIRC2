@@ -5,7 +5,7 @@
 #include <QVariant>
 
 #include <eirBase/BasicName.h>
-#include <eirType/BitFlags.h>
+#include <eirBase/BitFlags.h>
 
 class FunctionInfo
 {

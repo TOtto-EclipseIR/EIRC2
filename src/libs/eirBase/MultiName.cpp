@@ -127,6 +127,11 @@ void MultiName::removeLastSegment()
     mBasicSegmentNames.removeLast();
 }
 
+BasicName MultiName::lastSegment() const
+{
+    return mBasicSegmentNames.last();
+}
+
 MultiName MultiName::firstSegmentsRemoved(int count) const
 {
     MultiName resultName(mBasicSegmentNames);

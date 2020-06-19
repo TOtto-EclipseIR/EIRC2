@@ -18,7 +18,6 @@ class EIRBASE_EXPORT Id
 {
 public:
     Id();
-//    Id(const Uid uid=Uid());
     Id(const quint64 key64,
        const QString &desc=QString(),
        const QVariant &data=QVariant());
@@ -29,21 +28,34 @@ public:
     Id(const MultiName &name,
        const QString &desc=QString(),
        const QVariant &data=QVariant());
-//    void set(const Uid uid);
-    void set(const  QUuid &uuid);
+    ~Id();
+    void set(const QUuid &uuid);
     void set(const quint64 key64);
     void set(const MultiName name);
     void set(const QString desc);
     void set(const QVariant data);
     MultiName name() const;
+    bool operator <  (const Id & other);
+    bool operator == (const Id & other);
+    void remove();
+    void insert();
+
+public: // static
+    static void remove(const Id &id);
+    static void insert(const Id &id);
+
 
 private:
-//    Uid mUid;
     QUuid mUuid;
     quint64 mU64Key;
     MultiName mNameKey;
     QBitArray mFlags;
     QString mDescription;
     QVariant mData;
+
+private: // static
+    static QMap<QUuid, Id> smUidIdMap;
+    static QMap<quint64, QUuid> smUKeyUidMap;
+    static QMap<MultiName, QUuid> smNameUidMap;
 };
 

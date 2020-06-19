@@ -19,11 +19,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include(../../EIRC2.pri)
 
 SOURCES += \
+    AbstractOnce.cpp \
     BasicName.cpp \
+    BitFlags.cpp \
+    Boolean.cpp \
     ErrorHandler.cpp \
     Id.cpp \
     Milliseconds.cpp \
     MultiName.cpp \
+    Once.cpp \
     SetError.cpp \
     Success.cpp \
     UInt128.cpp \
@@ -37,13 +41,18 @@ SOURCES += \
 
 HEADERS += \
     ../../version.h \
+    AbstractOnce.h \
     BasicName.h \
+    BitFlags.h \
+    Boolean.h \
     Debug.h \
+    DualMap.h \
     ErrorHandler.h \
     Id.h \
     Milliseconds.h \
     MultiName.h \
 ###    MultiNameMap.h \
+    Once.h \
     SetError.h \
     Success.h \
     UInt128.h \

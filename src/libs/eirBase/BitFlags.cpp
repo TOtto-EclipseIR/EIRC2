@@ -53,6 +53,12 @@ void BitFlags::registerFlag(const int newIndex, const BasicName &name)
     mBits[newIndex] = false;
 }
 
+void BitFlags::registerFlag(const BasicName &name)
+{
+    const int index = mIndexNameDMap.size();
+    registerFlag(index, name);
+}
+
 void BitFlags::registerFlags(const int newIndex, const BasicName::List &names)
 {
     int index = newIndex;

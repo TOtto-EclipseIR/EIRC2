@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <eirType/BitFlags.h>
+#include <eirBase/BitFlags.h>
 
 class EIRIMAGE_EXPORT ImageFlags : public BitFlags
 {

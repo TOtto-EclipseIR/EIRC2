@@ -1,9 +1,10 @@
 #pragma once
+#include "eirExe.h"
 
 #include <eirBase/VarMap.h>
 
 
-class Configuration : public VarMap
+class EIREXE_EXPORT Configuration : public VarMap
 {
 public:
     Configuration();
