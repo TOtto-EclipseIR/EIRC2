@@ -16,3 +16,4 @@ public:
     void dump(const QString &title=QString()) const;
 };
 
+uint qHash(const QFileInfo &fileInfo);

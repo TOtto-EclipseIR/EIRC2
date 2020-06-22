@@ -18,7 +18,7 @@ HexDump::HexDump(void *data, const int bytes,
     , cmName(name)
 {
     TRACEQFI << name();
-    NEEDDO()
+    NEEDDO(IT)
 }
 
 HexDump::HexDump(const QByteArray &ba, const MultiName &name)
@@ -27,7 +27,7 @@ HexDump::HexDump(const QByteArray &ba, const MultiName &name)
     , cmName(name)
 {
     TRACEQFI << name();
-    NEEDDO()
+    NEEDDO(IT   )
 }
 
 HexDump::HexDump(const QImage &img, const int bytes)
@@ -35,7 +35,7 @@ HexDump::HexDump(const QImage &img, const int bytes)
     , cmBytes((bytes < 0) ? img.sizeInBytes() : bytes)
 {
     TRACEQFI << img << bytes;
-    NEEDDO()
+    NEEDDO(it)
 }
 
 QStringList HexDump::strings()
