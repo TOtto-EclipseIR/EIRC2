@@ -22,3 +22,8 @@ void QQFileInfoList::dump(const QString &title) const
     }
 }
 
+
+uint qHash(const QFileInfo &fileInfo)
+{
+    return qHash(fileInfo.filePath());
+}
