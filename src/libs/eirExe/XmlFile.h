@@ -4,6 +4,7 @@
 
 #include <QDomDocument>
 #include <QDomElement>
+class QFile;
 
 #include "FileName.h"
 
@@ -14,11 +15,13 @@ public:
     XmlFile(const FileName &fileName);
     bool load(const FileName &fileName);
     bool load();
+    void close();
     QDomDocument document() const;
     QDomElement rootElement() const;
 
 private:
     FileName mFileName;
+    QFile * mpFile=nullptr;
     QDomDocument mDomDocument;
     QDomElement mRootElement;
 };

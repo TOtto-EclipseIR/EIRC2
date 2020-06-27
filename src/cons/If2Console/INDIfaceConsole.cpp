@@ -21,11 +21,9 @@
 INDIfaceConsole::INDIfaceConsole(Console *parent)
     : Console(parent)
     , mpConfig(new ConfigObject(parent))
-//    , mpFileInfoQueue(new FileInfoQueue(parent))
 {
     TRACEFN
     setObjectName("INDIfaceConsole");
-//    TSTALLOC(mpFileInfoQueue)
     QTimer::singleShot(100, this, &INDIfaceConsole::initializeApplication);
     TRACERTV()
 }
@@ -85,19 +83,33 @@ void INDIfaceConsole::initializeResources()
     TRACEQFI << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INDIfaceConsole::initializeResources()";
     QString baseHaarDirPath = mpConfig->
         at("Detect/Resources/BaseDir").value().toString();
-    FileName haarCatalogXmlFile = mpConfig->
-        at("Detect/Resources/Catalog/XmlFile").value().toString();
+    QString faceHaarFilePath = mpConfig->
+        at("Detect/Resources/HaarCascade/Face/XmlFile").value().toString();
     TRACE << "baseHaarDirPath" << baseHaarDirPath;
-    TRACE << "haarCatalogXmlFile" << haarCatalogXmlFile;
-//    mHaarCatalog.set(baseHaarDirPath);
-  //  EXPECT(mHaarCatalog.load(haarCatalogXmlFile));
+    TRACE << "faceHaarFilePath" << faceHaarFilePath;
+    QFileInfo faceCascadeFileInfo(QDir(baseHaarDirPath),
+                                  faceHaarFilePath);
+    TRACE << faceCascadeFileInfo.absoluteFilePath()
+          << faceCascadeFileInfo.exists()
+          << faceCascadeFileInfo.isReadable();
+    QFile faceFile(faceCascadeFileInfo.filePath());
+    TRACE << faceFile.fileName()
+          << faceFile.exists()
+          << faceFile.isReadable();
+    WEXPECT(faceFile.open(QIODevice::ReadOnly
+                          | QIODevice::Text
+                          | QIODevice::ExistingOnly));
+    WEXPECT(faceFile.isReadable());
+    faceFile.close();
+//    XmlFile faceXmlElement(faceCascadeFileInfo.filePath());
+    NEEDDO(close mpFaceCascade);
+    mpFaceCascade = new RectCascade();
+    TSTALLOC(mpFaceCascade);
+    bool loaded = mpFaceCascade->load(faceCascadeFileInfo.filePath());
+    DUMPVAL(loaded);
+    WEXPECT(loaded);
+    NEEDDO(mFaceFinder.config());
 
-#if 0
-    mpPakWriter = new ImagePakWriterQueue(this);
-    TSTALLOC(mpPakWriter);
-    mpPakWriter->configureOutput(mpConfig->configuration("Output"));
-#endif
-    NEEDDO("rectFinder::initialize() x 3~5")
     EMIT(resoursesInitd());
     QTimer::singleShot(100, this, &INDIfaceConsole::startProcessing);
 }
@@ -119,34 +131,17 @@ void INDIfaceConsole::nextFile()
         QString filePathName = mImageFileQueue.takeFirst();
         TRACEQFI << filePathName << "taken" << mImageFileQueue.size();
         if (filePathName.isEmpty())  continue;              /* \-----/ */
-        mCurrentImageFile = filePathName;
+        mCurrentImageFileName = filePathName;
         QTimer::singleShot(100, this, &INDIfaceConsole::processFile);
-        return;
+        return;                                             /* /=====\ */
     }
     QTimer::singleShot(100, this, &INDIfaceConsole::finishProcessing);
-}
+}                                                           /* \=====/ */
 
 void INDIfaceConsole::processFile()
 {
-    TRACEQFI << "mCurrentImageFile:" << mCurrentImageFile;
-    writeLine(QString("===Processing: %1").arg(mCurrentImageFile));
-#if 1
-    mCurrentImage.image().load(mCurrentImageFile);
-#else
-    QFile file(mCurrentImageFile, this);
-    EXPECT(file.open(QIODevice::ReadOnly))
-    QByteArray qba = file.readAll();
-    QImage tempImage = QImage::fromData(qba);
-    mCurrentImage = ColorImage(tempImage);
-    QFileInfo qfi(mCurrentImageFile);
-    mImagePak.set(qfi, qba);
-    mImagePak.set(mCurrentImage.image());
-    mImagePak.insert("InputImage/FileName", mCurrentImageFile);
-    mImagePak.insert("InputImage/FileInfo", QVariant());
-#endif
-    EXPECTNOT(mCurrentImage.isNull());
-    if ( ! mCurrentImage.isNull())
-        processImage();
+    TRACEQFI << "mCurrentImageFile:" << mCurrentImageFileName;
+    writeLine(QString("===Processing: %1").arg(mCurrentImageFileName));
     TODO(more?)
     QTimer::singleShot(100, this, &INDIfaceConsole::nextFile);
 }
@@ -160,7 +155,10 @@ void INDIfaceConsole::finishProcessing()
 
 void INDIfaceConsole::processImage()
 {
-    TRACEQFI << mCurrentImage.size();
-    NEEDDO(it);
+    TRACEQFI << mCurrentImageFileName;
+
+    EXPECT(mFaceFinder.loadImage(mCurrentImageFileName));
+
+    NEEDDO(more);
     TRACERTV()
 }

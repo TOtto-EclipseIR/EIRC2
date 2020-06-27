@@ -1,7 +1,7 @@
 #QT -= gui ### get QImage back
 QT *= xml
 
-CONFIG += c++17 console
+CONFIG += c++11 console
 CONFIG -= app_bundle
 
 # The following define makes your compiler emit warnings if you use
@@ -16,22 +16,37 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../../EIRC2.pri)
+INCLUDEPATH *= F:\lang\OpenCV4\opencv\build\include
+
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
 LIBS *= -leirImage2
 LIBS *= -leirExe2
 #LIBS *= -leirHaar2
+LIBS *= F:\lang\OpenCV4\opencv\build\x64\vc15\lib\opencv_world430d.lib
 
 SOURCES += \
         INDIfaceConsole.cpp \
         If2CommandLine.cpp \
+    RectCascade.cpp \
+    RectFinder.cpp \
+    RectFinderParameters.cpp \
+    cvMat.cpp \
+    cvRect.cpp \
+    cvSize.cpp \
         main.cpp \
 
 HEADERS += \
     ../../version.h \
     INDIfaceConsole.h \
-    If2CommandLine.h
+    If2CommandLine.h \
+    RectCascade.h \
+    RectFinder.h \
+    RectFinderParameters.h \
+    cvMat.h \
+    cvRect.h \
+    cvSize.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

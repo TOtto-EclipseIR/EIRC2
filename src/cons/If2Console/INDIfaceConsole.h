@@ -15,10 +15,17 @@
 #include <eirType/QQRectList.h>
 #include <eirType/Region.h>
 #include <eirExe/ApplicationHelper.h>
+#include <eirExe/XmlFile.h>
 #include <eirImage/ColorImage.h>
 #include <eirImage/ImageFlags.h>
 #include <eirImage/ImagePak.h>
-//#include <eirHaar/HaarCatalog.h>
+
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/mat.hpp>
+
+#include "cvMat.h"
+#include "RectCascade.h"
+#include "RectFinder.h"
 
 class ColorImage;
 class CommandLine;
@@ -62,12 +69,9 @@ protected:
 private:
     CommandLineClientInterface * mpCommandLineInterface=nullptr;
     ConfigObject * mpConfig=nullptr;
-    //ImagePakWriterQueue * mpPakWriter=nullptr;
-//    ImageFlags mImageFlags;
-  //  ImageFlags mWriterFlags;
-//    HaarCatalog mHaarCatalog;
     QStringList mImageFileQueue;
-    QString mCurrentImageFile;
-    ColorImage mCurrentImage;
-//    ImagePak mImagePak;
+    RectCascade *mpFaceCascade=nullptr;
+    RectFinder mFaceFinder;
+    QString mCurrentImageFileName;
+    cvMat mInputMat;
 };
