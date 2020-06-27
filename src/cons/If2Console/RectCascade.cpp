@@ -4,6 +4,8 @@
 
 #include <eirBase/Debug.h>
 
+#include "cvRectStdVector.h"
+
 RectCascade::RectCascade(QObject *parent)
     : QObject(parent)
 {
@@ -48,13 +50,25 @@ bool RectCascade::isEmpty() const
     return mpCascade->empty();
 }
 
-cvRect::Vector RectCascade::find(const qreal scaleFactor,
+cvRectStdVector RectCascade::find(const cvMat &inputMat,
+                                 const qreal scaleFactor,
                                  const int minNeighbors,
                                  const cvSize minSize,
                                  const cvSize maxSize)
 {
+    TRACEQFI << scaleFactor << minNeighbors
+             << minSize << maxSize;
+    TSTALLOC(mpCascade);
+    cvRectStdVector rects;
+    mpCascade->detectMultiScale(inputMat.mat(),
+                                rects.toCvRectStdVector(),
+                                scaleFactor,
+                                minNeighbors,
+                                0, // flags now unused?!
+                                minSize,
+                                maxSize);
     NEEDDO(it); NEEDDO(return);
     NEEDUSE(scaleFactor);   NEEDUSE(minSize);
     NEEDUSE(minNeighbors);  NEEDUSE(maxSize);
-    return cvRect::Vector();
+    return rects;
 }

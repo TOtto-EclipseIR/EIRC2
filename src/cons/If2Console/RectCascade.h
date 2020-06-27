@@ -10,8 +10,8 @@
 
 #include "cvMat.h"
 #include "cvRect.h"
+#include "cvRectStdVector.h"
 #include "cvSize.h"
-//#include "RectFinder.h"
 
 typedef cv::CascadeClassifier cvCascade;
 
@@ -24,7 +24,8 @@ public:
     QSize coreSize() const;
     void close();
     bool isEmpty() const;
-    cvRect::Vector find(const qreal scaleFactor,
+    cvRectStdVector find(const cvMat &inputMat,
+                      const qreal scaleFactor,
                       const int minNeighbors,
                       const cvSize minSize,
                       const cvSize maxSize);

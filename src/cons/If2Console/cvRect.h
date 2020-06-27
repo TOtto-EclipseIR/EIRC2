@@ -22,6 +22,12 @@ public:
            const int right, const int bottom);
     cvRect(const QPoint topLeft, const QSize size);
     cvRect(const QSize size, const QPoint center);
+    void set(const cv::Point topLeft,
+             const cv::Size size);
+    int left() const;
+    int top() const;
+    int rows() const;
+    int cols() const;
     bool isEmpty() const;
     QRect toQRect() const;
     operator QRect () const;

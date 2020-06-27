@@ -34,6 +34,7 @@ SOURCES += \
     RectFinderParameters.cpp \
     cvMat.cpp \
     cvRect.cpp \
+    cvRectStdVector.cpp \
     cvSize.cpp \
         main.cpp \
 
@@ -46,6 +47,7 @@ HEADERS += \
     RectFinderParameters.h \
     cvMat.h \
     cvRect.h \
+    cvRectStdVector.h \
     cvSize.h
 
 # Default rules for deployment.

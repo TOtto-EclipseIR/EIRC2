@@ -7,6 +7,7 @@
 
 #include "cvMat.h"
 #include "cvRect.h"
+#include "cvRectStdVector.h"
 #include "RectCascade.h"
 #include "RectFinderParameters.h"
 
@@ -17,22 +18,26 @@ class RectFinder
 public:
     RectFinder(RectCascade *cascade=nullptr);
     QSize coreSize() const;
+    void clear();
     bool loadImage(const QString &inputfileName);
     QSize inputSize() const;
     int find(RectFinderParameters parms);
     QImage inputImage(const QImage::Format format=QImage::Format_RGB32);
-    QImage detectImage(const QImage::Format format=QImage::Format_RGB32);
+    QImage detectImage(const QImage::Format format=QImage::Format_Grayscale8);
     QImage rectImage(const QPen pen=QPen(QBrush(Qt::blue), 1),
                      const QImage::Format format=QImage::Format_RGB32);
     cvRect::Vector cvRectVector() const;
     RectList rectList() const;
 
 protected:
-    int fillRectList(const cvRect::Vector & cvVector);
+    int fillRectList(const cvRectStdVector & cvVector);
 
 private:
     RectCascade * cmpCascade=nullptr;
     cvMat mInputMat;
+    QImage mInputImage;
+    QImage mDetectImage;
+    QImage mRectImage;
     RectList mRectList;
 };
 

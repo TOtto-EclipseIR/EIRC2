@@ -8,6 +8,11 @@ cvSize::cvSize(const QSize &qsize)
 cvSize::cvSize(const cv::Size &other)
     : mCvSize(other) {;}
 
+cvSize::operator QSize() const
+{
+    return QSize(mCvSize.width, mCvSize.height);
+}
+
 cvSize::operator cv::Size() const
 {
     return mCvSize;

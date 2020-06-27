@@ -17,9 +17,18 @@ QSize RectFinder::coreSize() const
     return cmpCascade->coreSize();
 }
 
+void RectFinder::clear()
+{
+    mInputMat = cvMat();
+    mInputImage = QImage();
+    mDetectImage = QImage();
+    mRectImage = QImage();
+}
+
 bool RectFinder::loadImage(const QString &inputfileName)
 {
-    mInputMat.set(cv::imread(inputfileName.toStdString()));
+    clear();
+    mInputMat.load(QFileInfo(inputfileName));
     return ! mInputMat.isEmpty();
 }
 
@@ -34,17 +43,21 @@ int RectFinder::find(RectFinderParameters parms)
     TSTALLOC(cmpCascade);
     BEXPECTNOT(cmpCascade->isEmpty());
     parms.calculate(inputSize());
-    cvRect::Vector cvRectVector =
-            cmpCascade->find(parms.scaleFactor(),
+    cvRectStdVector rectVector =
+            cmpCascade->find(mInputMat,
+                             parms.scaleFactor(),
                              parms.minNeighbors(),
                              parms.minSize(),
                              parms.maxSize());
-    return fillRectList(cvRectVector);
+    return fillRectList(rectVector);
 }
 
 QImage RectFinder::inputImage(const QImage::Format format)
 {
+    if ( ! mInputImage.isNull())    return mInputImage;
+
     NEEDDO(it); NEEDUSE(format); NEEDDO(return);
+
     return QImage();
 }
 
@@ -54,7 +67,8 @@ QImage RectFinder::detectImage(const QImage::Format format)
     return QImage();
 }
 
-QImage RectFinder::rectImage(const QPen pen, const QImage::Format format)
+QImage RectFinder::rectImage(const QPen pen,
+                             const QImage::Format format)
 {
     NEEDDO(it); NEEDUSE(pen); NEEDUSE(format); NEEDDO(return);
     return QImage();
@@ -65,10 +79,11 @@ RectList RectFinder::rectList() const
     return mRectList;
 }
 
-int RectFinder::fillRectList(const cvRect::Vector &cvVector)
+int RectFinder::fillRectList(const cvRectStdVector &cvVector)
 {
+    WANTDO(Move to rectCascade);
     mRectList.clear();
-    foreach (cvRect cvrc, cvVector)
+    foreach (cvRect cvrc, cvVector.toCvRectStdVector())
         mRectList.append(QRect(cvrc));
     return mRectList.size();
 }
