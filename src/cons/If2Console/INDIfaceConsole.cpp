@@ -110,6 +110,13 @@ void INDIfaceConsole::initializeResources()
     WEXPECT(loaded);
     NEEDDO(mFaceFinder.config());
 
+    QString rectDirString("/INDIface/INDIout/@/Rect");
+    rectDirString.replace("@", QDateTime::currentDateTime()
+        .toString("DyyyyMMdd-Thhmm"));
+    mRectDir = QDir(rectDirString);
+    mRectDir.mkpath(".");
+    mRectDir.cd(".");
+
     EMIT(resoursesInitd());
     QTimer::singleShot(100, this, &INDIfaceConsole::startProcessing);
 }
@@ -158,7 +165,13 @@ void INDIfaceConsole::processImage()
     TRACEQFI << mCurrentImageFileName;
 
     EXPECT(mFaceFinder.loadImage(mCurrentImageFileName));
-
+    int faceCount = mFaceFinder.find(mFaceParms);
+    writeLine("   " + QString::number(faceCount)
+              + " Face Rectangles Detected");
+    QFileInfo inputFI(mCurrentImageFileName);
+    QFileInfo rectFI(mRectDir,
+                     inputFI.completeBaseName()+".PNG");
+    mFaceFinder.rectImage().save(rectFI.filePath());
     NEEDDO(more);
     TRACERTV()
 }

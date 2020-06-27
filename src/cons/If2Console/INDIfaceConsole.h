@@ -72,6 +72,8 @@ private:
     QStringList mImageFileQueue;
     RectCascade *mpFaceCascade=nullptr;
     RectFinder mFaceFinder;
+    RectFinderParameters mFaceParms;
     QString mCurrentImageFileName;
+    QDir mRectDir;
     cvMat mInputMat;
 };

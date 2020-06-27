@@ -16,6 +16,7 @@ class RectFinder
 {
 public:
     RectFinder(RectCascade *cascade=nullptr);
+    QSize coreSize() const;
     bool loadImage(const QString &inputfileName);
     QSize inputSize() const;
     int find(RectFinderParameters parms);

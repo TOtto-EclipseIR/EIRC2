@@ -21,6 +21,7 @@ class RectCascade : public QObject
 public:
     explicit RectCascade(QObject *parent = nullptr);
     bool load(const QString &fileName);
+    QSize coreSize() const;
     void close();
     bool isEmpty() const;
     cvRect::Vector find(const qreal scaleFactor,
@@ -33,5 +34,6 @@ signals:
 private:
     QFileInfo mCascadeFileInfo;
     cvCascade *mpCascade=nullptr;
+    QSize mCoreSize;
 };
 

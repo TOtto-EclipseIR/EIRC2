@@ -11,6 +11,12 @@ RectFinder::RectFinder(RectCascade *cascade)
 
 }
 
+QSize RectFinder::coreSize() const
+{
+    TSTALLOC(cmpCascade);
+    return cmpCascade->coreSize();
+}
+
 bool RectFinder::loadImage(const QString &inputfileName)
 {
     mInputMat.set(cv::imread(inputfileName.toStdString()));

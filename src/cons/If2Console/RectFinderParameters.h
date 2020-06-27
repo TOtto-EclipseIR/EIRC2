@@ -12,8 +12,9 @@
 class RectFinderParameters
 {
 public:
-    RectFinderParameters(const QSize &coreSize);
-    void configure(const QVariantMap &config);
+    RectFinderParameters();
+    void configure(const QSize &coreSize,
+                   const QVariantMap &config);
     void calculate(const QSize &imageSize,
                    const QRect &regionRect=QRect());
     double scaleFactor() const;
@@ -29,7 +30,7 @@ protected:
 
 private:
     QVariantMap mConfig;
-    QSize cmCoreSize;
+    QSize mCoreSize;
 
     // our intermediate values
     int mMinDimension;

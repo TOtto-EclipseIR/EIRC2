@@ -21,8 +21,14 @@ bool RectCascade::load(const QString &fileName)
     DUMPVAL(mpCascade->empty());
     if ( ! mpCascade->empty())
         DUMPVAL(mpCascade->isOldFormatCascade());
-
+    mCoreSize = QSize(32,32);
+    NEEDDO(mCoreSize);
     return ! mpCascade->empty();
+}
+
+QSize RectCascade::coreSize() const
+{
+    return mCoreSize;
 }
 
 void RectCascade::close()

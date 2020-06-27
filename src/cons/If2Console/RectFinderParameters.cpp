@@ -4,15 +4,16 @@
 
 #include "cvSize.h"
 
-RectFinderParameters::RectFinderParameters(const QSize &coreSize)
-    : cmCoreSize(coreSize)
+RectFinderParameters::RectFinderParameters()
 {
-    TRACEQFI << cmCoreSize;
+    TRACEFN;
 }
 
-void RectFinderParameters::configure(const QVariantMap &config)
+void RectFinderParameters::configure(const QSize &coreSize,
+                                     const QVariantMap &config)
 {
     mConfig = config;
+    mCoreSize = coreSize;
 }
 
 void RectFinderParameters::calculate(const QSize &imageSize, const QRect &regionRect)
@@ -32,7 +33,7 @@ int RectFinderParameters::minNeighbors() const
 
 int RectFinderParameters::flags() const
 {
-    WEXPECTNOT(flags());
+    WEXPECTEQ(0, mFlags);
     return mFlags;
 }
 
@@ -48,15 +49,18 @@ cvSize RectFinderParameters::maxSize() const
 
 int RectFinderParameters::minDimension(const QSize imageSize) const
 {
+    NEEDUSE(imageSize);
     return mMinDimension;
 }
 
 int RectFinderParameters::minWidth(const QSize imageSize) const
 {
+    NEEDUSE(imageSize);
     return mMinWidth;
 }
 
 int RectFinderParameters::maxWidth(const QSize imageSize) const
 {
+    NEEDUSE(imageSize);
     return mMaxWidth;
 }
