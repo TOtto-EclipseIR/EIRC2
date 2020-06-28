@@ -1,6 +1,7 @@
 #include "RectFinder.h"
 
 #include <QImage>
+#include <QPainter>
 
 #include <eirBase/Debug.h>
 
@@ -71,7 +72,13 @@ QImage RectFinder::rectImage(const QPen pen,
                              const QImage::Format format)
 {
     NEEDDO(it); NEEDUSE(pen); NEEDUSE(format); NEEDDO(return);
-    return QImage();
+    if ( ! mRectImage.isNull()) return mRectImage;
+    QImage rectImage = detectImage();
+    QPainter painter;
+    painter.begin(&rectImage);
+
+    painter.end();
+    return mRectImage = rectImage;
 }
 
 RectList RectFinder::rectList() const

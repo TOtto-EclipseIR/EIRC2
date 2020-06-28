@@ -2,6 +2,10 @@
 #pragma once
 
 #include <QFileInfo>
+#include <QImage>
+
+#include <QImage>
+#include <QIODevice>
 
 #include <opencv2/core/mat.hpp>
 
@@ -16,7 +20,12 @@ public:
     bool isEmpty() const;
     bool notEmpty() const;
     bool load(const QFileInfo &fileInfo);
+    bool save(const QFileInfo &fileInfo);
     void set(const cv::Mat &other);
+    QImage toImage(const QImage::Format qFormat=QImage::Format_ARGB32,
+                   const QByteArray &mimeFormat="PNG");
+    bool fromImage(const QImage &qImage,
+                   const int cvMatType=0);
     int cols() const;
     int rows() const;
 

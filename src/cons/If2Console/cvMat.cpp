@@ -1,6 +1,8 @@
 //! \file cvMat.cpp
 #include "cvMat.h"
 
+#include <QTemporaryFile>
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc.hpp>
 
@@ -34,6 +36,21 @@ bool cvMat::load(const QFileInfo &fileInfo)
 void cvMat::set(const cv::Mat &other)
 {
     mCvMat = other;
+}
+
+QImage cvMat::toImage(const QImage::Format qFormat, const QByteArray &mimeFormat)
+{
+    TRACEQFI << qFormat << mimeFormat;
+    QTemporaryFile imwriteFile("imwrite" + mimeFormat);
+    EXPECT(imwriteFile.open());
+    QString imwriteTempFilePath = imwriteFile.fileName();
+    EXPECTNOT(imwriteTempFilePath.isEmpty());
+    imwriteFile.close();
+    EXPECT(cv::imwrite(imwriteTempFilePath.toStdString(), mat()));
+    QImage imwriteImage(imwriteTempFilePath);
+    QImage resultImage = imwriteImage.convertToFormat(qFormat);
+    WEXPECTNOT(resultImage.isNull());
+    return resultImage;
 }
 
 int cvMat::cols() const
