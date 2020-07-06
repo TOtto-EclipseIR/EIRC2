@@ -9,7 +9,7 @@ RectFinder::RectFinder(RectCascade *cascade)
     : cmpCascade(cascade)
 {
     TRACEFN;
-
+    TODO(make QObject);
 }
 
 QSize RectFinder::coreSize() const
@@ -18,7 +18,7 @@ QSize RectFinder::coreSize() const
     return cmpCascade->coreSize();
 }
 
-void RectFinder::clear()
+void RectFinder::clearImage()
 {
     mInputMat = cvMat();
     mInputImage = QImage();
@@ -28,7 +28,7 @@ void RectFinder::clear()
 
 bool RectFinder::loadImage(const QString &inputfileName)
 {
-    clear();
+    clearImage();
     mInputMat.load(QFileInfo(inputfileName));
     return ! mInputMat.isEmpty();
 }

@@ -26,6 +26,7 @@
 #include "cvMat.h"
 #include "RectCascade.h"
 #include "RectFinder.h"
+#include "RectFinderClass.h"
 #include "RectFinderParameters.h"
 
 class ColorImage;

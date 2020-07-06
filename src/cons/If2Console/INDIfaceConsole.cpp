@@ -21,8 +21,9 @@
 INDIfaceConsole::INDIfaceConsole(Console *parent)
     : Console(parent)
     , mpConfig(new ConfigObject(parent))
+    , mFaceParms(RectFinderClass::Face)
 {
-    TRACEFN
+    TRACEFN;
     setObjectName("INDIfaceConsole");
     QTimer::singleShot(100, this, &INDIfaceConsole::initializeApplication);
     TRACERTV()

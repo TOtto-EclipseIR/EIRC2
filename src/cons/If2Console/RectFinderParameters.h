@@ -10,12 +10,12 @@
 #include <eirExe/ConfigObject.h>
 
 #include "cvSize.h"
-//#include "RectFinder.h"
+#include "RectFinderClass.h"
 
 class RectFinderParameters
 {
 public:
-    RectFinderParameters();
+    RectFinderParameters(const RectFinderClass &finderClass);
     void configure(const QSize &coreSize,
                    const Configuration &config);
     void calculate(const QSize &imageSize,
@@ -32,6 +32,7 @@ protected:
     int maxWidth(const QSize imageSize) const;
 
 private:
+    RectFinderClass cmClass=RectFinderClass::nullClass;
     Configuration mConfig;
     QSize mCoreSize;
 

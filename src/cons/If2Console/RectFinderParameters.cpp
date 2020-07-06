@@ -5,9 +5,10 @@
 
 #include "cvSize.h"
 
-RectFinderParameters::RectFinderParameters()
+RectFinderParameters::RectFinderParameters(const RectFinderClass &finderClass)
+    : cmClass(finderClass)
 {
-    TRACEFN;
+    TRACEQFI << finderClass.name();
 }
 
 void RectFinderParameters::configure(const QSize &coreSize,

@@ -9,6 +9,7 @@
 #include "cvRect.h"
 #include "cvRectStdVector.h"
 #include "RectCascade.h"
+#include "RectFinderClass.h"
 #include "RectFinderParameters.h"
 
 typedef QList<QRect> RectList;
@@ -18,7 +19,7 @@ class RectFinder
 public:
     RectFinder(RectCascade *cascade=nullptr);
     QSize coreSize() const;
-    void clear();
+    void clearImage();
     bool loadImage(const QString &inputfileName);
     QSize inputSize() const;
     int find(RectFinderParameters parms);
