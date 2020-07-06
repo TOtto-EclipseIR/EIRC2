@@ -29,8 +29,11 @@ LIBS *= F:\lang\OpenCV4\opencv\build\x64\vc15\lib\opencv_world430d.lib
 SOURCES += \
         INDIfaceConsole.cpp \
         If2CommandLine.cpp \
+    ImageMarker.cpp \
+    MarkedFrame.cpp \
     RectCascade.cpp \
     RectFinder.cpp \
+    RectFinderClass.cpp \
     RectFinderParameters.cpp \
     cvMat.cpp \
     cvRect.cpp \
@@ -42,8 +45,11 @@ HEADERS += \
     ../../version.h \
     INDIfaceConsole.h \
     If2CommandLine.h \
+    ImageMarker.h \
+    MarkedFrame.h \
     RectCascade.h \
     RectFinder.h \
+    RectFinderClass.h \
     RectFinderParameters.h \
     cvMat.h \
     cvRect.h \

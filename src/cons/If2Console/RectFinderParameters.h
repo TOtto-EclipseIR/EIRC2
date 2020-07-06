@@ -7,14 +7,17 @@
 #include <opencv2/core.hpp>
 #include <opencv2/core/core.hpp>
 
+#include <eirExe/ConfigObject.h>
+
 #include "cvSize.h"
+//#include "RectFinder.h"
 
 class RectFinderParameters
 {
 public:
     RectFinderParameters();
     void configure(const QSize &coreSize,
-                   const QVariantMap &config);
+                   const Configuration &config);
     void calculate(const QSize &imageSize,
                    const QRect &regionRect=QRect());
     double scaleFactor() const;
@@ -29,7 +32,7 @@ protected:
     int maxWidth(const QSize imageSize) const;
 
 private:
-    QVariantMap mConfig;
+    Configuration mConfig;
     QSize mCoreSize;
 
     // our intermediate values

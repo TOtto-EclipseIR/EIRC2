@@ -63,51 +63,31 @@ void INDIfaceConsole::setConfiguration()
 {
     TRACEFN
     mpConfig->set(commandLine()->configuration());
-/*
-    mWriterFlags.bitRef("ImageOutputCapture")
-            = mpConfig->contains("/Output/Dirs/Acquire/CaptureDir");
-    mWriterFlags.bitRef("ImageOutputInput")
-            = mpConfig->contains("/Output/Dirs/Acquire/InputDir");
-    mWriterFlags.bitRef("ImageOutputInputGrey")
-            = mpConfig->contains("/Output/Dirs/Acquire/InputGreyDir");
-    mWriterFlags.bitRef("ImageOutputMarked")
-            = mpConfig->contains("/Output/Dirs/Detect/MarkedDir");
-*/
-
-
     QTimer::singleShot(100, this, &INDIfaceConsole::initializeResources);
 }
 
 void INDIfaceConsole::initializeResources()
 {
     TRACEQFI << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INDIfaceConsole::initializeResources()";
-    QString baseHaarDirPath = mpConfig->
-        at("Detect/Resources/BaseDir").value().toString();
-    QString faceHaarFilePath = mpConfig->
-        at("Detect/Resources/HaarCascade/Face/XmlFile").value().toString();
-    TRACE << "baseHaarDirPath" << baseHaarDirPath;
-    TRACE << "faceHaarFilePath" << faceHaarFilePath;
-    QFileInfo faceCascadeFileInfo(QDir(baseHaarDirPath),
-                                  faceHaarFilePath);
+    if (mpFaceCascade) mpFaceCascade->close();
+
+    QFileInfo faceCascadeFileInfo(
+                QDir(mpConfig->at("Detect/Resources/BaseDir")
+                     .value().toString()),
+                mpConfig->at("Detect/Resources/HaarCascade/Face/XmlFile")
+                    .value().toString());
     TRACE << faceCascadeFileInfo.absoluteFilePath()
           << faceCascadeFileInfo.exists()
           << faceCascadeFileInfo.isReadable();
-    QFile faceFile(faceCascadeFileInfo.filePath());
-    TRACE << faceFile.fileName()
-          << faceFile.exists()
-          << faceFile.isReadable();
-    WEXPECT(faceFile.open(QIODevice::ReadOnly
-                          | QIODevice::Text
-                          | QIODevice::ExistingOnly));
-    WEXPECT(faceFile.isReadable());
-    faceFile.close();
-//    XmlFile faceXmlElement(faceCascadeFileInfo.filePath());
-    NEEDDO(close mpFaceCascade);
+#ifndef NDEBUG
+    XmlFile faceXmlFile(faceCascadeFileInfo.absoluteFilePath());
+    EXPECT(faceXmlFile.rootElement().isElement());
+    faceXmlFile.close();
+#endif
     mpFaceCascade = new RectCascade();
     TSTALLOC(mpFaceCascade);
-    bool loaded = mpFaceCascade->load(faceCascadeFileInfo.filePath());
-    DUMPVAL(loaded);
-    WEXPECT(loaded);
+    EXPECT(mpFaceCascade->load(faceCascadeFileInfo));
+    mFaceParms.configure(mpFaceCascade->coreSize(), mpConfig->configuration("Detect/Face"));
     NEEDDO(mFaceFinder.config());
 
     QString rectDirString("/INDIface/INDIout/@/Rect");
@@ -148,7 +128,7 @@ void INDIfaceConsole::nextFile()
 void INDIfaceConsole::processFile()
 {
     TRACEQFI << "mCurrentImageFile:" << mCurrentImageFileName;
-    writeLine(QString("===Processing: %1").arg(mCurrentImageFileName));
+    processImage();
     TODO(more?)
     QTimer::singleShot(100, this, &INDIfaceConsole::nextFile);
 }
@@ -164,6 +144,7 @@ void INDIfaceConsole::processImage()
 {
     TRACEQFI << mCurrentImageFileName;
 
+    writeLine(QString("===Processing: %1").arg(mCurrentImageFileName));
     EXPECT(mFaceFinder.loadImage(mCurrentImageFileName));
     int faceCount = mFaceFinder.find(mFaceParms);
     writeLine("   " + QString::number(faceCount)
@@ -171,7 +152,12 @@ void INDIfaceConsole::processImage()
     QFileInfo inputFI(mCurrentImageFileName);
     QFileInfo rectFI(mRectDir,
                      inputFI.completeBaseName()+".PNG");
-    mFaceFinder.rectImage().save(rectFI.filePath());
+    bool rectImageSaved = mFaceFinder.rectImage()
+            .save(rectFI.filePath(), "PNG");
+    EXPECT(rectImageSaved);
+    EXPECT(rectFI.exists());
+    if (rectImageSaved && rectFI.exists())
+        writeLine("    " + rectFI.absoluteFilePath() + "saved");
     NEEDDO(more);
     TRACERTV()
 }

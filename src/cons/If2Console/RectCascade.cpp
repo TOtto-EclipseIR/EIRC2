@@ -12,19 +12,20 @@ RectCascade::RectCascade(QObject *parent)
     TRACEFN;
 }
 
-bool RectCascade::load(const QString &fileName)
+bool RectCascade::load(const QFileInfo &fileInfo)
 {
-    TRACEQFI << fileName;
+    TRACEQFI << fileInfo.absoluteFilePath();
     close();
-    mCascadeFileInfo = QFileInfo(fileName);
-    TRACE << mCascadeFileInfo;
-    mpCascade = new cvCascade(fileName.toStdString());
+    mCascadeFileInfo = fileInfo;
+    mpCascade = new cvCascade(fileInfo
+        .absoluteFilePath().toStdString());
     TSTALLOC(mpCascade);
     DUMPVAL(mpCascade->empty());
-    if ( ! mpCascade->empty())
-        DUMPVAL(mpCascade->isOldFormatCascade());
-    mCoreSize = QSize(32,32);
-    NEEDDO(mCoreSize);
+    DUMPVAL(mpCascade->isOldFormatCascade());
+    if (isEmpty())
+        close();
+    else
+        mCoreSize = QSize(32,32); NEEDDO(mCoreSize);
     return ! mpCascade->empty();
 }
 
@@ -42,6 +43,7 @@ void RectCascade::close()
         mpCascade = nullptr;
     }
     mCascadeFileInfo = QFileInfo();
+    mCoreSize = QSize();
 }
 
 bool RectCascade::isEmpty() const

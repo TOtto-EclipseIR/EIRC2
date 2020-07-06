@@ -20,7 +20,7 @@ class RectCascade : public QObject
     Q_OBJECT
 public:
     explicit RectCascade(QObject *parent = nullptr);
-    bool load(const QString &fileName);
+    bool load(const QFileInfo &fileInfo);
     QSize coreSize() const;
     void close();
     bool isEmpty() const;

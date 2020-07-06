@@ -1,6 +1,7 @@
 #include "RectFinderParameters.h"
 
 #include <eirBase/Debug.h>
+#include <eirExe/ConfigObject.h>
 
 #include "cvSize.h"
 
@@ -10,7 +11,7 @@ RectFinderParameters::RectFinderParameters()
 }
 
 void RectFinderParameters::configure(const QSize &coreSize,
-                                     const QVariantMap &config)
+                                     const Configuration &config)
 {
     mConfig = config;
     mCoreSize = coreSize;
