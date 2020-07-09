@@ -16,7 +16,12 @@ public:
     QQRect();
     QQRect(int x, int y, int width, int height);
     QQRect(const QSize size, const QPoint center);
-    QQRect(const QRectF rcf);
+    QQRect(const QRect &other);
+    QQRect(const QQRect &other);
+    QQRect(const QQRect &&other);
+    QQRect(const QRectF &other);
+    QQRect operator = (const QQRect &other);
+    void nullify();
     QQRect set(const QRectF rcf);
     void set(const QSize size, const QPoint center);
     int area() const;

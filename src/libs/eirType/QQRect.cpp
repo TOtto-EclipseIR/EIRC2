@@ -12,11 +12,28 @@ QQRect::QQRect(int x, int y, int width, int height)
     : QRect(x, y, width, height) {;}
 
 QQRect::QQRect(const QSize size, const QPoint center)
-    : QRect(center.x() - size.width()  / 2,
-            center.y() - size.height() / 2,
-            size.height(), size.width()) {;}
+    { set(size, center); }
 
-QQRect::QQRect(const QRectF rcf) { set(rcf); }
+QQRect::QQRect(const QRect &other) : QRect(other) {;}
+
+QQRect::QQRect(const QQRect &other) : QRect(other) {;}
+
+QQRect::QQRect(const QQRect &&other) : QRect(other) {;}
+
+QQRect::QQRect(const QRectF &rcf) { set(rcf); }
+
+QQRect QQRect::operator =(const QQRect &other)
+{
+    set(other.size(), other.center());
+    return *this;
+}
+
+void QQRect::nullify()
+{
+    setTopLeft(QPoint(0,0));
+    setSize(QSize(0,0));
+    VERIFY(isNull());
+}
 
 QQRect QQRect::set(const QRectF rcf)
 {

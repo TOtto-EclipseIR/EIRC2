@@ -12,7 +12,7 @@ ImagePak::ImagePak() {;}
 ImagePak::ImagePak(const QFileInfo &fileInfo, const BaseImage &baseImage)
 {
     TRACEQFI << fileInfo << ImageInfo(baseImage)();
-    NEEDDO();
+    NEEDDO(it);
 }
 
 ImagePak::ImagePak(const QFileInfo &fileInfo,

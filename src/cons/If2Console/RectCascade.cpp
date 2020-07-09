@@ -17,16 +17,26 @@ bool RectCascade::load(const QFileInfo &fileInfo)
     TRACEQFI << fileInfo.absoluteFilePath();
     close();
     mCascadeFileInfo = fileInfo;
-    mpCascade = new cvCascade(fileInfo
-        .absoluteFilePath().toStdString());
-    TSTALLOC(mpCascade);
-    DUMPVAL(mpCascade->empty());
-    DUMPVAL(mpCascade->isOldFormatCascade());
-    if (isEmpty())
-        close();
+    cvCascade *cascade = new cvCascade(fileInfo
+                .absoluteFilePath().toStdString());
+    if (cascade && ! cascade->empty())
+    {
+        DUMPVAL(cascade->isOldFormatCascade());
+        mpCascade = cascade;
+        mCascadeFileInfo = fileInfo;
+        mCoreSize = QSize(32, 32); NEEDDO(mCoreSize from XML);
+        return true;
+    }
     else
-        mCoreSize = QSize(32,32); NEEDDO(mCoreSize);
-    return ! mpCascade->empty();
+    {
+        close();
+        return false;
+    }
+}
+
+QFileInfo RectCascade::fileInfo() const
+{
+    return mCascadeFileInfo;
 }
 
 QSize RectCascade::coreSize() const

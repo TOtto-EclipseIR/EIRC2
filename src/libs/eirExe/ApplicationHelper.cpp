@@ -46,9 +46,9 @@ const CommandLine *ApplicationHelper::commandLine() const
     return cmpCommandLine;
 }
 
-CommandLine &ApplicationHelper::rCommandLine()
+CommandLine *ApplicationHelper::commandLine()
 {
-    return *cmpCommandLine;
+    return cmpCommandLine;
 }
 
 ConfigObject *ApplicationHelper::config() const

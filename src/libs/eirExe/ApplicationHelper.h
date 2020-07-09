@@ -24,8 +24,8 @@ public:
     void set(const VersionInfo & verInfo);
     QFile * tempFile(const QString &ext,
                      QObject * parent=nullptr);
-    const CommandLine *commandLine() const;
-    CommandLine &rCommandLine();
+    CommandLine const *commandLine() const;
+    CommandLine *commandLine();
     ConfigObject *config() const;
 
 public slots:

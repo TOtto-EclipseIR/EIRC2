@@ -23,13 +23,13 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/mat.hpp>
 
-#include "cvMat.h"
-#include "RectCascade.h"
+//#include "cvMat.h"
+//#include "RectCascade.h"
 #include "RectFinder.h"
-#include "RectFinderClass.h"
-#include "RectFinderParameters.h"
+//#include "RectFinderClass.h"
+//#include "RectFinderParameters.h"
 
-class ColorImage;
+//class ColorImage;
 class CommandLine;
 class FileInfoQueue;
 class ImagePakWriterQueue;
@@ -72,10 +72,10 @@ private:
     CommandLineClientInterface * mpCommandLineInterface=nullptr;
     ConfigObject * mpConfig=nullptr;
     QStringList mImageFileQueue;
-    RectCascade *mpFaceCascade=nullptr;
+    //RectCascade *mpFaceCascade=nullptr;
     RectFinder mFaceFinder;
-    RectFinderParameters mFaceParms;
+//    RectFinderParameters mFaceParms;
     QString mCurrentImageFileName;
     QDir mRectDir;
-    cvMat mInputMat;
+  //  cvMat mInputMat;
 };

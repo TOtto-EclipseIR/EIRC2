@@ -11,7 +11,7 @@ QQRect Region::set(const QSize sz)
 
 QQRect Region::set(const QQRectF rcf, const QSize sz)
 {
-    mRectF = rcf, mSize = sz, mRegion = QQRect();
+    mRectF = rcf, mSize = sz, mRegion.nullify();
     if (rcf.isValid())
     {
         if (rcf.isUnit())
@@ -23,7 +23,7 @@ QQRect Region::set(const QQRectF rcf, const QSize sz)
         }
         else if (rcf.isValid())
         {
-            mRegion = rcf;
+            mRegion.set(rcf);
         }
     }
     return mRegion;

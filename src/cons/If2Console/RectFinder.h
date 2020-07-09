@@ -1,9 +1,12 @@
 #pragma once
 
+#include <QDomElement>
 #include <QImage>
 #include <QList>
 #include <QPen>
 #include <QRect>
+
+#include <eirExe/ConfigObject.h>
 
 #include "cvMat.h"
 #include "cvRect.h"
@@ -17,16 +20,39 @@ typedef QList<QRect> RectList;
 class RectFinder
 {
 public:
-    RectFinder(RectCascade *cascade=nullptr);
+    RectFinder(ConfigObject * configObject,
+               const RectFinderClass &finderClass);
+    void configure();
+
+    // Interface
+    QFileInfo cascadeFileInfo() const;
+    ConfigObject *config();
     QSize coreSize() const;
     void clearImage();
-    bool loadImage(const QString &inputfileName);
+    void clearResults();
+    bool isReadyImage() const;
+
+    // Detector Resources
+    bool loadResources();
+    /*
+    bool loadConfigResources();
+    bool loadFinderResources(const MultiName::List &resourceNameList);
+    bool loadFinderResources(const MultiName &resourceName);
+    bool loadFinderResourcesXml(const QFileInfo &resourceFile);
+    bool loadFinderResourcesXml(const QFileInfoList &resourceFileList);
+    bool loadFinderResources(const QDomElement &resourceRootElement);
+    bool loadFinderResources(const QList<QDomElement> &resourceRootElementList);
+    */
+
+    // Detector Processing
+    bool setInputImage(const QString &inputfileName);
     QSize inputSize() const;
-    int find(RectFinderParameters parms);
-    QImage inputImage(const QImage::Format format=QImage::Format_RGB32);
+    int find();
+
+    // Detector Results
+    QImage inputImage(const QImage::Format format=QImage::Format_ARGB32);
     QImage detectImage(const QImage::Format format=QImage::Format_Grayscale8);
-    QImage rectImage(const QPen pen=QPen(QBrush(Qt::blue), 1),
-                     const QImage::Format format=QImage::Format_RGB32);
+    QImage rectImage(const QImage::Format format=QImage::Format_ARGB32);
     cvRect::Vector cvRectVector() const;
     RectList rectList() const;
 
@@ -34,7 +60,12 @@ protected:
     int fillRectList(const cvRectStdVector & cvVector);
 
 private:
+    ConfigObject * mpConfig=nullptr;
+    const RectFinderClass cmFinderClass;
+    RectFinderParameters mParameters;
     RectCascade * cmpCascade=nullptr;
+    Configuration mResourceConfig;
+    Configuration mClassConfig;
     cvMat mInputMat;
     QImage mInputImage;
     QImage mDetectImage;

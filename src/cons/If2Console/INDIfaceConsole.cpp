@@ -21,12 +21,12 @@
 INDIfaceConsole::INDIfaceConsole(Console *parent)
     : Console(parent)
     , mpConfig(new ConfigObject(parent))
-    , mFaceParms(RectFinderClass::Face)
+    , mFaceFinder(mpConfig, RectFinderClass::Face)
 {
-    TRACEFN;
+    TRACEFN; TODO(Left/RightEye then Nose & Mouth RectFinders);
     setObjectName("INDIfaceConsole");
     QTimer::singleShot(100, this, &INDIfaceConsole::initializeApplication);
-    TRACERTV()
+    TRACERTV();
 }
 
 void INDIfaceConsole::initializeApplication()
@@ -41,6 +41,7 @@ void INDIfaceConsole::initializeApplication()
     writeLine("===Raw Executable Arguments:");
     foreach (QString arg, commandLine()->exeArguments())
         writeLine("---{" + arg + "}");
+    TODO(cvVersion);
 //    cvVersion opencvVersion;
   //  writeLine("==="+opencvVersion.toString());
     EMIT(applicationInitd());
@@ -52,24 +53,36 @@ void INDIfaceConsole::setupCommandLine()
 {
     TRACEFN
     If2CommandLine interface;
-    rCommandLine().set(&interface);
-    rCommandLine().process();
-    rCommandLine().set(nullptr);
-    rCommandLine().expandDirectories();
+    commandLine()->set(&interface);
+    commandLine()->process();
+    commandLine()->set(nullptr);
+    commandLine()->expandDirectories();
     EMIT(commandLineSetup());
-    QTimer::singleShot(100, this, &INDIfaceConsole::setConfiguration);
+    QTimer::singleShot(100, this,
+            &INDIfaceConsole::setConfiguration);
 }
 
 void INDIfaceConsole::setConfiguration()
 {
     TRACEFN
     mpConfig->set(commandLine()->configuration());
-    QTimer::singleShot(100, this, &INDIfaceConsole::initializeResources);
+    NEEDDO(mFaceFinder.configure());
+    QTimer::singleShot(100, this,
+            &INDIfaceConsole::initializeResources);
 }
 
 void INDIfaceConsole::initializeResources()
 {
     TRACEQFI << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INDIfaceConsole::initializeResources()";
+#if true
+    EXPECT(mFaceFinder.loadResources());
+    QSize sz = mFaceFinder.coreSize();
+    writeLine(QString("+++Cascade loaded: %1x%2")
+              .arg(sz.width()).arg(sz.height())
+              .arg(mFaceFinder.cascadeFileInfo().filePath()));
+#else
+    MUSTDO(Handle Cascade Loading);
+
     if (mpFaceCascade) mpFaceCascade->close();
 
     QFileInfo faceCascadeFileInfo(
@@ -90,6 +103,7 @@ void INDIfaceConsole::initializeResources()
     EXPECT(mpFaceCascade->load(faceCascadeFileInfo));
     mFaceParms.configure(mpFaceCascade->coreSize(), mpConfig->configuration("Detect/Face"));
     NEEDDO(mFaceFinder.config());
+#endif
 
     QString rectDirString("/INDIface/INDIout/@/Rect");
     rectDirString.replace("@", QDateTime::currentDateTime()
@@ -108,6 +122,7 @@ void INDIfaceConsole::startProcessing()
     mImageFileQueue = commandLine()->positionalArgumentList();
     TRACE << mImageFileQueue;
     TODO(?)
+    BEXPECT(mFaceFinder.isReadyImage());
     QTimer::singleShot(100, this, &INDIfaceConsole::nextFile);
 }
 
@@ -146,8 +161,8 @@ void INDIfaceConsole::processImage()
     TRACEQFI << mCurrentImageFileName;
 
     writeLine(QString("===Processing: %1").arg(mCurrentImageFileName));
-    EXPECT(mFaceFinder.loadImage(mCurrentImageFileName));
-    int faceCount = mFaceFinder.find(mFaceParms);
+    EXPECT(mFaceFinder.setInputImage(mCurrentImageFileName));
+    int faceCount = mFaceFinder.find();
     writeLine("   " + QString::number(faceCount)
               + " Face Rectangles Detected");
     QFileInfo inputFI(mCurrentImageFileName);

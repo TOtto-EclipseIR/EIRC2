@@ -69,6 +69,39 @@ void Success::nullify(void)
     mIsInitialized = mSuccess = false;
 }
 
+//! function bool ok(const bool okResult) set OK continue status.
+//!
+//! Usage:
+//! @code
+//! bool SomeClass::readSomeData()
+//! {
+//!     Success success; // uninitialized!
+//!     QString fileName("./some-file.txt");
+//!     QFile someFile;
+//!     success.ok(QFile::exists(fileName));
+//!     if (success.ok())
+//!     {
+//!         someFile.setFileName(fileName);
+//!         success.ok(someFile(open(QIODevice::ReadOnly));
+//!     }
+//!     success.ok(someFile.isReadable());
+//!     if (success.ok())   mSomeData = someFile.readAll();
+//!     return success.ok();
+//! }
+//! @endcode
+bool Success::ok(const bool isOk)
+{
+    if (isOk) return true;
+    mIsInitialized = true;
+    return mSuccess = false;
+}
+
+bool Success::ok() const
+{
+    if ( ! mIsInitialized)  return true; // nothing failed ok(bool)
+    return mSuccess;
+}
+
 QString Success::toString(void) const
 {
     return toString("OK", "FAIL", "UNKNOWN");

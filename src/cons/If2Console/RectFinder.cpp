@@ -1,15 +1,44 @@
 #include "RectFinder.h"
 
+#include <QDir>
 #include <QImage>
 #include <QPainter>
 
 #include <eirBase/Debug.h>
+#include <eirBase/Success.h>
 
-RectFinder::RectFinder(RectCascade *cascade)
-    : cmpCascade(cascade)
+#include "ImageMarker.h"
+
+RectFinder::RectFinder(ConfigObject * configObject,
+                       const RectFinderClass &finderClass)
+    : mpConfig(configObject)
+    , cmFinderClass(finderClass)
+    , mParameters(cmFinderClass)
+    , cmpCascade(new RectCascade())
+{
+    TRACEQFI << cmFinderClass.name();
+    TODO(make QObject(parent));
+}
+
+void RectFinder::configure()
 {
     TRACEFN;
-    TODO(make QObject);
+    mResourceConfig.setName("RectFinder:ResourceConfig");
+    mClassConfig.setName("RectFinder:ClassConfig");
+    mResourceConfig = config()->configuration().extract("/Detect/Resources");
+    mClassConfig = config()->configuration().extract("/Detect/Resources/HaarCascade/"+cmFinderClass.name());
+    mResourceConfig.dump();
+    mClassConfig.dump();
+}
+
+QFileInfo RectFinder::cascadeFileInfo() const
+{
+    return cmpCascade->fileInfo();
+}
+
+ConfigObject *RectFinder::config()
+{
+    return mpConfig;
 }
 
 QSize RectFinder::coreSize() const
@@ -26,7 +55,46 @@ void RectFinder::clearImage()
     mRectImage = QImage();
 }
 
-bool RectFinder::loadImage(const QString &inputfileName)
+bool RectFinder::isReadyImage() const
+{
+    TRACEFN;
+    Success success;
+    EXPECT(cmpCascade);
+    success.ok(cmpCascade);
+    EXPECTNOT(cmpCascade->isEmpty());
+    if (success.ok()) success.ok( ! cmpCascade->isEmpty());
+    NEEDDO(more);
+    return success.ok();
+}
+
+bool RectFinder::loadResources()
+{
+    TRACEFN;
+    TSTALLOC(cmpCascade);
+    QFileInfo cascadeFileInfo(
+        QDir(mResourceConfig.value("/BaseDir").currentVari().toString()),
+        mClassConfig.value("XmlFile").currentVari().toString());
+    TRACE << cascadeFileInfo;
+    return cmpCascade->load(cascadeFileInfo);
+}
+/*
+bool RectFinder::loadConfigResources()
+{
+    TRACEFN; NEEDDO(it); NEEDRTN(Success());
+    QFileInfo cascadeFileInfo(
+        QDir(mResourceConfig.value("/BaseDir").currentVari().toString()),
+        mClassConfig.value("XmlFile").currentVari().toString());
+    return false;
+}
+
+bool RectFinder::loadFinderResources(const QDomElement &resourceRootElement)
+{
+    TRACEQFI << resourceRootElement.tagName();
+    NEEDDO(QDomElement); NEEDRTN(false);
+    return false;
+}
+*/
+bool RectFinder::setInputImage(const QString &inputfileName)
 {
     clearImage();
     mInputMat.load(QFileInfo(inputfileName));
@@ -38,11 +106,14 @@ QSize RectFinder::inputSize() const
     return QSize(mInputMat.cols(), mInputMat.rows());
 }
 
-int RectFinder::find(RectFinderParameters parms)
+//int RectFinder::find(RectFinderParameters parms)
+int RectFinder::find()
 {
     TRACEFN;
     TSTALLOC(cmpCascade);
     BEXPECTNOT(cmpCascade->isEmpty());
+    RectFinderParameters parms(RectFinderClass::Face);
+    NEEDDO(RectFinderParameters);
     parms.calculate(inputSize());
     cvRectStdVector rectVector =
             cmpCascade->find(mInputMat,
@@ -68,17 +139,14 @@ QImage RectFinder::detectImage(const QImage::Format format)
     return QImage();
 }
 
-QImage RectFinder::rectImage(const QPen pen,
-                             const QImage::Format format)
+QImage RectFinder::rectImage(const QImage::Format format)
 {
-    NEEDDO(it); NEEDUSE(pen); NEEDUSE(format); NEEDDO(return);
+    TRACEQFI << format;
     if ( ! mRectImage.isNull()) return mRectImage;
-    QImage rectImage = detectImage();
-    QPainter painter;
-    painter.begin(&rectImage);
 
-    painter.end();
-    return mRectImage = rectImage;
+    QImage outImage = detectImage().convertToFormat(format);
+    mRectImage = ImageMarker::markRetangles(outImage, mRectList);
+    return mRectImage;
 }
 
 RectList RectFinder::rectList() const

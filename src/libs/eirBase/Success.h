@@ -18,6 +18,8 @@ public:
     bool testNot(const bool isFalse);
     bool isNull(void) const;
     void nullify(void);
+    bool ok(const bool isOk);
+    bool ok() const;
     Success tested(void);
     QString toString(void) const;
     QString toString(const QString & trueString,

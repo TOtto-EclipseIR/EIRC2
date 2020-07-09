@@ -103,7 +103,7 @@
 #define NEEDFNR(expr)           DEBUGFNR(qCritical, PETODO, expr)
 #define NEEDRTV()               DEBUGRTV(qCritical, PETODO)
 #define PTR(ptr, expr)          DEBUGPTR(qCritical, PERROR, ptr, expr)
-
+#define VERIFY(bexpr)           DEBUGEXP(qCritical, PERROR, bexpr)
 #define ABORT(strm)             DEBUG(qCritical, PABORT) << strm; DEBUGQUIT
 #define ABORTQFI(strm)          DEBUGQFI(qCritical, PABORT) << strm; DEBUGQUIT
 #define ABORTFN()               DEBUGFN(qCritical, PABORT); DEBUGQUIT
