@@ -13,7 +13,11 @@ SUBDIRS += \
     ./libs/eirXfr \
     ./cons/If2Console \
  #   libs/eirHaar \
-    libs/eirImage \
+    cons/FaceConsole \
+    libs/eirImage \ \
+    libs/eirQtCV \
+    libs/eirRectFind \
+    libs/eirTask
 
 eirType.depends     = eirBase
 eirExe.depends      = eirBase eirType

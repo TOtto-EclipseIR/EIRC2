@@ -7,6 +7,7 @@
 #include <QPointer>
 #include <QTimer>
 
+#define QOBJNAME(pqobj) ((nullptr == pqobj) ? ("{null} " #pqobj) : ("QObject:" #pqobj + pqobj->objectName()))
 #define TIME QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
 #define DEBUG(qmt, pfx) qmt() << pfx << TIME << __LINE__
 #define DEBUGQFI(qmt, pfx) qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__
