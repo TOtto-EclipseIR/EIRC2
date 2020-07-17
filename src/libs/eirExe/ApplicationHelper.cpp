@@ -6,6 +6,7 @@
 #include <eirBase/Debug.h>
 #include <eirBase/ErrorHandler.h>
 #include <eirBase/Milliseconds.h>
+#include <eirBase/VersionInfo.h>
 
 #include "CommandLine.h"
 #include "ConfigObject.h"
@@ -23,6 +24,11 @@ ApplicationHelper::ApplicationHelper(QObject *parent)
     setObjectName("Application");
     TSTALLOC(mpTempDir);
     EXPECT(mpTempDir->isValid())
+}
+
+VersionInfo ApplicationHelper::version() const
+{
+    return cmVerInfo;
 }
 
 QFile *ApplicationHelper::tempFile(const QString &ext,
@@ -60,7 +66,6 @@ void ApplicationHelper::run()
 {
     TRACEFN
     qApp->setOrganizationName(EIRC2_VER_ORGNAME);
-    qApp->setApplicationName("If2Console");
     qApp->setApplicationVersion(EIRC2_VER_APPVER);
     QTimer::singleShot(100, this, &ApplicationHelper::initCommandLine);
 }

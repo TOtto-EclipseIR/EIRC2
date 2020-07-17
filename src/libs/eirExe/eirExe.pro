@@ -27,6 +27,7 @@ SOURCES += \
     CommandLine.cpp \
     CommandLineClientInterface.cpp \
     ConfigObject.cpp \
+    ConfigPak.cpp \
     Configuration.cpp \
     Console.cpp \
     FileExtension.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     CommandLine.h \
     CommandLineClientInterface.h \
     ConfigObject.h \
+    ConfigPak.h \
     Configuration.h \
     Console.h \
     FileExtension.h \

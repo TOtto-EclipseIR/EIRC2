@@ -30,8 +30,8 @@ public:
     List childTaskList() const;
 
 protected:
-    virtual void onEntry(QEvent *event) = 0;
-    virtual void onExit(QEvent *event) = 0;
+    virtual void entryEvent(QEvent *event) = 0;
+    virtual void exitEvent(QEvent *event) = 0;
     bool event(QEvent *event) override;
 
 private slots:
