@@ -61,41 +61,44 @@ void INDIfaceConsole::setupCommandLine()
 
 void INDIfaceConsole::setConfiguration()
 {
-    TRACEFN
+    TRACEQFI << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INDIfaceConsole::setConfiguration()";
     mpConfig->set(commandLine()->configuration());
+
+    config()->configuration("Output").dump();
+    config()->configuration("/Output").dump();
+    QString baseDirString(config()->configuration("/Output").string("BaseDir"));
+    QString rectDirString(config()->configuration("/PreScan/Face/Output").string("RectDir"));
+
+    baseDirString.replace("@", QDateTime::currentDateTime()
+        .toString("DyyyyMMdd-Thhmm"));
+    rectDirString.replace("@", QDateTime::currentDateTime()
+        .toString("DyyyyMMdd-Thhmm"));
+    mRectDir = QDir(baseDirString);
+    mRectDir.mkpath(rectDirString);
+    mRectDir.cd(rectDirString);
+TRACE << baseDirString << rectDirString
+      << mRectDir.absolutePath();
+
     QTimer::singleShot(100, this, &INDIfaceConsole::initializeResources);
 }
 
 void INDIfaceConsole::initializeResources()
 {
     TRACEQFI << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INDIfaceConsole::initializeResources()";
-    if (mpFaceCascade) mpFaceCascade->close();
 
     QFileInfo faceCascadeFileInfo(
-                QDir(mpConfig->at("Detect/Resources/BaseDir")
-                     .value().toString()),
-                mpConfig->at("Detect/Resources/HaarCascade/Face/XmlFile")
-                    .value().toString());
+                QDir(mpConfig->configuration("/Resources/ObjDet").string("BaseDir")),
+                mpConfig->configuration("/PreScan/Resources/ObjDet/Face").string("XmlFile"));
     TRACE << faceCascadeFileInfo.absoluteFilePath()
           << faceCascadeFileInfo.exists()
           << faceCascadeFileInfo.isReadable();
-#ifndef NDEBUG
-    XmlFile faceXmlFile(faceCascadeFileInfo.absoluteFilePath());
-    EXPECT(faceXmlFile.rootElement().isElement());
-    faceXmlFile.close();
-#endif
-    mpFaceCascade = new RectCascade();
-    TSTALLOC(mpFaceCascade);
-    EXPECT(mpFaceCascade->load(faceCascadeFileInfo));
-    mFaceParms.configure(mpFaceCascade->coreSize(), mpConfig->configuration("Detect/Face"));
-    NEEDDO(mFaceFinder.config());
 
-    QString rectDirString("/INDIface/INDIout/@/Rect");
-    rectDirString.replace("@", QDateTime::currentDateTime()
-        .toString("DyyyyMMdd-Thhmm"));
-    mRectDir = QDir(rectDirString);
-    mRectDir.mkpath(".");
-    mRectDir.cd(".");
+    bool loaded = mFaceFinder.loadCascade(faceCascadeFileInfo);
+    DUMPVAL(loaded);
+    mFaceParms.configure(
+                mFaceFinder.coreSize(),
+                mpConfig->configuration("/PreScan/Face/ObjDet"));
+    NEEDDO(mFaceFinder.config());
 
     EMIT(resoursesInitd());
     QTimer::singleShot(100, this, &INDIfaceConsole::startProcessing);
@@ -145,7 +148,13 @@ void INDIfaceConsole::processImage()
     TRACEQFI << mCurrentImageFileName;
 
     writeLine(QString("===Processing: %1").arg(mCurrentImageFileName));
-    EXPECT(mFaceFinder.loadImage(mCurrentImageFileName));
+    mFaceFinder.loadImage(mCurrentImageFileName);
+    DUMPVAL(mFaceFinder.cascadeLoaded());
+    BEXPECT(mFaceFinder.cascadeLoaded());
+//    DUMPVAL(mFaceFinder.imageLoaded());
+  //  BEXPECT(mFaceFinder.imageLoaded());
+//    BEXPECT(mFaceFinder.detectMat().save("/Detect.PNG"));
+
     int faceCount = mFaceFinder.find(mFaceParms);
     writeLine("   " + QString::number(faceCount)
               + " Face Rectangles Detected");
@@ -157,7 +166,7 @@ void INDIfaceConsole::processImage()
     EXPECT(rectImageSaved);
     EXPECT(rectFI.exists());
     if (rectImageSaved && rectFI.exists())
-        writeLine("    " + rectFI.absoluteFilePath() + "saved");
+        writeLine("    " + rectFI.absoluteFilePath() + " saved");
     NEEDDO(more);
     TRACERTV()
 }

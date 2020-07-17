@@ -16,18 +16,23 @@ public:
 
 public:
     cvMat();
-    cv::Mat mat() const;
-    bool isEmpty() const;
-    bool notEmpty() const;
-    bool load(const QFileInfo &fileInfo);
-    bool save(const QFileInfo &fileInfo);
+    cv::Mat mat() const;    bool isEmpty() const;
+
+    cv::Mat cvtGrey() const;
+    bool loaded() const;
+    bool load(const QString &fileName);
+    bool save(const QString &fileName);
+    void set(const QImage &qimage);
     void set(const cv::Mat &other);
     QImage toImage(const QImage::Format qFormat=QImage::Format_ARGB32,
-                   const QByteArray &mimeFormat="PNG");
-    bool fromImage(const QImage &qImage,
-                   const int cvMatType=0);
+                   const QByteArray &mimeFormat="JPG");
+    bool fromImage(const QImage &qImage);
     int cols() const;
     int rows() const;
+
+protected:
+
+    cv::Mat cvtColor(const int code) const;
 
 private:
     cv::Mat mCvMat;

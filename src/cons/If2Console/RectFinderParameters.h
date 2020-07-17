@@ -20,6 +20,14 @@ public:
                    const Configuration &config);
     void calculate(const QSize &imageSize,
                    const QRect &regionRect=QRect());
+    void setSize(const QSize minSize,
+                 const QSize maxSize);
+    void setSize(const int minWidth,
+                 const int maxWidth);
+    void setFactor(const qreal factor);
+    void setNeighbors(const int neighbors);
+
+    // access
     double scaleFactor() const;
     int minNeighbors() const;
     int flags() const;
@@ -44,7 +52,7 @@ private:
 
     // arguments to detectMultiScale()
     qreal mScaleFactor=1.1;
-    int mMinNeighbors=3;
+    int mMinNeighbors=0;
     int mFlags=0; // per OpenCV doxy 4.2.0, no longer used
     cvSize mCvMinSize;
     cvSize mCvMaxSize;

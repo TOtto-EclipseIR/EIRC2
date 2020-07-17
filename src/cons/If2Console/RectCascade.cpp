@@ -4,8 +4,6 @@
 
 #include <eirBase/Debug.h>
 
-#include "cvRectStdVector.h"
-
 RectCascade::RectCascade(QObject *parent)
     : QObject(parent)
 {
@@ -14,19 +12,25 @@ RectCascade::RectCascade(QObject *parent)
 
 bool RectCascade::load(const QFileInfo &fileInfo)
 {
-    TRACEQFI << fileInfo.absoluteFilePath();
-    close();
     mCascadeFileInfo = fileInfo;
-    mpCascade = new cvCascade(fileInfo
-        .absoluteFilePath().toStdString());
-    TSTALLOC(mpCascade);
-    DUMPVAL(mpCascade->empty());
-    DUMPVAL(mpCascade->isOldFormatCascade());
+    return load();
+}
+
+bool RectCascade::load()
+{
+    TRACEQFI << mCascadeFileInfo.absoluteFilePath();
+    EXPECT(mCascade.load(mCascadeFileInfo
+                         .absoluteFilePath().toStdString()));
+    DUMPVAL(mCascade.empty());
     if (isEmpty())
+    {
         close();
-    else
-        mCoreSize = QSize(32,32); NEEDDO(mCoreSize);
-    return ! mpCascade->empty();
+        return false;
+    }
+    DUMPVAL(mCascade.isOldFormatCascade());
+    mCoreSize = QSize(32,32);
+    NEEDDO(mCoreSize);
+    return loaded();
 }
 
 QSize RectCascade::coreSize() const
@@ -37,40 +41,41 @@ QSize RectCascade::coreSize() const
 void RectCascade::close()
 {
     TRACEFN;
-    if (mpCascade)
-    {
-        delete mpCascade;
-        mpCascade = nullptr;
-    }
-    mCascadeFileInfo = QFileInfo();
-    mCoreSize = QSize();
+    NEEDDO(STUBBED);
+//    mCascade = cvCascade();
+  //  mCascadeFileInfo = QFileInfo();
+    //mCoreSize = QSize();
 }
 
 bool RectCascade::isEmpty() const
 {
-    TSTALLOC(mpCascade);
-    return mpCascade->empty();
+    return mCascade.empty();
 }
 
-cvRectStdVector RectCascade::find(const cvMat &inputMat,
-                                 const qreal scaleFactor,
-                                 const int minNeighbors,
-                                 const cvSize minSize,
-                                 const cvSize maxSize)
+bool RectCascade::loaded() const
+{
+    return ! mCascade.empty();
+}
+
+stdRectVector RectCascade::find(
+        const cvMat &inputMat,
+        const qreal scaleFactor,
+        const int minNeighbors,
+        const cvSize minSize,
+        const cvSize maxSize)
 {
     TRACEQFI << scaleFactor << minNeighbors
              << minSize << maxSize;
-    TSTALLOC(mpCascade);
-    cvRectStdVector rects;
-    mpCascade->detectMultiScale(inputMat.mat(),
-                                rects.toCvRectStdVector(),
-                                scaleFactor,
-                                minNeighbors,
-                                0, // flags now unused?!
-                                minSize,
-                                maxSize);
-    NEEDDO(it); NEEDDO(return);
-    NEEDUSE(scaleFactor);   NEEDUSE(minSize);
-    NEEDUSE(minNeighbors);  NEEDUSE(maxSize);
+    std::vector<cv::Rect> rects;
+    DUMPVAL(loaded());
+    DUMPVAL(inputMat.mat().rows);
+    mCascade.detectMultiScale(inputMat.mat(),
+                              rects,
+                              scaleFactor,
+                              minNeighbors,
+                              0 /* flags unused */,
+                              minSize,
+                              maxSize);
+    DUMPVAL(rects.size());
     return rects;
 }

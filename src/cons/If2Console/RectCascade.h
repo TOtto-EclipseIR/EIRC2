@@ -10,10 +10,10 @@
 
 #include "cvMat.h"
 #include "cvRect.h"
-#include "cvRectStdVector.h"
 #include "cvSize.h"
 
 typedef cv::CascadeClassifier cvCascade;
+typedef std::vector<cv::Rect> stdRectVector;
 
 class RectCascade : public QObject
 {
@@ -21,10 +21,12 @@ class RectCascade : public QObject
 public:
     explicit RectCascade(QObject *parent = nullptr);
     bool load(const QFileInfo &fileInfo);
+    bool load();
     QSize coreSize() const;
     void close();
     bool isEmpty() const;
-    cvRectStdVector find(const cvMat &inputMat,
+    bool loaded() const;
+    stdRectVector find(const cvMat &inputMat,
                       const qreal scaleFactor,
                       const int minNeighbors,
                       const cvSize minSize,
@@ -34,7 +36,7 @@ signals:
 
 private:
     QFileInfo mCascadeFileInfo;
-    cvCascade *mpCascade=nullptr;
+    cvCascade mCascade;
     QSize mCoreSize;
 };
 

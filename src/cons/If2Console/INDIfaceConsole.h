@@ -71,7 +71,7 @@ private:
     CommandLineClientInterface * mpCommandLineInterface=nullptr;
     ConfigObject * mpConfig=nullptr;
     QStringList mImageFileQueue;
-    RectCascade *mpFaceCascade=nullptr;
+//    RectCascade mFaceCascade;
     RectFinder mFaceFinder;
     RectFinderParameters mFaceParms;
     QString mCurrentImageFileName;

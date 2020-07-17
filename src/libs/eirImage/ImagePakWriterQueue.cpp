@@ -29,21 +29,21 @@ void ImagePakWriterQueue::configureOutput(const Configuration outputConfig)
 ImagePak ImagePakWriterQueue::takeDequePak()
 {
     TRACEFN
-    NEEDDO();
+    NEEDDO(it);
     return ImagePak();
 }
 
 ImagePak ImagePakWriterQueue::peekDequePak() const
 {
     TRACEFN
-    NEEDDO();
+    NEEDDO(it);
     return ImagePak();
 }
 
 ImagePak ImagePakWriterQueue::lastDequeuedPak() const
 {
     TRACEFN
-    NEEDDO();
+    NEEDDO(it);
     return ImagePak();
 }
 
@@ -95,43 +95,43 @@ void ImagePakWriterQueue::setupDirs()
 void ImagePakWriterQueue::enqueue(ImagePak pak)
 {
     TRACEQFI << pak.id().name()();
-    NEEDDO();
+    NEEDDO(it);
 }
 
 void ImagePakWriterQueue::dequeue()
 {
     TRACEFN
-    NEEDDO();
+    NEEDDO(it);
 }
 
 void ImagePakWriterQueue::onChanged(int size)
 {
     TRACEFN
-    NEEDDO(); NEEDUSE(size);
+    NEEDDO(it); NEEDUSE(size);
 }
 
 void ImagePakWriterQueue::onEnqueued(QUuid uid, MultiName name, ImagePak pak)
 {
     TRACEQFI << pak.id().name()();
-    NEEDDO(); NEEDUSE(uid); NEEDUSE(name); NEEDUSE(pak);
+    NEEDDO(it); NEEDUSE(uid); NEEDUSE(name); NEEDUSE(pak);
 }
 
 void ImagePakWriterQueue::onDequeued(QUuid uid, MultiName name, ImagePak pak)
 {
     TRACEQFI << pak.id().name()();
-    NEEDDO(); NEEDUSE(uid); NEEDUSE(name); NEEDUSE(pak);
+    NEEDDO(it); NEEDUSE(uid); NEEDUSE(name); NEEDUSE(pak);
 }
 
 void ImagePakWriterQueue::enqueueFile(ImagePakWriterQueue::ImageFileItem item)
 {
     TRACEQFI << item.first; // << which mark and output image-bitflag?
-    NEEDDO(); NEEDUSE(item);
+    NEEDDO(it); NEEDUSE(item);
 }
 
 void ImagePakWriterQueue::dequeueFile()
 {
     TRACEQFI << peekDequeFile().first;
-    NEEDDO();
+    NEEDDO(it);
 }
 
 

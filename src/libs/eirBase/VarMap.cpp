@@ -60,14 +60,19 @@ BasicName::List VarMap::groupKeys(const MultiName &groupName)
 
 VarMap VarMap::extract(const MultiName &groupName) const
 {
+    TRACEQFI << groupName();
     VarMap extractedMap(groupName);
     int nGroupSegments = groupName.segmentCount();
     foreach (Var var, values())
+    {
+        DUMPVAL(var.name()());
+        DUMPVAL(var.name().startsWith(groupName));
         if (var.name().startsWith(groupName))
         {
             var.set(var.name().firstSegmentsRemoved(nGroupSegments));
             extractedMap.insert(var);
         }
+    }
     return extractedMap;
 }
 

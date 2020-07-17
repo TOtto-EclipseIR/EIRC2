@@ -19,7 +19,45 @@ void RectFinderParameters::configure(const QSize &coreSize,
 
 void RectFinderParameters::calculate(const QSize &imageSize, const QRect &regionRect)
 {
-    NEEDDO(it); NEEDUSE(imageSize); NEEDUSE(regionRect);
+    TRACEQFI << imageSize << regionRect;
+    NEEDDO(aspect);
+    WANTUSE(regionRect);
+    int imageMinDimension = qMin(imageSize.width(),
+                         imageSize.height());
+    int cfgMinWidth = mConfig.signedInt("MinWidth");
+    int cfgMaxWidth = mConfig.signedInt("MaxWidth");
+    int imageMaxWidth
+            = ((0 == cfgMaxWidth)
+             || (cfgMaxWidth > imageMinDimension))
+                ? imageMinDimension
+                : cfgMaxWidth;
+    int imageMinWidth
+            = (cfgMinWidth < mCoreSize.width())
+                ? mCoreSize.width()
+                : cfgMinWidth;
+    mCvMinSize = cvSize(imageMinWidth, imageMinWidth);
+    mCvMaxSize = cvSize(imageMaxWidth,
+                        imageMaxWidth);
+
+    int cfgFactor = mConfig.signedInt("Factor");
+    mScaleFactor = (cfgFactor < 1)
+            ? 1.125 : (1.0 + qreal(cfgFactor) / 1000.0);
+}
+
+void RectFinderParameters::setSize(const QSize minSize,
+                                   const QSize maxSize)
+{
+    mMinSize = minSize, mMaxSize = maxSize;
+}
+
+void RectFinderParameters::setFactor(const qreal factor)
+{
+    mScaleFactor = factor;
+}
+
+void RectFinderParameters::setNeighbors(const int neighbors)
+{
+    mMinNeighbors = neighbors;
 }
 
 double RectFinderParameters::scaleFactor() const

@@ -5,6 +5,9 @@ cvSize::cvSize() {;}
 cvSize::cvSize(const QSize &qsize)
     : mCvSize(qsize.width(), qsize.height()) {;}
 
+cvSize::cvSize(const int cols, const int rows)
+    : mCvSize(cols, rows) {;}
+
 cvSize::cvSize(const cv::Size &other)
     : mCvSize(other) {;}
 

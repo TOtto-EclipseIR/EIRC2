@@ -69,7 +69,7 @@
 #define TOUSE(msg)              DEBUGUSE(qDebug, PTODO, msg)
 #define TORTN(msg)              DEBUGRTN(qDebug, PTODO, msg)
 #define UNUSED(var)             Q_UNUSED(var)
-#define EMIT(expr)              DEBUG(qDebug, PTRACE) << #expr; expr
+#define EMIT(expr)              DEBUG(qDebug, PTRACE) << "EMIT" << #expr; expr
 
 #define WARN                    DEBUG(qWarning, PWARN) // << stuff
 #define WARNQFI                 DEBUGQFI(qWarning, PWARN) // << stuff
@@ -109,7 +109,7 @@
 #define ABORTFN()               DEBUGFN(qCritical, PABORT); DEBUGQUIT
 #define ABORTPSZ(psz)           DEBUGPSZ(qCritical, PABORT, psz); DEBUGQUIT
 #define ABORTQST(qst)           DEBUGQST(qCritical, PABORT, qPrintable(qst)); DEBUGQUIT
-#define BEXPECT(bexpr)          DEBUGEXP(qCritical, PABORT, bexpr); DEBUGQUIT
+#define BEXPECT(bexpr)          DEBUGEXP(qCritical, PABORT, bexpr);
 #define BCONNECT(src, sig, dst, slt)    DEBUGCON(qCritical,  PERROR, src, sig, dst, slt); DEBUGQUIT
 #define BEXPECTNOT(bexpr)       DEBUGXN(qCritical, PABORT, bexpr); DEBUGQUIT
 #define BEXPECTEQ(expt, var)    DEBUGXEQ(qCritical, PABORT, expt, var); DEBUGQUIT
