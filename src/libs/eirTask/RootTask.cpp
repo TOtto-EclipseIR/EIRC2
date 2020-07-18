@@ -3,11 +3,11 @@
 
 #include <eirBase/Debug.h>
 
-RootTask::RootTask(QObject *parent)
-    : AbstractTask(nullptr)
+RootTask::RootTask(const Id &taskId, QObject *parent)
+    : AbstractTask(taskId, nullptr)
 {
-    TRACEQFI << QOBJNAME(parent);
-    setObjectName("RootTask");
+    TRACEQFI << QOBJNAME(parent) << taskId.name()();
+    setObjectName("RootTask:"+taskId.name());
     setParent(parent);
 
     // RootTask should not have a parent Task

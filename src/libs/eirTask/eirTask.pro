@@ -20,11 +20,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include(../../EIRC2.pri)
 
 SOURCES += \
+    AtomicTask.cpp \
+    CompoundTask.cpp \
+    TaskContext.cpp \
+    TaskManager.cpp \
     eirTask.cpp \
     AbstractTask.cpp \
     RootTask.cpp  \
 
 HEADERS += \
+    AtomicTask.h \
+    CompoundTask.h \
+    TaskContext.h \
+    TaskManager.h \
     eirTask_global.h \
     eirTask.h \
     AbstractTask.h \

@@ -9,7 +9,8 @@ class RootTask : public AbstractTask
 {
     Q_OBJECT
 public:
-    explicit RootTask(QObject *parent = nullptr);
+    explicit RootTask(const Id &taskId,
+                      QObject *parent = nullptr);
 
 signals:
 

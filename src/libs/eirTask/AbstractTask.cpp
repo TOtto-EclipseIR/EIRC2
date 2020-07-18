@@ -1,8 +1,11 @@
 // file: {repo: EIRC2}./src/libs/eirTask/AbstractTask.cpp
 #include "AbstractTask.h"
 
-AbstractTask::AbstractTask(AbstractTask *parent)
+AbstractTask::AbstractTask(const Id &taskId,
+
+                           AbstractTask *parent)
     : QObject(parent)
+    , cmId(taskId)
 {
 
 }
@@ -10,6 +13,16 @@ AbstractTask::AbstractTask(AbstractTask *parent)
 AbstractTask::~AbstractTask()
 {
 
+}
+
+Id AbstractTask::id() const
+{
+    return cmId;
+}
+
+MultiName AbstractTask::name() const
+{
+    return cmId.name();
 }
 
 bool AbstractTask::isActive() const

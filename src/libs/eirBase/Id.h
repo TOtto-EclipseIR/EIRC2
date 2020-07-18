@@ -43,6 +43,7 @@ public:
 public: // static
     static void remove(const Id &id);
     static void insert(const Id &id);
+    static Id newId(const MultiName &name);
 
 
 private:
