@@ -1,0 +1,6 @@
+[ ] VersionInfo to eirType
+[ ] Var* to eirType
+[ ] Value& in eirType
+[ ] ErrorHandler, &c. to eirXfr
+[ ] ArgList deps ListObject
+[ ] eirBase::registerErrors()
