@@ -3,7 +3,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/mat.hpp>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 #include "cvSize.h"
 

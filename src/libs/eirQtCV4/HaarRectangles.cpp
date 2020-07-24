@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 #include <eirType/Sortable.h>
 #include <eirPixelImage/ImageMarker.h>
 

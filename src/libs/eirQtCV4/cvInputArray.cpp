@@ -6,7 +6,7 @@
 #include <opencv2/core/types.hpp>
 #include <opencv2/core/mat.hpp>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 cvInputArray::cvInputArray()
 {

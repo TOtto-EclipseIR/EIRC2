@@ -10,9 +10,9 @@
 #include <QStateMachine>
 class QCommandLineParser;
 
-#include <eirBase/MultiName.h>
-#include <eirBase/Var.h>
-#include <eirBase/VarMap.h>
+#include <eirType/MultiName.h>
+#include <eirType/Var.h>
+#include <eirType/VarMap.h>
 #include <eirType/Sortable.h>
 #include <eirType/QQFileInfo.h>
 #include <eirType/QQFileInfoList.h>

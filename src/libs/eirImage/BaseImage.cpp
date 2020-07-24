@@ -2,7 +2,7 @@
 //! \file Image.cpp
 #include "BaseImage.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 #include "ImageInfo.h"
 

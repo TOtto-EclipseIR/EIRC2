@@ -5,7 +5,7 @@
 #include <QDir>
 #include <QString>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 ImagePakWriterQueue::ImagePakWriterQueue(QObject *parent)
     : QObject(parent)

@@ -2,7 +2,7 @@
 
 #include "BaseImageQueue.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 #include "ImageQueueObject.h"
 

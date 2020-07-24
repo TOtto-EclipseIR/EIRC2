@@ -4,7 +4,7 @@
 
 #include <QStringList>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 /*! Enumeration Construct an empty, invalid item */
 Enumeration::Enumeration(void)

@@ -1,6 +1,6 @@
 #include "ColorTable.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 ColorTable::ColorTable(bool fillBlack)
 {

@@ -1,8 +1,8 @@
 // file: {EIRC2 repo)./src/libs/eirType/QQRect.cpp
 #include "QQRect.h"
 
-#include <eirBase/Debug.h>
-//#include "../../libs/eirBase/Debug.h"
+#include <eirXfr/Debug.h>
+//#include "../../libs/eirType/Debug.h"
 
 #include "QQRectF.h"
 

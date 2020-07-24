@@ -4,8 +4,8 @@
 #include <QString>
 #include <QVariant>
 
-#include <eirBase/BasicName.h>
-#include <eirBase/BitFlags.h>
+#include <eirType/BasicName.h>
+#include <eirType/BitFlags.h>
 
 class FunctionInfo
 {

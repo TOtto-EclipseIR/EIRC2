@@ -11,8 +11,8 @@
 #include <opencv2/core/types.hpp>
 #include <opencv2/objdetect.hpp>
 
-#include <eirBase/Debug.h>
-#include <eirBase/Success.h>
+#include <eirXfr/Debug.h>
+#include <eirType/Success.h>
 #include <eirPixelImage/ImageMarker.h>
 #include <eirXfr/HexDump.h>
 

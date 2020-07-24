@@ -1,7 +1,7 @@
 // file:{EIRC2 repo}./src/libs/eirImage/GreyImage.cpp
 #include "GreyImage.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 GreyImage::GreyImage(const QImage &image,
                      const QImage::Format newFormat)

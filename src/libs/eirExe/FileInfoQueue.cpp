@@ -2,7 +2,7 @@
 
 #include <QDir>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 FileInfoQueue::FileInfoQueue(QObject *parent)
     : QObject(parent)

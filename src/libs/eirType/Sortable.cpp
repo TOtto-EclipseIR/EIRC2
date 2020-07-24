@@ -1,7 +1,7 @@
 #include "Sortable.h"
 
-#include <eirBase/BasicName.h>
-#include <eirBase/MultiName.h>
+#include <eirType/BasicName.h>
+#include <eirType/MultiName.h>
 #include "QQRect.h"
 
 Sortable::Sortable() {;}

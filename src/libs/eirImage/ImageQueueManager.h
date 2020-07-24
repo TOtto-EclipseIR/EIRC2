@@ -7,7 +7,7 @@
 #include <QFileInfo>
 #include <QMap>
 
-#include <eirBase/BasicName.h>
+#include <eirType/BasicName.h>
 
 class ImageWriterQueue;
 class ImageReaderQueue;

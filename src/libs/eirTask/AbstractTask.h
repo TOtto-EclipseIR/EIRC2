@@ -6,7 +6,7 @@
 
 #include <QList>
 
-#include <eirBase/Id.h>
+#include <eirType/Id.h>
 
 class EIRTASK_EXPORT AbstractTask : public QObject
 {
@@ -22,13 +22,13 @@ public:
 
 public:
     AbstractTask(const Id &taskId,
-                          AbstractTask *parent = nullptr);
+                          AbstractTask *parentTask = nullptr);
     ~AbstractTask();
     Id id() const;
     MultiName name() const;
 
 public:
-    virtual run();
+    virtual bool run() = 0;
 
     //----- Property getters -----
     bool isActive() const;
@@ -44,7 +44,7 @@ protected:
 
 private slots:
     //----- Property setters -----
-    void setActive(bool set==true);
+    void setActive(bool set=true);
     void setParentTask(AbstractTask * task);
     void setPrevoiusTask(AbstractTask * task);
     void setNextTask(AbstractTask * task);
@@ -59,6 +59,7 @@ signals:
     void previousTaskChanged(AbstractTask * task);
     void nextTaskChanged(AbstractTask * task);
     void childTaskListChanged(List childTasks);
+    void prerequsiteTaskListChanged(List prerequsiteTasks);
 
 private:
     const Id cmId;
@@ -68,51 +69,7 @@ private:
     AbstractTask *  mpPreviousTask=nullptr;
     AbstractTask *  mpNextTask=nullptr;
     List mChildTaskList;
+    List mPrerequsiteTaskList;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

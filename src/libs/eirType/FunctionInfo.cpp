@@ -1,6 +1,6 @@
 #include "FunctionInfo.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 FunctionInfo::FunctionInfo()
 {

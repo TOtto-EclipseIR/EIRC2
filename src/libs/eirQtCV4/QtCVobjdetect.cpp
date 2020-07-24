@@ -1,7 +1,7 @@
 // file: {EIRC2 repo}./src/lib/eirQtCV/QtCVobjdetect.cpp
 #include "QtCVobjdetect.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 #include "Detector.h"
 

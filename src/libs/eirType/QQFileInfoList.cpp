@@ -1,6 +1,6 @@
 #include "QQFileInfoList.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 #include "QQFileInfo.h"
 

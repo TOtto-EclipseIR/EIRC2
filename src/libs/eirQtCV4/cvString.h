@@ -5,7 +5,7 @@
 #include <QByteArray>
 #include <QString>
 
-#include <eirBase/MultiName.h>
+#include <eirType/MultiName.h>
 
 class cvString : public cv::String
 {

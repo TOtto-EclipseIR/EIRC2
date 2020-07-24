@@ -6,7 +6,7 @@
 #include <QStringList>
 class QImage;
 
-#include <eirBase/MultiName.h>
+#include <eirType/MultiName.h>
 
 class EIRXFR_EXPORT HexDump
 {

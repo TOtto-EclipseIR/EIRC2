@@ -7,9 +7,9 @@
 #include <QFileInfo>
 #include <QImage>
 
-#include <eirBase/SetError.h>
-//#include <eirBase/Uid.h>
-#include <eirBase/VarPak.h>
+#include <eirType/SetError.h>
+//#include <eirType/Uid.h>
+#include <eirType/VarPak.h>
 #include <eirType/QQRectList.h>
 #include <eirType/Region.h>
 #include <eirPixelImage/GreyAverageImage.h>

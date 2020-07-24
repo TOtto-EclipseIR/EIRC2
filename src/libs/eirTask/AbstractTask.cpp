@@ -1,13 +1,18 @@
 // file: {repo: EIRC2}./src/libs/eirTask/AbstractTask.cpp
 #include "AbstractTask.h"
 
+#include <eirXfr/Debug.h>
+
 AbstractTask::AbstractTask(const Id &taskId,
 
-                           AbstractTask *parent)
-    : QObject(parent)
+                           AbstractTask *parentTask)
+    : QObject(parentTask)
     , cmId(taskId)
 {
-
+    TRACEQFI << taskId() << QOBJNAME(parentTask);
+    TRACE << taskId.uuid().toString();
+    setObjectName("AbstractTask"+taskId.toString());
+    setParentTask(parentTask);
 }
 
 AbstractTask::~AbstractTask()

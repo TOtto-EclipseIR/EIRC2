@@ -1,6 +1,6 @@
 #include "CompoundTask.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 CompoundTask::CompoundTask(const Id &taskId,
                            AbstractTask *parent)

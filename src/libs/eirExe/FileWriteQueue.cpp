@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QTimer>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 FileWriteQueue::FileWriteQueue(QObject *parent) : QObject(parent)
 {

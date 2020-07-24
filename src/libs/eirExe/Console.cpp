@@ -2,7 +2,7 @@
 
 #include <QFile>
 
-#include "../../libs/eirBase/Debug.h"
+#include <eirXfr/Debug.h>
 
 Console::Console(QObject *parent)
     : ApplicationHelper(parent)

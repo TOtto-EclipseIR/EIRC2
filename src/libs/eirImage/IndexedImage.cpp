@@ -1,7 +1,7 @@
 // file:{EIRC2 repo}./src/libs/eirImage/IndexedImage.cpp
 #include "IndexedImage.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 IndexedImage::IndexedImage(const ColorTable &colorTable,
                            const QSize size,

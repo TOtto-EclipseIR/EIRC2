@@ -1,6 +1,6 @@
 #include "ConfigPak.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 #include "../../version.h"
 ConfigPak::ConfigPak(const Id &id)

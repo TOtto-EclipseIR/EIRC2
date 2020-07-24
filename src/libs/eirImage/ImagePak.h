@@ -1,7 +1,7 @@
 #pragma once
 #include "eirImage.h"
 
-#include <eirBase/VarPak.h>
+#include <eirType/VarPak.h>
 
 #include <QByteArray>
 #include <QImage>

@@ -1,6 +1,17 @@
 [ ] VersionInfo to eirType
 [ ] Var* to eirType
 [ ] Value& in eirType
-[ ] ErrorHandler, &c. to eirXfr
+[ ] Debug.h, ErrorHandler, &c. to eirXfr
+[ ]
+
+to eirType
+[ ] Success
+[ ] Uid
+[ ] UInt128
+[ ] Milliseconds
+[ ] Boolean
+[ ] DualMap
+[ ] BasicName
+
 [ ] ArgList deps ListObject
 [ ] eirBase::registerErrors()

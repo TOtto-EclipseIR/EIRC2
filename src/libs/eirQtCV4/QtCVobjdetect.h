@@ -6,8 +6,8 @@
 
 #include <QList>
 
-#include <eirBase/SetError.h>
-//#include <eirBase/Uid.h>
+#include <eirType/SetError.h>
+//#include <eirType/Uid.h>
 
 #include "ObjectType.h"
 

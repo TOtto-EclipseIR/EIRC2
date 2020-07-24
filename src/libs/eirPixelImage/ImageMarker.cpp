@@ -4,7 +4,7 @@
 #include <QColor>
 #include <QPainter>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 #include <eirType/QQRectList.h>
 
 ImageMarker::ImageMarker(const QImage &image)

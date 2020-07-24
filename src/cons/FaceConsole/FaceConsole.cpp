@@ -1,8 +1,10 @@
 #include "FaceConsole.h"
 
 #include <QDateTime>
+#include <QCommandLineOption>
+#include <QCommandLineParser>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
@@ -19,4 +21,7 @@ void FaceConsole::initializeApplication()
 
     QLocale locale;
     writeLine(QString("%1 %2 started %3").arg(qApp->applicationName()).arg(qApp->applicationVersion()).arg(locale.toString(QDateTime::currentDateTime())));
+
+    //cmpParser->addOption(QCommandLineOption(QStringList()
+                                            //<< "exit" << "batch" << "x"));
 }

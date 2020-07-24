@@ -1,6 +1,6 @@
 #include "ConfigObject.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 ConfigObject::ConfigObject(QObject *parent)
     : QObject(parent)

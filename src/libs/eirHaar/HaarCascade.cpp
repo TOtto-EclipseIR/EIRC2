@@ -1,7 +1,7 @@
 //! \file HaarCascade.cpp
 #include "HaarCascade.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 HaarCascade::HaarCascade() {;}
 

@@ -1,7 +1,7 @@
 // file: {repo: EIRC2}./src/libs/eirExe/QQDirIterator.cpp
 #include "QQDirIterator.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 QQDirIterator::QQDirIterator()
     : mpDirIterator(nullptr) {;}

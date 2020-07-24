@@ -1,7 +1,7 @@
 //! \file cvCascade.cpp
 #include "cvCascade.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 cvCascade::cvCascade()
 //    : cv::CascadeClassifier()
