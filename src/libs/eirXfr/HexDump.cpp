@@ -4,7 +4,7 @@
 #include <QByteArray>
 #include <QImage>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 HexDump::HexDump()
 {

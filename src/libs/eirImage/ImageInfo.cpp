@@ -1,6 +1,6 @@
 #include "ImageInfo.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 ImageInfo::ImageInfo()
 {

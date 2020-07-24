@@ -1,15 +1,12 @@
 #include "eirBase.h"
 
-#include "ErrorHandler.h"
-#include "Var.h"
-#include "VarMap.h"
-
 eirBase::eirBase()
 {
 }
 
 void eirBase::registerErrors()
 {
+#if 0
     ErrorHandler::Item::registerCode(
                  "ErrorHandler/tryFileMode/NotExist",
                  QtCriticalMsg,
@@ -36,5 +33,5 @@ void eirBase::registerErrors()
                 QtCriticalMsg,
                 "Critical Expectation %what failed",
                 VarMap() << Var("What", "Expected Operation"));
-
+#endif
 }

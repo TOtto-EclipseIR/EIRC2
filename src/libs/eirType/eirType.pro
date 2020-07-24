@@ -21,8 +21,11 @@ include(../../EIRC2.pri)
 LIBS *= -leirBase2
 
 SOURCES += \
+    ArgumentItem.cpp \
     Enumeration.cpp \
     FunctionInfo.cpp \
+    Id.cpp \
+    MultiName.cpp \
     QQFileInfo.cpp \
     QQFileInfoList.cpp \
     QQRect.cpp \
@@ -30,13 +33,29 @@ SOURCES += \
     QQRectList.cpp \
     Region.cpp \
     Sortable.cpp \
-    eirType.cpp
+    BitFlags.cpp \
+    Var.cpp \
+    VarMap.cpp \
+    VarMapMap.cpp \
+    VarPak.cpp \
+    VersionInfo.cpp \
+    BasicName.cpp \
+    Boolean.cpp \
+    Milliseconds.cpp \
+    Success.cpp \
+    UInt128.cpp \
+    Uid.cpp \
+    eirType.cpp \
 
 HEADERS += \
+    ArgumentItem.h \
+    BitFlags.h \
     Enumeration.h \
     EnumerationArray.h \
     EnumerationMask.h \
     FunctionInfo.h \
+    Id.h \
+    MultiName.h \
     Named.h \
     NamedArray.h \
     NamedEnum.h \
@@ -48,8 +67,20 @@ HEADERS += \
     QQRectList.h \
     Region.h \
     Sortable.h \
+    Var.h \
+    VarMap.h \
+    VarMapMap.h \
+    VarPak.h \
+    VersionInfo.h \
+    BasicName.h \
+    Boolean.h \
+    DualMap.h \
+    Milliseconds.h \
+    Success.h \
+    UInt128.h \
+    Uid.h \
     eirType_global.h \
-    eirType.h
+    eirType.h \
 
 # Default rules for deployment.
 unix {

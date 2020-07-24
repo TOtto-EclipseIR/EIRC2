@@ -2,7 +2,7 @@
 
 #include "ImageQueueManager.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 ImageQueueManager::ImageQueueManager(QObject *parent)
     : QObject(parent)

@@ -2,8 +2,8 @@
 
 #include <QFile>
 
-#include <eirBase/Debug.h>
-#include <eirBase/Success.h>
+#include <eirXfr/Debug.h>
+#include <eirType/Success.h>
 
 XmlFile::XmlFile()
 {

@@ -21,9 +21,11 @@ include(../../EIRC2.pri)
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
+LIBS *= -leirObj2
 
 SOURCES += \
     ApplicationHelper.cpp \
+    ArgumentList.cpp \
     CommandLine.cpp \
     CommandLineClientInterface.cpp \
     ConfigObject.cpp \
@@ -42,6 +44,7 @@ SOURCES += \
 
 HEADERS += \
     ApplicationHelper.h \
+    ArgumentList.h \
     CommandLine.h \
     CommandLineClientInterface.h \
     ConfigObject.h \

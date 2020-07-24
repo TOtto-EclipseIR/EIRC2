@@ -7,12 +7,14 @@
 #include <QFile>
 #include <QTemporaryDir>
 
-#include <eirBase/Var.h>
-#include <eirBase/VersionInfo.h>
+#include <eirType/Var.h>
+#include <eirType/VersionInfo.h>
+class ErrorHandler;
+
+class ArgumentList;
 class CommandLine;
 class CommandLineClientInterface;
 class ConfigObject;
-class ErrorHandler;
 class LegacySettings;
 
 class EIREXE_EXPORT ApplicationHelper : public QObject
@@ -47,10 +49,11 @@ signals:
 
 private:
     VersionInfo cmVerInfo;
-    QTemporaryDir * mpTempDir=nullptr;
+    ArgumentList const * cmpArguments=nullptr;
     LegacySettings * mpSettings=nullptr;
     CommandLine * const cmpCommandLine=nullptr;
     ConfigObject * const cmpConfigObject=nullptr;
+    QTemporaryDir const * cmpTempDir=nullptr;
     QList<QFile *> mTempFiles;
 };
 

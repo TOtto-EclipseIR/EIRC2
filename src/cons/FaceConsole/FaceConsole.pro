@@ -30,6 +30,7 @@ HEADERS += \
     FaceConsole.h
 
 DISTFILES += \
+    Notes.txt \
     T:/bin/DetectCascades.txt \
     T:/bin/DetectRD.txt \
     T:/bin/Input01.txt \

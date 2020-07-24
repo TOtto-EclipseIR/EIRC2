@@ -3,11 +3,12 @@
 
 #include <QTimer>
 
-#include <eirBase/Debug.h>
-#include <eirBase/ErrorHandler.h>
-#include <eirBase/Milliseconds.h>
-#include <eirBase/VersionInfo.h>
+#include <eirXfr/Debug.h>
+//#include <eirXfr/del-ErrorHandler.h>
+#include <eirType/Milliseconds.h>
+#include <eirType/VersionInfo.h>
 
+#include "ArgumentList.h"
 #include "CommandLine.h"
 #include "ConfigObject.h"
 #include "LegacySettings.h"
@@ -16,14 +17,15 @@
 
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
-    , mpTempDir(new QTemporaryDir())
+    , cmpArguments(new ArgumentList(this))
+    , cmpTempDir(new QTemporaryDir())
     , cmpCommandLine(new CommandLine(this))
     , cmpConfigObject(new ConfigObject(this))
 {
     TRACEFN
     setObjectName("Application");
-    TSTALLOC(mpTempDir);
-    EXPECT(mpTempDir->isValid())
+    TSTALLOC(cmpTempDir);
+    EXPECT(cmpTempDir->isValid())
 }
 
 VersionInfo ApplicationHelper::version() const
@@ -39,7 +41,7 @@ QFile *ApplicationHelper::tempFile(const QString &ext,
             .toByteArray().toHex();
     QFile * f = new QFile(parent ? parent : this);
     TSTALLOC(f);
-    f->setFileName(mpTempDir->filePath(fileBaseName + ext));
+    f->setFileName(cmpTempDir->filePath(fileBaseName + ext));
     // Returning a closed, unique QFile pointer.
     // The developer can open them as the apps need,
     // but is not responsible for deleting the file.

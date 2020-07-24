@@ -3,7 +3,7 @@
 
 #include <QFileInfo>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 HaarBase::HaarBase(const QString &baseDirPath)
 {

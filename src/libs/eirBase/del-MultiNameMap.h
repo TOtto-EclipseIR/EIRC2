@@ -1,6 +1,6 @@
-// file: {EIRC2 repo}./src/libs/eirBase/MultiNameMap.h
+// file: {EIRC2 repo}./src/libs/eirType/MultiNameMap.h
 #pragma once
-#include "eirBase.h"
+#include "eirType.h"
 
 
 #include <QHash>
@@ -11,7 +11,7 @@
 #include "Uid.h"
 
 
-class EIRBASE_EXPORT MultiNameMap
+class EIRTYPE_EXPORT MultiNameMap
 {
 public:
     MultiNameMap();

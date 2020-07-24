@@ -1,8 +1,11 @@
+// file: {repo: EIRC2}./src/libs/eirTask/TaskContext.h
 #pragma once
+#include "eirTask.h"
 
-#include <eirBase/Id.h>
 
-class TaskContext
+#include <eirType/Id.h>
+
+class EIRTASK_EXPORT TaskContext
 {
 public:
     TaskContext(const Id &contextId);

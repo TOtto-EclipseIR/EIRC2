@@ -10,7 +10,7 @@
 #include <QPair>
 #include <QSize>
 
-#include <eirBase/BasicName.h>
+#include <eirType/BasicName.h>
 #include <eirExe/Configuration.h>
 #include <eirExe/FileName.h>
 

@@ -1,7 +1,7 @@
 // file:{EIRC2 repo}./src/libs/eirImage/ColorImage.cpp
 #include "ColorImage.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 ColorImage::ColorImage(const QImage &image,
                      const QImage::Format newFormat)

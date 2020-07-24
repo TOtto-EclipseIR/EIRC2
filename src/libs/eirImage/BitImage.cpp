@@ -1,7 +1,7 @@
 // file:{EIRC2 repo}./src/libs/eirImage/BitImage.cpp
 #include "BitImage.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 BitImage::BitImage(const QSize size,
              const QImage::Format format)

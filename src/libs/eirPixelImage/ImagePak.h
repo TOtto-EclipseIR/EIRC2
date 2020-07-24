@@ -2,7 +2,7 @@
 #pragma once
 #include "eirPixelImage.h"
 
-#include <eirBase/VarPak.h>
+#include <eirType/VarPak.h>
 
 class EIRPIXELIMAGE_EXPORT ImagePak : public VarPak
 {

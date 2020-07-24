@@ -3,6 +3,7 @@
 #include <QObject>
 #include <eirExe/Console.h>
 
+class QCommandLineParser;
 
 class FaceConsole : public Console
 {
@@ -14,6 +15,8 @@ public slots:
     void initializeApplication();
 
 signals:
+
+private:
 
 };
 

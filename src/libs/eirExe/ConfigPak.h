@@ -1,6 +1,6 @@
 #pragma once
 
-#include <eirBase/VarPak.h>
+#include <eirType/VarPak.h>
 
 class ConfigPak : public VarPak
 {

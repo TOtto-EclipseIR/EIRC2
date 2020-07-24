@@ -3,7 +3,7 @@
 #include <QDir>
 #include <QFileInfo>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 #include "ImageInfo.h"
 
@@ -12,7 +12,7 @@ ImagePak::ImagePak() {;}
 ImagePak::ImagePak(const QFileInfo &fileInfo, const BaseImage &baseImage)
 {
     TRACEQFI << fileInfo << ImageInfo(baseImage)();
-    NEEDDO();
+    NEEDDO(it);
 }
 
 ImagePak::ImagePak(const QFileInfo &fileInfo,

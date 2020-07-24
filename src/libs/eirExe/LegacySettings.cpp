@@ -3,7 +3,7 @@
 
 #include <QTimer>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 #include "ApplicationHelper.h"
 

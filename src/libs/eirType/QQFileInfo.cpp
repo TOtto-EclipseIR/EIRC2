@@ -3,7 +3,7 @@
 
 #include <QDir>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 QQFileInfo::QQFileInfo() {;}
 

@@ -4,7 +4,7 @@
 
 #include<QString>
 
-#include <eirBase/VersionInfo.h>
+#include <eirType/VersionInfo.h>
 
 class EIRHAAR_EXPORT cvVersion : public VersionInfo
 {

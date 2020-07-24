@@ -5,7 +5,7 @@
 #include <QDir>
 #include <QTimer>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 #include <eirType/QQFileInfo.h>
 #include <eirType/QQFileInfoList.h>
 

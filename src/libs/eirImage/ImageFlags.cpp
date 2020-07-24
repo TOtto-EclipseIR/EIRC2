@@ -4,7 +4,7 @@
 
 #include <QImage>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 ImageFlags::ImageFlags()
 {

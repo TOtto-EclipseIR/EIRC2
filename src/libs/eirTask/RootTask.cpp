@@ -1,7 +1,7 @@
 // file: {repo: EIRC2}./src/libs/eirTask/RootTask.cpp
 #include "RootTask.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 RootTask::RootTask(const Id &taskId, QObject *parent)
     : AbstractTask(taskId, nullptr)

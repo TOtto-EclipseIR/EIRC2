@@ -19,15 +19,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include(../../EIRC2.pri)
 
 LIBS *= -leirBase2
+LIBS *= -leirType2
 
 SOURCES += \
     HexDump.cpp \
-    eirXfr.cpp
+    eirXfr.cpp \
 
 HEADERS += \
+    Debug.h \
     HexDump.h \
     eirXfr_global.h \
-    eirXfr.h
+    eirXfr.h \
 
 # Default rules for deployment.
 unix {

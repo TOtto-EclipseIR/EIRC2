@@ -5,9 +5,9 @@
 #include <QObject>
 #include <QSettings>
 
-#include <eirBase/MultiName.h>
-#include <eirBase/Var.h>
-#include <eirBase/VarMap.h>
+#include <eirType/MultiName.h>
+#include <eirType/Var.h>
+#include <eirType/VarMap.h>
 
 class ApplicationHelper;
 

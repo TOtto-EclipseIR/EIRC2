@@ -1,7 +1,7 @@
 // file: {EIRC2 repo}./src/libs/eirPixelImage/GreyAverageImage.cpp
 #include "GreyAverageImage.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 GreyAverageImage::GreyAverageImage()
     : mSubjectImage(ColorImage())

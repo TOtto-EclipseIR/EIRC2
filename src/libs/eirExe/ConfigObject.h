@@ -4,8 +4,8 @@
 
 #include <QObject>
 
-#include <eirBase/MultiName.h>
-#include <eirBase/VarMap.h>
+#include <eirType/MultiName.h>
+#include <eirType/VarMap.h>
 
 #include "Configuration.h"
 

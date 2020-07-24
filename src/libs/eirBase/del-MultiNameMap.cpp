@@ -1,4 +1,4 @@
-// file: {EIRC2 repo}./src/libs/eirBase/MultiNameMap.cpp
+// file: {EIRC2 repo}./src/libs/eirType/MultiNameMap.cpp
 #include "MultiNameMap.h"
 
 MultiNameMap::MultiNameMap() {;}

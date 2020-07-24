@@ -1,7 +1,7 @@
 // file: {EIRC2 Repo}./src/libs/eirExe/FileName.cpp
 #include "FileName.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 QDateTime FileName::smBaseDateTime=QDateTime::currentDateTime();
 

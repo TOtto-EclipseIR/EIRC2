@@ -4,8 +4,8 @@
 #include <QFile>
 #include <QDomElement>
 
-#include <eirBase/Debug.h>
-#include <eirBase/Success.h>
+#include <eirXfr/Debug.h>
+#include <eirType/Success.h>
 #include <eirExe/XmlFile.h>
 
 HaarCatalog::HaarCatalog(const HaarBase &haarBase)
