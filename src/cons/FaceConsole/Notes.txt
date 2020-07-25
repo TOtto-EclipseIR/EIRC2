@@ -1,17 +1,59 @@
-[ ] VersionInfo to eirType
-[ ] Var* to eirType
-[ ] Value& in eirType
-[ ] Debug.h, ErrorHandler, &c. to eirXfr
-[ ]
+[X] VersionInfo to eirType
+[X] Var* to eirType
+[X] Value& in eirType
+[X] Debug.h, ErrorHandler, &c. to eirXfr
+[ ] Success to eirXfr
 
 to eirType
-[ ] Success
-[ ] Uid
-[ ] UInt128
-[ ] Milliseconds
-[ ] Boolean
-[ ] DualMap
-[ ] BasicName
+[!] Success
+[X] Uid
+[X] UInt128
+[X] Milliseconds
+[X] Boolean
+[X] DualMap
+[X] BasicName
 
-[ ] ArgList deps ListObject
-[ ] eirBase::registerErrors()
+[~] eirBase::registerErrors()
+
+eirExe:
+
+BaseArgumentManager : QObject
+	=== Item List Management
+	private:
+		QLinkedList<BaseArgumentItem> mItemLList;
+	slots:
+		enqueue(BaseArgumentItem)
+		enqueue(QString)
+		enqueue(BaseArgumentItem::List)
+		enqueue(QStringList)
+	public:
+		dequeue() : BaseArgumentItem
+		peek() : BaseArgumentItem
+		size(), isEmpty(), notEmpty()
+	signals: TBD
+	
+	=== Handler Management
+	private:
+		DualMap<Uid, BaseArgumentHandler *> mUidHandlerDMap;
+		QMultiMap<Trigger (regex?), 
+	
+
+  
+BaseArgumentItem : QObject
+	ctor(QString)
+
+ArgumentId : Id
+
+ArgumentType : Enumeration
+	New, BasicString, PathName, InputDir, InputDirNoExpand, InputFile,
+	OutputFile, OutputDir, ConfigItem, IncludeFileName, IncludeFileTxt, Unknown
+
+
+BaseArgumentHandler : QObject (plugin interface TODO)
+	ArgumentHandlerId mId; // createId(Handler/multiname)
+
+	derived: BasicStringArgumentHandler, IncludeFileArgumentHandler, ConfigHandler,
+		IOFileHandler, PathHandler
+
+
+
