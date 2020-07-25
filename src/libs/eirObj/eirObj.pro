@@ -22,11 +22,9 @@ LIBS *= -leirBase2
 LIBS *= -leirType2
 
 SOURCES += \
-    ListObject.cpp \
     eirObj.cpp
 
 HEADERS += \
-    ListObject.h \
     eirObj_global.h \
     eirObj.h
 

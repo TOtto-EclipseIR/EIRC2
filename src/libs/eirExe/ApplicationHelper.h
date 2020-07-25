@@ -11,7 +11,7 @@
 #include <eirType/VersionInfo.h>
 class ErrorHandler;
 
-class ArgumentList;
+#include "ArgumentList.h"
 class CommandLine;
 class CommandLineClientInterface;
 class ConfigObject;
@@ -49,7 +49,7 @@ signals:
 
 private:
     VersionInfo cmVerInfo;
-    ArgumentList const * cmpArguments=nullptr;
+    ArgumentList mArguments;
     LegacySettings * mpSettings=nullptr;
     CommandLine * const cmpCommandLine=nullptr;
     ConfigObject * const cmpConfigObject=nullptr;

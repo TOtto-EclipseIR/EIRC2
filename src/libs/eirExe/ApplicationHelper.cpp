@@ -4,7 +4,6 @@
 #include <QTimer>
 
 #include <eirXfr/Debug.h>
-//#include <eirXfr/del-ErrorHandler.h>
 #include <eirType/Milliseconds.h>
 #include <eirType/VersionInfo.h>
 
@@ -17,7 +16,6 @@
 
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
-    , cmpArguments(new ArgumentList(this))
     , cmpTempDir(new QTemporaryDir())
     , cmpCommandLine(new CommandLine(this))
     , cmpConfigObject(new ConfigObject(this))

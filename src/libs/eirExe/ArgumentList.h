@@ -1,17 +1,37 @@
 #pragma once
 
-#include <QObject>
-#include <eirObj/ListObject.h>
+#include <QList>
+#include <QString>
 
-#include <eirType/ArgumentItem.h>
 
-class ArgumentList : public ListObject
+class ArgumentList
 {
-    Q_OBJECT
 public:
-    ArgumentList(QObject *parent = nullptr);
+    class Item
+    {
+    public:
+        typedef QList<Item> List;
+
+    public:
+        Item(const QString &s) ;
+        void set(const QString &s);
+        QString toString() const;
+        QString operator ()() const;
+
+    private:
+        QString mString;
+    };
+
+public:
+    ArgumentList();
+    void enqueue(const Item &item);
+    Item dequeue();
+    Item peek() const;
+    int size() const;
+    bool isEmpty() const;
+    bool notEmpty() const;
 
 private:
-
+    Item::List mList;
 };
 
