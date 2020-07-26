@@ -9,6 +9,6 @@ class EIREXE_EXPORT CommandLineClientInterface
 {
 public:
     CommandLineClientInterface();
-    virtual void setup(QCommandLineParser * parser) = 0;
+    virtual void setup(QCommandLineParser * parser);
 };
 

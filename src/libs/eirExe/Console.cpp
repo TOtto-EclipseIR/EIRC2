@@ -26,6 +26,14 @@ QCoreApplication *Console::core()
     return cmpCoreApp;
 }
 
+QObject *Console::appParent()
+{
+    QObject * parent = nullptr;
+    if (core()) parent = core()->parent();
+    TODO(others);
+    return parent;
+}
+
 void Console::writeLine(const QString &qs,
                         const bool andFlush)
 {

@@ -1,9 +1,7 @@
-QT *= gui
+QT -= gui
 
-TEMPLATE = lib
-DEFINES += EIRQTCV_LIBRARY
-
-CONFIG += c++11
+CONFIG += c++11 console
+CONFIG -= app_bundle
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -16,28 +14,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-include(../../EIRC2.pri)
-INCLUDEPATH *= F:\lang\OpenCV4\opencv\build\include
-
-LIBS *= F:\lang\OpenCV4\opencv\build\x64\vc15\lib\opencv_world430d.lib
-
 SOURCES += \
-    cvCascade.cpp \
-    cvMat.cpp \
-    cvSize.cpp \
-    cvString.cpp \
-    eirQtCV.cpp
-
-HEADERS += \
-    cvCascade.h \
-    cvMat.h \
-    cvSize.h \
-    cvString.h \
-    eirQtCV_global.h \
-    eirQtCV.h
+        main.cpp
 
 # Default rules for deployment.
-unix {
-    target.path = /usr/lib
-}
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target

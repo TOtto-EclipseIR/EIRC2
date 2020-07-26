@@ -7,17 +7,17 @@ SUBDIRS += \
     ./libs/eirExe \
     ./libs/eirResource \
     ./libs/eirTask \
-    ./libs/eirQtCV4 \
+    ./libs/eirQtCV \
     ./libs/eirType \
     ./libs/eirXfr \
     ./cons/If2Console \
-    cons/FaceConsole \
-    libs/eirImage \
-    libs/eirRectFind \
+    ./cons/FaceConsole \
+    ./libs/eirImage \
+    ./libs/eirRectFind \
 
 eirType.depends     = eirBase
 eirExe.depends      = eirBase eirType
-eirQtCV4.depends     = eirBase eirType eirXfr
+eirQtCV.depends     = eirBase eirType eirXfr
 eirXfr.depends      = eirBase
 eirImage.depends    = eirType eirExe
 If2Console.depends  = eirBase eirType eirXfr eirExe

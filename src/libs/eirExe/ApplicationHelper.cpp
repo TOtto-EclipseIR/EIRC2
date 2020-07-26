@@ -7,7 +7,7 @@
 #include <eirType/Milliseconds.h>
 #include <eirType/VersionInfo.h>
 
-#include "ArgumentList.h"
+//#include "ArgumentList.h"
 #include "CommandLine.h"
 #include "ConfigObject.h"
 #include "LegacySettings.h"
@@ -16,9 +16,9 @@
 
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
-    , cmpTempDir(new QTemporaryDir())
     , cmpCommandLine(new CommandLine(this))
     , cmpConfigObject(new ConfigObject(this))
+    , cmpTempDir(new QTemporaryDir())
 {
     TRACEFN
     setObjectName("Application");

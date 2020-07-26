@@ -50,6 +50,7 @@ SOURCES += \
 HEADERS += \
     ArgumentItem.h \
     BitFlags.h \
+    DProperty.h \
     Enumeration.h \
     EnumerationArray.h \
     EnumerationMask.h \

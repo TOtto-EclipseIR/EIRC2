@@ -184,12 +184,9 @@ QStringList CommandLine::parseQtOptions(
         const QStringList &currentArgs)
 {
     QCommandLineParser parser;
-
-    mpInterface->setup(&parser);
-
+    if (mpInterface) mpInterface->setup(&parser);
     NEEDDO(Extract from parser)
-
-            return currentArgs;
+    return currentArgs;
 }
 
 QStringList CommandLine::stripConfiguration(

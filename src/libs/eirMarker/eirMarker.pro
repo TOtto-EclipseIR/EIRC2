@@ -1,7 +1,7 @@
-QT *= gui
+QT += gui
 
 TEMPLATE = lib
-DEFINES += EIRQTCV_LIBRARY
+DEFINES += EIRMARKER_LIBRARY
 
 CONFIG += c++11
 
@@ -17,24 +17,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../../EIRC2.pri)
-INCLUDEPATH *= F:\lang\OpenCV4\opencv\build\include
 
-LIBS *= F:\lang\OpenCV4\opencv\build\x64\vc15\lib\opencv_world430d.lib
+LIBS *= -leirType2
+LIBS *= -leirExe2
 
 SOURCES += \
-    cvCascade.cpp \
-    cvMat.cpp \
-    cvSize.cpp \
-    cvString.cpp \
-    eirQtCV.cpp
+    BaseMarker.cpp \
+    BaseMarkerBehavior.cpp \
+    MarkerManager.cpp \
+    eirMarker.cpp
 
 HEADERS += \
-    cvCascade.h \
-    cvMat.h \
-    cvSize.h \
-    cvString.h \
-    eirQtCV_global.h \
-    eirQtCV.h
+    BaseMarker.h \
+    BaseMarkerBehavior.h \
+    MarkerManager.h \
+    eirMarker_global.h \
+    eirMarker.h
 
 # Default rules for deployment.
 unix {

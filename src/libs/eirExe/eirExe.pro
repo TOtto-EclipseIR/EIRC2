@@ -25,6 +25,11 @@ LIBS *= -leirObj2
 
 SOURCES += \
     ApplicationHelper.cpp \
+    ArgumentId.cpp \
+    ArgumentItem.cpp \
+    ArgumentManager.cpp \
+    ArgumentType.cpp \
+    BaseArgumentHandler.cpp \
     CommandLine.cpp \
     CommandLineClientInterface.cpp \
     ConfigObject.cpp \
@@ -42,7 +47,13 @@ SOURCES += \
     eirExe.cpp
 
 HEADERS += \
+    ../../version.h \
     ApplicationHelper.h \
+    ArgumentId.h \
+    ArgumentItem.h \
+    ArgumentManager.h \
+    ArgumentType.h \
+    BaseArgumentHandler.h \
     CommandLine.h \
     CommandLineClientInterface.h \
     ConfigObject.h \
