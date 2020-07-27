@@ -7,12 +7,14 @@
 #include <eirType/Milliseconds.h>
 #include <eirType/VersionInfo.h>
 
-#include "ArgumentList.h"
 #include "CommandLine.h"
 #include "ConfigObject.h"
 #include "LegacySettings.h"
 
 #include "../../version.h"
+
+QDateTime ApplicationHelper::smBaseDateTime
+                = QDateTime::currentDateTime();
 
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
@@ -60,6 +62,11 @@ CommandLine &ApplicationHelper::rCommandLine()
 ConfigObject *ApplicationHelper::config() const
 {
     return cmpConfigObject;
+}
+
+ApplicationHelper::baseDateTime()
+{
+    return smBaseDateTime;
 }
 
 void ApplicationHelper::run()

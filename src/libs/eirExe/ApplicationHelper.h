@@ -4,6 +4,7 @@
 
 #include <QObject>
 
+#include <QDateTime>
 #include <QFile>
 #include <QTemporaryDir>
 
@@ -11,7 +12,7 @@
 #include <eirType/VersionInfo.h>
 class ErrorHandler;
 
-#include "ArgumentList.h"
+//#include "ArgumentList.h"
 class CommandLine;
 class CommandLineClientInterface;
 class ConfigObject;
@@ -31,6 +32,9 @@ public:
     CommandLine &rCommandLine();
     ConfigObject *config() const;
 
+public: // static
+    static QDateTime baseDateTime();
+
 public slots:
     void run();
 
@@ -49,11 +53,14 @@ signals:
 
 private:
     VersionInfo cmVerInfo;
-    ArgumentList mArguments;
+//    ArgumentList mArguments;
     LegacySettings * mpSettings=nullptr;
     CommandLine * const cmpCommandLine=nullptr;
     ConfigObject * const cmpConfigObject=nullptr;
     QTemporaryDir const * cmpTempDir=nullptr;
     QList<QFile *> mTempFiles;
+
+private: // static
+    static QDateTime smBaseDateTime;
 };
 
