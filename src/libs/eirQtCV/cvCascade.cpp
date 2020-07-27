@@ -2,25 +2,44 @@
 
 #include <eirXfr/Debug.h>
 
+#include "cvString.h"
+
 cvCascade::cvCascade()
 {
     TRACEFN;
 }
 
-cvCascade::~cvCascade()
+bool cvCascade::isLoaded() const
 {
-    TRACEFN;
-    unload();
+    return ! notLoaded();
+}
+
+bool cvCascade::notLoaded() const
+{
+    return mpCascade ? mpCascade->empty() : true;
 }
 
 bool cvCascade::load(const QFileInfo cascadeFI)
 {
     TRACEQFI << cascadeFI;
-    NEEDDO(it);
-    return false;
+    unload();
+    cv::CascadeClassifier * cascade = new cv::CascadeClassifier();
+    if (cascade->load(cvString(cascadeFI.filePath())))
+    {
+        mpCascade = cascade;
+        mCascadeFileInfo = cascadeFI;
+        NEEDDO(CoreSize);
+    }
+    return isLoaded();
 }
 
 void cvCascade::unload()
 {
-    load(QFileInfo());
+    TRACEQFI << mCascadeFileInfo;
+    delete mpCascade;
+    mpCascade=nullptr;
+    mCascadeFileInfo = QFileInfo();
+    mCoreSize = QSize();
+    mInputImage = mFindRectImage = QImage();
+    mFindRectMat.clear();
 }

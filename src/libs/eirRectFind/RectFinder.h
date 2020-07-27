@@ -4,7 +4,7 @@
 #include <QObject>
 
 #include <eirType/BasicName.h>
-#include <eirQtCV/cvCascade.h>
+//#include <eirQtCV/cvCascade.h>
 
 class EIRRECTFIND_EXPORT RectFinder : public QObject
 {
@@ -15,6 +15,6 @@ public:
 signals:
 
 private:
-    QMap<BasicName, cvCascade> mNameCascadeMap;
+//    QMap<BasicName, cvCascade> mNameCascadeMap;
 };
 

@@ -9,6 +9,8 @@
 class EIRQTCV_EXPORT cvSize : public cv::Size
 {
 public:
+    cvSize();
     cvSize(const QSize qsize);
+    cv::Size operator ()() const;
 };
 

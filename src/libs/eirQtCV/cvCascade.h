@@ -16,7 +16,6 @@
 #include "cvSize.h"
 
 class EIRQTCV_EXPORT cvCascade
-        : protected cv::CascadeClassifier
 {
 public:
     typedef QList<QRect> QRectList;
@@ -37,7 +36,7 @@ public:
 
 public:
     cvCascade();
-    ~cvCascade();
+//    ~cvCascade();
     bool isLoaded() const;
     bool notLoaded() const;
     bool load(const QFileInfo cascadeFI);
@@ -48,7 +47,7 @@ public:
     QRectList findAllRects(FindParameters parms);
 
 private:
-//    cv::CascadeClassifier mCascade;
+    cv::CascadeClassifier *mpCascade=nullptr;
     QFileInfo mCascadeFileInfo;
     QSize mCoreSize;
     QImage mInputImage;
