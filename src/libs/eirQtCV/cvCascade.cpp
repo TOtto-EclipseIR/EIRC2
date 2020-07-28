@@ -4,9 +4,10 @@
 
 #include "cvString.h"
 
-cvCascade::cvCascade()
+cvCascade::cvCascade(const BasicName &name)
 {
-    TRACEFN;
+    TRACEQFI << name();
+    mName = name;
 }
 
 bool cvCascade::isLoaded() const

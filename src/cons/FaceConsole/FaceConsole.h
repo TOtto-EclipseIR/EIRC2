@@ -3,8 +3,12 @@
 #include <QObject>
 #include <eirExe/Console.h>
 
+
+#include <eirRectFind/RectFinder.h>
+
 class QCommandLineParser;
 class ConfigObject;
+class RectFinder;
 
 class FaceConsole : public Console
 {
@@ -31,6 +35,7 @@ signals:
 
 private:
     ConfigObject * const cmpConfig=nullptr;
+    RectFinder * const cmpRectFinder=nullptr;
     QDir mBaseDir;
     QDir mRectDir;
 };

@@ -10,6 +10,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/objdetect.hpp>
 
+#include <eirType/BasicName.h>
 #include <eirExe/Configuration.h>
 
 #include "cvMat.h"
@@ -35,7 +36,7 @@ public:
     };
 
 public:
-    cvCascade();
+    cvCascade(const BasicName &name);
 //    ~cvCascade();
     bool isLoaded() const;
     bool notLoaded() const;
@@ -47,6 +48,7 @@ public:
     QRectList findAllRects(FindParameters parms);
 
 private:
+    BasicName mName;
     cv::CascadeClassifier *mpCascade=nullptr;
     QFileInfo mCascadeFileInfo;
     QSize mCoreSize;

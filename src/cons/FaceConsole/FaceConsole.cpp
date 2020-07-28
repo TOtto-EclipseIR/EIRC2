@@ -8,13 +8,18 @@
 #include <eirExe/CommandLine.h>
 #include <eirExe/ConfigObject.h>
 #include <eirXfr/Debug.h>
+#include <eirRectFind/RectFinder.h>
 
 FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
-    , cmpConfig(new ConfigObject(this))
+    , cmpConfig(new ConfigObject(parent))
+    , cmpRectFinder(new RectFinder(parent))
 {
     TRACEFN;
     setObjectName("FaceConsole");
+    TSTALLOC(cmpConfig);
+    TSTALLOC(cmpRectFinder);
+
     QTimer::singleShot(500, this, &FaceConsole::initializeApplication);
     TRACERTV();
 }
@@ -79,6 +84,8 @@ void FaceConsole::setConfiguration()
 void FaceConsole::initializeResources()
 {
     TRACEFN;
+
+
 
     QFileInfo faceCascadeFileInfo(
                 QDir(config()->configuration("/Resources/ObjDet").string("BaseDir")),

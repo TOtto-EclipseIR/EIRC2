@@ -17,9 +17,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../../EIRC2.pri)
-INCLUDEPATH *= F:\lang\OpenCV4\opencv\build\include
+include(../../opencv4.pri)
 
 LIBS *= -leirType2
+LIBS *= -leirQtCv2
 
 SOURCES += \
     RectFinder.cpp \
