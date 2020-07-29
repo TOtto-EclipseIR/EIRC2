@@ -38,7 +38,5 @@ private:
     ConfigObject * const cmpConfigObject=nullptr;
     RectFinder * const cmpRectFinder=nullptr;
     MarkerManager * const cmpMarkerManager=nullptr;
-    QDir mBaseDir;
-    QDir mRectDir;
 };
 

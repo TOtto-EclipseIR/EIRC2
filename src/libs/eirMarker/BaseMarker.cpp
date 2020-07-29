@@ -5,19 +5,19 @@
 
 #include "MarkerManager.h"
 
-BaseMarker::BaseMarker(MarkerManager *manager,
-                       BaseMarkerBehavior *behavior,
+BaseMarker::BaseMarker(BaseMarkerBehavior *behavior,
+                       MarkerManager *manager,
                        const BasicName &markedName,
                        const QDir &dir,
                        const Configuration &markerConfig)
     : QObject(manager)
     , cmpManager(manager)
-    , cmMarkedName(markedName)
+    , cmMarkerName(markedName)
     , cmpBehavoir(behavior)
     , cmDir(dir)
     , mMarkerConfig(markerConfig)
 {
-    TRACEQFI << QOBJNAME(cmpManager) << cmMarkedName() << cmDir;
+    TRACEQFI << QOBJNAME(cmpManager) << cmMarkerName() << cmDir;
     mMarkerConfig.dump();
 }
 

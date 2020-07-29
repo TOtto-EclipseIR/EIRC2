@@ -22,15 +22,19 @@ LIBS *= -leirType2
 LIBS *= -leirExe2
 
 SOURCES += \
-    BaseMarker.cpp \
     BaseMarkerBehavior.cpp \
+    MarkedPreScanMarkerBehavior.cpp \
+    Marker.cpp \
     MarkerManager.cpp \
+    PreScanRectMarkerBehavior.cpp \
     eirMarker.cpp
 
 HEADERS += \
-    BaseMarker.h \
     BaseMarkerBehavior.h \
+    MarkedPreScanMarkerBehavior.h \
+    Marker.h \
     MarkerManager.h \
+    PreScanRectMarkerBehavior.h \
     eirMarker_global.h \
     eirMarker.h
 

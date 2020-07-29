@@ -43,16 +43,18 @@ Configuration MarkerManager::markerConfig(const MultiName &groupKey) const
     return markerConfig().extract(groupKey);
 }
 
-void MarkerManager::setupMarkerDir(const BasicName &markerName,
-                                   BaseMarkerBehavior * behavior,
-                                   const MultiName &markerConfigGroup,
-                                   const QString &markerDirName)
+BaseMarker *MarkerManager::markerDir(
+        const BasicName &markerName,
+        BaseMarkerBehavior * behavior,
+        const MultiName &markerConfigGroup,
+        const QString &markerDirName)
 {
     TRACEQFI << markerName() << markerConfigGroup() << markerDirName;
     QDir dir = markerDir(markerDirName);
     Configuration config = markerConfig(markerName);
-    BaseMarker baseMarker(this, behavior, markerName, dir, config);
-    EMIT(markedDirSet(markerName, dir));
+    BaseMarker * baseMarker = new BaseMarker(this,
+                    behavior, markerName, dir, config);
+    return baseMarker;
 }
 
 void MarkerManager::setBaseDir(QDir baseDir)

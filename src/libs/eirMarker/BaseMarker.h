@@ -16,21 +16,16 @@ class BaseMarker : public QObject
 {
     Q_OBJECT
 public:
-    explicit BaseMarker(MarkerManager *manager,
-                        BaseMarkerBehavior *behavior,
+    explicit BaseMarker(BaseMarkerBehavior *behavior,
+                        MarkerManager *manager,
                         const BasicName &markedName,
                         const QDir &dir,
                         const Configuration &markerConfig);
+    BasicName name() const;
     QDir dir() const;
 
 signals:
 
 private:
-    MarkerManager * cmpManager=nullptr;
-    BasicName cmMarkedName;
-    BaseMarkerBehavior * cmpBehavoir;
-    QDir cmDir;
-    MultiName cmConfigKey;
-    Configuration mMarkerConfig;
 };
 

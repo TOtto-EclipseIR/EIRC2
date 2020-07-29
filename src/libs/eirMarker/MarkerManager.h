@@ -28,12 +28,16 @@ public:
     Configuration markerConfig() const;
     Configuration markerConfig(const MultiName &groupKey) const;
     BasicName::List markedNameList() const;
-    void setupMarkerDir(const BasicName &markerName,
+    BaseMarker * markerDir(const BasicName &markerName,
+                        BaseMarkerBehavior *behavior,
+                        const MultiName &markerConfigGroup,
+                        const QString &markerDirName);
+    BaseMarkerBehavior * behavior(const BasicName &markerName,
                         BaseMarkerBehavior *behavior,
                         const MultiName &markerConfigGroup,
                         const QString &markerDirName);
 
-protected slots:
+public slots:
     void setBaseDir(QDir baseDir);
     void setBaseDir(QString baseDirName);
     void setupMarkers();

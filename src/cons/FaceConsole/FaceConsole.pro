@@ -22,6 +22,7 @@ LIBS *= -leirBase2
 LIBS *= -leirType2
 LIBS *= -leirRectFind2
 LIBS *= -leirImage2
+LIBS *= -leirMarker2
 LIBS *= -leirExe2
 
 SOURCES += \

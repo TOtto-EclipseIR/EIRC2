@@ -21,6 +21,7 @@ FaceConsole::FaceConsole(QObject *parent)
     setObjectName("FaceConsole");
     TSTALLOC(cmpConfigObject);
     TSTALLOC(cmpRectFinder);
+    TSTALLOC(cmpMarkerManager);
 
     QTimer::singleShot(500, this, &FaceConsole::initializeApplication);
     TRACERTV();
@@ -39,8 +40,6 @@ void FaceConsole::initializeApplication()
               .arg(qApp->applicationName())
               .arg(qApp->applicationVersion())
               .arg(locale.toString(QDateTime::currentDateTime())));
-    //cmpParser->addOption(QCommandLineOption(QStringList()
-    //<< "exit" << "batch" << "x"));
     EMIT(applicationInitd());
     QTimer::singleShot(100, this, &FaceConsole::setupCommandLine);
 }
@@ -62,23 +61,9 @@ void FaceConsole::setConfiguration()
     cmpConfigObject->set(commandLine()->configuration());
 
     QString baseDirString(config()->configuration("/Output").string("BaseDir"));
-    QString rectDirString(config()->configuration("/PreScan/Face/Output").string("RectDir"));
-
     baseDirString.replace("@", QDateTime::currentDateTime()
-        .toString("DyyyyMMdd-Thhmm"));
-    rectDirString.replace("@", QDateTime::currentDateTime()
-        .toString("DyyyyMMdd-Thhmm"));
-    mBaseDir = QDir(baseDirString);
-
-    if ( ! rectDirString.isEmpty())
-    {
-        mRectDir = mBaseDir;
-        mRectDir.mkpath(rectDirString);
-        mRectDir.cd(rectDirString);
-    }
-    TRACE << baseDirString << rectDirString
-      << mRectDir.absolutePath();
-
+        .toString("DyyyyMMdd-Thhmm"));    cmpMarkerManager->setBaseDir(baseDirString);
+    TRACE << cmpMarkerManager->baseDir();
     QTimer::singleShot(100, this, &FaceConsole::initializeResources);
 
 }
