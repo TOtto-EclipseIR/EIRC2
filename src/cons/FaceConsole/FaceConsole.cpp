@@ -9,15 +9,17 @@
 #include <eirExe/ConfigObject.h>
 #include <eirXfr/Debug.h>
 #include <eirRectFind/RectFinder.h>
+#include <eirMarker/MarkerManager.h>
 
 FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
-    , cmpConfig(new ConfigObject(parent))
-    , cmpRectFinder(new RectFinder(parent))
+    , cmpConfigObject(new ConfigObject(parent))
+    , cmpRectFinder(new RectFinder(cmpConfigObject, parent))
+    , cmpMarkerManager(new MarkerManager(cmpConfigObject, this))
 {
     TRACEFN;
     setObjectName("FaceConsole");
-    TSTALLOC(cmpConfig);
+    TSTALLOC(cmpConfigObject);
     TSTALLOC(cmpRectFinder);
 
     QTimer::singleShot(500, this, &FaceConsole::initializeApplication);
@@ -26,7 +28,7 @@ FaceConsole::FaceConsole(QObject *parent)
 
 ConfigObject *FaceConsole::config() const
 {
-    return cmpConfig;
+    return cmpConfigObject;
 }
 
 void FaceConsole::initializeApplication()
@@ -57,7 +59,7 @@ void FaceConsole::setConfiguration()
 {
     TRACEFN;
 
-    cmpConfig->set(commandLine()->configuration());
+    cmpConfigObject->set(commandLine()->configuration());
 
     QString baseDirString(config()->configuration("/Output").string("BaseDir"));
     QString rectDirString(config()->configuration("/PreScan/Face/Output").string("RectDir"));

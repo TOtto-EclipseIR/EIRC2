@@ -9,6 +9,7 @@
 class QCommandLineParser;
 class ConfigObject;
 class RectFinder;
+class MarkerManager;
 
 class FaceConsole : public Console
 {
@@ -34,8 +35,9 @@ signals:
     void processingStarted();
 
 private:
-    ConfigObject * const cmpConfig=nullptr;
+    ConfigObject * const cmpConfigObject=nullptr;
     RectFinder * const cmpRectFinder=nullptr;
+    MarkerManager * const cmpMarkerManager=nullptr;
     QDir mBaseDir;
     QDir mRectDir;
 };

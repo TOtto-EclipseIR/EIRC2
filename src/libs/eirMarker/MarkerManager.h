@@ -8,33 +8,48 @@
 #include <QMap>
 #include <QString>
 
+#include <eirType/BasicName.h>
 #include <eirType/MultiName.h>
 #include <eirExe/ConfigObject.h>
 
 class BaseMarker;
+class BaseMarkerBehavior;
+class ConfigObject;
 
-class MarkerManager : public QObject
+class EIRMARKER_EXPORT MarkerManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit MarkerManager(QObject *parent = nullptr);
+    explicit MarkerManager(ConfigObject *cfgObj,
+                           QObject *parent = nullptr);
+    QDir baseDir() const;
+    QDir markerDir(const QString markerDirName);
+    ConfigObject * cfgObj();
+    Configuration markerConfig() const;
+    Configuration markerConfig(const MultiName &groupKey) const;
+    BasicName::List markedNameList() const;
+    void setupMarkerDir(const BasicName &markerName,
+                        BaseMarkerBehavior *behavior,
+                        const MultiName &markerConfigGroup,
+                        const QString &markerDirName);
 
-protected: // slots:
-    void setupMarkerNameList();
-    void setupNameKeyMap();
-    void configure(ConfigObject * cfgObj);
-    void setBaseDir(QString baseDir);
-    void setMarkedDir(MultiName markerName,
-                      QString markerDirName);
+protected slots:
+    void setBaseDir(QDir baseDir);
+    void setBaseDir(QString baseDirName);
+    void setupMarkers();
 
 signals:
+    void markedDirSet(BasicName markerName,
+                      QDir markerDir);
 
 private:
-    Configuration mConfig;
+    ConfigObject * const cmpConfig=nullptr;
+    const Configuration cmMarkerConfig;
     QDir mBaseDir;
-    MultiName::List mMarkerNameList;
-    QMap<MultiName, MultiName> mNameKeyMap;
-    QMap<MultiName, BaseMarker *> mNameMarkerMap;
-    QMap<MultiName, QImage> mNameImageMap;
+    BasicName::List mMarkedNameList;
+    QMap<BasicName, QDir> mMarkedNameDirMap;
+    QMap<BasicName, MultiName> mMarkedNameConfigKeyMap;
+    QMap<BasicName, BaseMarker *> mMarkedNameMarkerMap;
+    QMap<BasicName, QImage> mMarkedNameImageMap;
 };
 

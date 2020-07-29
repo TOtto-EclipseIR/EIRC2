@@ -12,7 +12,8 @@ class EIRRECTFIND_EXPORT RectFinder : public QObject
     Q_OBJECT
 public:
     explicit RectFinder(QObject *parent = nullptr);
-    RectFinder(ConfigObject *cfgObj, QObject *parent = nullptr);
+    RectFinder(ConfigObject *cfgObj,
+               QObject *parent = nullptr);
     void set(ConfigObject *cfgObj);
     bool contains(const BasicName &name) const;
     cvCascade *cascade(const BasicName &name) const;
