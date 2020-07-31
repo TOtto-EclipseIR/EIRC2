@@ -4,12 +4,11 @@
 #include <eirExe/Console.h>
 
 
-#include <eirRectFind/RectFinder.h>
+//#include <eirRectFind/RectFinder.h>
 
 class QCommandLineParser;
 class ConfigObject;
-class RectFinder;
-class MarkerManager;
+// class MarkerManager;
 
 class FaceConsole : public Console
 {
@@ -36,7 +35,7 @@ signals:
 
 private:
     ConfigObject * const cmpConfigObject=nullptr;
-    RectFinder * const cmpRectFinder=nullptr;
-    MarkerManager * const cmpMarkerManager=nullptr;
+//    RectFinder * const cmpRectFinder=nullptr;
+  //  MarkerManager * const cmpMarkerManager=nullptr;
 };
 

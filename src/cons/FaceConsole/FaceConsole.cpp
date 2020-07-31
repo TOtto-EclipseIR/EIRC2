@@ -8,20 +8,20 @@
 #include <eirExe/CommandLine.h>
 #include <eirExe/ConfigObject.h>
 #include <eirXfr/Debug.h>
-#include <eirRectFind/RectFinder.h>
-#include <eirMarker/MarkerManager.h>
+//#include <eirRectFind/RectFinder.h>
+//#include <eirMarker/MarkerManager.h>
 
 FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
     , cmpConfigObject(new ConfigObject(parent))
-    , cmpRectFinder(new RectFinder(cmpConfigObject, parent))
-    , cmpMarkerManager(new MarkerManager(cmpConfigObject, this))
+//    , cmpRectFinder(new RectFinder(cmpConfigObject, parent))
+  //  , cmpMarkerManager(new MarkerManager(cmpConfigObject, this))
 {
     TRACEFN;
     setObjectName("FaceConsole");
     TSTALLOC(cmpConfigObject);
-    TSTALLOC(cmpRectFinder);
-    TSTALLOC(cmpMarkerManager);
+//    TSTALLOC(cmpRectFinder);
+  //  TSTALLOC(cmpMarkerManager);
 
     QTimer::singleShot(500, this, &FaceConsole::initializeApplication);
     TRACERTV();
@@ -62,8 +62,9 @@ void FaceConsole::setConfiguration()
 
     QString baseDirString(config()->configuration("/Output").string("BaseDir"));
     baseDirString.replace("@", QDateTime::currentDateTime()
-        .toString("DyyyyMMdd-Thhmm"));    cmpMarkerManager->setBaseDir(baseDirString);
-    TRACE << cmpMarkerManager->baseDir();
+        .toString("DyyyyMMdd-Thhmm"));
+//    cmpMarkerManager->setBaseDir(baseDirString);
+  //  TRACE << cmpMarkerManager->baseDir();
     QTimer::singleShot(100, this, &FaceConsole::initializeResources);
 
 }
@@ -71,16 +72,14 @@ void FaceConsole::setConfiguration()
 void FaceConsole::initializeResources()
 {
     TRACEFN;
+    QDir baseDir(config()->configuration("/Resources/RectFinder").string("BaseDir"));
+    NEEDDO(exists-readable);
+//    cmpRectFinder->set(baseDir);
 
 
 
-    QFileInfo faceCascadeFileInfo(
-                QDir(config()->configuration("/Resources/ObjDet").string("BaseDir")),
-                config()->configuration("/PreScan/Resources/ObjDet/Face").string("XmlFile"));
-    TRACE << faceCascadeFileInfo.absoluteFilePath()
-          << faceCascadeFileInfo.exists()
-          << faceCascadeFileInfo.isReadable();
-
+  //  cmpRectFinder->load("PreScan", config()->configuration("/Resources/RectFinder/PreScan").string("XmlFile"));
+//    BEXPECT(cmpRectFinder->loaded("PreScan"));
 }
 
 void FaceConsole::startProcessing()
