@@ -4,6 +4,7 @@
 
 #include <QObject>
 
+#include <QDateTime>
 #include <QFile>
 #include <QTemporaryDir>
 
@@ -42,6 +43,7 @@ public slots:
     void commamdLineScanned();
 
 public: // static
+    static QDateTime baseDateTime();
 
 signals:
     void initFinished();
@@ -55,5 +57,6 @@ private:
     ConfigObject * const cmpConfigObject=nullptr;
     QTemporaryDir const * cmpTempDir=nullptr;
     QList<QFile *> mTempFiles;
+    static QDateTime smDateTime;
 };
 

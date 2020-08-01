@@ -34,6 +34,8 @@ SOURCES += \
     Region.cpp \
     Sortable.cpp \
     BitFlags.cpp \
+    Value.cpp \
+    ValuePak.cpp \
     Var.cpp \
     VarMap.cpp \
     VarMapMap.cpp \
@@ -68,6 +70,8 @@ HEADERS += \
     QQRectList.h \
     Region.h \
     Sortable.h \
+    Value.h \
+    ValuePak.h \
     Var.h \
     VarMap.h \
     VarMapMap.h \

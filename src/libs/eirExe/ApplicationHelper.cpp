@@ -14,6 +14,8 @@
 
 #include "../../version.h"
 
+QDateTime ApplicationHelper::smDateTime = QDateTime::currentDateTime();
+
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
     , cmpCommandLine(new CommandLine(this))
@@ -101,5 +103,10 @@ void ApplicationHelper::initSettings()
 void ApplicationHelper::commamdLineScanned()
 {
     TRACEFN
-    NEEDDO(it);
+            NEEDDO(it);
+}
+
+QDateTime ApplicationHelper::baseDateTime()
+{
+    return smDateTime;
 }
