@@ -4,3 +4,53 @@ ValuePak::ValuePak()
 {
 
 }
+
+bool ValuePak::contains(const int index) const
+{
+    return mValueList.size() > index && index >= 0;
+}
+
+bool ValuePak::notContains(const int index) const
+{
+    return ! contains(index);
+}
+
+void ValuePak::set(const QByteArray &byteArray)
+{
+    mBA = byteArray;
+}
+
+Value &ValuePak::at(const int index)
+{
+    return mValueList[index];
+}
+
+Value ValuePak::at(const int index) const
+{
+    return mValueList[index];
+}
+
+QVariant ValuePak::value(const int index) const
+{
+    return at(index).second;
+}
+
+Id ValuePak::id() const
+{
+    return mId;
+}
+
+Id &ValuePak::id()
+{
+    return mId;
+}
+
+QByteArray ValuePak::bytes() const
+{
+    return mBA;
+}
+
+QVariant ValuePak::operator()(const int index) const
+{
+    return at(index).second;
+}

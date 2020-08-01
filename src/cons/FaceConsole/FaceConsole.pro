@@ -20,10 +20,12 @@ include(../../opencv4.pri)
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
-LIBS *= -leirRectFind2
-LIBS *= -leirImage2
-LIBS *= -leirMarker2
+#LIBS *= -leirRectFind2
+#LIBS *= -leirImage2
+#LIBS *= -leirMarker2
 LIBS *= -leirExe2
+LIBS *= -leirFrame2
+LIBS *= -leirImageIO2
 
 SOURCES += \
     FaceConsole.cpp \

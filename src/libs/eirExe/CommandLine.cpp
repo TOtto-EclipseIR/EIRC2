@@ -209,11 +209,15 @@ QStringList CommandLine::stripConfiguration(
 void CommandLine::parseConfigArgument(const QString &arg,
                                       const MultiName &prefix)
 {
+    TRACEQFI << arg << prefix();
     QStringList qsl = arg.split('=');
     MultiName key = qsl[0].mid(1);
     key.prependName(prefix);
-    mConfiguration.insert(key,
-        (qsl.size() > 1) ? QVariant(qsl[1]) : QVariant(true));
+    QVariant value = (qsl.size() > 1)
+            ? QVariant(qsl[1])
+            : QVariant(true);
+    mConfiguration.insert(key, value);
+    TRACE << key() << "=" << value;
 }
 
 QStringList CommandLine::readTxtFileArguments(const QFileInfo &argFileInfo)

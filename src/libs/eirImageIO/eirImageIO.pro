@@ -20,13 +20,16 @@ include(../../EIRC2.pri)
 
 LIBS *= -leirType2
 LIBS *= -leirExe2
+LIBS *= -leirFrame2
 
 SOURCES += \
     BaseOutputDir.cpp \
+    OutputManager.cpp \
     eirImageIO.cpp
 
 HEADERS += \
     BaseOutputDir.h \
+    OutputManager.h \
     eirImageIO_global.h \
     eirImageIO.h
 

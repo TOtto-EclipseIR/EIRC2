@@ -8,18 +8,23 @@
 #include <eirExe/CommandLine.h>
 #include <eirExe/ConfigObject.h>
 #include <eirXfr/Debug.h>
+#include <eirImageIO/BaseOutputDir.h>
+#include <eirImageIO/OutputManager.h>
+
 //#include <eirRectFind/RectFinder.h>
 //#include <eirMarker/MarkerManager.h>
 
 FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
     , cmpConfigObject(new ConfigObject(parent))
+    , cmpOutput(new OutputManager(parent))
 //    , cmpRectFinder(new RectFinder(cmpConfigObject, parent))
   //  , cmpMarkerManager(new MarkerManager(cmpConfigObject, this))
 {
     TRACEFN;
     setObjectName("FaceConsole");
     TSTALLOC(cmpConfigObject);
+    TSTALLOC(cmpOutput);
 //    TSTALLOC(cmpRectFinder);
   //  TSTALLOC(cmpMarkerManager);
 
@@ -63,8 +68,11 @@ void FaceConsole::setConfiguration()
     QString baseDirString(config()->configuration("/Output").string("BaseDir"));
     baseDirString.replace("@", QDateTime::currentDateTime()
         .toString("DyyyyMMdd-Thhmm"));
-//    cmpMarkerManager->setBaseDir(baseDirString);
-  //  TRACE << cmpMarkerManager->baseDir();
+
+    BaseOutputDir baseDir(baseDirString);
+    cmpOutput->setBase(baseDir);
+    cmpOutput->configure(cmpConfigObject);
+
     QTimer::singleShot(100, this, &FaceConsole::initializeResources);
 
 }
@@ -84,5 +92,9 @@ void FaceConsole::initializeResources()
 
 void FaceConsole::startProcessing()
 {
+    TRACEFN;
 
+    cmpOutput->start();
+
+    MUSTDO(more);
 }
