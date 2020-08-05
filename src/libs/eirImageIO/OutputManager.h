@@ -10,6 +10,7 @@
 #include <eirType/Milliseconds.h>
 #include <eirExe/ConfigObject.h>
 #include <eirFrame/Frame.h>
+#include <eirFrame/FrameIndex.h>
 #include <eirFrame/FramePak.h>
 
 class EIRIMAGEIO_EXPORT OutputManager : public QObject

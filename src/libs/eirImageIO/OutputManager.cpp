@@ -1,5 +1,6 @@
 #include "OutputManager.h"
 
+#include <QRegularExpression>
 #include <QTimer>
 
 #include <eirXfr/Debug.h>
@@ -40,7 +41,8 @@ OutputManager::~OutputManager()
 void OutputManager::configure(ConfigObject *cfgObj)
 {
     TRACEFN;
-    mOutputConfig = cfgObj->configuration("/Output");
+//    BasicName::List outputDirs = mOutputConfig.groupKeys("Output");
+    mOutputConfig = cfgObj->configuration("/Output/Dirs");
     mMarkerConfig = cfgObj->configuration("/Marker");
     mOutputConfig.setName("OutputConfig");
     mMarkerConfig.setName("MarkerConfig");

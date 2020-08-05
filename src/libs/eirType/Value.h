@@ -19,5 +19,9 @@ public:
           const QVariant &variant=QVariant());
     Value(const MultiName &name,
           const QVariant::Type vtype);
+    void set(const MultiName &name,
+             const QVariant &variant);
+    MultiName name() const;
+    QVariant value() const;
 };
 

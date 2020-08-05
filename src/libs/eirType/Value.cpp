@@ -4,3 +4,8 @@ Value::Value()
 {
 
 }
+
+MultiName Value::name() const
+{
+    return first;
+}

@@ -32,6 +32,7 @@ public:
     Value at(const MultiName &name) const;
     QVariant value(const int index) const;
     QVariant value(const MultiName &name) const;
+    MultiName::List keys(const MultiName &groupName, const bool recurse=false);
     Id id() const;
     Id &id();
     QByteArray bytes() const;
