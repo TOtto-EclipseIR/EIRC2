@@ -11,6 +11,7 @@ SUBDIRS += \
     ./cons/If2Console \
     ./cons/FaceConsole \ \
     eirFrame \
+    libs/eirFinder \
     libs/eirImageIO
 
 eirType.depends     = eirBase

@@ -10,6 +10,7 @@
 #include <eirType/Milliseconds.h>
 #include <eirExe/ConfigObject.h>
 #include <eirFrame/Frame.h>
+#include <eirFrame/FrameIndex.h>
 #include <eirFrame/FramePak.h>
 
 class EIRIMAGEIO_EXPORT OutputManager : public QObject
@@ -20,6 +21,11 @@ public:
     explicit OutputManager(const Milliseconds timerMsec,
                            QObject *parent = nullptr);
     void setBase(const QDir &baseDir);
+    int incomingQueueSize() const;
+    bool incomingEmpty() const;
+    FramePak firstIncoming() const;
+    FramePak takeIncoming();
+    bool incomingNotEmpty() const;
     ~OutputManager();
 
 public slots:
@@ -29,18 +35,20 @@ public slots:
     void enqueue(FramePak incomingFP);
     void startMarkNext();
     void markNext();
-    void markComplete(FramePak markedFP);
+    void markComplete();
     void enqueueMarked(FramePak markedFP);
     void splitMarked();
 
 signals:
+    void started(Milliseconds msec);
+    void pulsed();
     void marked(FramePak markedFP);
     void incomingSize(int count);
     void incomingEmpty();
 
 private:
     QTimer * const cmpTimer=nullptr;
-    Milliseconds mTimerMSec;
+    Milliseconds mTimerMsec;
     Configuration mOutputConfig;
     Configuration mMarkerConfig;
     QDir mBaseDir;

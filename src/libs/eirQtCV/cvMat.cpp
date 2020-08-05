@@ -11,17 +11,34 @@
 
 cvMat::cvMat()
 {
-
 }
 
 bool cvMat::set(const cv::Mat other)
 {
-    MUSTDO(it);
-    return false;
+    mCvMat = cv::Mat(other);
+    return true;
+}
+
+void cvMat::set(const QSize sz)
+{
+    mCvMat.cols = sz.width(),
+            mCvMat.rows = sz.height();
+}
+
+bool cvMat::set(const QImage &qimage)
+{
+    mCvMat.release();
+    QSize sz = qimage.size();
+    set(cv::Mat(sz.height() , sz.width(),
+                    QImage::Format_Grayscale8
+                        == qimage.format() ? CV_8U : CV_8UC4));
+    std::memcpy(mCvMat.ptr(), qimage.bits(),
+                mCvMat.elemSize1() * mCvMat.total());
+    return true;
 }
 
 void cvMat::clear()
 {
-    release();
-    NEEDDO(size_etc)
+    mCvMat.release();
+    NEEDDO(size_etc_ifnot_DEBUG);
 }

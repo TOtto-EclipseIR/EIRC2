@@ -21,6 +21,7 @@ public:
 
 public slots:
     void initializeApplication();
+    void enqueueNext();
 
 private slots:
     void setupCommandLine();

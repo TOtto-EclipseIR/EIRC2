@@ -15,13 +15,14 @@ class EIRTYPE_EXPORT ValuePak
 public:
     ValuePak();
     ValuePak(const Id id);
+    void clear();
     bool contains(const int index) const;
     bool notContains(const int index) const;
     void set(const Id &id);
     void set(const QByteArray &byteArray);
     void set(const Value::List &varList);
     void insert(const Value::Map &valueMap);
-    void set(const int index, const Value &listItem);
+    void set(const int index, const Value &mapItem);
     void append(const Value &listItem);
     void insert(const Value &mapItem);
     void insert(const MultiName &key,
@@ -32,6 +33,7 @@ public:
     Value at(const MultiName &name) const;
     QVariant value(const int index) const;
     QVariant value(const MultiName &name) const;
+    MultiName::List keys(const MultiName &groupName, const bool recurse=false);
     Id id() const;
     Id &id();
     QByteArray bytes() const;

@@ -36,10 +36,11 @@ public:
     };
 
 public:
-    cvCascade(const BasicName &name);
+    cvCascade(const BasicName &cascadeType);
 //    ~cvCascade();
     bool isLoaded() const;
     bool notLoaded() const;
+    QFileInfo fileInfo() const;
     bool load(const QFileInfo cascadeFI);
     void unload();
     QSize coreSize() const;
@@ -48,7 +49,7 @@ public:
     QRectList findAllRects(FindParameters parms);
 
 private:
-    BasicName mName;
+    BasicName mCascadeType;
     cv::CascadeClassifier *mpCascade=nullptr;
     QFileInfo mCascadeFileInfo;
     QSize mCoreSize;

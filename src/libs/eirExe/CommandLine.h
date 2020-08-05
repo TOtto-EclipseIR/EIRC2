@@ -29,7 +29,10 @@ class EIREXE_EXPORT CommandLine : public QObject
 public:
     explicit CommandLine(QObject *parent = nullptr);
     void set(CommandLineClientInterface * interface);
+    int positionalArgumentSize() const;
     QStringList positionalArgumentList() const;
+    QString firstPositionalArgument() const;
+    QString takePositionalArgument();
     const QStringList exeArguments() const;
     const QQFileInfo exeFileInfo() const;
     Configuration configuration() const;

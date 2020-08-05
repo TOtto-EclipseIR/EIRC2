@@ -26,9 +26,26 @@ void CommandLine::set(CommandLineClientInterface *interface)
     mpInterface = interface;
 }
 
+int CommandLine::positionalArgumentSize() const
+{
+    return positionalArgumentList().size();
+}
+
 QStringList CommandLine::positionalArgumentList() const
 {
     return mPositionalArgumentList;
+}
+
+QString CommandLine::firstPositionalArgument() const
+{
+    return positionalArgumentSize()
+            ? mPositionalArgumentList.first() : QString();
+}
+
+QString CommandLine::takePositionalArgument()
+{
+    TRACEQFI << firstPositionalArgument();
+    return firstPositionalArgument();
 }
 /*
 QQFileInfoList CommandLine::positionalFileInfoList() const

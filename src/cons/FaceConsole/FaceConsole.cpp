@@ -49,6 +49,15 @@ void FaceConsole::initializeApplication()
     QTimer::singleShot(100, this, &FaceConsole::setupCommandLine);
 }
 
+void FaceConsole::enqueueNext()
+{
+    TRACEQFI << commandLine()->firstPositionalArgument();
+    TSTALLOC(cmpOutput);
+    QString fileNameArgument = commandLine()->firstPositionalArgument();
+    if ( ! fileNameArgument.isEmpty())
+        cmpOutput->enqueue(FramePak(rCommandLine().takePositionalArgument()));
+}
+
 void FaceConsole::setupCommandLine()
 {
     TRACEFN
@@ -73,8 +82,8 @@ void FaceConsole::setConfiguration()
     cmpOutput->setBase(baseDir);
     cmpOutput->configure(cmpConfigObject);
 
+    EMIT(configurationSet());
     QTimer::singleShot(100, this, &FaceConsole::initializeResources);
-
 }
 
 void FaceConsole::initializeResources()
@@ -83,12 +92,10 @@ void FaceConsole::initializeResources()
     QDir baseDir(config()->configuration("/Resources/RectFinder").string("BaseDir"));
     NEEDDO(exists-readable);
 //    cmpRectFinder->set(baseDir);
-
-
-
   //  cmpRectFinder->load("PreScan", config()->configuration("/Resources/RectFinder/PreScan").string("XmlFile"));
 //    BEXPECT(cmpRectFinder->loaded("PreScan"));
-}
+    EMIT(resoursesInitd());
+ QTimer::singleShot(100, this, &FaceConsole::startProcessing);}
 
 void FaceConsole::startProcessing()
 {
@@ -96,5 +103,6 @@ void FaceConsole::startProcessing()
 
     cmpOutput->start();
 
-    MUSTDO(more);
+    NEEDDO(more);
+    EMIT(processingStarted());
 }

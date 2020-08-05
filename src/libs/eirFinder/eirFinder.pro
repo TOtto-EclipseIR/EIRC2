@@ -1,7 +1,7 @@
-QT -= gui
+#QT -= gui
 
 TEMPLATE = lib
-DEFINES += EIRIMAGEIO_LIBRARY
+DEFINES += EIRFINDER_LIBRARY
 
 CONFIG += c++11
 
@@ -17,22 +17,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../../EIRC2.pri)
-INCLUDEPATH += F:/Qt/5.15.0/msvc2019_64/include/QtGui
+#? include(../../opencv4.pri)
 
-LIBS *= -leirType2
-LIBS *= -leirExe2
-LIBS *= -leirFrame2
+LIBS *= /leirType2
+LIBS *= /leirExe2
+LIBS *= /leirQtCV2
 
 SOURCES += \
-    BaseOutputDir.cpp \
-    OutputManager.cpp \
-    eirImageIO.cpp
+    RectFinder.cpp \
+    eirFinder.cpp
 
 HEADERS += \
-    BaseOutputDir.h \
-    OutputManager.h \
-    eirImageIO_global.h \
-    eirImageIO.h
+    RectFinder.h \
+    eirFinder_global.h \
+    eirFinder.h
 
 # Default rules for deployment.
 unix {

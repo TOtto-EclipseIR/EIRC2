@@ -21,7 +21,7 @@ include(../../EIRC2.pri)
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
-LIBS *= -leirObj2
+#LIBS *= -leirObj2
 
 SOURCES += \
     ApplicationHelper.cpp \
