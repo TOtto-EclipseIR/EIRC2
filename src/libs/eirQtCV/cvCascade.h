@@ -7,7 +7,8 @@
 #include <QSize>
 #include <QString>
 
-#include <opencv2/opencv.hpp>
+//#include <opencv2/opencv.hpp>
+#include "F:\lang\OpenCV4\opencv\build\include/opencv2/opencv.hpp"
 #include <opencv2/objdetect.hpp>
 
 #include <eirType/BasicName.h>
