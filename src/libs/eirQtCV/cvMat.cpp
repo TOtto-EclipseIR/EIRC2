@@ -8,7 +8,7 @@
 
 #include <eirXfr/Debug.h>
 
-#include "cvSize.h"
+#include "del-cvSize.h"
 
 cvMat::cvMat() {;}
 

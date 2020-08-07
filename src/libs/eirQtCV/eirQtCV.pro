@@ -24,14 +24,12 @@ LIBS *= -leirType2
 SOURCES += \
     cvCascade.cpp \
     cvMat.cpp \
-    cvSize.cpp \
     cvString.cpp \
     eirQtCV.cpp
 
 HEADERS += \
     cvCascade.h \
     cvMat.h \
-    cvSize.h \
     cvString.h \
     eirQtCV_global.h \
     eirQtCV.h
