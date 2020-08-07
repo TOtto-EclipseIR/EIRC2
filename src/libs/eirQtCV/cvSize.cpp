@@ -1,17 +1,32 @@
 #include "cvSize.h"
 
+#include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/core/types.hpp>
+
 cvSize::cvSize()
 {
-    width = height = 0;
+    clear();
 }
-
+/*
 cvSize::cvSize(const QSize qsize)
 {
-    width = qsize.width(),
-            height = qsize.height();
+    mpCvSize = new cv::Size(qsize.width(), qsize.height());
 }
-
+*/
+void cvSize::clear()
+{
+    /*
+    if (mpCvSize)
+    {
+        delete mpCvSize;
+        mpCvSize = nullptr;
+    }
+    */
+}
+/*
 cv::Size cvSize::operator ()() const
 {
-    return cv::Size(width, height);
+    return mpCvSize ? *mpCvSize : cv::Size();
 }
+*/

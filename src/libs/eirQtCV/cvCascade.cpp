@@ -1,5 +1,8 @@
 #include "cvCascade.h"
 
+#include <opencv2/opencv.hpp>
+#include <opencv2/objdetect.hpp>
+
 #include <eirXfr/Debug.h>
 
 #include "cvString.h"
@@ -8,6 +11,15 @@ cvCascade::cvCascade(const BasicName &cascadeType)
 {
     TRACEQFI << cascadeType();
     mCascadeType = cascadeType;
+}
+
+void cvCascade::dump(cvCascade::FindParameters parms,
+                     const QSize inputSize)
+{
+    DUMP << mCascadeType();
+    parms.calculate(inputSize, coreSize());
+    DUMP << QString("%1 = %2 [%3]").arg("Factor").arg(parms.scaleFactor()).arg(parms.mFactor);
+
 }
 
 bool cvCascade::isLoaded() const
@@ -43,4 +55,58 @@ void cvCascade::unload()
     mCoreSize = QSize();
     mInputImage = mFindRectImage = QImage();
     mFindRectMat.clear();
+}
+
+QSize cvCascade::coreSize() const
+{
+    return mCoreSize;
+}
+
+cvCascade::QRectList cvCascade::findRects(cvCascade::FindParameters parms)
+{
+    TRACEFN;
+    MUSTUSE(parms);
+    /*
+    Classifier::detectMultiScale(
+    InputArray 	image,
+    std::vector< Rect > & 	objects,
+    double 	scaleFactor = 1.1,
+    int 	minNeighbors = 3,
+    int 	flags = 0,
+    Size 	minSize = Size(),
+    Size 	maxSize = Size()
+    )
+    */
+    TRACERTN(cvCascade::QRectList());
+    return cvCascade::QRectList();
+}
+
+void cvCascade::FindParameters::calculate(const QSize inputSize, const QSize coreSize)
+{
+    TRACEQFI << inputSize << coreSize;
+    MUSTDO(it); MUSTUSE(inputSize); MUSTUSE(coreSize);
+}
+
+double cvCascade::FindParameters::scaleFactor() const
+{
+    TRACEFN; MUSTDO(it); MUSTRTN(0.0);
+
+}
+
+int cvCascade::FindParameters::minNeighbors() const
+{
+    TRACEFN; MUSTDO(it); MUSTRTN(0);
+
+}
+
+int cvCascade::FindParameters::flags()
+{
+    TRACEFN; MUSTDO(it);  MUSTRTN(0);
+
+}
+
+cvCascade::MinMaxPair cvCascade::FindParameters::size() const
+{
+    TRACEFN; MUSTDO(it); MUSTRTN(MinMaxPair());
+
 }

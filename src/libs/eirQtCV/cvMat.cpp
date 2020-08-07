@@ -1,5 +1,6 @@
 #include "cvMat.h"
 
+#include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/matx.hpp>
@@ -9,36 +10,42 @@
 
 #include "cvSize.h"
 
-cvMat::cvMat()
+cvMat::cvMat() {;}
+
+cvMat::~cvMat()
 {
+    clear();
 }
 
-bool cvMat::set(const cv::Mat other)
+void cvMat::set(const cv::Mat other)
 {
-    mCvMat = cv::Mat(other);
-    return true;
+    mpCvMat = new cv::Mat(other);
 }
 
 void cvMat::set(const QSize sz)
 {
-    mCvMat.cols = sz.width(),
-            mCvMat.rows = sz.height();
+    mpCvMat = new cv::Mat();
+    mpCvMat->cols = sz.width(),
+            mpCvMat->rows = sz.height();
 }
 
-bool cvMat::set(const QImage &qimage)
+void cvMat::set(const QImage &qimage)
 {
-    mCvMat.release();
+    clear();
     QSize sz = qimage.size();
-    set(cv::Mat(sz.height() , sz.width(),
+    mpCvMat = new cv::Mat(sz.height() , sz.width(),
                     QImage::Format_Grayscale8
-                        == qimage.format() ? CV_8U : CV_8UC4));
-    std::memcpy(mCvMat.ptr(), qimage.bits(),
-                mCvMat.elemSize1() * mCvMat.total());
-    return true;
+                        == qimage.format() ? CV_8U : CV_8UC4);
+    std::memcpy(mpCvMat->data, qimage.bits(),
+                mpCvMat->elemSize1() * mpCvMat->total());
 }
 
 void cvMat::clear()
 {
-    mCvMat.release();
-    NEEDDO(size_etc_ifnot_DEBUG);
+    if (mpCvMat)
+    {
+        mpCvMat->release();
+        delete  mpCvMat;
+        mpCvMat = nullptr;
+    }
 }

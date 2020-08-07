@@ -2,4 +2,4 @@
 
 INCLUDEPATH *= ../../libs
 
-message(INCLUDEPATH = $${INCLUDEPATH})
+#message(INCLUDEPATH = $${INCLUDEPATH})
