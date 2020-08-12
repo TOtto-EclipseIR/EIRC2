@@ -102,8 +102,8 @@ void ApplicationHelper::initSettings()
 
 void ApplicationHelper::commamdLineScanned()
 {
-    TRACEFN
-            NEEDDO(it);
+    TRACEFN;
+    NEEDDO(it);
 }
 
 QDateTime ApplicationHelper::baseDateTime()

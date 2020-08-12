@@ -35,8 +35,8 @@ cvCascade *RectFinder::cascade(const BasicName &cascadeType) const
     return mNameCascadeMap[cascadeType];
 }
 
-void RectFinder::load(const BasicName &cascadeType,
-                      const QString &xmlFileName)
+void RectFinder::load(BasicName cascadeType,
+                      QString xmlFileName)
 {
     TRACEQFI << cascadeType() << xmlFileName;
     cvCascade * cvc = new cvCascade(cascadeType);
@@ -50,17 +50,29 @@ void RectFinder::load(const BasicName &cascadeType,
     }
 }
 
-void RectFinder::configure(const Configuration &baseConfig)
+void RectFinder::configure(Configuration baseConfig)
 {
     TRACEFN;
     baseConfig.dump();
     mNameConfigMap[BasicName()] = baseConfig;
 }
 
-void RectFinder::configure(const BasicName &cascadeType,
-                           const Configuration &configSegment)
+void RectFinder::configure(BasicName cascadeType,
+                           Configuration cascadeConfig)
 {
     TRACEQFI << cascadeType();
-    configSegment.dump();
-    mNameConfigMap[cascadeType] = configSegment;
+    cascadeConfig.dump();
+    mNameConfigMap[cascadeType] = cascadeConfig;
+}
+
+void RectFinder::set(QImage image)
+{
+    TRACEQFI << image.size() << image.format();
+    NEEDDO(it); NEEDUSE(image);
+}
+
+void RectFinder::findRectangles(BasicName cascadeType)
+{
+    TRACEQFI << cascadeType();
+    NEEDDO(it); NEEDUSE(cascadeType);
 }

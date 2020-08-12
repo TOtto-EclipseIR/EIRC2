@@ -46,7 +46,7 @@ signals:
     void constructed(void);
 
 protected:
-    // processiing
+    // processing
     QStringList expandFileArguments(const QStringList qsl,
                                     const QChar trigger=QChar('@'));
     QStringList extractDirectiveArguments(const QStringList &currentArgs);
@@ -69,5 +69,4 @@ private:
     LegacySettings * mpLegacySettings=nullptr;
     QStringList mPositionalArgumentList;
     Configuration mConfiguration;
-
 };

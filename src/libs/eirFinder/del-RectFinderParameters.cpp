@@ -1,4 +1,4 @@
-#include "RectFinderParameters.h"
+#include "del-RectFinderParameters.h"
 
 #include <eirXfr/Debug.h>
 

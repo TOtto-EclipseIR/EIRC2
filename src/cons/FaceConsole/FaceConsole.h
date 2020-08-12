@@ -28,6 +28,9 @@ private slots:
     void setConfiguration();
     void initializeResources();
     void startProcessing();
+    void nextFile();
+    void processCurrentFile();
+    void finishProcessing();
 
 signals:
     void applicationInitd();
@@ -35,11 +38,15 @@ signals:
     void configurationSet();
     void resoursesInitd();
     void processingStarted();
+    void processed(QFileInfo fileInfo, int rectCount);
+    void processFailed(QFileInfo fileInfo, QString errorString);
+    void processingComplete();
 
 private:
     ConfigObject * const cmpConfigObject=nullptr;
     OutputManager * const cmpOutput=nullptr;
     RectFinder * const cmpRectFinder=nullptr;
+    QFileInfo mCurrentFile;
   //  MarkerManager * const cmpMarkerManager=nullptr;
 };
 

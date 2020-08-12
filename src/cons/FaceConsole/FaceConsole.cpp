@@ -112,3 +112,39 @@ void FaceConsole::startProcessing()
     NEEDDO(more);
     EMIT(processingStarted());
 }
+
+void FaceConsole::nextFile()
+{
+    TRACEFN;
+
+    if (commandLine()->positionalArgumentSize())
+    {
+        mCurrentFile = QFileInfo(rCommandLine().takePositionalArgument());
+        QTimer::singleShot(100, this, &FaceConsole::processCurrentFile);
+    }
+    else
+    {
+QTimer::singleShot(100, this, &FaceConsole::nextFile);
+    }
+
+    NEEDDO(more);
+    EMIT(processed(QFileInfo(), 0));
+}
+
+void FaceConsole::processCurrentFile()
+{
+    TRACEFN;
+
+
+    NEEDDO(more);
+    EMIT(processed(mCurrentFile, 0));
+}
+
+void FaceConsole::finishProcessing()
+{
+    TRACEFN;
+
+
+    NEEDDO(more);
+    EMIT(processingComplete());
+}

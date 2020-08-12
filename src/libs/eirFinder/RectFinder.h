@@ -7,6 +7,7 @@
 #include <QFileInfo>
 
 #include <eirType/BasicName.h>
+#include <eirType/QQRectList.h>
 #include <eirExe/ConfigObject.h>
 #include <eirQtCV/cvCascade.h>
 
@@ -22,20 +23,38 @@ public:
     bool loaded(const BasicName &cascadeType) const;
     QFileInfo cascadeFileInfo(const BasicName &cascadeType) const;
     cvCascade *cascade(const BasicName &cascadeType) const;
+    QStringList methodList() const;
+    QQRectList rectangleList(BasicName cascadeType);
 
 public slots:
-    void load(const BasicName &cascadeType,
-              const QString &xmlFileName);
-    void configure(const Configuration &baseConfig);
-    void configure(const BasicName &cascadeType,
-                   const Configuration &configSegment);
+    void load(BasicName cascadeType,
+              QString xmlFileName);
+    void configure(Configuration baseConfig);
+    void configure(BasicName cascadeType,
+                   Configuration cascadeConfig);
+    void set(QImage image);
+    void findRectangles(BasicName cascadeType);
 
 signals:
+    void cascadeLoaded(BasicName cascadeType);
+    void cascadeLoadFailed(BasicName cascadeType);
+    void baseConfigured(Configuration baseConfig);
+    void cascadeConfigured(BasicName cascadeType,
+                           Configuration cascadeConfig);
+    void imageLoaded(BasicName cascadeType);
+    void imageLoadFailed(BasicName cascadeType,
+                         QString errorString);
+    void rectanglesFound(BasicName cascadeType,
+                         int rectangleCount);
+    void rectFindFailed(BasicName cascadeType,
+                        QString errorString);
 
 private:
     ConfigObject * mpConfigObject;
     QDir mBaseDir;
+    Configuration mBaseConfig;
     QMap<BasicName, cvCascade *> mNameCascadeMap;
     QMap<BasicName, Configuration> mNameConfigMap;
+    QMap<BasicName, QQRectList> mNameRectListMap;
 };
 

@@ -25,12 +25,10 @@ LIBS *= -leirQtCV2
 
 SOURCES += \
     RectFinder.cpp \
-    RectFinderParameters.cpp \
     eirFinder.cpp
 
 HEADERS += \
     RectFinder.h \
-    RectFinderParameters.h \
     eirFinder_global.h \
     eirFinder.h
 
