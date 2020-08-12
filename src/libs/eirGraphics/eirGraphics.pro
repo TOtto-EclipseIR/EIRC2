@@ -1,7 +1,8 @@
-#QT -= gui
+QT += gui
+QT += widgets
 
 TEMPLATE = lib
-DEFINES += EIRFINDER_LIBRARY
+DEFINES += EIRGRAPHICS_LIBRARY
 
 CONFIG += c++11
 
@@ -17,20 +18,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../../EIRC2.pri)
-#? include(../../opencv4.pri)
 
-LIBS *= -leirType2
-LIBS *= -leirExe2
-LIBS *= -leirQtCV2
+LIBS += -leirType2
+LIBS += -leirXfr2
 
 SOURCES += \
-    RectFinder.cpp \
-    eirFinder.cpp
+    ImageScene.cpp \
+    SceneView.cpp \
+    eirGraphics.cpp
 
 HEADERS += \
-    RectFinder.h \
-    eirFinder_global.h \
-    eirFinder.h
+    ImageScene.h \
+    SceneView.h \
+    eirGraphics_global.h \
+    eirGraphics.h
 
 # Default rules for deployment.
 unix {

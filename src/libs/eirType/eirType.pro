@@ -58,6 +58,7 @@ HEADERS += \
     EnumerationMask.h \
     FunctionInfo.h \
     Id.h \
+    MinMaxTPair.h \
     MultiName.h \
     Named.h \
     NamedArray.h \

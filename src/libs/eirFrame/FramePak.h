@@ -2,6 +2,7 @@
 #pragma once
 #include "eirFrame.h"
 
+#include <eirType/QQRectList.h>
 #include <eirType/ValuePak.h>
 
 #include "Frame.h"
@@ -16,6 +17,9 @@ public:
     QString toString() const;
     QString operator()() const;
     bool setInputFrame(const QString &inputFileName);
+    bool setInputFrame(const QFileInfo &inputFileInfo);
+    void setPreScanImage(const QImage &detectImage);
+    void setFrameRectangles(const QQRectList &rects);
 
 protected:
     Frame frameAt(const int index) const;

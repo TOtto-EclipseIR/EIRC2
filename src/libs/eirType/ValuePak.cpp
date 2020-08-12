@@ -77,6 +77,11 @@ Id &ValuePak::id()
     return mId;
 }
 
+Uuid ValuePak::uuid() const
+{
+    return mId.uuid();
+}
+
 QByteArray ValuePak::bytes() const
 {
     return mBA;

@@ -4,7 +4,8 @@
 #include <eirExe/Console.h>
 
 
-//#include <eirRectFind/RectFinder.h>
+#include <eirFinder/RectFinder.h>
+#include <eirFrame/FramePak.h>
 //#include <eirImageIO/OutputManager.h>
 
 class QCommandLineParser;
@@ -28,6 +29,9 @@ private slots:
     void setConfiguration();
     void initializeResources();
     void startProcessing();
+    void nextFile();
+    void processCurrentFile();
+    void finishProcessing();
 
 signals:
     void applicationInitd();
@@ -35,11 +39,19 @@ signals:
     void configurationSet();
     void resoursesInitd();
     void processingStarted();
+    void processed(QFileInfo fileInfo, int rectCount);
+    void processFailed(QFileInfo fileInfo, QString errorString);
+    void processingComplete();
 
 private:
     ConfigObject * const cmpConfigObject=nullptr;
     OutputManager * const cmpOutput=nullptr;
-//    RectFinder * const cmpRectFinder=nullptr;
+    RectFinder * const cmpRectFinder=nullptr;
+    QFileInfo mCurrentFile;
+    QQRectList mCurrentRectangles;
+    FramePak mFramePak;
+    QImage mRectImage;
+
   //  MarkerManager * const cmpMarkerManager=nullptr;
 };
 

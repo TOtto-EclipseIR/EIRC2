@@ -1,7 +1,10 @@
-#QT -= gui
+## file: {repo: EIRC2}./src/libs/eirFrame/eirMarker.pro
+
+QT += gui
+QT += widgets
 
 TEMPLATE = lib
-DEFINES += EIRFINDER_LIBRARY
+DEFINES += EIRMARKER_LIBRARY
 
 CONFIG += c++11
 
@@ -17,20 +20,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../../EIRC2.pri)
-#? include(../../opencv4.pri)
 
-LIBS *= -leirType2
-LIBS *= -leirExe2
-LIBS *= -leirQtCV2
+LIBS += -leirType2
+LIBS += -leirXfr2
+LIBS += -leirFrame2
+LIBS += -leirGraphics2
 
 SOURCES += \
-    RectFinder.cpp \
-    eirFinder.cpp
+    AbstractMarkerInterface.cpp \
+    BaseMarkerObject.cpp \
+    MarkerImage.cpp \
+    MarkerManager.cpp \
+    MarkerTypes.cpp \
+    eirMarker.cpp
 
 HEADERS += \
-    RectFinder.h \
-    eirFinder_global.h \
-    eirFinder.h
+    AbstractMarkerInterface.h \
+    BaseMarkerObject.h \
+    MarkerImage.h \
+    MarkerManager.h \
+    MarkerTypes.h \
+    eirMarker_global.h \
+    eirMarker.h
 
 # Default rules for deployment.
 unix {

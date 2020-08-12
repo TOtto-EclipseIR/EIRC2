@@ -4,19 +4,19 @@
 #include <QImage>
 #include <QSize>
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/core/mat.hpp>
+namespace cv { class Mat; }
 
-class EIRQTCV_EXPORT cvMat //: public cv::Mat
+class EIRQTCV_EXPORT cvMat
 {
 public:
     cvMat();
-    bool set(const cv::Mat other);
+    ~cvMat();
+    void set(const cv::Mat other);
     void set(const QSize sz);
-    bool set(const QImage &qimage);
+    void set(const QImage &qimage);
     void clear();
 
 private:
-    cv::Mat mCvMat;
+    cv::Mat * mpCvMat=nullptr;
 };
 
