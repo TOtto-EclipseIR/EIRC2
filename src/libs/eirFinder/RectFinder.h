@@ -23,6 +23,7 @@ public:
     bool loaded(const BasicName &cascadeType) const;
     QFileInfo cascadeFileInfo(const BasicName &cascadeType) const;
     cvCascade *cascade(const BasicName &cascadeType) const;
+    QImage findRectImage(const BasicName &cascadeType) const;
     QStringList methodList() const;
     QQRectList rectangleList(BasicName cascadeType);
 

@@ -35,6 +35,12 @@ cvCascade *RectFinder::cascade(const BasicName &cascadeType) const
     return mNameCascadeMap[cascadeType];
 }
 
+QImage RectFinder::findRectImage(const BasicName &cascadeType) const
+{
+    TRACEQFI << cascadeType();
+    return cascade(cascadeType)->findRectImage();
+}
+
 QQRectList RectFinder::rectangleList(BasicName cascadeType)
 {
     return mNameRectListMap.value(cascadeType);

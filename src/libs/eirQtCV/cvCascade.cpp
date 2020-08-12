@@ -67,6 +67,15 @@ QSize cvCascade::coreSize() const
     return mCoreSize;
 }
 
+bool cvCascade::setImage(const QImage &inputImage)
+{
+    TRACEQFI << inputImage.size() << inputImage.format();
+    MUSTDO(it); MUSTDO(mFindRectImage);
+    MUSTDO(mFindRectMat); MUSTUSE(inputImage);
+    MUSTRTN(false);
+    return false;
+}
+
 cvCascade::QRectList cvCascade::findRects(cvCascade::FindParameters parms)
 {
     TRACEFN;
@@ -84,6 +93,11 @@ cvCascade::QRectList cvCascade::findRects(cvCascade::FindParameters parms)
     */
     TRACERTN(cvCascade::QRectList());
     return cvCascade::QRectList();
+}
+
+QImage cvCascade::findRectImage() const
+{
+    return mFindRectImage;
 }
 
 void cvCascade::FindParameters::calculate(const QSize inputSize, const QSize coreSize)

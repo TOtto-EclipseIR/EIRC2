@@ -18,7 +18,8 @@ public:
     QString operator()() const;
     bool setInputFrame(const QString &inputFileName);
     bool setInputFrame(const QFileInfo &inputFileInfo);
-    bool setFrameRectangles(const QQRectList &rects);
+    void setPreScanImage(const QImage &detectImage);
+    void setFrameRectangles(const QQRectList &rects);
 
 protected:
     Frame frameAt(const int index) const;

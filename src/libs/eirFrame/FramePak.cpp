@@ -65,14 +65,13 @@ bool FramePak::setInputFrame(const QFileInfo &inputFileInfo)
     return success;
 }
 
-bool FramePak::setFrameRectangles(const QQRectList &rects)
+void FramePak::setFrameRectangles(const QQRectList &rects)
 {
     QDataStream data;
     data << rects;
     Value value("Frame/PreScan/Rectangles",
                 QVariant(data));
     ValuePak::set(1, value);
-    return true;
 }
 
 // protected
@@ -91,4 +90,14 @@ Frame FramePak::frameAt(const int index) const
 Frame FramePak::toFrame(const QImage &image) const
 {
     return *(Frame *)(&image);
+}
+
+void FramePak::setPreScanImage(const QImage &detectImage)
+{
+    TRACEQFI << detectImage.size() << detectImage.format();
+    QDataStream data;
+    data << detectImage;
+    Value value("Frame/PreScan/DetectImage",
+                QVariant(data));
+    ValuePak::set(2, value);
 }

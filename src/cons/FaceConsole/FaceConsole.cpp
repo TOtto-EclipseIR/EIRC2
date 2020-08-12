@@ -145,6 +145,7 @@ void FaceConsole::processCurrentFile()
     if (success) mCurrentRectangles = cmpRectFinder->rectangleList("PreScan");
     if (success)
     {
+        mFramePak.setPreScanImage(cmpRectFinder->findRectImage("PreScan"));
         mFramePak.setFrameRectangles(mCurrentRectangles);
         EMIT(processed(QFileInfo(mCurrentFile),
              mCurrentRectangles.size()));

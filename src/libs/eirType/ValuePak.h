@@ -36,6 +36,7 @@ public:
     MultiName::List keys(const MultiName &groupName, const bool recurse=false);
     Id id() const;
     Id &id();
+    Uuid uuid() const;
     QByteArray bytes() const;
     Value::List list() const;
     Value::List & list(); // non-const

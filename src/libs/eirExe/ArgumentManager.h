@@ -36,7 +36,7 @@ signals:
 
 private:
     QList<ArgumentItem> mItemList;
-    DualMap<Uid, BaseArgumentHandler> mUidHandlerDMap;
-    QMultiMap<QRegularExpression /* trigger */, Uid> mTriggerUidMMap;
+    DualMap<Uuid, BaseArgumentHandler> mUidHandlerDMap;
+    QMultiMap<QRegularExpression /* trigger */, Uuid> mTriggerUidMMap;
 };
 

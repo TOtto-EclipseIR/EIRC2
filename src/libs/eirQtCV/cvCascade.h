@@ -82,6 +82,7 @@ public:
     bool setImage(const QImage &inputImage);
     QRectList findRects(FindParameters parms);
     QRectList findAllRects(FindParameters parms);
+    QImage findRectImage() const;
 
 private:
     BasicName mCascadeType;
