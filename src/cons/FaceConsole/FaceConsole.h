@@ -50,6 +50,8 @@ private:
     QFileInfo mCurrentFile;
     QQRectList mCurrentRectangles;
     FramePak mFramePak;
+    QImage mRectImage;
+
   //  MarkerManager * const cmpMarkerManager=nullptr;
 };
 

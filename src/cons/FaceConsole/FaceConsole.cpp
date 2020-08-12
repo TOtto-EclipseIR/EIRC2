@@ -138,11 +138,19 @@ void FaceConsole::processCurrentFile()
     Success success(true);
     QByteArray bytes;
     QImage image;
+    QImage rectImage;
 #if 1
     if (success) success = mFramePak.setInputFrame(mCurrentFile);
     if (success) cmpRectFinder->set(image);
     if (success) cmpRectFinder->findRectangles("PreScan");
     if (success) mCurrentRectangles = cmpRectFinder->rectangleList("PreScan");
+    if (success) rectImage = cmpRectFinder->makeRectImage();
+    if (success) success = ! rectImage.isNull();
+    if (success) mRectImage = rectImage;
+    if (success) success = mRectImage.save(QFileInfo(
+               QDir(config()->configuration("Output").string("BaseDir")),
+               config()->configuration("Output/Dirs").string("PreScan"))
+                                           .absoluteFilePath());
     if (success)
     {
         mFramePak.setPreScanImage(cmpRectFinder->findRectImage("PreScan"));

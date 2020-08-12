@@ -1,5 +1,7 @@
 #include "RectFinder.h"
 
+#include <QPainter>
+
 #include <eirXfr/Debug.h>
 
 RectFinder::RectFinder(QObject *parent)
@@ -44,6 +46,23 @@ QImage RectFinder::findRectImage(const BasicName &cascadeType) const
 QQRectList RectFinder::rectangleList(BasicName cascadeType)
 {
     return mNameRectListMap.value(cascadeType);
+}
+
+QImage RectFinder::makeRectImage(bool all)
+{
+    TRACEQFI << all;
+    NEEDUSE(all);
+    QImage rectImage = findRectImage("PreScan");
+    QPainter painter;
+    painter.begin(&rectImage);
+    painter.setPen(Qt::blue);
+    QBrush brush(Qt::blue);
+    QPen pen(brush, all ? 1 : 3);
+    painter.setPen(pen);
+    foreach (QRect rc, rectangleList("PreScan"))
+        painter.drawRect(rc);
+    painter.end();
+    return rectImage;
 }
 
 void RectFinder::load(BasicName cascadeType,

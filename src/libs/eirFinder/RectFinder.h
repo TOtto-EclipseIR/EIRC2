@@ -26,6 +26,7 @@ public:
     QImage findRectImage(const BasicName &cascadeType) const;
     QStringList methodList() const;
     QQRectList rectangleList(BasicName cascadeType);
+    QImage makeRectImage(bool all=false);
 
 public slots:
     void load(BasicName cascadeType,
