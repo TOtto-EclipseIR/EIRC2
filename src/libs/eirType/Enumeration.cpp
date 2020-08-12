@@ -208,6 +208,11 @@ bool Enumeration::operator < (const Enumeration & other) const
     return result;
 }
 
+int Enumeration::operator()() const
+{
+    return value();
+}
+
 Enumeration::operator int (void) const
 {
     return value();
@@ -288,7 +293,7 @@ QList<Enumeration> Enumeration::parse(const QString & string)
     QList<Enumeration> result;
 
     foreach (QString s, string.simplified()
-                              .split(' ', QString::SkipEmptyParts))
+                              .split(' ', Qt::SkipEmptyParts))
     {
         bool negate = false;
         bool toggle = false;

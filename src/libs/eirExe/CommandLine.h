@@ -29,8 +29,10 @@ class EIREXE_EXPORT CommandLine : public QObject
 public:
     explicit CommandLine(QObject *parent = nullptr);
     void set(CommandLineClientInterface * interface);
+    int positionalArgumentSize() const;
     QStringList positionalArgumentList() const;
-//    QQFileInfoList positionalFileInfoList() const;
+    QString firstPositionalArgument() const;
+    QString takePositionalArgument();
     const QStringList exeArguments() const;
     const QQFileInfo exeFileInfo() const;
     Configuration configuration() const;
@@ -44,7 +46,7 @@ signals:
     void constructed(void);
 
 protected:
-    // processiing
+    // processing
     QStringList expandFileArguments(const QStringList qsl,
                                     const QChar trigger=QChar('@'));
     QStringList extractDirectiveArguments(const QStringList &currentArgs);
@@ -66,7 +68,5 @@ private:
     CommandLineClientInterface * mpInterface=nullptr;
     LegacySettings * mpLegacySettings=nullptr;
     QStringList mPositionalArgumentList;
-    //QQFileInfoList mPositionalFileDirInfoList;
     Configuration mConfiguration;
-
 };

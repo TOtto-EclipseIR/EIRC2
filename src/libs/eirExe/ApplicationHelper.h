@@ -12,7 +12,7 @@
 #include <eirType/VersionInfo.h>
 class ErrorHandler;
 
-//#include "ArgumentList.h"
+//#include "BaseArgumentManager.h"
 class CommandLine;
 class CommandLineClientInterface;
 class ConfigObject;
@@ -46,6 +46,7 @@ public slots:
     void commamdLineScanned();
 
 public: // static
+    static QDateTime baseDateTime();
 
 signals:
     void initFinished();

@@ -26,9 +26,26 @@ void CommandLine::set(CommandLineClientInterface *interface)
     mpInterface = interface;
 }
 
+int CommandLine::positionalArgumentSize() const
+{
+    return positionalArgumentList().size();
+}
+
 QStringList CommandLine::positionalArgumentList() const
 {
     return mPositionalArgumentList;
+}
+
+QString CommandLine::firstPositionalArgument() const
+{
+    return positionalArgumentSize()
+            ? mPositionalArgumentList.first() : QString();
+}
+
+QString CommandLine::takePositionalArgument()
+{
+    TRACEQFI << firstPositionalArgument();
+    return firstPositionalArgument();
 }
 /*
 QQFileInfoList CommandLine::positionalFileInfoList() const
@@ -184,12 +201,9 @@ QStringList CommandLine::parseQtOptions(
         const QStringList &currentArgs)
 {
     QCommandLineParser parser;
-
-    mpInterface->setup(&parser);
-
+    if (mpInterface) mpInterface->setup(&parser);
     NEEDDO(Extract from parser)
-
-            return currentArgs;
+    return currentArgs;
 }
 
 QStringList CommandLine::stripConfiguration(
@@ -212,11 +226,15 @@ QStringList CommandLine::stripConfiguration(
 void CommandLine::parseConfigArgument(const QString &arg,
                                       const MultiName &prefix)
 {
+    TRACEQFI << arg << prefix();
     QStringList qsl = arg.split('=');
     MultiName key = qsl[0].mid(1);
     key.prependName(prefix);
-    mConfiguration.insert(key,
-        (qsl.size() > 1) ? QVariant(qsl[1]) : QVariant(true));
+    QVariant value = (qsl.size() > 1)
+            ? QVariant(qsl[1])
+            : QVariant(true);
+    mConfiguration.insert(key, value);
+    TRACE << key() << "=" << value;
 }
 
 QStringList CommandLine::readTxtFileArguments(const QFileInfo &argFileInfo)

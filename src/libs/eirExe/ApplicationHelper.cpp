@@ -7,6 +7,11 @@
 #include <eirType/Milliseconds.h>
 #include <eirType/VersionInfo.h>
 
+<<<<<<< .mine
+
+=======
+//#include "ArgumentList.h"
+>>>>>>> .theirs
 #include "CommandLine.h"
 #include "ConfigObject.h"
 #include "LegacySettings.h"
@@ -18,9 +23,9 @@ QDateTime ApplicationHelper::smBaseDateTime
 
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
-    , cmpTempDir(new QTemporaryDir())
     , cmpCommandLine(new CommandLine(this))
     , cmpConfigObject(new ConfigObject(this))
+    , cmpTempDir(new QTemporaryDir())
 {
     TRACEFN
     setObjectName("Application");
@@ -107,6 +112,11 @@ void ApplicationHelper::initSettings()
 
 void ApplicationHelper::commamdLineScanned()
 {
-    TRACEFN
+    TRACEFN;
     NEEDDO(it);
+}
+
+QDateTime ApplicationHelper::baseDateTime()
+{
+    return smDateTime;
 }

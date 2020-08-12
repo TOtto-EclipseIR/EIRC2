@@ -12,6 +12,10 @@
 class EIREXE_EXPORT ConfigObject : public QObject
 {
     Q_OBJECT
+
+public:
+    typedef Configuration ConfigSegment;
+
 public:
     explicit ConfigObject(QObject *parent = nullptr);
     bool contains(const MultiName &key) const;

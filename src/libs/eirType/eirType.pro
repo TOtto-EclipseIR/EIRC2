@@ -34,6 +34,8 @@ SOURCES += \
     Region.cpp \
     Sortable.cpp \
     BitFlags.cpp \
+    Value.cpp \
+    ValuePak.cpp \
     Var.cpp \
     VarMap.cpp \
     VarMapMap.cpp \
@@ -50,11 +52,13 @@ SOURCES += \
 HEADERS += \
     ArgumentItem.h \
     BitFlags.h \
+    DProperty.h \
     Enumeration.h \
     EnumerationArray.h \
     EnumerationMask.h \
     FunctionInfo.h \
     Id.h \
+    MinMaxTPair.h \
     MultiName.h \
     Named.h \
     NamedArray.h \
@@ -67,6 +71,8 @@ HEADERS += \
     QQRectList.h \
     Region.h \
     Sortable.h \
+    Value.h \
+    ValuePak.h \
     Var.h \
     VarMap.h \
     VarMapMap.h \

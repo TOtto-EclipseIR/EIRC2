@@ -17,6 +17,7 @@ class EIREXE_EXPORT Console : public ApplicationHelper
 public:
     explicit Console(QObject *parent = nullptr);
     QCoreApplication * core();
+    QObject * appParent();
 
 public slots:
     void writeLine(const QString &qs,
