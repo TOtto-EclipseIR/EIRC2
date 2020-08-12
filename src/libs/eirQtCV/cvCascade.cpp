@@ -32,6 +32,11 @@ bool cvCascade::notLoaded() const
     return mpCascade ? mpCascade->empty() : true;
 }
 
+QFileInfo cvCascade::fileInfo() const
+{
+    return mCascadeFileInfo;
+}
+
 bool cvCascade::load(const QFileInfo cascadeFI)
 {
     TRACEQFI << cascadeFI;

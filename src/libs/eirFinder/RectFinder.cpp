@@ -50,17 +50,17 @@ void RectFinder::load(const BasicName &cascadeType,
     }
 }
 
-void RectFinder::configure(const Configuration &configSegment)
+void RectFinder::configure(const Configuration &baseConfig)
 {
     TRACEFN;
-    configSegment.dump();
-    mNameConfigMap[BasicName()] = configSegment;
+    baseConfig.dump();
+    mNameConfigMap[BasicName()] = baseConfig;
 }
 
-void RectFinder::configure(const BasicName &name,
+void RectFinder::configure(const BasicName &cascadeType,
                            const Configuration &configSegment)
 {
-    TRACEQFI << name();
+    TRACEQFI << cascadeType();
     configSegment.dump();
-    mNameConfigMap[name] = configSegment;
+    mNameConfigMap[cascadeType] = configSegment;
 }

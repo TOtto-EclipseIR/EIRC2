@@ -26,8 +26,8 @@ public:
 public slots:
     void load(const BasicName &cascadeType,
               const QString &xmlFileName);
-    void configure(const Configuration &configSegment);
-    void configure(const BasicName &name,
+    void configure(const Configuration &baseConfig);
+    void configure(const BasicName &cascadeType,
                    const Configuration &configSegment);
 
 signals:

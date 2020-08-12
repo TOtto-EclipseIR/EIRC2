@@ -19,8 +19,8 @@ void RectFinderParameters::calculate(const QSize inputSize,
 {
     TRACEQFI << inputSize << coreSize;
     NEEDUSE(inputSize); NEEDUSE(coreSize);
-    if (qIsNull(mFactor) || mFactor < 0.0)
-        mDetectFactor = 1.100;
+    if (mFactor < 0.999)
+        mDetectFactor = mFindAll ? 1.050 : 1.100;
     else if (mFactor < 2.000)
         mDetectFactor = mFactor;
     else
@@ -29,7 +29,7 @@ void RectFinderParameters::calculate(const QSize inputSize,
     if (mNeighbors)
         mDetectNeighbors = mNeighbors;
     else
-        mDetectNeighbors = 3;
+        mDetectNeighbors = mFindAll ? 1 : 3;
 }
 
 double RectFinderParameters::detectFactor() const
