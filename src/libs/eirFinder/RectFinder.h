@@ -24,7 +24,7 @@ public:
     cvCascade *cascade(const BasicName &cascadeType) const;
 
 public slots:
-    void load(const BasicName &name,
+    void load(const BasicName &cascadeType,
               const QString &xmlFileName);
     void configure(const Configuration &configSegment);
     void configure(const BasicName &name,

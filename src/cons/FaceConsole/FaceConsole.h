@@ -4,7 +4,7 @@
 #include <eirExe/Console.h>
 
 
-//#include <eirRectFind/RectFinder.h>
+#include <eirFinder/RectFinder.h>
 //#include <eirImageIO/OutputManager.h>
 
 class QCommandLineParser;
@@ -39,7 +39,7 @@ signals:
 private:
     ConfigObject * const cmpConfigObject=nullptr;
     OutputManager * const cmpOutput=nullptr;
-//    RectFinder * const cmpRectFinder=nullptr;
+    RectFinder * const cmpRectFinder=nullptr;
   //  MarkerManager * const cmpMarkerManager=nullptr;
 };
 

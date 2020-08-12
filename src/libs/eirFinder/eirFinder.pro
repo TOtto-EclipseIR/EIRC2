@@ -19,9 +19,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include(../../EIRC2.pri)
 #? include(../../opencv4.pri)
 
-LIBS *= /leirType2
-LIBS *= /leirExe2
-LIBS *= /leirQtCV2
+LIBS *= -leirType2
+LIBS *= -leirExe2
+LIBS *= -leirQtCV2
 
 SOURCES += \
     RectFinder.cpp \

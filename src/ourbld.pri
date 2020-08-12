@@ -1,9 +1,14 @@
 # file: {EIRC2repo}./ourbld.pri
 
 OURBLD = "{???}"
-#windows:OURBLD = "windows"
-win32:OURBLD = "win32"
-#win64:OURBLD = "win64"
-win32-g++:OURBLD = "win32-g++"
-win32-msvc:OURBLD = "win32-msvc"
-#message(OURBLD = $$OURBLD)
+windows:OURBLD = "windows"
+
+contains(QMAKE_TARGET.arch, x86_64):{
+    OURBLD = "win64-msvc"
+#    message( "Building for 64 bit")
+}
+! contains(QMAKE_TARGET.arch, x86_64):{
+    OURBLD = "win32-msvc"
+#    message( "Building for 64 bit")
+}
+message(OURBLD = $$OURBLD)

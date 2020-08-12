@@ -8,7 +8,8 @@ RectFinder::RectFinder(QObject *parent)
     TRACEQFI << QOBJNAME(parent);
 }
 
-RectFinder::RectFinder(ConfigObject *cfgObj, QObject *parent)
+RectFinder::RectFinder(ConfigObject *cfgObj,
+                       QObject *parent)
 {
     TRACEQFI << QOBJNAME(parent);
     mpConfigObject = cfgObj;
@@ -34,18 +35,18 @@ cvCascade *RectFinder::cascade(const BasicName &cascadeType) const
     return mNameCascadeMap[cascadeType];
 }
 
-void RectFinder::load(const BasicName &name,
+void RectFinder::load(const BasicName &cascadeType,
                       const QString &xmlFileName)
 {
-    TRACEQFI << name() << xmlFileName;
-    cvCascade * cvc = new cvCascade(name);
+    TRACEQFI << cascadeType() << xmlFileName;
+    cvCascade * cvc = new cvCascade(cascadeType);
     QFileInfo xmlFileInfo(mBaseDir, xmlFileName);
     NEEDDO(exists-readable);
     TRACE << xmlFileInfo << xmlFileInfo.exists()
           << xmlFileInfo.isReadable();
     if (cvc->load(xmlFileInfo.filePath()))
     {
-        mNameCascadeMap[name] = cvc;
+        mNameCascadeMap[cascadeType] = cvc;
     }
 }
 

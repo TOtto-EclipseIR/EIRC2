@@ -18,7 +18,7 @@ FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
     , cmpConfigObject(new ConfigObject(parent))
     , cmpOutput(new OutputManager(parent))
-//    , cmpRectFinder(new RectFinder(cmpConfigObject, parent))
+    , cmpRectFinder(new RectFinder(cmpConfigObject, parent))
   //  , cmpMarkerManager(new MarkerManager(cmpConfigObject, this))
 {
     TRACEFN;
@@ -90,10 +90,16 @@ void FaceConsole::initializeResources()
 {
     TRACEFN;
     QDir baseDir(config()->configuration("/Resources/RectFinder").string("BaseDir"));
+    cmpRectFinder->set(baseDir);
     NEEDDO(exists-readable);
-//    cmpRectFinder->set(baseDir);
-  //  cmpRectFinder->load("PreScan", config()->configuration("/Resources/RectFinder/PreScan").string("XmlFile"));
-//    BEXPECT(cmpRectFinder->loaded("PreScan"));
+
+    cmpRectFinder->configure(config()->configuration("/Option/RectFinder"));
+
+    cmpRectFinder->configure("PreScan",
+                             config()->configuration("/PreScan/RectFinder"));
+    cmpRectFinder->load("PreScan", config()->configuration("/Resources/RectFinder/PreScan/XmlFile").string("XmlFile"));
+    BEXPECT(cmpRectFinder->loaded("PreScan"));
+
     EMIT(resoursesInitd());
  QTimer::singleShot(100, this, &FaceConsole::startProcessing);}
 
