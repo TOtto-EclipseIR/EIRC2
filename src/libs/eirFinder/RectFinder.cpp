@@ -35,6 +35,11 @@ cvCascade *RectFinder::cascade(const BasicName &cascadeType) const
     return mNameCascadeMap[cascadeType];
 }
 
+QQRectList RectFinder::rectangleList(BasicName cascadeType)
+{
+    return mNameRectListMap.value(cascadeType);
+}
+
 void RectFinder::load(BasicName cascadeType,
                       QString xmlFileName)
 {

@@ -7,6 +7,7 @@
 
 #include <eirExe/CommandLine.h>
 #include <eirExe/ConfigObject.h>
+#include <eirType/Success.h>
 #include <eirXfr/Debug.h>
 #include <eirImageIO/BaseOutputDir.h>
 #include <eirImageIO/OutputManager.h>
@@ -133,9 +134,54 @@ QTimer::singleShot(100, this, &FaceConsole::nextFile);
 
 void FaceConsole::processCurrentFile()
 {
-    TRACEFN;
-
-
+    TRACEQFI << mCurrentFile << mCurrentFile.isReadable();
+    Success success(true);
+    QByteArray bytes;
+    QImage image;
+#if 1
+    if (success) success = mFramePak.setInputFrame(mCurrentFile);
+    if (success) cmpRectFinder->set(image);
+    if (success) cmpRectFinder->findRectangles("PreScan");
+    if (success) mCurrentRectangles = cmpRectFinder->rectangleList("PreScan");
+    if (success)
+    {
+        mFramePak.setFrameRectangles(mCurrentRectangles);
+        EMIT(processed(QFileInfo(mCurrentFile),
+             mCurrentRectangles.size()));
+    }
+    else
+    {
+        EMIT(processFailed(mCurrentFile, "Error locating face objects"));
+    }
+#else
+    if (success) success = mCurrentFile.isReadable();
+    if (success) file->setFileName(mCurrentFile
+                        .absoluteFilePath());
+    if (success) success = file->open(QIODevice::ReadOnly);
+    if (success) success = QFileDevice::NoError == file->error();
+    if (success) success = file->size() < 1024;
+    if (success) bytes = file->readAll();
+    if (success) success = file->size() == bytes.size();
+    if ( ! success)
+    {
+        EMIT(processFailed(mCurrentFile,
+            file->errorString().isEmpty()
+                           ? "Error opening to read"
+                           : file->errorString()));
+        return;
+    }
+    if (success) image = QImage::fromData(bytes);
+    if (success) success = image.isNull();
+    if (success) cmpRectFinder->set(image);
+    if (success) cmpRectFinder->findRectangles("PreScan");
+    if (success) mCurrentRectangles = cmpRectFinder->rectangleList("PreScan");
+    if ( ! success)
+    {
+        EMIT(processFailed(mCurrentFile, "Error locating face objects"));
+        return;
+    }
+    mFramePak.setInputFrame(mCurrentFile.absoluteFilePath());
+#endif
     NEEDDO(more);
     EMIT(processed(mCurrentFile, 0));
 }

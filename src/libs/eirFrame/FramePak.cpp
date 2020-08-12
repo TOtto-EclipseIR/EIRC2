@@ -1,6 +1,7 @@
 #include "FramePak.h"
 
 #include <QDataStream>
+#include <QFile>
 
 #include <eirType/Success.h>
 #include <eirXfr/Debug.h>
@@ -37,15 +38,41 @@ QString FramePak::operator()() const
 bool FramePak::setInputFrame(const QString &inputFileName)
 {
     TRACEQFI << inputFileName;
-    Success success(true);
     QFileInfo qfi(inputFileName);
+    return setInputFrame(qfi);
+}
+
+bool FramePak::setInputFrame(const QFileInfo &inputFileInfo)
+{
+    TRACEQFI << inputFileInfo;
+    Success success(true);
+    QFile * file = new QFile();
+    TSTALLOC(file);
+    QByteArray bytes;
     QImage image;
-    if (success) success = qfi.exists();
-    if (success) success = qfi.isReadable();
-    if (success) success = image.load(inputFileName);
-    Value value("InputImage", image);
+    Value value;
+    if (success) success = inputFileInfo.exists();
+    if (success) success = inputFileInfo.isReadable();
+//    if (success) success = image.load(inputFileInfo.absoluteFilePath());
+    if (success) file->setFileName(inputFileInfo.absoluteFilePath());
+    if (success) success = file->open(QIODevice::ReadOnly);
+    if (success) bytes = file->readAll();
+    if (success) image = QImage::fromData(bytes);
+    if (success) success = ! image.isNull();
+    if (success) value.set("InputImage", image);
+    if (success) ValuePak::set(bytes);
     if (success) ValuePak::set(0, value);
     return success;
+}
+
+bool FramePak::setFrameRectangles(const QQRectList &rects)
+{
+    QDataStream data;
+    data << rects;
+    Value value("Frame/PreScan/Rectangles",
+                QVariant(data));
+    ValuePak::set(1, value);
+    return true;
 }
 
 // protected
