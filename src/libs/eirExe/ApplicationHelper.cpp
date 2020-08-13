@@ -10,7 +10,6 @@
 //#include "ArgumentList.h"
 #include "CommandLine.h"
 #include "ConfigObject.h"
-#include "LegacySettings.h"
 
 #include "../../version.h"
 
@@ -77,27 +76,6 @@ void ApplicationHelper::initCommandLine()
     TRACEFN
     TSTALLOC(cmpCommandLine)
     cmpCommandLine->process();
-    NEEDDO(Report LegacySettings and Configuration values)
-    QTimer::singleShot(100, this, &ApplicationHelper::initSettings);
-}
-
-void ApplicationHelper::initSettings()
-{
-    TRACEFN
-
-#if 1
-    NEEDDO(OrgName AppName)
-#else
-    if ( ! mpCmdLineObject->orgName().isNull())
-         qApp->setOrganizationName(mpCmdLineObject->orgName());
-    if ( ! mpCmdLineObject->appName().isNull())
-         qApp->setApplicationName(mpCmdLineObject->appName());
-#endif
-    mpSettings = new LegacySettings(this);
-    TSTALLOC(mpSettings);
-    WANTDO("Take the smell out");
-
-    emit initFinished();
 }
 
 void ApplicationHelper::commamdLineScanned()

@@ -7,7 +7,6 @@ ConfigObject::ConfigObject(QObject *parent)
 {
     TRACEFN
     setObjectName("ConfigObject");
-    TODO(All)
 }
 
 Var ConfigObject::at(const MultiName &key)
@@ -51,11 +50,13 @@ void ConfigObject::set(Var var)
     NEEDDO(it)
 }
 
+/*
 void ConfigObject::setDefault(Var var)
 {
     TRACEFN
     NEEDUSE(var); NEEDDO(it)
 }
+*/
 
 void ConfigObject::setDefault(MultiName key, QVariant defaultVari)
 {
@@ -63,11 +64,13 @@ void ConfigObject::setDefault(MultiName key, QVariant defaultVari)
     NEEDUSE(key); NEEDUSE(defaultVari); NEEDDO(it)
 }
 
+/*
 void ConfigObject::setCurrent(Var var)
 {
     TRACEFN
     NEEDUSE(var); NEEDDO(it)
 }
+*/
 
 void ConfigObject::setCurrent(MultiName key, QVariant currentVari)
 {

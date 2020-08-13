@@ -3,7 +3,7 @@
 #include <QImage>
 #include <QPainter>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 RectFinder::RectFinder(RectCascade *cascade)
     : mCascade(cascade)

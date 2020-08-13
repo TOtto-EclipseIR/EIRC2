@@ -12,11 +12,9 @@
 #include <eirType/VersionInfo.h>
 class ErrorHandler;
 
-//#include "BaseArgumentManager.h"
 class CommandLine;
 class CommandLineClientInterface;
 class ConfigObject;
-class LegacySettings;
 
 class EIREXE_EXPORT ApplicationHelper : public QObject
 {
@@ -39,20 +37,16 @@ protected:
 
 public slots:
     void initCommandLine();
-    void initSettings();
     void commamdLineScanned();
 
 public: // static
     static QDateTime baseDateTime();
 
 signals:
-    void initFinished();
     void scanComplete();
 
 private:
     VersionInfo cmVerInfo;
-    //ArgumentList mArguments;
-    LegacySettings * mpSettings=nullptr;
     CommandLine * const cmpCommandLine=nullptr;
     ConfigObject * const cmpConfigObject=nullptr;
     QTemporaryDir const * cmpTempDir=nullptr;

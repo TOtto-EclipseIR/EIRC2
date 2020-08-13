@@ -40,7 +40,6 @@ SOURCES += \
     FileInfoQueue.cpp \
     FileName.cpp \
     FileWriteQueue.cpp \
-    LegacySettings.cpp \
     QQDirIterator.cpp \
     StdStreams.cpp \
     XmlFile.cpp \
@@ -64,7 +63,6 @@ HEADERS += \
     FileInfoQueue.h \
     FileName.h \
     FileWriteQueue.h \
-    LegacySettings.h \
     QQDirIterator.h \
     StdStreams.h \
     XmlFile.h \
