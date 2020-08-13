@@ -1,6 +1,6 @@
 #include "RectFinderParameters.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 #include <eirExe/ConfigObject.h>
 
 #include "cvSize.h"

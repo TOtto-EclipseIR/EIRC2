@@ -9,16 +9,13 @@
 #include <QImage>
 #include <QList>
 
-#include <eirBase/VarPak.h>
+#include <eirType/VarPak.h>
 #include <eirType/QQFileInfo.h>
 #include <eirType/QQFileInfoList.h>
 #include <eirType/QQRectList.h>
 #include <eirType/Region.h>
 #include <eirExe/ApplicationHelper.h>
 #include <eirExe/XmlFile.h>
-#include <eirImage/ColorImage.h>
-#include <eirImage/ImageFlags.h>
-#include <eirImage/ImagePak.h>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/mat.hpp>

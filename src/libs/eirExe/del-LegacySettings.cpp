@@ -1,5 +1,5 @@
 // file: {repo: EIRC2}./src/libs/eirExe/Settings.cpp
-#include "LegacySettings.h"
+#include "del-LegacySettings.h"
 
 #include <QTimer>
 

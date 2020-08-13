@@ -12,11 +12,9 @@
 #include <eirType/VersionInfo.h>
 class ErrorHandler;
 
-//#include "BaseArgumentManager.h"
 class CommandLine;
 class CommandLineClientInterface;
 class ConfigObject;
-class LegacySettings;
 
 class EIREXE_EXPORT ApplicationHelper : public QObject
 {
@@ -42,11 +40,9 @@ protected:
 
 public slots:
     void initCommandLine();
-    void initSettings();
     void commamdLineScanned();
 
 signals:
-    void initFinished();
     void scanComplete();
 
 private:

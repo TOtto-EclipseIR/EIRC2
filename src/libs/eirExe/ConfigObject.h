@@ -37,10 +37,10 @@ public slots:
     void set(VarMap varMap);
     void set(VarMap varMap, MultiName groupName);
     void set(Var var);
-    void setDefault(Var var);
+//    void setDefault(Var var);
     void setDefault(MultiName key,
                     QVariant defaultVari);
-    void setCurrent(Var var);
+//    void setCurrent(Var var);
     void setCurrent(MultiName key,
                     QVariant currentVari);
 

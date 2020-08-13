@@ -1,6 +1,6 @@
 #include "If2CommandLine.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 If2CommandLine::If2CommandLine() {;}
 

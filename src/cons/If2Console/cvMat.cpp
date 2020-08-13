@@ -8,7 +8,7 @@
 
 #include "cvSize.h"
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 cvMat::cvMat() {;}
 

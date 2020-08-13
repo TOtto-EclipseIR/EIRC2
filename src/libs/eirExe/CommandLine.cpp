@@ -84,7 +84,6 @@ void CommandLine::process()
     if (mpInterface) arguments = parseQtOptions(arguments);
     TRACE << "virtual setup() complete";
 
-    TODO(?)
     mPositionalArgumentList = arguments;
     TRACE << "PosArgs:" << mPositionalArgumentList;
     dump();

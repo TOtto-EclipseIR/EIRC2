@@ -2,7 +2,7 @@
 
 #include <QFileInfo>
 
-#include <eirBase/Debug.h>
+#include <eirXfr/Debug.h>
 
 RectCascade::RectCascade(QObject *parent)
     : QObject(parent)
