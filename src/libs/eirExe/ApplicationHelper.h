@@ -45,9 +45,6 @@ public slots:
     void initSettings();
     void commamdLineScanned();
 
-public: // static
-    static QDateTime baseDateTime();
-
 signals:
     void initFinished();
     void scanComplete();

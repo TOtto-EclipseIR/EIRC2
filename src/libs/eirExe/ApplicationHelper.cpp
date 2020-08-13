@@ -7,11 +7,7 @@
 #include <eirType/Milliseconds.h>
 #include <eirType/VersionInfo.h>
 
-<<<<<<< .mine
-
-=======
 //#include "ArgumentList.h"
->>>>>>> .theirs
 #include "CommandLine.h"
 #include "ConfigObject.h"
 #include "LegacySettings.h"
@@ -64,16 +60,6 @@ CommandLine &ApplicationHelper::rCommandLine()
     return *cmpCommandLine;
 }
 
-ConfigObject *ApplicationHelper::config() const
-{
-    return cmpConfigObject;
-}
-
-ApplicationHelper::baseDateTime()
-{
-    return smBaseDateTime;
-}
-
 void ApplicationHelper::run()
 {
     TRACEFN
@@ -118,5 +104,5 @@ void ApplicationHelper::commamdLineScanned()
 
 QDateTime ApplicationHelper::baseDateTime()
 {
-    return smDateTime;
+    return smBaseDateTime;
 }
