@@ -13,7 +13,8 @@
 
 #include "../../version.h"
 
-QDateTime ApplicationHelper::smDateTime = QDateTime::currentDateTime();
+QDateTime ApplicationHelper::smBaseDateTime
+                = QDateTime::currentDateTime();
 
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
@@ -86,5 +87,5 @@ void ApplicationHelper::commamdLineScanned()
 
 QDateTime ApplicationHelper::baseDateTime()
 {
-    return smDateTime;
+    return smBaseDateTime;
 }

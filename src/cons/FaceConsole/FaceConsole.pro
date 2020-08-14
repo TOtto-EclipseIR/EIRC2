@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include(../../EIRC2.pri)
 include(../../opencv4.pri)
 
+LIBS *= -leirXfr2
 LIBS *= -leirBase2
 LIBS *= -leirType2
 LIBS *= -leirExe2

@@ -30,6 +30,9 @@ public:
     CommandLine &rCommandLine();
     ConfigObject *config() const;
 
+public: // static
+    static QDateTime baseDateTime();
+
 public slots:
     void run();
 
@@ -39,18 +42,19 @@ public slots:
     void initCommandLine();
     void commamdLineScanned();
 
-public: // static
-    static QDateTime baseDateTime();
-
 signals:
     void scanComplete();
 
 private:
     VersionInfo cmVerInfo;
+//    ArgumentList mArguments;
+//    LegacySettings * mpSettings=nullptr;
     CommandLine * const cmpCommandLine=nullptr;
     ConfigObject * const cmpConfigObject=nullptr;
     QTemporaryDir const * cmpTempDir=nullptr;
     QList<QFile *> mTempFiles;
-    static QDateTime smDateTime;
+
+private: // static
+    static QDateTime smBaseDateTime;
 };
 

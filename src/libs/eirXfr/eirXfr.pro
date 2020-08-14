@@ -23,11 +23,13 @@ LIBS *= -leirType2
 
 SOURCES += \
     HexDump.cpp \
+    StartupDebug.cpp \
     eirXfr.cpp \
 
 HEADERS += \
     Debug.h \
     HexDump.h \
+    StartupDebug.h \
     eirXfr_global.h \
     eirXfr.h \
 
