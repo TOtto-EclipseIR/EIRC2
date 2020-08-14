@@ -15,6 +15,16 @@ cvCascade::cvCascade(const BasicName &cascadeType, ConfigObject *configObject)
     TRACEQFI << cascadeType() << QOBJNAME(cmpCfgObj);
 }
 
+BasicName cvCascade::cascadeType() const
+{
+    return cmCascadeType;
+}
+
+const ConfigObject *cvCascade::config() const
+{
+    return cmpCfgObj;
+}
+
 bool cvCascade::isLoaded() const
 {
     return ! notLoaded();
@@ -51,7 +61,8 @@ void cvCascade::unload()
     mpCascade=nullptr;
     mCascadeFileInfo = QFileInfo();
     mCoreSize = QSize();
-    mInputImage = mFindRectImage = QImage();
+    mInputImage = QImage();
+    mFindRectImage = QImage();
     mFindRectMat.clear();
 }
 
@@ -63,32 +74,29 @@ QSize cvCascade::coreSize() const
 bool cvCascade::setImage(const QImage &inputImage)
 {
     TRACEQFI << inputImage.size() << inputImage.format();
-    MUSTDO(it); MUSTDO(mFindRectImage);
-    MUSTDO(mFindRectMat); MUSTUSE(inputImage);
-    MUSTRTN(false);
-    return false;
+    mInputImage = inputImage;
+    mFindRectImage = mInputImage.convertToFormat(QImage::Format_Grayscale8);
+    mFindRectMat.set(mFindRectImage);
+    return ! mInputImage.isNull();
 }
 
 cvCascade::QRectList cvCascade::findRects()
 {
     TRACEQFI << cmCascadeType();
     TSTALLOC(mpCascade);
-    CascadeParameters parms(cmCascadeType,
-                            cmpCfgObj,
-                            mInputImage,
-                            this);
+    CascadeParameters parms(this);
     std::vector<cv::Rect> cvRectVector;
-    cv::InputArray ia(parms.detectMat().mat());
+    cv::InputArray ia(mFindRectMat.mat());
     cvCascade::QRectList results;
 
-            mpCascade->detectMultiScale(ia,
-                                cvRectVector,
-                                parms.factor(),
-                                parms.neighbors(),
-                                parms.flags(),
-                                parms.minSize(),
-                                parms.maxSize()
-                                );
+    mpCascade->detectMultiScale(ia,
+                        cvRectVector,
+                        parms.factor(),
+                        parms.neighbors(),
+                        parms.flags(),
+                        parms.minSize(),
+                        parms.maxSize()
+                        );
 
     foreach (cv::Rect cvrc, cvRectVector)
     {
@@ -99,19 +107,6 @@ cvCascade::QRectList cvCascade::findRects()
     TRACE << results.size() << "Rectangles";
     return results;
 }
-
-
-    /*
-    Classifier::detectMultiScale(
-    InputArray 	image,
-    std::vector< Rect > & 	objects,
-    double 	scaleFactor = 1.1,
-    int 	minNeighbors = 3,
-    int 	flags = 0,
-    Size 	minSize = Size(),
-    Size 	maxSize = Size()
-    )
-    */
 
 QImage cvCascade::findRectImage() const
 {

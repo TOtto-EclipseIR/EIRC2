@@ -2,25 +2,16 @@
 
 #include <eirXfr/Debug.h>
 
-CascadeParameters::CascadeParameters(const BasicName &cascadeType,
-                                     const ConfigObject *cfgObj,
-                                     const QImage &image,
-                                     cvCascade *cascade)
-    : cmpCfgObj(cfgObj)
-    , mCascadeType(cascadeType)
-    , mpCascade(cascade)
+CascadeParameters::CascadeParameters(cvCascade *cascade)
+    : cmpCascade(cascade)
 
 {
     TSTALLOC(cascade);
-    TSTALLOC(cfgObj);
-    TRACEQFI << image.format() << image.size()
-             << cascade->fileInfo();
-    mConfig = cfgObj->configuration("Option/RectFinder");
-    mConfig += cfgObj->configuration(mCascadeType + "/RectFinder");
+    TRACEQFI << cascade->cascadeType()() << cascade->fileInfo();
+    mConfig = cascade->config()->configuration("Option/RectFinder");
+    mConfig += cascade->config()->configuration(mCascadeType + "/RectFinder");
     mConfig.dump();
-    mAll = mConfig.boolean("FindAll");;
-    QImage greyImage = image.convertToFormat(QImage::Format_Grayscale8);
-    mCvMat.set(greyImage);
+    mAll = mConfig.boolean("FindAll", false);
     mFactor = factor();
     mNeighbors = mConfig.unsignedInt("Neighbors", mAll ? 1 : 3);
 }

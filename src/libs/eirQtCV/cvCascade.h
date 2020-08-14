@@ -27,11 +27,12 @@ public:
 public:
     cvCascade(const BasicName &cascadeType,
               ConfigObject *configObject);
-    ConfigObject *config() const;
+    BasicName cascadeType() const;
+    const ConfigObject *config() const;
+    bool load(const QFileInfo cascadeFI);
     bool isLoaded() const;
     bool notLoaded() const;
     QFileInfo fileInfo() const;
-    bool load(const QFileInfo cascadeFI);
     void unload();
     QSize coreSize() const;
     bool setImage(const QImage &inputImage);

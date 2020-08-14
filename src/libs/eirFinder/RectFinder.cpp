@@ -69,7 +69,7 @@ void RectFinder::load(BasicName cascadeType,
                       QString xmlFileName)
 {
     TRACEQFI << cascadeType() << xmlFileName;
-    cvCascade * cvc = new cvCascade(cascadeType);
+    cvCascade * cvc = new cvCascade(cascadeType, mpConfigObject);
     QFileInfo xmlFileInfo(mBaseDir, xmlFileName);
     NEEDDO(exists-readable);
     TRACE << xmlFileInfo << xmlFileInfo.exists()
