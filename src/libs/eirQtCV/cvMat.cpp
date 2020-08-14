@@ -49,3 +49,8 @@ void cvMat::clear()
         mpCvMat = nullptr;
     }
 }
+
+cv::Mat cvMat::mat() const
+{
+    return  mpCvMat ? *mpCvMat : cv::Mat();
+}

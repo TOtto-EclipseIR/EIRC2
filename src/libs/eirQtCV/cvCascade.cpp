@@ -5,21 +5,14 @@
 
 #include <eirXfr/Debug.h>
 
+#include "CascadeParameters.h"
 #include "cvString.h"
 
-cvCascade::cvCascade(const BasicName &cascadeType)
+cvCascade::cvCascade(const BasicName &cascadeType, ConfigObject *configObject)
+    : cmCascadeType(cascadeType)
+    , cmpCfgObj(configObject)
 {
-    TRACEQFI << cascadeType();
-    mCascadeType = cascadeType;
-}
-
-void cvCascade::dump(cvCascade::FindParameters parms,
-                     const QSize inputSize)
-{
-    DUMP << mCascadeType();
-    parms.calculate(inputSize, coreSize());
-    DUMP << QString("%1 = %2 [%3]").arg("Factor").arg(parms.scaleFactor()).arg(parms.mFactor);
-
+    TRACEQFI << cascadeType() << QOBJNAME(cmpCfgObj);
 }
 
 bool cvCascade::isLoaded() const
@@ -76,10 +69,38 @@ bool cvCascade::setImage(const QImage &inputImage)
     return false;
 }
 
-cvCascade::QRectList cvCascade::findRects(cvCascade::FindParameters parms)
+cvCascade::QRectList cvCascade::findRects()
 {
-    TRACEFN;
-    MUSTUSE(parms);
+    TRACEQFI << cmCascadeType();
+    TSTALLOC(mpCascade);
+    CascadeParameters parms(cmCascadeType,
+                            cmpCfgObj,
+                            mInputImage,
+                            this);
+    std::vector<cv::Rect> cvRectVector;
+    cv::InputArray ia(parms.detectMat().mat());
+    cvCascade::QRectList results;
+
+            mpCascade->detectMultiScale(ia,
+                                cvRectVector,
+                                parms.factor(),
+                                parms.neighbors(),
+                                parms.flags(),
+                                parms.minSize(),
+                                parms.maxSize()
+                                );
+
+    foreach (cv::Rect cvrc, cvRectVector)
+    {
+        QRect qrc(cvrc.x, cvrc.y, cvrc.width, cvrc.height);
+        results << qrc;
+    }
+
+    TRACE << results.size() << "Rectangles";
+    return results;
+}
+
+
     /*
     Classifier::detectMultiScale(
     InputArray 	image,
@@ -91,41 +112,9 @@ cvCascade::QRectList cvCascade::findRects(cvCascade::FindParameters parms)
     Size 	maxSize = Size()
     )
     */
-    TRACERTN(cvCascade::QRectList());
-    return cvCascade::QRectList();
-}
 
 QImage cvCascade::findRectImage() const
 {
     return mFindRectImage;
 }
 
-void cvCascade::FindParameters::calculate(const QSize inputSize, const QSize coreSize)
-{
-    TRACEQFI << inputSize << coreSize;
-    MUSTDO(it); MUSTUSE(inputSize); MUSTUSE(coreSize);
-}
-
-double cvCascade::FindParameters::scaleFactor() const
-{
-    TRACEFN; MUSTDO(it); MUSTRTN(0.0);
-
-}
-
-int cvCascade::FindParameters::minNeighbors() const
-{
-    TRACEFN; MUSTDO(it); MUSTRTN(0);
-
-}
-
-int cvCascade::FindParameters::flags()
-{
-    TRACEFN; MUSTDO(it);  MUSTRTN(0);
-
-}
-
-cvCascade::MinMaxPair cvCascade::FindParameters::size() const
-{
-    TRACEFN; MUSTDO(it); MUSTRTN(MinMaxPair());
-
-}

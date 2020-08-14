@@ -12,7 +12,7 @@ class EIRQTCV_EXPORT CascadeParameters
 {
 public:
     CascadeParameters(const BasicName &cascadeType,
-                      ConfigObject *cfgObj,
+                      const ConfigObject *cfgObj,
                       const QImage &image,
                       cvCascade *cascade);
     cvMat detectMat() const;
@@ -21,13 +21,14 @@ public:
     int flags() const;
     qtcvSize minSize() const;
     qtcvSize maxSize() const;
+    Configuration cascadeConfig() const;
 
 private:
-    double factor(); // non-const
+    double calcFactor(); // non-const
 
 
 private:
-    ConfigObject *mpCfgObj=nullptr;
+    const ConfigObject *cmpCfgObj=nullptr;
     BasicName mCascadeType;
     Configuration mConfig;
     bool mAll=false;

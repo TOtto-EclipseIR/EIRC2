@@ -3,10 +3,10 @@
 #include <eirXfr/Debug.h>
 
 CascadeParameters::CascadeParameters(const BasicName &cascadeType,
-                                     ConfigObject *cfgObj,
+                                     const ConfigObject *cfgObj,
                                      const QImage &image,
                                      cvCascade *cascade)
-    : mpCfgObj(cfgObj)
+    : cmpCfgObj(cfgObj)
     , mCascadeType(cascadeType)
     , mpCascade(cascade)
 
@@ -50,7 +50,7 @@ qtcvSize CascadeParameters::maxSize() const
     return mMaxSize;
 }
 
-double CascadeParameters::factor()
+double CascadeParameters::calcFactor()
 {
     double result=1.100;
     double f = mConfig.real("Factor");
