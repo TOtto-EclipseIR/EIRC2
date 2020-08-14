@@ -48,7 +48,7 @@ signals:
 private:
     VersionInfo cmVerInfo;
 //    ArgumentList mArguments;
-    LegacySettings * mpSettings=nullptr;
+//    LegacySettings * mpSettings=nullptr;
     CommandLine * const cmpCommandLine=nullptr;
     ConfigObject * const cmpConfigObject=nullptr;
     QTemporaryDir const * cmpTempDir=nullptr;

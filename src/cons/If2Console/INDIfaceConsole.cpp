@@ -12,9 +12,9 @@
 #include <eirExe/ConfigObject.h>
 #include <eirExe/FileInfoQueue.h>
 #include <eirExe/FileName.h>
-#include <eirExe/LegacySettings.h>
-#include <eirHaar/cvVersion.h>
-#include <eirImage/ImagePakWriterQueue.h>
+//#include <eirExe/LegacySettings.h>
+//#include <eirHaar/cvVersion.h>
+//#include <eirImage/ImagePakWriterQueue.h>
 
 #include "If2CommandLine.h"
 

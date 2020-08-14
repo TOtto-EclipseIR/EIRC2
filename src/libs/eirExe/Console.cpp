@@ -34,6 +34,29 @@ QObject *Console::appParent()
     return parent;
 }
 
+void Console::putChar(const char c)
+{
+    if (mpIn->putChar(c))
+        emit(charPut(c));
+    else
+        emit(charNotPut(c));
+}
+
+void Console::getChar()
+{
+    char buf[2];
+    if (mpIn->getChar(buf))
+        emit charGot(buf[0]);
+    else
+        emit charNotGot();
+}
+
+void Console::readLine()
+{
+    MUSTDO(it);
+
+}
+
 void Console::writeLine(const QString &qs,
                         const bool andFlush)
 {

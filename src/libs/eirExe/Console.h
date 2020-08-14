@@ -20,6 +20,9 @@ public:
     QObject * appParent();
 
 public slots:
+    void putChar(const char c);
+    void getChar();
+    void readLine();
     void writeLine(const QString &qs,
                    const bool andFlush=true);
     void writeLines(const QStringList &qsl);
@@ -28,6 +31,12 @@ public slots:
     void writeErrs(const QStringList &qsl);
 
 signals:
+    void charPut(const char c);
+    void charNotPut(const char c);
+    void charGot(const char c);
+    void charNotGot();
+    void lineRead(const QByteArray line);
+    void lineNotRead();
 
 private:
     QCoreApplication * const cmpCoreApp=nullptr;

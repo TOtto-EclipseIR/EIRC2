@@ -59,6 +59,11 @@ CommandLine &ApplicationHelper::rCommandLine()
     return *cmpCommandLine;
 }
 
+ConfigObject *ApplicationHelper::config() const
+{
+    return cmpConfigObject;
+}
+
 void ApplicationHelper::run()
 {
     TRACEFN

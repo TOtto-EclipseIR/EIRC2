@@ -15,10 +15,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../../EIRC2.pri)
+include(../../useExe.pri)
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
-LIBS *= -leirExe2
 
 SOURCES += \
         HelloConsole.cpp \

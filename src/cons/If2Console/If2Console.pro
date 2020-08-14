@@ -21,7 +21,7 @@ INCLUDEPATH *= F:\lang\OpenCV4\opencv\build\include
 
 LIBS *= -leirBase2
 LIBS *= -leirType2
-LIBS *= -leirImage2
+#LIBS *= -leirImage2
 LIBS *= -leirExe2
 #LIBS *= -leirHaar2
 LIBS *= F:\lang\OpenCV4\opencv\build\x64\vc15\lib\opencv_world430d.lib
