@@ -40,10 +40,9 @@ protected:
 
 public slots:
     void initCommandLine();
-    void commamdLineScanned();
 
 signals:
-    void scanComplete();
+    void commandLineInitd();
 
 private:
     VersionInfo cmVerInfo;

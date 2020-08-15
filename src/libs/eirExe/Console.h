@@ -16,8 +16,10 @@ class EIREXE_EXPORT Console : public ApplicationHelper
     Q_OBJECT
 public:
     explicit Console(QObject *parent = nullptr);
+    /* This mechanism is broken; simply use qApp-> for now
     QCoreApplication * core();
     QObject * appParent();
+    */
 
 public slots:
     void putChar(const char c);

@@ -21,18 +21,23 @@ Console::Console(QObject *parent)
             EXPECT(mpErr->open(stderr, QIODevice::WriteOnly))
 }
 
+/* This mechanism is broken; simply use qApp-> for now
 QCoreApplication *Console::core()
 {
+    TRACEQFI << QOBJNAME(cmpCoreApp);
     return cmpCoreApp;
 }
 
 QObject *Console::appParent()
 {
+    TRACEQFI << QOBJNAME(core());
     QObject * parent = nullptr;
     if (core()) parent = core()->parent();
     TODO(others);
+    TRACERTV() << QOBJNAME(parent);
     return parent;
 }
+*/
 
 void Console::putChar(const char c)
 {

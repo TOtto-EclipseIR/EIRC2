@@ -33,7 +33,7 @@ public:
     QStringList positionalArgumentList() const;
     QString firstPositionalArgument() const;
     QString takePositionalArgument();
-    const QStringList exeArguments() const;
+    const QStringList exeArguments(bool withNumbers=false) const;
     const QQFileInfo exeFileInfo() const;
     Configuration configuration() const;
 

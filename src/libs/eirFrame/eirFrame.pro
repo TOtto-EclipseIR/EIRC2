@@ -1,5 +1,5 @@
 ## file: {repo: EIRC2}./src/libs/eirFrame/eirFrame.pro
-
+QT += gui
 QT += xml
 
 TEMPLATE = lib
@@ -19,7 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../../EIRC2.pri)
-INCLUDEPATH += F:/Qt/5.15.0/msvc2019_64/include/QtGui
+#INCLUDEPATH += F:/Qt/5.15.0/msvc2019_64/include/QtGui
 
 LIBS *= -leirType2
 

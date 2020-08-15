@@ -7,6 +7,17 @@ class HelloConsole : public Console
 {
     Q_OBJECT
 public:
-    HelloConsole();
+    HelloConsole(QObject * parent=nullptr);
+
+public slots:
+    void start();
+    void tellSystem();
+    void finish();
+
+signals:
+    void constructed();
+    void started();
+    void systemTold();
+    void finished();
 };
 
