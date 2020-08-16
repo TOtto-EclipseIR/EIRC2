@@ -1,15 +1,14 @@
 # file: {EIRC2repo}./src/opencv4.pri
 
-#INCLUDEPATH *= F:/lang/OpenCV4/opencv/build/include
 INCLUDEPATH *= $(QTCVINCLUDEPATH)
-#LIBS *=      -LF:\lang\OpenCV4\opencv\build\x64\vc15\lib
-
+LIBS *= -L$(QTCVLIBPATH)
 CONFIG(debug, debug|release) {
-#    LIBS *= -lopencv_world430d
-    LIBS *= F:\lang\OpenCV4\opencv\build\x64\vc15\lib\opencv_world430d.lib
+    LIBS *= -lopencv_world$(QTCVFILENAMEVER)d
+    DISTFILES *= $(QTCVLIBPATH)/../bin/opencv_world$(QTCVFILENAMEVER)d.dll
 } else {
-#    LIBS *= -lopencv_world430
-    LIBS *= F:\lang\OpenCV4\opencv\build\x64\vc15\lib\opencv_world430.lib
+    LIBS *= -lopencv_world$(QTCVFILENAMEVER)
+    DISTFILES *= $(QTCVLIBPATH)/../bin/opencv_world$(QTCVFILENAMEVER).dll
 }
 message(INCLUDEPATH = $${INCLUDEPATH})
-#message(LIBS = $${LIBS})
+message(LIBS = $${LIBS})
+message(DISTFILES = $${DISTFILES})

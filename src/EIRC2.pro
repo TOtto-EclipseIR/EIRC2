@@ -11,7 +11,7 @@ SUBDIRS += \
     ./libs/eirFrame         \
     ./libs/eirFinder        \
     ./libs/eirImageIO       \
-    ./cons/If2Console       \
+#    ./cons/If2Console       \
     ./cons/FaceConsole      \
     ./cons/HelloConsole     \
 

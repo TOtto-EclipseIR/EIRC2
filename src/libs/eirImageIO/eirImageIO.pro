@@ -1,4 +1,4 @@
-QT -= gui
+# QT -= gui # for QImage
 
 TEMPLATE = lib
 DEFINES += EIRIMAGEIO_LIBRARY
