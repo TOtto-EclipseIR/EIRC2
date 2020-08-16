@@ -53,9 +53,13 @@ QQFileInfoList CommandLine::positionalFileInfoList() const
     return mPositionalFileDirInfoList;
 }
 */
-const QStringList CommandLine::exeArguments() const
+const QStringList CommandLine::exeArguments(bool withNumbers) const
 {
-    return cmExeArgumentList;
+    QStringList argList = cmExeArgumentList;
+    if (withNumbers)
+        for (int x = 0; x < argList.size(); ++x)
+            argList[x].prepend(QString("%1. ").arg(x,3));
+    return argList;
 }
 
 const QQFileInfo CommandLine::exeFileInfo() const

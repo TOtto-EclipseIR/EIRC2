@@ -13,11 +13,11 @@
 #include <QTextStream>
 #include <QTimer>
 
-#include <eirXfr/StartupDebug.h>
+//#include <eirXfr/StartupDebug.h>
 
 int main(int argc, char *argv[])
 {
-    StartupDebug slog(argv[0]);
+    //StartupDebug slog(argv[0]);
 
     QCoreApplication a(argc, argv);
     a.setApplicationName("INDI5faceConsole");

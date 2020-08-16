@@ -1,16 +1,45 @@
 #include "StartupDebug.h"
 
 #include <QCoreApplication>
+#include <QDir>
 #include <QIODevice>
+
+#include <cstdlib>
+#include <iostream>
 
 QTextStream * StartupDebug::smpTextStream=nullptr;
 
-StartupDebug::StartupDebug(const QString &exeArg0)
-    : cmExeArg0(exeArg0)
-    , cmExeFileInfo(QFileInfo(cmExeArg0))
-    , cmpStartupFile(new QFile(qApp->parent()))
+StartupDebug::StartupDebug() {;}
+
+bool StartupDebug::start(const QString &exeArg0,
+                         const QString &logDirName)
 {
-    start();
+    std::cout << "Starting Startup Debugging Output handler\n";
+    flush(std::cout);
+    QFileInfo exeFileInfo = QFileInfo(exeArg0);
+    QFile * mpStartupFile = new QFile(qApp->parent());
+    Q_ASSERT(mpStartupFile);
+    QString startupFileName = QString("%1-StartLog.txt")
+            .arg(exeFileInfo.completeBaseName());
+    QDir startupDir = QDir::current();
+    startupDir.mkpath(logDirName);
+    startupDir.cd(logDirName);
+    QFileInfo startupFileInfo(startupDir, startupFileName);
+
+    mpStartupFile->setFileName(startupFileInfo.filePath());
+    if ( ! mpStartupFile->open(QIODevice::WriteOnly
+                         | QIODevice::Text
+                         | QIODevice::Truncate))
+         std::cerr << mpStartupFile->errorString().toLocal8Bit().constData() << Qt::endl;
+    flush(std::cerr);
+    if (mpStartupFile->isWritable())
+    {
+        std::cout << "Startup Debugging Output enabled\n";
+        flush(std::cout);
+        smpTextStream = new QTextStream(mpStartupFile);
+        qInstallMessageHandler(myStartupMessageHandler);
+    }  // else stay with stderr
+    return nullptr != smpTextStream;
 }
 
 void StartupDebug::finish()
@@ -18,24 +47,7 @@ void StartupDebug::finish()
     qInstallMessageHandler(0);
     delete smpTextStream;
     smpTextStream = nullptr;
-    cmpStartupFile->close();
-
-}
-
-bool StartupDebug::start()
-{
-    mStartupFileName = QString("./%1-StartLog.txt")
-            .arg(cmExeFileInfo.completeBaseName());
-    cmpStartupFile->setFileName(mStartupFileName);
-    cmpStartupFile->open(QIODevice::WriteOnly
-                         | QIODevice::Text
-                         | QIODevice::Truncate);
-    if (cmpStartupFile->isWritable())
-    {
-        smpTextStream = new QTextStream(cmpStartupFile);
-        qInstallMessageHandler(myStartupMessageHandler);
-    }  // else stay with stderr
-    return nullptr != smpTextStream;
+    mpStartupFile->close();
 }
 
 void StartupDebug::myStartupMessageHandler(QtMsgType type,

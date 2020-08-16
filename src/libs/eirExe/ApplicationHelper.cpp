@@ -23,7 +23,7 @@ ApplicationHelper::ApplicationHelper(QObject *parent)
     , cmpTempDir(new QTemporaryDir())
 {
     TRACEFN
-    setObjectName("Application");
+    setObjectName("ApplicationHelper");
     TSTALLOC(cmpTempDir);
     EXPECT(cmpTempDir->isValid())
 }
@@ -77,13 +77,9 @@ void ApplicationHelper::initCommandLine()
     TRACEFN
     TSTALLOC(cmpCommandLine)
     cmpCommandLine->process();
+    EMIT(commandLineInitd());
 }
 
-void ApplicationHelper::commamdLineScanned()
-{
-    TRACEFN;
-    NEEDDO(it);
-}
 
 QDateTime ApplicationHelper::baseDateTime()
 {
