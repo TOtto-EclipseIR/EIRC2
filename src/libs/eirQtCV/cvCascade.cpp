@@ -11,7 +11,7 @@
 cvCascade::cvCascade(const CascadeType &cascadeType)
     : cmCascadeType(cascadeType)
 {
-    TRACEQFI << cascadeType.name() << QOBJNAME(cmpCfgObj);
+    TRACEQFI << cascadeType.name();
 }
 
 CascadeType cvCascade::cascadeType() const
@@ -19,21 +19,60 @@ CascadeType cvCascade::cascadeType() const
     return cmCascadeType;
 }
 
-const ConfigObject *cvCascade::config() const
+bool cvCascade::loadCascade(const QFileInfo &cascadeXmlInfo)
 {
-    return cmpCfgObj;
+    TRACEQFI << cascadeType().name() << cascadeXmlInfo;
+    NEEDDO(it);
+    return false;
 }
 
-void cvCascade::clear()
+bool cvCascade::notLoaded() const
 {
-    mClassifier = cv::CascadeClassifier();
-    mCascadeFileInfo = QFileInfo{};
+    return mpCascade ? mpCascade->empty() : true;
+}
+
+bool cvCascade::isLoaded() const
+{
+    return mpCascade ? ! mpCascade->empty() : false;
+}
+
+void cvCascade::unload()
+{
+    if (mpCascade)
+    {
+        delete mpCascade;
+        mpCascade = nullptr;
+    }
+    mCascadeXmlInfo = QFileInfo();
     mCoreSize = QSize();
-    mInputImage = QImage();
-    mFindRectImage = QImage();
-    mFindRectMat = cvMat();
 }
 
+QSize cvCascade::coreSize() const
+{
+    return mCoreSize;
+}
+
+QFileInfo cvCascade::cascadeFileInfo() const
+{
+    return mCascadeXmlInfo;
+}
+
+cvCascade::RectList cvCascade::detect(const cvMat &detectMat,
+                                      const CascadeParameters &parms)
+{
+    NEEDDO(it);
+    return cvCascade::RectList();
+}
+
+bool cvCascade::getCoreSize(const QFileInfo &cascadeXmlInfo)
+{
+    TRACEQFI << cascadeXmlInfo;
+
+    NEEDDO(it);
+    return false;
+}
+
+/*
 bool cvCascade::isLoaded() const
 {
     return ! notLoaded();
@@ -118,4 +157,6 @@ QImage cvCascade::findRectImage() const
 {
     return mFindRectImage;
 }
+
+*/
 

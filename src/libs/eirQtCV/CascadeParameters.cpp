@@ -5,7 +5,13 @@
 CascadeParameters::CascadeParameters(const cvCascade &cascade)
     : cmCascade(cascade)
 {
-    TRACEQFI << cascade.cascadeType().name() << cascade.fileInfo();
+    TRACEQFI << cascade.cascadeType().name() << cascade.cascadeFileInfo();
+#if 1
+    NEEDDO(it);
+    mAll = false;
+    mFactor = 1.050;
+    mNeighbors = 3;
+#else
     mConfig = cascade.config()->configuration("Option/RectFinder");
     mConfig.insert(cascade.config()->
                    configuration(mCascadeType.name() + "/RectFinder"));
@@ -13,6 +19,7 @@ CascadeParameters::CascadeParameters(const cvCascade &cascade)
     mAll = mConfig.boolean("FindAll", false);
     mFactor = factor();
     mNeighbors = mConfig.unsignedInt("Neighbors", mAll ? 1 : 3);
+#endif
 }
 
 double CascadeParameters::factor() const

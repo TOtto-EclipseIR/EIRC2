@@ -28,7 +28,6 @@ public:
 public:
     cvCascade(const CascadeType &cascadeType);
     CascadeType cascadeType() const;
-    void clear();
     bool loadCascade(const QFileInfo &cascadeXmlInfo);
     bool notLoaded() const;
     bool isLoaded() const;
@@ -39,10 +38,10 @@ public:
                      const CascadeParameters &parms);
 
 private:
-    bool getCoreSize();
+    bool getCoreSize(const QFileInfo &cascadeXmlInfo);
 
 private:
-    CascadeType mCascadeType=CascadeType::nullCascadeType;
+    const CascadeType cmCascadeType=CascadeType::nullCascadeType;
     QFileInfo mCascadeXmlInfo;
     cv::CascadeClassifier *mpCascade=nullptr;
     QSize mCoreSize;
