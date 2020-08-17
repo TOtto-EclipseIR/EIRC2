@@ -36,6 +36,10 @@ HEADERS += \
     FaceConsole.h
 
 DISTFILES += \
+    ../../../../../bin/config/DetectCascades.txt \
+    ../../../../../bin/config/DetectRD.txt \
+    ../../../../../bin/config/Input01.txt \
+    ../../../../../bin/config/OutputRD.txt \
     Notes.txt \
     T:/bin/DetectCascades.txt \
     T:/bin/DetectRD.txt \

@@ -24,6 +24,7 @@ LIBS *= -leirExe2
 
 SOURCES += \
     CascadeParameters.cpp \
+    CascadeType.cpp \
     cvCascade.cpp \
     cvMat.cpp \
     cvString.cpp \
@@ -32,6 +33,7 @@ SOURCES += \
 
 HEADERS += \
     CascadeParameters.h \
+    CascadeType.h \
     cvCascade.h \
     cvMat.h \
     cvString.h \

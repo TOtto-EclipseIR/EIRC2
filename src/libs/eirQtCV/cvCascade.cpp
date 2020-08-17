@@ -1,21 +1,20 @@
 #include "cvCascade.h"
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/objdetect.hpp>
+//#include <opencv2/opencv.hpp>
+//#include <opencv2/objdetect.hpp>
 
 #include <eirXfr/Debug.h>
 
 #include "CascadeParameters.h"
 #include "cvString.h"
 
-cvCascade::cvCascade(const BasicName &cascadeType, ConfigObject *configObject)
+cvCascade::cvCascade(const CascadeType &cascadeType)
     : cmCascadeType(cascadeType)
-    , cmpCfgObj(configObject)
 {
-    TRACEQFI << cascadeType() << QOBJNAME(cmpCfgObj);
+    TRACEQFI << cascadeType.name() << QOBJNAME(cmpCfgObj);
 }
 
-BasicName cvCascade::cascadeType() const
+CascadeType cvCascade::cascadeType() const
 {
     return cmCascadeType;
 }
@@ -25,6 +24,16 @@ const ConfigObject *cvCascade::config() const
     return cmpCfgObj;
 }
 
+void cvCascade::clear()
+{
+    mClassifier = cv::CascadeClassifier();
+    mCascadeFileInfo = QFileInfo{};
+    mCoreSize = QSize();
+    mInputImage = QImage();
+    mFindRectImage = QImage();
+    mFindRectMat = cvMat();
+}
+
 bool cvCascade::isLoaded() const
 {
     return ! notLoaded();
@@ -32,7 +41,7 @@ bool cvCascade::isLoaded() const
 
 bool cvCascade::notLoaded() const
 {
-    return mpCascade ? mpCascade->empty() : true;
+    return mClassifier.empty();
 }
 
 QFileInfo cvCascade::fileInfo() const
@@ -40,15 +49,15 @@ QFileInfo cvCascade::fileInfo() const
     return mCascadeFileInfo;
 }
 
-bool cvCascade::load(const QFileInfo cascadeFI)
+bool cvCascade::load(const QFileInfo cascadeFileInfo)
 {
-    TRACEQFI << cascadeFI;
+    TRACEQFI << cascadeFileInfo;
     unload();
-    cv::CascadeClassifier * cascade = new cv::CascadeClassifier();
-    if (cascade->load(cvString(cascadeFI.filePath())))
+    cv::CascadeClassifier cascade;
+    if (cascade.load(cvString(cascadeFileInfo.filePath())))
     {
-        mpCascade = cascade;
-        mCascadeFileInfo = cascadeFI;
+        mClassifier = cascade;
+        mCascadeFileInfo = cascadeFileInfo;
         NEEDDO(CoreSize);
     }
     return isLoaded();
@@ -57,8 +66,7 @@ bool cvCascade::load(const QFileInfo cascadeFI)
 void cvCascade::unload()
 {
     TRACEQFI << mCascadeFileInfo;
-    delete mpCascade;
-    mpCascade=nullptr;
+    mClassifier = cv::CascadeClassifier();
     mCascadeFileInfo = QFileInfo();
     mCoreSize = QSize();
     mInputImage = QImage();
@@ -80,23 +88,21 @@ bool cvCascade::setImage(const QImage &inputImage)
     return ! mInputImage.isNull();
 }
 
-cvCascade::QRectList cvCascade::findRects()
+cvCascade::RectList cvCascade::findRectangles()
 {
     TRACEQFI << cmCascadeType();
-    TSTALLOC(mpCascade);
-    CascadeParameters parms(this);
+    CascadeParameters parms(*this);
     std::vector<cv::Rect> cvRectVector;
     cv::InputArray ia(mFindRectMat.mat());
-    cvCascade::QRectList results;
+    cvCascade::RectList results;
 
-    mpCascade->detectMultiScale(ia,
+    mClassifier.detectMultiScale(ia,
                         cvRectVector,
                         parms.factor(),
                         parms.neighbors(),
                         parms.flags(),
                         parms.minSize(),
-                        parms.maxSize()
-                        );
+                        parms.maxSize());
 
     foreach (cv::Rect cvrc, cvRectVector)
     {

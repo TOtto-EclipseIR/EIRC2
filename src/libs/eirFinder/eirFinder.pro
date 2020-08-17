@@ -24,10 +24,12 @@ LIBS *= -leirExe2
 LIBS *= -leirQtCV2
 
 SOURCES += \
+    FinderCascade.cpp \
     RectFinder.cpp \
     eirFinder.cpp
 
 HEADERS += \
+    FinderCascade.h \
     RectFinder.h \
     eirFinder_global.h \
     eirFinder.h

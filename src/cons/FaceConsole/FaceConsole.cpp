@@ -26,7 +26,7 @@ FaceConsole::FaceConsole(QObject *parent)
     setObjectName("FaceConsole");
     TSTALLOC(cmpConfigObject);
     TSTALLOC(cmpOutput);
-//    TSTALLOC(cmpRectFinder);
+    TSTALLOC(cmpRectFinder);
   //  TSTALLOC(cmpMarkerManager);
 
     QTimer::singleShot(500, this, &FaceConsole::initializeApplication);
@@ -46,6 +46,8 @@ void FaceConsole::initializeApplication()
               .arg(qApp->applicationName())
               .arg(qApp->applicationVersion())
               .arg(locale.toString(QDateTime::currentDateTime())));
+    CONNECT(this, &FaceConsole::processingStarted,
+            this, &FaceConsole::nextFile);
     EMIT(applicationInitd());
     QTimer::singleShot(100, this, &FaceConsole::setupCommandLine);
 }
@@ -90,15 +92,23 @@ void FaceConsole::setConfiguration()
 void FaceConsole::initializeResources()
 {
     TRACEFN;
-    QDir baseDir(config()->configuration("/Resources/RectFinder").string("BaseDir"));
-    cmpRectFinder->set(baseDir);
-    NEEDDO(exists-readable);
-
     cmpRectFinder->configure(config()->configuration("/Option/RectFinder"));
-
     cmpRectFinder->configure("PreScan",
                              config()->configuration("/PreScan/RectFinder"));
-    cmpRectFinder->load("PreScan", config()->configuration("/Resources/RectFinder/PreScan/XmlFile").string("XmlFile"));
+
+    QDir baseDir(config()->configuration("/Resources/RectFinder")
+                 .string("BaseDir"));
+    cmpRectFinder->set(baseDir);
+    QString cascadeFileName = config()->
+            configuration("/Resources/RectFinder/PreScan")
+                .string("XmlFile");
+    QFileInfo cascadeFileInfo(baseDir, cascadeFileName);
+    TRACE << cascadeFileInfo << cascadeFileInfo.exists()
+          << cascadeFileInfo.isReadable() << cascadeFileInfo.isFile();
+    EXPECT(cascadeFileInfo.exists());
+    EXPECT(cascadeFileInfo.isReadable());
+    EXPECT(cascadeFileInfo.isFile());
+    cmpRectFinder->load("PreScan", cascadeFileInfo.absoluteFilePath());
     BEXPECT(cmpRectFinder->loaded("PreScan"));
 
     EMIT(resoursesInitd());
@@ -108,7 +118,7 @@ void FaceConsole::startProcessing()
 {
     TRACEFN;
 
-    cmpOutput->start();
+    NEEDDO(cmpOutput->start());
 
     NEEDDO(more);
     EMIT(processingStarted());
@@ -141,7 +151,7 @@ void FaceConsole::processCurrentFile()
     QImage rectImage;
 #if 1
     if (success) success = mFramePak.setInputFrame(mCurrentFile);
-    if (success) cmpRectFinder->set(image);
+    if (success) cmpRectFinder->set("PreScan", image);
     if (success) cmpRectFinder->findRectangles("PreScan");
     if (success) mCurrentRectangles = cmpRectFinder->rectangleList("PreScan");
     if (success) rectImage = cmpRectFinder->makeRectImage();
@@ -157,6 +167,7 @@ void FaceConsole::processCurrentFile()
         mFramePak.setFrameRectangles(mCurrentRectangles);
         EMIT(processed(QFileInfo(mCurrentFile),
              mCurrentRectangles.size()));
+        NEEDDO("somethingWithFramePak");
     }
     else
     {

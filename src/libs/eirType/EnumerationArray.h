@@ -17,8 +17,8 @@ public:
     void fill(const T & t=T())
     {
         ENUM e;
-        _vector.clear();
-        _vector.fill(t, e.last().value());
+        mTVector.clear();
+        mTVector.fill(t, e.last().value());
     }
 
     void set(const T & t,
@@ -28,19 +28,24 @@ public:
         ENUM e = from;
         do
         {
-            _vector[e] = t;
+            mTVector[e] = t;
         }   while (++e <= to);
     }
 
     void set(const ENUM e,
              const T & t)
     {
-        _vector[e] = t;
+        mTVector[e] = t;
     }
 
     T at(const ENUM e) const
     {
-        return _vector[e];
+        return mTVector[e];
+    }
+
+    T &at(const ENUM e)
+    {
+        return mTVector[e];
     }
 
     bool isNull(const ENUM e) const
@@ -49,7 +54,7 @@ public:
     }
 
 private:
-    QVector<T> _vector;
+    QVector<T> mTVector;
 };
 
 #endif // ENUMERATIONARRAY_H

@@ -2,14 +2,13 @@
 
 #include <eirXfr/Debug.h>
 
-CascadeParameters::CascadeParameters(cvCascade *cascade)
-    : cmpCascade(cascade)
-
+CascadeParameters::CascadeParameters(const cvCascade &cascade)
+    : cmCascade(cascade)
 {
-    TSTALLOC(cascade);
-    TRACEQFI << cascade->cascadeType()() << cascade->fileInfo();
-    mConfig = cascade->config()->configuration("Option/RectFinder");
-    mConfig += cascade->config()->configuration(mCascadeType + "/RectFinder");
+    TRACEQFI << cascade.cascadeType().name() << cascade.fileInfo();
+    mConfig = cascade.config()->configuration("Option/RectFinder");
+    mConfig.insert(cascade.config()->
+                   configuration(mCascadeType.name() + "/RectFinder"));
     mConfig.dump();
     mAll = mConfig.boolean("FindAll", false);
     mFactor = factor();

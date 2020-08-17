@@ -11,42 +11,40 @@
 
 #include <eirType/BasicName.h>
 #include <eirExe/Configuration.h>
+#include <eirType/MinMaxTPair.h>
 
+#include "CascadeType.h"
 #include "cvMat.h"
 
 namespace cv { class CascadeClassifier; }
+
 class CascadeParameters;
-class ConfigObject;
 
 class EIRQTCV_EXPORT cvCascade
 {
 public:
-    typedef QList<QRect> QRectList;
-    typedef QPair<QSize, QSize> MinMaxPair;
+    typedef QList<QRect> RectList;
 
 public:
-    cvCascade(const BasicName &cascadeType,
-              ConfigObject *configObject);
-    BasicName cascadeType() const;
-    const ConfigObject *config() const;
-    bool load(const QFileInfo cascadeFI);
-    bool isLoaded() const;
+    cvCascade(const CascadeType &cascadeType);
+    CascadeType cascadeType() const;
+    void clear();
+    bool loadCascade(const QFileInfo &cascadeXmlInfo);
     bool notLoaded() const;
-    QFileInfo fileInfo() const;
+    bool isLoaded() const;
     void unload();
     QSize coreSize() const;
-    bool setImage(const QImage &inputImage);
-    QRectList findRects();
-    QImage findRectImage() const;
+    QFileInfo cascadeFileInfo() const;
+    RectList detect(const cvMat &detectMat,
+                     const CascadeParameters &parms);
 
 private:
-    const BasicName cmCascadeType;
-    const ConfigObject *cmpCfgObj=nullptr;
+    bool getCoreSize();
+
+private:
+    CascadeType mCascadeType=CascadeType::nullCascadeType;
+    QFileInfo mCascadeXmlInfo;
     cv::CascadeClassifier *mpCascade=nullptr;
-    QFileInfo mCascadeFileInfo;
     QSize mCoreSize;
-    QImage mInputImage;
-    QImage mFindRectImage;
-    cvMat mFindRectMat;
 };
 

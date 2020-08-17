@@ -4,17 +4,17 @@
 
 #include <eirXfr/Debug.h>
 
-RectFinder::RectFinder(QObject *parent)
-    : QObject(parent)
-{
-    TRACEQFI << QOBJNAME(parent);
-}
-
 RectFinder::RectFinder(ConfigObject *cfgObj,
                        QObject *parent)
 {
-    TRACEQFI << QOBJNAME(parent);
+    TRACEQFI << QOBJNAME(cfgObj) << QOBJNAME(parent);
     mpConfigObject = cfgObj;
+    for (CascadeType ct = CascadeType::nullCascadeType;
+         ct < CascadeType::sizeCascadeType;
+         ++ct)
+    {
+        mCascades.set(ct, cvCascade(ct, mpConfigObject));
+    }
 }
 
 void RectFinder::set(ConfigObject *cfgObj)
@@ -22,87 +22,91 @@ void RectFinder::set(ConfigObject *cfgObj)
     mpConfigObject = cfgObj;
 }
 
-void RectFinder::set(const QDir &baseDir)
+void RectFinder::set(const QDir &baseCascadeDir)
 {
-    mBaseDir = baseDir;
+    TRACEQFI << baseCascadeDir << baseCascadeDir.exists() << baseCascadeDir.isReadable();
+    mBaseCascadeDir = baseCascadeDir;
 }
 
-bool RectFinder::loaded(const BasicName &cascadeType) const
+bool RectFinder::loaded(const CascadeType &cascadeType) const
 {
-    return mNameCascadeMap.contains(cascadeType);
+    return mCascades.at(cascadeType).isLoaded();
 }
 
-cvCascade *RectFinder::cascade(const BasicName &cascadeType) const
+cvCascade RectFinder::cascade(const CascadeType &cascadeType) const
 {
-    return mNameCascadeMap[cascadeType];
+    return mCascades.at(cascadeType);
 }
 
-QImage RectFinder::findRectImage(const BasicName &cascadeType) const
+QImage RectFinder::findRectImage(const CascadeType &cascadeType) const
 {
     TRACEQFI << cascadeType();
-    return cascade(cascadeType)->findRectImage();
+    return cascade(cascadeType).findRectImage();
 }
 
-QQRectList RectFinder::rectangleList(BasicName cascadeType)
+QQRectList RectFinder::rectangleList(const CascadeType &cascadeType)
 {
-    return mNameRectListMap.value(cascadeType);
+    return mRectLists.at(cascadeType);
 }
 
-QImage RectFinder::makeRectImage(bool all)
+QImage RectFinder::makeRectImage(const CascadeType &cascadeType, bool all)
 {
-    TRACEQFI << all;
+    TRACEQFI << cascadeType.name() << all;
     NEEDUSE(all);
-    QImage rectImage = findRectImage("PreScan");
+    QImage rectImage = findRectImage(cascadeType);
     QPainter painter;
     painter.begin(&rectImage);
     painter.setPen(Qt::blue);
     QBrush brush(Qt::blue);
     QPen pen(brush, all ? 1 : 3);
     painter.setPen(pen);
-    foreach (QRect rc, rectangleList("PreScan"))
+    foreach (QRect rc, rectangleList(cascadeType))
         painter.drawRect(rc);
     painter.end();
     return rectImage;
 }
 
-void RectFinder::load(BasicName cascadeType,
-                      QString xmlFileName)
+void RectFinder::load(const CascadeType &cascadeType,
+                      const QFileInfo &xmlFileInfo)
 {
-    TRACEQFI << cascadeType() << xmlFileName;
-    cvCascade * cvc = new cvCascade(cascadeType, mpConfigObject);
-    QFileInfo xmlFileInfo(mBaseDir, xmlFileName);
-    NEEDDO(exists-readable);
+    TRACEQFI << cascadeType.name() << xmlFileInfo;
+    cvCascade & cvc = mCascades.at(cascadeType);
+    cvc.clear();
     TRACE << xmlFileInfo << xmlFileInfo.exists()
-          << xmlFileInfo.isReadable();
-    if (cvc->load(xmlFileInfo.filePath()))
-    {
-        mNameCascadeMap[cascadeType] = cvc;
-    }
+          << xmlFileInfo.isReadable() << xmlFileInfo.isFile();
+    WEXPECT(xmlFileInfo.exists());
+    WEXPECT(xmlFileInfo.isReadable());
+    WEXPECT(xmlFileInfo.isFile());
+    WEXPECT(xmlFileInfo.isFile());
+    cvCascade newCvc(cascadeType, mpConfigObject);
+    if (newCvc.load(xmlFileInfo.filePath()))
+        cvc = newCvc;
 }
 
-void RectFinder::configure(Configuration baseConfig)
+void RectFinder::configure(const Configuration &baseConfig)
 {
     TRACEFN;
     baseConfig.dump();
-    mNameConfigMap[BasicName()] = baseConfig;
+    mConfigurations.set(CascadeType::nullCascadeType, baseConfig);
 }
 
-void RectFinder::configure(BasicName cascadeType,
-                           Configuration cascadeConfig)
+void RectFinder::configure(const CascadeType cascadeType,
+                           const Configuration &cascadeConfig)
 {
-    TRACEQFI << cascadeType();
+    TRACEQFI << cascadeType.name();
     cascadeConfig.dump();
-    mNameConfigMap[cascadeType] = cascadeConfig;
+    mConfigurations.set(cascadeType, cascadeConfig);
 }
 
-void RectFinder::set(QImage image)
+void RectFinder::set(const CascadeType &cascadeType,
+                     const QImage &image)
 {
-    TRACEQFI << image.size() << image.format();
-    NEEDDO(it); NEEDUSE(image);
+    TRACEQFI << cascadeType() << image.size() << image.format();
+    mCascades.at(cascadeType).setImage(image);
 }
 
-void RectFinder::findRectangles(BasicName cascadeType)
+void RectFinder::findRectangles(const CascadeType &cascadeType)
 {
     TRACEQFI << cascadeType();
-    NEEDDO(it); NEEDUSE(cascadeType);
+    mCascades.at(cascadeType).findRectangles();
 }
