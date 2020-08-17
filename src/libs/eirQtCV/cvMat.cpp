@@ -54,3 +54,10 @@ cv::Mat cvMat::mat() const
 {
     return  mpCvMat ? *mpCvMat : cv::Mat();
 }
+
+QString cvMat::dumpString() const
+{
+    return QString("cvMat size=%1x%2 type=%3")
+            .arg(mat().size().width).arg(mat().size().width)
+            .arg(mat().type());
+}

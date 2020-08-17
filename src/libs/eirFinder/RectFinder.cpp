@@ -9,12 +9,10 @@ RectFinder::RectFinder(ConfigObject *cfgObj,
 {
     TRACEQFI << QOBJNAME(cfgObj) << QOBJNAME(parent);
     mpConfigObject = cfgObj;
-    for (CascadeType ct = CascadeType::nullCascadeType;
-         ct < CascadeType::sizeCascadeType;
-         ++ct)
-    {
-        mCascades.set(ct, cvCascade(ct, mpConfigObject));
-    }
+    mFinderCascadeList.reserve(CascadeType::sizeCascadeType);
+    for (int x = 0; x < CascadeType::sizeCascadeType; ++x)
+        mFinderCascadeList.append(FinderCascade(CascadeType(x),
+                                                mpConfigObject));
 }
 
 void RectFinder::set(ConfigObject *cfgObj)
@@ -30,23 +28,27 @@ void RectFinder::set(const QDir &baseCascadeDir)
 
 bool RectFinder::loaded(const CascadeType &cascadeType) const
 {
-    return mCascades.at(cascadeType).isLoaded();
+    NEEDDO(viaFinderCascade);
+    return false;
 }
 
 cvCascade RectFinder::cascade(const CascadeType &cascadeType) const
 {
-    return mCascades.at(cascadeType);
+    NEEDDO(viaFinderCascade);
+    return cvCascade(cascadeType);
 }
 
 QImage RectFinder::findRectImage(const CascadeType &cascadeType) const
 {
     TRACEQFI << cascadeType();
-    return cascade(cascadeType).findRectImage();
+    NEEDDO(viaFinderCascade);
+    return QImage();
 }
 
 QQRectList RectFinder::rectangleList(const CascadeType &cascadeType)
 {
-    return mRectLists.at(cascadeType);
+    NEEDDO(viaFinderCascade);
+    return QQRectList();
 }
 
 QImage RectFinder::makeRectImage(const CascadeType &cascadeType, bool all)
@@ -70,6 +72,8 @@ void RectFinder::load(const CascadeType &cascadeType,
                       const QFileInfo &xmlFileInfo)
 {
     TRACEQFI << cascadeType.name() << xmlFileInfo;
+    NEEDDO(viaFinderCascade);
+#if 0
     cvCascade & cvc = mCascades.at(cascadeType);
     cvc.clear();
     TRACE << xmlFileInfo << xmlFileInfo.exists()
@@ -81,13 +85,15 @@ void RectFinder::load(const CascadeType &cascadeType,
     cvCascade newCvc(cascadeType, mpConfigObject);
     if (newCvc.load(xmlFileInfo.filePath()))
         cvc = newCvc;
+#endif
 }
 
 void RectFinder::configure(const Configuration &baseConfig)
 {
     TRACEFN;
     baseConfig.dump();
-    mConfigurations.set(CascadeType::nullCascadeType, baseConfig);
+    mBaseConfiguration = baseConfig;
+    NEEDDO(somethingWithIt);
 }
 
 void RectFinder::configure(const CascadeType cascadeType,
@@ -95,18 +101,22 @@ void RectFinder::configure(const CascadeType cascadeType,
 {
     TRACEQFI << cascadeType.name();
     cascadeConfig.dump();
-    mConfigurations.set(cascadeType, cascadeConfig);
+    NEEDDO(viaFinderCascade);
+//    mConfigurations.set(cascadeType, cascadeConfig);
 }
 
 void RectFinder::set(const CascadeType &cascadeType,
                      const QImage &image)
 {
     TRACEQFI << cascadeType() << image.size() << image.format();
-    mCascades.at(cascadeType).setImage(image);
+    NEEDDO(viaFinderCascade);
+
+//    mCascades.at(cascadeType).setImage(image);
 }
 
 void RectFinder::findRectangles(const CascadeType &cascadeType)
 {
     TRACEQFI << cascadeType();
-    mCascades.at(cascadeType).findRectangles();
+    NEEDDO(viaFinderCascade);
+//    mCascades.at(cascadeType).findRectangles();
 }

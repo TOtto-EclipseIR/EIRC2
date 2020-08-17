@@ -2,22 +2,19 @@
 
 #include <eirXfr/Debug.h>
 
-CascadeParameters::CascadeParameters(const cvCascade &cascade)
-    : cmCascade(cascade)
+CascadeParameters::CascadeParameters(const Configuration &cascadeConfig)
+    : mConfig(cascadeConfig)
 {
-    TRACEQFI << cascade.cascadeType().name() << cascade.cascadeFileInfo();
+    TRACEFN;
 #if 1
     NEEDDO(it);
     mAll = false;
     mFactor = 1.050;
     mNeighbors = 3;
 #else
-    mConfig = cascade.config()->configuration("Option/RectFinder");
-    mConfig.insert(cascade.config()->
-                   configuration(mCascadeType.name() + "/RectFinder"));
     mConfig.dump();
     mAll = mConfig.boolean("FindAll", false);
-    mFactor = factor();
+    mFactor = calcFactor();
     mNeighbors = mConfig.unsignedInt("Neighbors", mAll ? 1 : 3);
 #endif
 }
@@ -45,6 +42,11 @@ qtcvSize CascadeParameters::minSize() const
 qtcvSize CascadeParameters::maxSize() const
 {
     return mMaxSize;
+}
+
+Configuration CascadeParameters::cascadeConfig() const
+{
+    return mConfig;
 }
 
 double CascadeParameters::calcFactor()

@@ -11,7 +11,7 @@
 class EIRQTCV_EXPORT CascadeParameters
 {
 public:
-    CascadeParameters(const cvCascade &cascade);
+    CascadeParameters(const Configuration &cascadeConfig);
     double factor() const;
     int neighbors() const;
     int flags() const;
@@ -24,8 +24,6 @@ private:
 
 private:
     CascadeType mCascadeType;
-    const ConfigObject *cmpCfgObj=nullptr;
-    const cvCascade cmCascade;
     Configuration mConfig;
     bool mAll=false;
     double mFactor=1.100;

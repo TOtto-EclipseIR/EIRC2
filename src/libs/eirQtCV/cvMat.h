@@ -16,6 +16,7 @@ public:
     void set(const QImage &qimage);
     void clear();
     cv::Mat mat() const;
+    QString dumpString() const;
 
 private:
     cv::Mat * mpCvMat=nullptr;

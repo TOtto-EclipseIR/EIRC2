@@ -21,8 +21,8 @@ public:
 
 private:
     const CascadeType cmCascadeType;
-    const ConfigObject *cmpCfgObj=nullptr;
     cvCascade mCascade;
+    const ConfigObject *cmpCfgObj=nullptr;
     QImage mInputImage;
     QImage mFindRectImage;
     cvMat mFindRectMat;

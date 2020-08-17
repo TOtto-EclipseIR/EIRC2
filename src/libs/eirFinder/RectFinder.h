@@ -13,6 +13,7 @@
 #include <eirQtCV/cvCascade.h>
 #include <eirQtCV/CascadeType.h>
 
+#include "FinderCascade.h"
 
 class EIRFINDER_EXPORT RectFinder : public QObject
 {
@@ -26,7 +27,7 @@ public:
     QFileInfo cascadeFileInfo(const CascadeType &cascadeType) const;
     cvCascade cascade(const CascadeType &cascadeType) const;
     QImage findRectImage(const CascadeType &cascadeType) const;
-    QStringList methodList() const;
+    QStringList methodList(const CascadeType &cascadeType) const;
     QQRectList rectangleList(const CascadeType &cascadeType);
     QImage makeRectImage(const CascadeType &cascadeType,
                          bool all=false);
@@ -57,9 +58,9 @@ signals:
 
 private:
     ConfigObject * mpConfigObject;
+    Configuration mBaseConfiguration;
     QDir mBaseCascadeDir;
-    EnumerationArray<CascadeType, cvCascade> mCascades;
-    EnumerationArray<CascadeType, Configuration> mConfigurations;
-    EnumerationArray<CascadeType, QQRectList> mRectLists;
+    QList<FinderCascade> mFinderCascadeList;
+//    EnumerationArray<CascadeType, FinderCascade> mFinderCascades;
 };
 

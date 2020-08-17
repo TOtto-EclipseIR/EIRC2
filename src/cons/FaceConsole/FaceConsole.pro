@@ -26,6 +26,7 @@ LIBS *= -leirType2
 LIBS *= -leirExe2
 LIBS *= -leirFrame2
 LIBS *= -leirImageIO2
+LIBS *= -leirQtCV2
 LIBS *= -leirFinder2
 
 SOURCES += \

@@ -7,6 +7,7 @@
 
 #include <eirExe/CommandLine.h>
 #include <eirExe/ConfigObject.h>
+#include <eirQtCV/CascadeType.h>
 #include <eirType/Success.h>
 #include <eirXfr/Debug.h>
 #include <eirImageIO/BaseOutputDir.h>
@@ -92,9 +93,10 @@ void FaceConsole::setConfiguration()
 void FaceConsole::initializeResources()
 {
     TRACEFN;
-    cmpRectFinder->configure(config()->configuration("/Option/RectFinder"));
-    cmpRectFinder->configure("PreScan",
-                             config()->configuration("/PreScan/RectFinder"));
+    cmpRectFinder->configure(config()->
+                             configuration("/Option/RectFinder"));
+    cmpRectFinder->configure(CascadeType::PreScan,
+                config()->configuration("/PreScan/RectFinder"));
 
     QDir baseDir(config()->configuration("/Resources/RectFinder")
                  .string("BaseDir"));
@@ -108,8 +110,8 @@ void FaceConsole::initializeResources()
     EXPECT(cascadeFileInfo.exists());
     EXPECT(cascadeFileInfo.isReadable());
     EXPECT(cascadeFileInfo.isFile());
-    cmpRectFinder->load("PreScan", cascadeFileInfo.absoluteFilePath());
-    BEXPECT(cmpRectFinder->loaded("PreScan"));
+    cmpRectFinder->load(CascadeType::PreScan, cascadeFileInfo.absoluteFilePath());
+    BEXPECT(cmpRectFinder->loaded(CascadeType::PreScan));
 
     EMIT(resoursesInitd());
  QTimer::singleShot(100, this, &FaceConsole::startProcessing);}
@@ -151,10 +153,10 @@ void FaceConsole::processCurrentFile()
     QImage rectImage;
 #if 1
     if (success) success = mFramePak.setInputFrame(mCurrentFile);
-    if (success) cmpRectFinder->set("PreScan", image);
-    if (success) cmpRectFinder->findRectangles("PreScan");
-    if (success) mCurrentRectangles = cmpRectFinder->rectangleList("PreScan");
-    if (success) rectImage = cmpRectFinder->makeRectImage();
+    if (success) cmpRectFinder->set(CascadeType::PreScan, image);
+    if (success) cmpRectFinder->findRectangles(CascadeType::PreScan);
+    if (success) mCurrentRectangles = cmpRectFinder->rectangleList(CascadeType::PreScan);
+    if (success) rectImage = cmpRectFinder->makeRectImage(CascadeType::PreScan);
     if (success) success = ! rectImage.isNull();
     if (success) mRectImage = rectImage;
     if (success) success = mRectImage.save(QFileInfo(
@@ -163,7 +165,7 @@ void FaceConsole::processCurrentFile()
                                            .absoluteFilePath());
     if (success)
     {
-        mFramePak.setPreScanImage(cmpRectFinder->findRectImage("PreScan"));
+        mFramePak.setPreScanImage(cmpRectFinder->findRectImage(CascadeType::PreScan));
         mFramePak.setFrameRectangles(mCurrentRectangles);
         EMIT(processed(QFileInfo(mCurrentFile),
              mCurrentRectangles.size()));
