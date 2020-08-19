@@ -19,7 +19,7 @@ public:
     bool setInputFrame(const QString &inputFileName);
     bool setInputFrame(const QFileInfo &inputFileInfo);
     void setPreScanImage(const QImage &detectImage);
-    void setFrameRectangles(const QQRectList &rects);
+    void setFrameRectangles(const QList<QRect> &rects);
 
 protected:
     Frame frameAt(const int index) const;

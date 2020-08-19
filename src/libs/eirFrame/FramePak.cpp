@@ -65,7 +65,7 @@ bool FramePak::setInputFrame(const QFileInfo &inputFileInfo)
     return success;
 }
 
-void FramePak::setFrameRectangles(const QQRectList &rects)
+void FramePak::setFrameRectangles(const QList<QRect> &rects)
 {
     QDataStream data;
     data << rects;

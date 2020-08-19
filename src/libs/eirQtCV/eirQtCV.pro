@@ -21,25 +21,20 @@ include(../../opencv4.pri)
 
 LIBS *= -leirType2
 LIBS *= -leirExe2
+LIBS *= -leirFinder2
 
 SOURCES += \
-    CascadeParameters.cpp \
-    CascadeType.cpp \
     cvCascade.cpp \
     cvMat.cpp \
     cvString.cpp \
-    eirQtCV.cpp \
-    qtcvSize.cpp
+    eirQtCV.cpp
 
 HEADERS += \
-    CascadeParameters.h \
-    CascadeType.h \
     cvCascade.h \
     cvMat.h \
     cvString.h \
     eirQtCV_global.h \
-    eirQtCV.h \
-    qtcvSize.h
+    eirQtCV.h
 
 # Default rules for deployment.
 unix {

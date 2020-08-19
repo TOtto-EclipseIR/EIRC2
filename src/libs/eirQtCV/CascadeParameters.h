@@ -1,12 +1,13 @@
 #pragma once
 #include "eirQtCV.h"
 
+#include <QSize>
+
 #include <eirType/BasicName.h>
 #include <eirExe/ConfigObject.h>
 
 #include "cvCascade.h"
 #include "cvMat.h"
-#include "qtcvSize.h"
 
 class EIRQTCV_EXPORT CascadeParameters
 {
@@ -15,8 +16,8 @@ public:
     double factor() const;
     int neighbors() const;
     int flags() const;
-    qtcvSize minSize() const;
-    qtcvSize maxSize() const;
+    QSize minSize() const;
+    QSize maxSize() const;
     Configuration cascadeConfig() const;
 
 private:
@@ -29,7 +30,7 @@ private:
     double mFactor=1.100;
     int mNeighbors=0;
     int mFlags=0;
-    qtcvSize mMinSize;
-    qtcvSize mMaxSize;
+    QSize mMinSize;
+    QSize mMaxSize;
 };
 

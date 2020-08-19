@@ -48,7 +48,7 @@ private:
     OutputManager * const cmpOutput=nullptr;
     RectFinder * const cmpRectFinder=nullptr;
     QFileInfo mCurrentFile;
-    QQRectList mCurrentRectangles;
+    QList<QRect> mCurrentRectangles;
     FramePak mFramePak;
     QImage mRectImage;
 

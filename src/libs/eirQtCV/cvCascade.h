@@ -11,9 +11,8 @@
 
 #include <eirType/BasicName.h>
 #include <eirExe/Configuration.h>
-#include <eirType/MinMaxTPair.h>
+#include <eirFinder/CascadeType.h>
 
-#include "CascadeType.h"
 #include "cvMat.h"
 
 namespace cv { class CascadeClassifier; }
@@ -41,7 +40,7 @@ private:
     bool getCoreSize(const QFileInfo &cascadeXmlInfo);
 
 private:
-    const CascadeType cmCascadeType=CascadeType::nullCascadeType;
+    const CascadeType cmCascadeType;
     QFileInfo mCascadeXmlInfo;
     cv::CascadeClassifier *mpCascade=nullptr;
     QSize mCoreSize;

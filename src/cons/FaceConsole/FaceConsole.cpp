@@ -7,7 +7,7 @@
 
 #include <eirExe/CommandLine.h>
 #include <eirExe/ConfigObject.h>
-#include <eirQtCV/CascadeType.h>
+//#include <eirFinder/CascadeType.h>
 #include <eirType/Success.h>
 #include <eirXfr/Debug.h>
 #include <eirImageIO/BaseOutputDir.h>
@@ -93,11 +93,6 @@ void FaceConsole::setConfiguration()
 void FaceConsole::initializeResources()
 {
     TRACEFN;
-    cmpRectFinder->configure(config()->
-                             configuration("/Option/RectFinder"));
-    cmpRectFinder->configure(CascadeType::PreScan,
-                config()->configuration("/PreScan/RectFinder"));
-
     QDir baseDir(config()->configuration("/Resources/RectFinder")
                  .string("BaseDir"));
     cmpRectFinder->set(baseDir);
@@ -111,7 +106,7 @@ void FaceConsole::initializeResources()
     EXPECT(cascadeFileInfo.isReadable());
     EXPECT(cascadeFileInfo.isFile());
     cmpRectFinder->load(CascadeType::PreScan, cascadeFileInfo.absoluteFilePath());
-    BEXPECT(cmpRectFinder->loaded(CascadeType::PreScan));
+//    BEXPECT(cmpRectFinder->loaded(CascadeType::PreScan));
 
     EMIT(resoursesInitd());
  QTimer::singleShot(100, this, &FaceConsole::startProcessing);}

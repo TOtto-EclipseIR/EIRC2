@@ -1,7 +1,7 @@
 #include "cvCascade.h"
 
-//#include <opencv2/opencv.hpp>
-//#include <opencv2/objdetect.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/objdetect.hpp>
 
 #include <eirXfr/Debug.h>
 
@@ -22,8 +22,13 @@ CascadeType cvCascade::cascadeType() const
 bool cvCascade::loadCascade(const QFileInfo &cascadeXmlInfo)
 {
     TRACEQFI << cascadeType().name() << cascadeXmlInfo;
-    NEEDDO(it);
-    return false;
+    unload();
+    cv::CascadeClassifier * pcvcc = new cv::CascadeClassifier;
+    if (pcvcc->load(cvString(cascadeXmlInfo.absoluteFilePath())))
+    {
+        mpCascade = pcvcc;
+    }
+    return nullptr != mpCascade;
 }
 
 bool cvCascade::notLoaded() const
@@ -62,7 +67,8 @@ cvCascade::RectList cvCascade::detect(const cvMat &detectMat,
 {
     TRACEQFI << detectMat.dumpString();
     parms.cascadeConfig().dump();
-    NEEDDO(it);
+    QSize minSize = parms.minSize();
+    QSize maxSize = parms.maxSize();
 
     std::vector<cv::Rect> cvRectVector;
     cv::InputArray ia(detectMat.mat());
@@ -73,8 +79,8 @@ cvCascade::RectList cvCascade::detect(const cvMat &detectMat,
                         parms.factor(),
                         parms.neighbors(),
                         parms.flags(),
-                        parms.minSize(),
-                        parms.maxSize());
+                        cv::Size(minSize.width(), minSize.height()),
+                        cv::Size(maxSize.width(), maxSize.height()));
 
     foreach (cv::Rect cvrc, cvRectVector)
     {

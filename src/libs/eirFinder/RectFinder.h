@@ -11,8 +11,8 @@
 #include <eirType/QQRectList.h>
 #include <eirExe/ConfigObject.h>
 #include <eirQtCV/cvCascade.h>
-#include <eirQtCV/CascadeType.h>
 
+#include "CascadeType.h"
 #include "FinderCascade.h"
 
 class EIRFINDER_EXPORT RectFinder : public QObject
@@ -23,21 +23,19 @@ public:
                QObject *parent = nullptr);
     void set(ConfigObject *cfgObj);
     void set(const QDir &baseCascadeDir);
+    FinderCascade &finderCascade(const CascadeType &cascadeType);
+    FinderCascade finderCascade(const CascadeType &cascadeType) const;
     bool loaded(const CascadeType &cascadeType) const;
     QFileInfo cascadeFileInfo(const CascadeType &cascadeType) const;
-    cvCascade cascade(const CascadeType &cascadeType) const;
     QImage findRectImage(const CascadeType &cascadeType) const;
     QStringList methodList(const CascadeType &cascadeType) const;
-    QQRectList rectangleList(const CascadeType &cascadeType);
+    QList<QRect> rectangleList(const CascadeType &cascadeType);
     QImage makeRectImage(const CascadeType &cascadeType,
                          bool all=false);
 
 public slots:
     void load(const CascadeType &cascadeType,
               const QFileInfo &xmlFileInfo);
-    void configure(const Configuration &baseConfig);
-    void configure(const CascadeType cascadeType,
-                   const Configuration &cascadeConfig);
     void set(const CascadeType &cascadeType,
              const QImage &image);
     void findRectangles(const CascadeType &cascadeType);
@@ -55,6 +53,9 @@ signals:
                          int rectangleCount);
     void rectFindFailed(CascadeType cascadeType,
                         QString errorString);
+
+private:
+    cvCascade * cascade(const CascadeType &cascadeType) const;
 
 private:
     ConfigObject * mpConfigObject;

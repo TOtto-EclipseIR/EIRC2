@@ -17,7 +17,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../../EIRC2.pri)
-#? include(../../opencv4.pri)
 
 LIBS *= -leirType2
 LIBS *= -leirExe2
@@ -26,13 +25,17 @@ LIBS *= -leirQtCV2
 SOURCES += \
     FinderCascade.cpp \
     RectFinder.cpp \
-    eirFinder.cpp
+    eirFinder.cpp \
+    CascadeParameters.cpp \
+    CascadeType.cpp \
 
 HEADERS += \
     FinderCascade.h \
     RectFinder.h \
     eirFinder_global.h \
-    eirFinder.h
+    eirFinder.h \
+    CascadeParameters.h \
+    CascadeType.h \
 
 # Default rules for deployment.
 unix {

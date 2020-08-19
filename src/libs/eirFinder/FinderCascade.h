@@ -1,31 +1,39 @@
 #pragma once
 
+#include <QImage>
+
 #include <eirExe/ConfigObject.h>
-#include <eirQtCV/cvCascade.h>
+
+#include "CascadeParameters.h"
+#include "CascadeType.h"
+
+class cvCascade;
+class cvMat;
 
 class FinderCascade
 {
 public:
-    typedef MinMaxPair<QSize> MinMaxSizePair;
-public:
     FinderCascade(const CascadeType &cascadeType,
                   ConfigObject *configObject);
     const ConfigObject *config() const;
-    const cvCascade cascade() const;
-    cvCascade &cascade();
+    cvCascade *cascade();
     void clear();
-    bool setImage(const QImage &inputImage);
-    bool findRectangles();
-    cvCascade::RectList rectList() const;
+    void setImage(const QImage &inputImage);
+    int findRectangles();
+    QList<QRect> rectList() const;
     QImage findRectImage() const;
 
 private:
+    Configuration cascadeConfig() const;
+    CascadeParameters cascadeParameters() const;
+
+private:
     const CascadeType cmCascadeType;
-    cvCascade mCascade;
-    const ConfigObject *cmpCfgObj=nullptr;
+    const ConfigObject *cmpConfigObject=nullptr;
+    cvCascade *mpCascade;
     QImage mInputImage;
     QImage mFindRectImage;
-    cvMat mFindRectMat;
-    cvCascade::RectList mRectList;
+    cvMat *mpFindRectMat;
+    QList<QRect> mRectList;
 };
 

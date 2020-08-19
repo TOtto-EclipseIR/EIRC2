@@ -26,29 +26,33 @@ void RectFinder::set(const QDir &baseCascadeDir)
     mBaseCascadeDir = baseCascadeDir;
 }
 
-bool RectFinder::loaded(const CascadeType &cascadeType) const
+FinderCascade &RectFinder::finderCascade(const CascadeType &cascadeType)
 {
-    NEEDDO(viaFinderCascade);
-    return false;
+    return mFinderCascadeList[cascadeType];
 }
 
-cvCascade RectFinder::cascade(const CascadeType &cascadeType) const
+FinderCascade RectFinder::finderCascade(const CascadeType &cascadeType) const
 {
-    NEEDDO(viaFinderCascade);
-    return cvCascade(cascadeType);
+    return mFinderCascadeList.at(cascadeType);
+}
+
+bool RectFinder::loaded(const CascadeType &cascadeType) const
+{
+    TRACEQFI << cascadeType() << cascadeType.name();
+    cvCascade * pcvc = finderCascade(cascadeType).cascade();
+    TSTALLOC(pcvc);
+    return pcvc->isLoaded();
 }
 
 QImage RectFinder::findRectImage(const CascadeType &cascadeType) const
 {
     TRACEQFI << cascadeType();
-    NEEDDO(viaFinderCascade);
-    return QImage();
+    return finderCascade(cascadeType).findRectImage();
 }
 
-QQRectList RectFinder::rectangleList(const CascadeType &cascadeType)
+QList<QRect> RectFinder::rectangleList(const CascadeType &cascadeType)
 {
-    NEEDDO(viaFinderCascade);
-    return QQRectList();
+    return finderCascade(cascadeType).rectList();
 }
 
 QImage RectFinder::makeRectImage(const CascadeType &cascadeType, bool all)
@@ -71,52 +75,33 @@ QImage RectFinder::makeRectImage(const CascadeType &cascadeType, bool all)
 void RectFinder::load(const CascadeType &cascadeType,
                       const QFileInfo &xmlFileInfo)
 {
-    TRACEQFI << cascadeType.name() << xmlFileInfo;
-    NEEDDO(viaFinderCascade);
-#if 0
-    cvCascade & cvc = mCascades.at(cascadeType);
-    cvc.clear();
+    TRACEQFI << cascadeType() << xmlFileInfo;
+    cvCascade * pcvc = cascade(cascadeType);
+    TSTALLOC(pcvc);
     TRACE << xmlFileInfo << xmlFileInfo.exists()
           << xmlFileInfo.isReadable() << xmlFileInfo.isFile();
     WEXPECT(xmlFileInfo.exists());
     WEXPECT(xmlFileInfo.isReadable());
     WEXPECT(xmlFileInfo.isFile());
     WEXPECT(xmlFileInfo.isFile());
-    cvCascade newCvc(cascadeType, mpConfigObject);
-    if (newCvc.load(xmlFileInfo.filePath()))
-        cvc = newCvc;
-#endif
-}
-
-void RectFinder::configure(const Configuration &baseConfig)
-{
-    TRACEFN;
-    baseConfig.dump();
-    mBaseConfiguration = baseConfig;
-    NEEDDO(somethingWithIt);
-}
-
-void RectFinder::configure(const CascadeType cascadeType,
-                           const Configuration &cascadeConfig)
-{
-    TRACEQFI << cascadeType.name();
-    cascadeConfig.dump();
-    NEEDDO(viaFinderCascade);
-//    mConfigurations.set(cascadeType, cascadeConfig);
+    EXPECT(pcvc->loadCascade(xmlFileInfo.filePath()));
 }
 
 void RectFinder::set(const CascadeType &cascadeType,
                      const QImage &image)
 {
     TRACEQFI << cascadeType() << image.size() << image.format();
-    NEEDDO(viaFinderCascade);
-
-//    mCascades.at(cascadeType).setImage(image);
+    finderCascade(cascadeType).setImage(image);
 }
 
 void RectFinder::findRectangles(const CascadeType &cascadeType)
 {
     TRACEQFI << cascadeType();
-    NEEDDO(viaFinderCascade);
-//    mCascades.at(cascadeType).findRectangles();
+    finderCascade(cascadeType).findRectangles();
+}
+
+// private
+cvCascade *RectFinder::cascade(const CascadeType &cascadeType) const
+{
+    return finderCascade(cascadeType).cascade();
 }
