@@ -10,8 +10,9 @@
 //#include <eirFinder/CascadeType.h>
 #include <eirType/Success.h>
 #include <eirXfr/Debug.h>
-#include <eirImageIO/BaseOutputDir.h>
-#include <eirImageIO/OutputManager.h>
+#include <eirXfr/StartupDebug.h>
+//#include <eirImageIO/BaseOutputDir.h>
+//#include <eirImageIO/OutputManager.h>
 
 //#include <eirRectFind/RectFinder.h>
 //#include <eirMarker/MarkerManager.h>
@@ -19,14 +20,14 @@
 FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
     , cmpConfigObject(new ConfigObject(parent))
-    , cmpOutput(new OutputManager(parent))
+//    , cmpOutput(new OutputManager(parent))
     , cmpRectFinder(new RectFinder(cmpConfigObject, parent))
   //  , cmpMarkerManager(new MarkerManager(cmpConfigObject, this))
 {
     TRACEFN;
     setObjectName("FaceConsole");
     TSTALLOC(cmpConfigObject);
-    TSTALLOC(cmpOutput);
+    //TSTALLOC(cmpOutput);
     TSTALLOC(cmpRectFinder);
   //  TSTALLOC(cmpMarkerManager);
 
@@ -56,10 +57,10 @@ void FaceConsole::initializeApplication()
 void FaceConsole::enqueueNext()
 {
     TRACEQFI << commandLine()->firstPositionalArgument();
-    TSTALLOC(cmpOutput);
+//    TSTALLOC(cmpOutput);
     QString fileNameArgument = commandLine()->firstPositionalArgument();
-    if ( ! fileNameArgument.isEmpty())
-        cmpOutput->enqueue(FramePak(rCommandLine().takePositionalArgument()));
+//    if ( ! fileNameArgument.isEmpty())
+  //      cmpOutput->enqueue(FramePak(rCommandLine().takePositionalArgument()));
 }
 
 void FaceConsole::setupCommandLine()
@@ -76,16 +77,35 @@ void FaceConsole::setConfiguration()
 {
     TRACEFN;
 
+
     cmpConfigObject->set(commandLine()->configuration());
+    writeLine("---Configuration:");
+    writeLines(commandLine()->configuration().dumpList());
 
     QString baseDirString(config()->configuration("/Output").string("BaseDir"));
     baseDirString.replace("@", QDateTime::currentDateTime()
         .toString("DyyyyMMdd-Thhmm"));
+#if 1
+    EXPECT(mBaseOutputDir.mkpath(baseDirString));
+    EXPECT(mBaseOutputDir.cd(baseDirString));
+    EXPECT(mBaseOutputDir.exists());
 
+    QString markedRectDirString(config()->
+            configuration("Output/Dirs")
+                .string("MarkedRect", "MarkedRect"));
+    mMarkedRectOutputDir = mBaseOutputDir;
+    EXPECT(mMarkedRectOutputDir.mkpath(markedRectDirString));
+    EXPECT(mMarkedRectOutputDir.cd(markedRectDirString));
+    EXPECT(mMarkedRectOutputDir.exists());
+    if (mMarkedRectOutputDir.exists())
+        writeLine("   " + mMarkedRectOutputDir.absolutePath() + "created");
+
+    TODO(BackToImageIO);
+#else
     BaseOutputDir baseDir(baseDirString);
     cmpOutput->setBase(baseDir);
     cmpOutput->configure(cmpConfigObject);
-
+#endif
     EMIT(configurationSet());
     QTimer::singleShot(100, this, &FaceConsole::initializeResources);
 }
@@ -107,6 +127,7 @@ void FaceConsole::initializeResources()
     EXPECT(cascadeFileInfo.isFile());
     cmpRectFinder->load(CascadeType::PreScan, cascadeFileInfo.absoluteFilePath());
 //    BEXPECT(cmpRectFinder->loaded(CascadeType::PreScan));
+    writeLine("---Cascade: "+cascadeFileInfo.absoluteFilePath()+" loaded");
 
     EMIT(resoursesInitd());
  QTimer::singleShot(100, this, &FaceConsole::startProcessing);}
@@ -115,7 +136,7 @@ void FaceConsole::startProcessing()
 {
     TRACEFN;
 
-    NEEDDO(cmpOutput->start());
+//    NEEDDO(cmpOutput->start());
 
     NEEDDO(more);
     EMIT(processingStarted());
@@ -127,12 +148,13 @@ void FaceConsole::nextFile()
 
     if (commandLine()->positionalArgumentSize())
     {
-        mCurrentFile = QFileInfo(rCommandLine().takePositionalArgument());
+        mCurrentFileInfo = QFileInfo(rCommandLine().takePositionalArgument());
+        DUMPVAL(mCurrentFileInfo);
         QTimer::singleShot(100, this, &FaceConsole::processCurrentFile);
     }
     else
     {
-QTimer::singleShot(100, this, &FaceConsole::nextFile);
+        QTimer::singleShot(100, this, &FaceConsole::nextFile);
     }
 
     NEEDDO(more);
@@ -141,66 +163,54 @@ QTimer::singleShot(100, this, &FaceConsole::nextFile);
 
 void FaceConsole::processCurrentFile()
 {
-    TRACEQFI << mCurrentFile << mCurrentFile.isReadable();
-    Success success(true);
-    QByteArray bytes;
-    QImage image;
+    TRACEQFI << mCurrentFileInfo << mCurrentFileInfo.isReadable();
+    Success success;
+//    QByteArray bytes;
+    QImage image(mCurrentFileInfo.absoluteFilePath());
     QImage rectImage;
-#if 1
-    if (success) success = mFramePak.setInputFrame(mCurrentFile);
+    QString outputFileName;
+
+    //if (success) success = mFramePak.setInputFrame(mCurrentFile);
+    writeLine("---Processing: "+mCurrentFileInfo.absoluteFilePath());
+    TRACE << image.size() << image.format();
+    success = ! image.isNull();
+    EXPECT(success);
     if (success) cmpRectFinder->set(CascadeType::PreScan, image);
+    EXPECT(success);
     if (success) cmpRectFinder->findRectangles(CascadeType::PreScan);
+    EXPECT(success);
     if (success) mCurrentRectangles = cmpRectFinder->rectangleList(CascadeType::PreScan);
+    EXPECT(success);
+    if (success) writeLine(QString("   %1 PreScan rectangles found")
+                            .arg(mCurrentRectangles.size()));
     if (success) rectImage = cmpRectFinder->makeRectImage(CascadeType::PreScan);
+    EXPECT(success);
     if (success) success = ! rectImage.isNull();
+    EXPECT(success);
     if (success) mRectImage = rectImage;
-    if (success) success = mRectImage.save(QFileInfo(
-               QDir(config()->configuration("Output").string("BaseDir")),
-               config()->configuration("Output/Dirs").string("PreScan"))
-                                           .absoluteFilePath());
+    EXPECT(success);
+    if (success) outputFileName = QFileInfo(mMarkedRectOutputDir,
+                                            mCurrentFileInfo.completeBaseName()+".PNG")
+                                  .absoluteFilePath();
+    EXPECT(success);
+    if (success) success = mRectImage.save(outputFileName);
+    EXPECT(success);
+    if (success) writeLine("   " + outputFileName + " written");
+    EXPECT(success);
     if (success)
     {
-        mFramePak.setPreScanImage(cmpRectFinder->findRectImage(CascadeType::PreScan));
-        mFramePak.setFrameRectangles(mCurrentRectangles);
-        EMIT(processed(QFileInfo(mCurrentFile),
+        //mFramePak.setPreScanImage(cmpRectFinder->findRectImage(CascadeType::PreScan));
+        //mFramePak.setFrameRectangles(mCurrentRectangles);
+        EMIT(processed(QFileInfo(mCurrentFileInfo),
              mCurrentRectangles.size()));
         NEEDDO("somethingWithFramePak");
     }
     else
     {
-        EMIT(processFailed(mCurrentFile, "Error locating face objects"));
+        EMIT(processFailed(mCurrentFileInfo, "Error locating face objects"));
     }
-#else
-    if (success) success = mCurrentFile.isReadable();
-    if (success) file->setFileName(mCurrentFile
-                        .absoluteFilePath());
-    if (success) success = file->open(QIODevice::ReadOnly);
-    if (success) success = QFileDevice::NoError == file->error();
-    if (success) success = file->size() < 1024;
-    if (success) bytes = file->readAll();
-    if (success) success = file->size() == bytes.size();
-    if ( ! success)
-    {
-        EMIT(processFailed(mCurrentFile,
-            file->errorString().isEmpty()
-                           ? "Error opening to read"
-                           : file->errorString()));
-        return;
-    }
-    if (success) image = QImage::fromData(bytes);
-    if (success) success = image.isNull();
-    if (success) cmpRectFinder->set(image);
-    if (success) cmpRectFinder->findRectangles("PreScan");
-    if (success) mCurrentRectangles = cmpRectFinder->rectangleList("PreScan");
-    if ( ! success)
-    {
-        EMIT(processFailed(mCurrentFile, "Error locating face objects"));
-        return;
-    }
-    mFramePak.setInputFrame(mCurrentFile.absoluteFilePath());
-#endif
     NEEDDO(more);
-    EMIT(processed(mCurrentFile, 0));
+    EMIT(processed(mCurrentFileInfo, 0));
 }
 
 void FaceConsole::finishProcessing()

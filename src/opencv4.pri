@@ -9,6 +9,6 @@ CONFIG(debug, debug|release) {
     LIBS *= -lopencv_world$(QTCVFILENAMEVER)
     DISTFILES *= $(QTCVLIBPATH)/../bin/opencv_world$(QTCVFILENAMEVER).dll
 }
-message(INCLUDEPATH = $${INCLUDEPATH})
-message(LIBS = $${LIBS})
-message(DISTFILES = $${DISTFILES})
+#message(INCLUDEPATH = $${INCLUDEPATH})
+#message(LIBS = $${LIBS})
+#message(DISTFILES = $${DISTFILES})

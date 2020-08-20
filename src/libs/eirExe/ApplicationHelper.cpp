@@ -85,3 +85,8 @@ QDateTime ApplicationHelper::baseDateTime()
 {
     return smBaseDateTime;
 }
+
+QString ApplicationHelper::baseDateTime(const QString format)
+{
+    return smBaseDateTime.toString(format);
+}

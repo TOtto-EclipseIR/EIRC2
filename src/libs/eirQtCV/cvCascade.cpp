@@ -4,8 +4,8 @@
 #include <opencv2/objdetect.hpp>
 
 #include <eirXfr/Debug.h>
+#include <eirFinder/CascadeParameters.h>
 
-#include "CascadeParameters.h"
 #include "cvString.h"
 
 cvCascade::cvCascade(const CascadeType &cascadeType)
@@ -67,6 +67,7 @@ cvCascade::RectList cvCascade::detect(const cvMat &detectMat,
 {
     TRACEQFI << detectMat.dumpString();
     parms.cascadeConfig().dump();
+    parms.dump();
     QSize minSize = parms.minSize();
     QSize maxSize = parms.maxSize();
 

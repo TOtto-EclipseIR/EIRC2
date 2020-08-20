@@ -1,22 +1,25 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-        ../FaceConsole \
+        ../../libs/eirXfr \
         ../../libs/eirBase \
         ../../libs/eirType \
         ../../libs/eirExe \
-        ../../libs/eirXfr \
-        ../../libs/eirFrame \
-        ../../libs/eirMarker \
-        ../../libs/eirGraphics \
-        ../../libs/eirImageIO \
-        ../../libs/eirQtCV \
         ../../libs/eirFinder \
+        ../../libs/eirQtCV \
+        ../FaceConsole \
+#        ../../libs/eirFrame \
+#        ../../libs/eirMarker \
+#        ../../libs/eirGraphics \
+#        ../../libs/eirImageIO \
 
 
+eirBase.depends     = eirXfr
 eirType.depends     = eirBase eirXfr
-eirQtCV.depends     = eirExe2
-eirFinder.depends   = eirXfr eirType eirExe eirQtCV
-eirGraphics.depends = eirXfr
-eirMarker.depends   = eirBase eirXfr eirType eirFrame
-FaceConsole.depends = eirBase eirXfr eirType eirExe eirFrame eirImageIO eirFinder eirGraphics
+eirExe.depends      = eirType eirBase ierXfr
+eirFinder.depends   = eirExe eirType eirBase eirXfr
+eirQtCV.depends     = eirFinder eirExe eirType eirBase eirXfr
+FaceConsole.depends = eirQtCV eirFinder eirExe eirType eirBase eirXfr
+
+#eirGraphics.depends = eirXfr
+#eirMarker.depends   = eirBase eirXfr eirType eirFrame

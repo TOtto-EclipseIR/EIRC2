@@ -45,8 +45,8 @@ Enumeration::Enumeration(const Enumeration & other)
 Enumeration & Enumeration::operator = (const Enumeration & other)
 {
     value_i = other.value_i, name_s = other.name_s, name_map = other.name_map;
-    TRACEFN
-    TRACE << value_i << name_s;
+//    TRACEFN
+  //  TRACE << value_i << name_s;
     return *this;
 }
 
@@ -57,8 +57,8 @@ bool Enumeration::isEmpty(void) const
 
 Enumeration Enumeration::first(void) const
 {
-    TRACEFN
-    TRACE << (isEmpty() ? Enumeration() : Enumeration(name_map, name_map->first(1))).name();
+//    TRACEFN
+  //  TRACE << (isEmpty() ? Enumeration() : Enumeration(name_map, name_map->first(1))).name();
     return isEmpty() ? Enumeration() : Enumeration(name_map, name_map->first(1));
 }
 
@@ -69,53 +69,55 @@ Enumeration Enumeration::last(void) const
 
 QString Enumeration::nameOf(const int value) const
 {
-    TRACEQFI << value;
+//    TRACEQFI << value;
     QString result = name_map ? name_map->value(value) : QString();
-    TRACEFNR(result);
+  //  TRACEFNR(result);
+    return result;
 }
 
 int Enumeration::valueOf(const QString & name) const
 {
-    TRACEQFI << name;
+//    TRACEQFI << name;
     int result = name_map ? name_map->value(name) : 0;
-    TRACEFNR(result);
+  //  TRACEFNR(result);
+    return result;
 }
 
 Enumeration & Enumeration::operator ++(void) // prefix ++e
 {
-    TRACEFN
+//    TRACEFN
     if (name_map)
         set(name_map->next(value_i));
-    TRACE << name();
+  //  TRACE << name();
     return *this;
 }
 
 Enumeration Enumeration::operator ++(int)  // postfix e++
 {
-    TRACEFN
+//    TRACEFN
     Enumeration before(*this);
     if (name_map)
         set(name_map->next(value_i));
-    TRACE << before.name();
+  //  TRACE << before.name();
     return before;
 }
 
 Enumeration & Enumeration::operator --(void) // prefix --e
 {
-    TRACEFN
+//    TRACEFN
     if (name_map)
         set(name_map->previous(value_i));
-    TRACE << name();
+  //  TRACE << name();
     return *this;
 }
 
 Enumeration Enumeration::operator --(int)  // postfix e--
 {
-    TRACEFN
+//    TRACEFN
     Enumeration before(*this);
     if (name_map)
         set(name_map->previous(value_i));
-    TRACE << before.name();
+  //  TRACE << before.name();
     return before;
 }
 
@@ -155,56 +157,56 @@ void Enumeration::set(const QString & name)
 
 void Enumeration::invalidate(void)
 {
-    TRACEFN
+//    TRACEFN
     value_i = 0, name_s.clear(), name_map = 0;
 }
 
 bool Enumeration::isValid(void) const
 {
-    TRACEFN
+//    TRACEFN
     bool result = name_map
             && (name_map->contains(value_i)
                 || 0 == value_i);
-    TRACEFNR(result);
+  //  TRACEFNR(result);
     return result;
 }
 
 bool Enumeration::isNull(void) const
 {
-    TRACEFN
+//    TRACEFN
     bool result = ! name_map;
-    TRACEFNR(result);
+  //  TRACEFNR(result);
     return result;
 }
 
 bool Enumeration::is(const int value) const
 {
-    TRACEFN
-    TRACE << value;
+//    TRACEFN
+  //  TRACE << value;
     bool result = isValid() && value_i == value;
-    TRACEFNR(result);
+//    TRACEFNR(result);
     return result;
 }
 
 bool Enumeration::operator == (const Enumeration & other) const
 {
-    TRACEFN
-    TRACE << other.value() << other.name();
+//    TRACEFN
+  //  TRACE << other.value() << other.name();
     bool result = isValid()
             && other.isValid()
             && value_i == other.value_i;
-    TRACEFNR(result);
+    //TRACEFNR(result);
     return result;
 }
 
 bool Enumeration::operator < (const Enumeration & other) const
 {
-    TRACEFN
-    TRACE << other.value() << other.name();
+//    TRACEFN
+  //  TRACE << other.value() << other.name();
     bool result = isValid()
             && other.isValid()
             && value_i < other.value_i;
-    TRACEFNR(result);
+    //TRACEFNR(result);
     return result;
 }
 
@@ -225,14 +227,14 @@ int Enumeration::value(void) const
 
 QString Enumeration::name(void) const
 {
-    TRACEFN
-    TRACEFNR(name_s);
+//    TRACEFN
+  //  TRACEFNR(name_s);
     return name_s;
 }
 
 QList<Enumeration> Enumeration::all(void)
 {
-    TRACEFN
+//    TRACEFN
     QList<Enumeration> result;
     foreach (int i, values())
         result.append(Enumeration(name_map, i));
@@ -242,7 +244,7 @@ QList<Enumeration> Enumeration::all(void)
 
 QList<int> Enumeration::values(void) const
 {
-    TRACEFN
+//    TRACEFN
     QList<int> result = name_map ? name_map->keys() : QList<int>();
 //    TRACEFNR(result);
     return result;
@@ -250,7 +252,7 @@ QList<int> Enumeration::values(void) const
 
 QStringList Enumeration::nameFlags(int f)
 {
-    TRACEFN
+//    TRACEFN
     QStringList nameList;
     if (name_map)
     {
@@ -270,8 +272,8 @@ bool Enumeration::isValid(const QString & name)
 
 int Enumeration::value(const QString & name)
 {
-    TRACEFN
-    TRACE << name;
+//    TRACEFN
+  //  TRACE << name;
     int result = -1;
     if (name_map)
     {
@@ -284,12 +286,13 @@ int Enumeration::value(const QString & name)
     {
        WARN << "Enumeration::value(%s) with no instance" << name;
     }
-    TRACEFNR(result);
+//    TRACEFNR(result);
+    return result;
 }
 
 QList<Enumeration> Enumeration::parse(const QString & string)
 {
-    TRACEQFI << string;
+//    TRACEQFI << string;
     QList<Enumeration> result;
 
     foreach (QString s, string.simplified()
@@ -367,7 +370,7 @@ QList<Enumeration> Enumeration::parse(const QString & string)
                 WARN << "Enumeration(%s) invalid" << s;
         }
     }
-    TRACERTN(result)
+//    TRACERTN(result)
     return result;
 }
 

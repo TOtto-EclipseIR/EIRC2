@@ -29,23 +29,41 @@ void cvMat::set(const QSize sz)
 
 void cvMat::set(const QImage &qimage)
 {
+    TRACEQFI << qimage;
     clear();
     QSize sz = qimage.size();
+    DUMPVAL(sz);
+    TRACE << "new cv::Mat()" << sz.height() << sz.width()
+          << ((QImage::Format_Grayscale8
+             == qimage.format()) ? CV_8U : CV_8UC4);
     mpCvMat = new cv::Mat(sz.height() , sz.width(),
                     QImage::Format_Grayscale8
                         == qimage.format() ? CV_8U : CV_8UC4);
+    TRACE << Qt::hex << mpCvMat->data << qimage.bits() << Qt::dec
+            << QString("memcpy(0x%1, 0x%2, %3*%4=%5")
+             .arg("uchar*")
+             .arg("uchar*")
+             .arg(mpCvMat->elemSize1()).arg(mpCvMat->total())
+             .arg(mpCvMat->elemSize1() * mpCvMat->total())
+             ;
     std::memcpy(mpCvMat->data, qimage.bits(),
                 mpCvMat->elemSize1() * mpCvMat->total());
+    TRACERTV();
 }
 
 void cvMat::clear()
 {
+    TRACEFN;
     if (mpCvMat)
     {
-        mpCvMat->release();
-        delete  mpCvMat;
+//        TRACE << "release()" << Qt::hex << mpCvMat << Qt::dec;
+  //      mpCvMat->release();
+    //    TRACE << "delete" << Qt::hex << mpCvMat << Qt::dec;
+      //  delete  mpCvMat;
+        TRACE << "nullptr" << Qt::hex << mpCvMat << Qt::dec;
         mpCvMat = nullptr;
     }
+    TRACERTV();
 }
 
 cv::Mat cvMat::mat() const

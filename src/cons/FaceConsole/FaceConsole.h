@@ -5,7 +5,7 @@
 
 
 #include <eirFinder/RectFinder.h>
-#include <eirFrame/FramePak.h>
+//#include <eirFrame/FramePak.h>
 //#include <eirImageIO/OutputManager.h>
 
 class QCommandLineParser;
@@ -45,11 +45,13 @@ signals:
 
 private:
     ConfigObject * const cmpConfigObject=nullptr;
-    OutputManager * const cmpOutput=nullptr;
+//    OutputManager * const cmpOutput=nullptr;
     RectFinder * const cmpRectFinder=nullptr;
-    QFileInfo mCurrentFile;
+    QDir mBaseOutputDir;
+    QDir mMarkedRectOutputDir;
+    QFileInfo mCurrentFileInfo;
     QList<QRect> mCurrentRectangles;
-    FramePak mFramePak;
+//    FramePak mFramePak;
     QImage mRectImage;
 
   //  MarkerManager * const cmpMarkerManager=nullptr;

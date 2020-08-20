@@ -1,6 +1,7 @@
 #include "StartupDebug.h"
 
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QDir>
 #include <QIODevice>
 
@@ -14,13 +15,13 @@ StartupDebug::StartupDebug() {;}
 bool StartupDebug::start(const QString &exeArg0,
                          const QString &logDirName)
 {
-    std::cout << "Starting Startup Debugging Output handler\n";
-    flush(std::cout);
+    //std::cout << "Starting Startup Debugging Output handler\n"; flush(std::cout);
     QFileInfo exeFileInfo = QFileInfo(exeArg0);
     QFile * mpStartupFile = new QFile(qApp->parent());
     Q_ASSERT(mpStartupFile);
-    QString startupFileName = QString("%1-StartLog.txt")
-            .arg(exeFileInfo.completeBaseName());
+    QString startupFileName = QString("%1-StartLog-%2.txt")
+            .arg(exeFileInfo.completeBaseName())
+            .arg(QDateTime::currentDateTime().toString("DyyyyMMdd-Thhmm"));
     QDir startupDir = QDir::current();
     startupDir.mkpath(logDirName);
     startupDir.cd(logDirName);
@@ -34,8 +35,7 @@ bool StartupDebug::start(const QString &exeArg0,
     flush(std::cerr);
     if (mpStartupFile->isWritable())
     {
-        std::cout << "Startup Debugging Output enabled\n";
-        flush(std::cout);
+        //std::cout << "Startup Debugging Output enabled\n"; flush(std::cout);
         smpTextStream = new QTextStream(mpStartupFile);
         qInstallMessageHandler(myStartupMessageHandler);
     }  // else stay with stderr

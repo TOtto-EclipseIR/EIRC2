@@ -13,19 +13,17 @@
 #include <QTextStream>
 #include <QTimer>
 
-//#include <eirXfr/StartupDebug.h>
+#include <eirXfr/StartupDebug.h>
+Q_GLOBAL_STATIC(StartupDebug, sdo)
 
 int main(int argc, char *argv[])
 {
-    //StartupDebug slog(argv[0]);
-
     QCoreApplication a(argc, argv);
     a.setApplicationName("INDI5faceConsole");
     a.setApplicationVersion(EIRC2_VER_STRING " " EIRC2_VER_TRUNKNAME);
     a.setOrganizationName(EIRC2_VER_ORGNAME);
+    sdo->start(argv[0], "./log");
 
-    FaceConsole c(a.parent());
-    Q_UNUSED(c);
-
+    FaceConsole c(a.parent()); Q_UNUSED(c);
     return a.exec();
 }

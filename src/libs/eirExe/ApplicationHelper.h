@@ -32,6 +32,7 @@ public:
 
 public: // static
     static QDateTime baseDateTime();
+    static QString baseDateTime(const QString format);
 
 public slots:
     void run();

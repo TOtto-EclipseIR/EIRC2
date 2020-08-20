@@ -52,6 +52,7 @@ QImage RectFinder::findRectImage(const CascadeType &cascadeType) const
 
 QList<QRect> RectFinder::rectangleList(const CascadeType &cascadeType)
 {
+    TRACEQFI << finderCascade(cascadeType).rectList().size();
     return finderCascade(cascadeType).rectList();
 }
 
@@ -69,6 +70,7 @@ QImage RectFinder::makeRectImage(const CascadeType &cascadeType, bool all)
     foreach (QRect rc, rectangleList(cascadeType))
         painter.drawRect(rc);
     painter.end();
+    TRACERTN(rectImage);
     return rectImage;
 }
 
@@ -92,6 +94,7 @@ void RectFinder::set(const CascadeType &cascadeType,
 {
     TRACEQFI << cascadeType() << image.size() << image.format();
     finderCascade(cascadeType).setImage(image);
+    TRACERTV();
 }
 
 void RectFinder::findRectangles(const CascadeType &cascadeType)

@@ -9,7 +9,7 @@ FinderCascade::FinderCascade(const CascadeType &cascadeType,
     : cmCascadeType(cascadeType)
     , cmpConfigObject(configObject)
 {
-    TRACEQFI << cascadeType.name() << QOBJNAME(configObject);
+//    TRACEQFI << cascadeType.name() << QOBJNAME(configObject);
     mpCascade = new cvCascade(cascadeType);
 }
 
@@ -34,22 +34,28 @@ void FinderCascade::setImage(const QImage &inputImage)
     TRACEQFI << inputImage.size() << inputImage.format();
     mInputImage = inputImage.convertToFormat(QImage::Format_RGB32);
     mFindRectImage = mInputImage.convertToFormat(QImage::Format_Grayscale8);
+    TRACE << mFindRectImage;
     mpFindRectMat->set(mFindRectImage);
+    TRACERTV();
 }
 
 int FinderCascade::findRectangles()
 {
+    TRACEFN;
     mRectList = mpCascade->detect(*mpFindRectMat, cascadeParameters());
+    TRACERTN(mRectList.size());
     return mRectList.size();
 }
 
 QList<QRect> FinderCascade::rectList() const
 {
+    TRACEQFI << mRectList.size();
     return mRectList;
 }
 
 QImage FinderCascade::findRectImage() const
 {
+    TRACEQFI << mFindRectImage;
     return mFindRectImage;
 }
 

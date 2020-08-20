@@ -16,4 +16,4 @@ OURDEST = $$replace(OURDEST, <ver>, $$EIRC2_VER_STRING)
 DESTDIR = $$OURDEST
 LIBS *= -L$$OURDEST
 
-message(OURDEST = $$OURDEST)
+#message(OURDEST = $$OURDEST)

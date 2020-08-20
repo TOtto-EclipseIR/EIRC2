@@ -34,7 +34,7 @@ public:
     QSize coreSize() const;
     QFileInfo cascadeFileInfo() const;
     RectList detect(const cvMat &detectMat,
-                     const CascadeParameters &parms);
+                    const CascadeParameters &parms);
 
 private:
     bool getCoreSize(const QFileInfo &cascadeXmlInfo);
