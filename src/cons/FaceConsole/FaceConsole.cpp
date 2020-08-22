@@ -98,7 +98,7 @@ void FaceConsole::setConfiguration()
     EXPECT(mMarkedRectOutputDir.cd(markedRectDirString));
     EXPECT(mMarkedRectOutputDir.exists());
     if (mMarkedRectOutputDir.exists())
-        writeLine("   " + mMarkedRectOutputDir.absolutePath() + "created");
+        writeLine("   " + mMarkedRectOutputDir.absolutePath() + " created");
 
     TODO(BackToImageIO);
 #else
@@ -126,11 +126,11 @@ void FaceConsole::initializeResources()
     EXPECT(cascadeFileInfo.isReadable());
     EXPECT(cascadeFileInfo.isFile());
     cmpRectFinder->load(CascadeType::PreScan, cascadeFileInfo.absoluteFilePath());
-//    BEXPECT(cmpRectFinder->loaded(CascadeType::PreScan));
+    EXPECT(cmpRectFinder->loaded(CascadeType::PreScan));
     writeLine("---Cascade: "+cascadeFileInfo.absoluteFilePath()+" loaded");
 
     EMIT(resoursesInitd());
- QTimer::singleShot(100, this, &FaceConsole::startProcessing);}
+    QTimer::singleShot(100, this, &FaceConsole::startProcessing);}
 
 void FaceConsole::startProcessing()
 {

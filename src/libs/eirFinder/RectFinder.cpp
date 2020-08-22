@@ -59,8 +59,7 @@ QList<QRect> RectFinder::rectangleList(const CascadeType &cascadeType)
 QImage RectFinder::makeRectImage(const CascadeType &cascadeType, bool all)
 {
     TRACEQFI << cascadeType.name() << all;
-    NEEDUSE(all);
-    QImage rectImage = findRectImage(cascadeType);
+        QImage rectImage = findRectImage(cascadeType);
     QPainter painter;
     painter.begin(&rectImage);
     painter.setPen(Qt::blue);

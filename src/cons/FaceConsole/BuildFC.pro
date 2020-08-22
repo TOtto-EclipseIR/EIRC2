@@ -5,6 +5,7 @@ SUBDIRS += \
         ../../libs/eirBase \
         ../../libs/eirType \
         ../../libs/eirExe \
+        ../../libs/eirCascade \
         ../../libs/eirFinder \
         ../../libs/eirQtCV \
         ../FaceConsole \
@@ -17,9 +18,9 @@ SUBDIRS += \
 eirBase.depends     = eirXfr
 eirType.depends     = eirBase eirXfr
 eirExe.depends      = eirType eirBase ierXfr
-eirFinder.depends   = eirExe eirType eirBase eirXfr
-eirQtCV.depends     = eirFinder eirExe eirType eirBase eirXfr
-FaceConsole.depends = eirQtCV eirFinder eirExe eirType eirBase eirXfr
+eirFinder.depends   = eirCascade eirExe eirType eirBase eirXfr
+eirQtCV.depends     = eirFinder eirCascade eirExe eirType eirBase eirXfr
+FaceConsole.depends = eirQtCV eirFinder eirCascade eirExe eirType eirBase eirXfr
 
 #eirGraphics.depends = eirXfr
 #eirMarker.depends   = eirBase eirXfr eirType eirFrame

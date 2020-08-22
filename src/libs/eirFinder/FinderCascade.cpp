@@ -36,6 +36,8 @@ void FinderCascade::setImage(const QImage &inputImage)
     mFindRectImage = mInputImage.convertToFormat(QImage::Format_Grayscale8);
     TRACE << mFindRectImage;
     mpFindRectMat->set(mFindRectImage);
+    QImage findRectImage = mpFindRectMat->toImage();
+    findRectImage.save("FindRectImage.png");
     TRACERTV();
 }
 

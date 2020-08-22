@@ -12,21 +12,21 @@ HexDump::HexDump()
 }
 
 HexDump::HexDump(void *data, const int bytes,
-                 const MultiName &name)
+                 const QString &name)
     : mpData((unsigned *)(data))
     , cmBytes(bytes)
     , cmName(name)
 {
-    TRACEQFI << name();
+    TRACEQFI << name;
     NEEDDO(IT)
 }
 
-HexDump::HexDump(const QByteArray &ba, const MultiName &name)
+HexDump::HexDump(const QByteArray &ba, const QString &name)
     : mpData((unsigned *)(ba.data()))
     , cmBytes(ba.size())
     , cmName(name)
 {
-    TRACEQFI << name();
+    TRACEQFI << name;
     NEEDDO(IT   )
 }
 
@@ -56,7 +56,7 @@ void HexDump::format()
     TRACEFN
     QStringList qsl;
 
-    qsl << QString("@0x%2 L%3 0x%4 %1").arg(cmName())
+    qsl << QString("@0x%2 L%3 0x%4 %1").arg(cmName)
            .arg((ptrdiff_t)(mpData),
                 2 * sizeof(unsigned), 16, QChar('0'))
            .arg(cmBytes).arg(cmBytes, 0, 16, QChar('0'));

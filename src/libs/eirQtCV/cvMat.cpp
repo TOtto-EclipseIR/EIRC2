@@ -38,7 +38,7 @@ void cvMat::set(const QImage &qimage)
              == qimage.format()) ? CV_8U : CV_8UC4);
     mpCvMat = new cv::Mat(sz.height() , sz.width(),
                     QImage::Format_Grayscale8
-                        == qimage.format() ? CV_8U : CV_8UC4);
+                        == qimage.format() ? CV_8UC1 : CV_8UC4);
     TRACE << Qt::hex << mpCvMat->data << qimage.bits() << Qt::dec
             << QString("memcpy(0x%1, 0x%2, %3*%4=%5")
              .arg("uchar*")
@@ -49,6 +49,14 @@ void cvMat::set(const QImage &qimage)
     std::memcpy(mpCvMat->data, qimage.bits(),
                 mpCvMat->elemSize1() * mpCvMat->total());
     TRACERTV();
+}
+
+QImage cvMat::toImage() const
+{
+    QImage::Format f = (CV_8UC1 == mat().type()) ? QImage::Format_Grayscale8 : QImage::Format_RGB32;
+    QImage image (mat().data, mat().cols, mat().rows, mat().cols, f);
+    TRACEQFI << image;
+    return image;
 }
 
 void cvMat::clear()
@@ -74,6 +82,6 @@ cv::Mat cvMat::mat() const
 QString cvMat::dumpString() const
 {
     return QString("cvMat size=%1x%2 type=%3")
-            .arg(mat().size().width).arg(mat().size().width)
+            .arg(mat().size().width).arg(mat().size().height)
             .arg(mat().type());
 }

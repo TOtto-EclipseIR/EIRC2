@@ -10,9 +10,9 @@
 #include <eirType/EnumerationArray.h>
 #include <eirType/QQRectList.h>
 #include <eirExe/ConfigObject.h>
+#include <eirCascade/CascadeType.h>
 #include <eirQtCV/cvCascade.h>
 
-#include "CascadeType.h"
 #include "FinderCascade.h"
 
 class EIRFINDER_EXPORT RectFinder : public QObject

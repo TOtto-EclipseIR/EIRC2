@@ -14,6 +14,7 @@ public:
     void set(const cv::Mat other);
     void set(const QSize sz);
     void set(const QImage &qimage);
+    QImage toImage() const;
     void clear();
     cv::Mat mat() const;
     QString dumpString() const;

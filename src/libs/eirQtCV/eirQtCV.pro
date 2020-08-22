@@ -21,7 +21,7 @@ include(../../opencv4.pri)
 
 LIBS *= -leirType2
 LIBS *= -leirExe2
-LIBS *= -leirFinder2
+LIBS *= -leirCascade2
 
 SOURCES += \
     cvCascade.cpp \

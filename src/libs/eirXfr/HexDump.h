@@ -15,9 +15,9 @@ public:
 public:
     HexDump();
     HexDump(void * data, const int bytes,
-            const MultiName &name=MultiName());
+            const QString &name=MultiName());
     HexDump(const QByteArray &ba,
-            const MultiName &name=MultiName());
+            const QString &name=MultiName());
     HexDump(const QImage & img, const int bytes=-1);
     QStringList strings();
     QString string(const QChar &joinChar=QChar('\n'));
@@ -30,7 +30,7 @@ private:
 private:
     unsigned * mpData=nullptr;
     const int cmBytes=0;
-    const MultiName cmName;
+    const QString cmName;
     QStringList mStrings;
 };
 

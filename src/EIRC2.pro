@@ -14,6 +14,7 @@ SUBDIRS += \
 #    ./cons/If2Console       \
     ./cons/FaceConsole      \
     ./cons/HelloConsole     \
+    libs/eirCascade
 
 eirType.depends     = eirBase
 eirExe.depends      = eirBase eirType

@@ -11,7 +11,7 @@
 
 #include <eirType/BasicName.h>
 #include <eirExe/Configuration.h>
-#include <eirFinder/CascadeType.h>
+#include <eirCascade/CascadeType.h>
 
 #include "cvMat.h"
 

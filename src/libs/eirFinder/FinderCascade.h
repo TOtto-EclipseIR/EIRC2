@@ -4,8 +4,8 @@
 
 #include <eirExe/ConfigObject.h>
 
-#include "CascadeParameters.h"
-#include "CascadeType.h"
+#include <eirCascade/CascadeParameters.h>
+#include <eirCascade/CascadeType.h>
 
 class cvCascade;
 class cvMat;

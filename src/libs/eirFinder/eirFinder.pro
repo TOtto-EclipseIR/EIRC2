@@ -21,21 +21,18 @@ include(../../EIRC2.pri)
 LIBS *= -leirType2
 LIBS *= -leirExe2
 LIBS *= -leirQtCV2
+LIBS *= -leirCascade2
 
 SOURCES += \
     FinderCascade.cpp \
     RectFinder.cpp \
     eirFinder.cpp \
-    CascadeParameters.cpp \
-    CascadeType.cpp \
 
 HEADERS += \
     FinderCascade.h \
     RectFinder.h \
     eirFinder_global.h \
     eirFinder.h \
-    CascadeParameters.h \
-    CascadeType.h \
 
 # Default rules for deployment.
 unix {
