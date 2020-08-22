@@ -15,6 +15,18 @@ cvMat::~cvMat()
     clear();
 }
 
+bool cvMat::isNull() const
+{
+    return mat().rows <= 0 || mat().cols || nullptr == data();
+}
+
+bool cvMat::isValid() const
+{
+    if (isNull()) return false;
+    // TODO more
+    return true;
+}
+
 void cvMat::set(const cv::Mat other)
 {
     mpCvMat = new cv::Mat(other);
@@ -79,9 +91,14 @@ cv::Mat cvMat::mat() const
     return  mpCvMat ? *mpCvMat : cv::Mat();
 }
 
+quint8 *cvMat::data() const
+{
+    return mat().data;
+}
+
 QString cvMat::dumpString() const
 {
-    return QString("cvMat size=%1x%2 type=%3")
+    return QString("cvMat size=%1x%2 type=%3 total=%4")
             .arg(mat().size().width).arg(mat().size().height)
-            .arg(mat().type());
+            .arg(mat().type()).arg(mat().total());
 }

@@ -6,4 +6,5 @@ class EIRQTCV_EXPORT eirQtCV
 {
 public:
     eirQtCV();
+    static QString cvVersion();
 };

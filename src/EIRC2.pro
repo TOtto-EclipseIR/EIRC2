@@ -14,6 +14,7 @@ SUBDIRS += \
 #    ./cons/If2Console       \
     ./cons/FaceConsole      \
     ./cons/HelloConsole     \
+    cons/QtCVmain \
     libs/eirCascade
 
 eirType.depends     = eirBase
