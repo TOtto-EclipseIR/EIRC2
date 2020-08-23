@@ -63,21 +63,26 @@ QFileInfo cvCascade::cascadeFileInfo() const
     return mCascadeXmlInfo;
 }
 
+cv::CascadeClassifier *cvCascade::cascade()
+{
+    return mpCascade;
+}
+
 cvCascade::RectList cvCascade::detect(const cvMat &detectMat,
                                       const CascadeParameters &parms)
 {
     TRACEQFI << detectMat.dumpString();
     parms.cascadeConfig().dump();
     parms.dump();
-    QSize minSize = parms.minSize();
-    QSize maxSize = parms.maxSize();
-//    QSize minSize(32,32), maxSize(256,256);
+  //  QSize minSize = parms.minSize();
+//    QSize maxSize = parms.maxSize();
+    QSize minSize(32,32), maxSize(256,256);
 
     std::vector<cv::Rect> cvRectVector;
     cv::InputArray ia(detectMat.mat());
     cvCascade::RectList results;
 
-    cv::imshow("detectMat", detectMat.mat());
+//    cv::imshow("detectMat", detectMat.mat());
     mpCascade->detectMultiScale(ia,
                         cvRectVector,
                         parms.factor(),
@@ -94,8 +99,6 @@ cvCascade::RectList cvCascade::detect(const cvMat &detectMat,
 
     TRACE << results.size() << "Rectangles";
     return results;
-
-    return cvCascade::RectList();
 }
 
 bool cvCascade::getCoreSize(const QFileInfo &cascadeXmlInfo)

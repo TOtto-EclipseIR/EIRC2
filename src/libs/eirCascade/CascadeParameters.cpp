@@ -20,6 +20,9 @@ CascadeParameters::CascadeParameters(const Configuration &cascadeConfig)
 #endif
 }
 
+CascadeParameters::CascadeParameters(const double factor, const int neighbors)
+    : mFactor(factor), mNeighbors(neighbors) {;}
+
 double CascadeParameters::factor() const
 {
     return mFactor;

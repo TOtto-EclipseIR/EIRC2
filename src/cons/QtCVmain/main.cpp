@@ -2,7 +2,9 @@
 
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
+#include "opencv2/objdetect.hpp"
 
+#include <eirCascade/CascadeParameters.h>
 #include <eirCascade/CascadeType.h>
 #include <eirQtCV/eirQtCV.h>
 #include <eirQtCV/cvCascade.h>
@@ -38,7 +40,33 @@ int main(int argc, char *argv[])
     cv::imshow("detectQMat", detectQMat.mat());
     cv::waitKey();
 
+    cvCascade::RectList faceRects;
+#if 1
+	// TOTRY: cvCascade.cascade()->detectMultiScale();
+    cv::CascadeClassifier * pcvc = gPreScanCascade.cascade();
+    std::vector<cv::Rect> stdRectVec;
+    pcvc->detectMultiScale(detectQMat.mat(), stdRectVec, 1.01, 1); // , cv::CASCADE_DO_ROUGH_SEARCH);
+    foreach (cv::Rect cvrc, stdRectVec)
+        faceRects << QRect(cvrc.x, cvrc.y, cvrc.width, cvrc.height);
+#else
+    CascadeParameters parms(1.010, 0);
+    faceRects = gPreScanCascade.detect(detectQMat, parms);
+#endif
+    std::cout << faceRects.size() << " Face Rectangles Detected" << std::endl;
 
+    cvMat outputQMat(inputQMat);
+    for (int x = 0; x < faceRects.size(); ++x)
+    {
+        QRect qrc = faceRects[x];
+        QPoint centerQPt = qrc.center();
+        cv::circle(outputQMat.mat(),
+                   cv::Point(centerQPt.x(), centerQPt.y()),
+                   qrc.width(),
+                   cv::Scalar(255, 255, 0),
+                   3);
+    }
+    cv::imshow("outputQMat", outputQMat.mat());
+    cv::waitKey();
 
     return 0;
 }

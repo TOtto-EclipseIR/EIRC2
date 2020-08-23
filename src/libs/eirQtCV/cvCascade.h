@@ -33,6 +33,7 @@ public:
     void unload();
     QSize coreSize() const;
     QFileInfo cascadeFileInfo() const;
+    cv::CascadeClassifier *cascade();
     RectList detect(const cvMat &detectMat,
                     const CascadeParameters &parms);
 
