@@ -15,8 +15,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(../../EIRC2.pri)
+INCLUDEPATH *= $(QTCVINCLUDEPATH)
+LIBS *= -L$(QTCVLIBPATH)
+CONFIG(debug, debug|release) {
+    LIBS *= -lopencv_world$(QTCVFILENAMEVER)d
+    DISTFILES *= $(QTCVLIBPATH)/../bin/opencv_world$(QTCVFILENAMEVER)d.dll
+} else {
+    LIBS *= -lopencv_world$(QTCVFILENAMEVER)
+    DISTFILES *= $(QTCVLIBPATH)/../bin/opencv_world$(QTCVFILENAMEVER).dll
+}
 
+PRE_TARGETDEPS *= $$OURDEST/eirCascade2.lib
 PRE_TARGETDEPS *= $$OURDEST/eirQtCV2.lib
+LIBS *= -leirCascade2
 LIBS *= -leirQtCV2
 
 SOURCES += \

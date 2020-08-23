@@ -24,12 +24,14 @@ LIBS *= -leirExe2
 LIBS *= -leirCascade2
 
 SOURCES += \
+    cvBGRA.cpp \
     cvCascade.cpp \
     cvMat.cpp \
     cvString.cpp \
     eirQtCV.cpp
 
 HEADERS += \
+    cvBGRA.h \
     cvCascade.h \
     cvMat.h \
     cvString.h \

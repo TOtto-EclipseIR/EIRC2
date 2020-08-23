@@ -46,7 +46,6 @@ int main(int argc, char *argv[])
     cv::Mat inputMat = cv::imread("D:/INDIface/INDIin/console/hide/18yoTwins.jpg", cv::IMREAD_COLOR);
     matInfo(inputMat);
     std::cout << "inputMat is " << (isValid(inputMat) ? "valid" : "INVALID") << std::endl;
-    //cv::namedWindow("", cv::WINDOW_NORMAL);
     cv::imshow("inputMat", inputMat);
     cv::waitKey();
 

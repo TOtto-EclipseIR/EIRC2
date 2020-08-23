@@ -25,7 +25,7 @@ public:
     typedef QList<QRect> RectList;
 
 public:
-    cvCascade(const CascadeType &cascadeType);
+    cvCascade(const CascadeType &cascadeType=CascadeType::nullCascadeType);
     CascadeType cascadeType() const;
     bool loadCascade(const QFileInfo &cascadeXmlInfo);
     bool notLoaded() const;
