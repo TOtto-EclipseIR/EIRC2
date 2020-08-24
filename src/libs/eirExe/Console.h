@@ -25,8 +25,8 @@ public slots:
     void putChar(const char c);
     void getChar();
     void readLine();
-    void writeLine(const QString &qs,
-                   const bool andFlush=true);
+    void write(const QString &qs, const bool andFlush=true);
+    void writeLine(const QString &qs, const bool andFlush=true);
     void writeLines(const QStringList &qsl);
     void writeErr(const QString &qs,
                   const bool andFlush=true);

@@ -2,6 +2,7 @@
 #include "eirQtCV.h"
 
 #include <QImage>
+#include <QPixmap>
 
 namespace cv { class Mat; }
 
@@ -26,9 +27,12 @@ public:
     void set(const QSize sz);
     void set(const QImage &qimage);
     QImage toImage() const;
-    void makeGrey(cvMat &greyMat) const;
+    QPixmap toPixmap() const;
+    void makeGrey(cvMat greyMat) const;
+    cvMat toGrey() const;
     void clear();
     cv::Mat mat() const;
+    cv::Mat mat();
     quint8 *data() const;
     QString dumpString() const;
 

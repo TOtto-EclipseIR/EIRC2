@@ -132,23 +132,43 @@ void cvMat::set(const QImage &qimage)
 
 QImage cvMat::toImage() const
 {
-    QImage::Format f = (CV_8UC1 == mat().type()) ? QImage::Format_Grayscale8 : QImage::Format_RGB32;
-    QImage image (mat().data, mat().cols, mat().rows, mat().cols, f);
-    TRACEQFI << image;
+    TRACEQFI << dumpString();
+    QImage::Format f = (CV_8UC1 == mat().type())
+                            ? QImage::Format_Grayscale8
+                            : QImage::Format_RGB32;
+    QImage image;
+    if (mat().isContinuous())
+    {
+        image = QImage(mat().data, mat().cols, mat().rows, f);
+    }
+    else
+    {
+        image = QImage(cols(), rows(), f);
+        for (int r = 0; r < rows(); ++r)
+            std::memcpy(image.scanLine(r), mat().ptr(r), cols() * mat().elemSize());
+    }
+    TRACE << image;
     return image;
 }
 
-void cvMat::makeGrey(cvMat &greyMat) const
+void cvMat::makeGrey(cvMat greyMat) const
 {
-//    cvMat greyMat = cv::Mat(rows(), cols(), CV_8UC1);
     TRACEQFI << greyMat.dumpString() << dumpString();
     cv::cvtColor(mat(), greyMat.mat(), cv::COLOR_BGR2GRAY);
     TRACE << greyMat.dumpString();
 }
 
+cvMat cvMat::toGrey() const
+{
+    TRACEQFI << dumpString();
+    cv::Mat gm;
+    cv::cvtColor(mat(), gm, cv::COLOR_BGR2GRAY);
+    TRACE << cvMat(gm).dumpString();
+    return cvMat(gm);
+}
+
 void cvMat::clear()
 {
-    mat().release();
     TRACEFN;
     if (mpCvMat)
     {
@@ -163,6 +183,11 @@ void cvMat::clear()
 }
 
 cv::Mat cvMat::mat() const
+{
+    return  mpCvMat ? *mpCvMat : cv::Mat();
+}
+
+cv::Mat cvMat::mat()
 {
     return  mpCvMat ? *mpCvMat : cv::Mat();
 }

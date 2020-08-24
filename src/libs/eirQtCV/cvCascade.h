@@ -34,8 +34,9 @@ public:
     QSize coreSize() const;
     QFileInfo cascadeFileInfo() const;
     cv::CascadeClassifier *cascade();
-    RectList detect(const cvMat &detectMat,
-                    const CascadeParameters &parms);
+    bool imreadInputMat(const QFileInfo &inputFileInfo);
+    RectList detect();
+    bool imwriteMarkedImage(const QFileInfo &markFileInfo);
 
 private:
     bool getCoreSize(const QFileInfo &cascadeXmlInfo);
@@ -45,5 +46,9 @@ private:
     QFileInfo mCascadeXmlInfo;
     cv::CascadeClassifier *mpCascade=nullptr;
     QSize mCoreSize;
+    cvMat mInputMat;
+    cvMat mDetectMat;
+    RectList mRectList;
+    QImage mMarkedImage;
 };
 

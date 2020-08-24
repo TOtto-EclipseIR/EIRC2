@@ -62,10 +62,16 @@ void Console::readLine()
 
 }
 
+void Console::write(const QString &qs, const bool andFlush)
+{
+    mpOut->write(qs.toLocal8Bit());
+    if (andFlush) mpOut->flush();
+}
+
 void Console::writeLine(const QString &qs,
                         const bool andFlush)
 {
-    mpOut->write(qs.toLocal8Bit());
+    write(qs.toLocal8Bit(), false);
     mpOut->write("\n");
     if (andFlush) mpOut->flush();
 }

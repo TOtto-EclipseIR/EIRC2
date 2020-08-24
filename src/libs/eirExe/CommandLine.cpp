@@ -45,7 +45,8 @@ QString CommandLine::firstPositionalArgument() const
 QString CommandLine::takePositionalArgument()
 {
     TRACEQFI << firstPositionalArgument();
-    return firstPositionalArgument();
+    return positionalArgumentSize()
+            ? mPositionalArgumentList.takeFirst() : QString();
 }
 /*
 QQFileInfoList CommandLine::positionalFileInfoList() const

@@ -21,14 +21,14 @@ FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
     , cmpConfigObject(new ConfigObject(parent))
 //    , cmpOutput(new OutputManager(parent))
-    , cmpRectFinder(new RectFinder(cmpConfigObject, parent))
+//    , cmpRectFinder(new RectFinder(cmpConfigObject, parent))
   //  , cmpMarkerManager(new MarkerManager(cmpConfigObject, this))
 {
     TRACEFN;
     setObjectName("FaceConsole");
     TSTALLOC(cmpConfigObject);
     //TSTALLOC(cmpOutput);
-    TSTALLOC(cmpRectFinder);
+    //TSTALLOC(cmpRectFinder);
   //  TSTALLOC(cmpMarkerManager);
 
     QTimer::singleShot(500, this, &FaceConsole::initializeApplication);
@@ -50,6 +50,10 @@ void FaceConsole::initializeApplication()
               .arg(locale.toString(QDateTime::currentDateTime())));
     CONNECT(this, &FaceConsole::processingStarted,
             this, &FaceConsole::nextFile);
+    CONNECT(this, &FaceConsole::processed,
+            this, &FaceConsole::nextFile);
+    CONNECT(this, &FaceConsole::finishProcessing,
+            qApp, &QCoreApplication::quit);
     EMIT(applicationInitd());
     QTimer::singleShot(100, this, &FaceConsole::setupCommandLine);
 }
@@ -113,22 +117,24 @@ void FaceConsole::setConfiguration()
 void FaceConsole::initializeResources()
 {
     TRACEFN;
-    QDir baseDir(config()->configuration("/Resources/RectFinder")
+    QDir baseCascadeDir(config()->configuration("/Resources/RectFinder")
                  .string("BaseDir"));
-    cmpRectFinder->set(baseDir);
+    //cmpRectFinder->set(baseDir);
     QString cascadeFileName = config()->
             configuration("/Resources/RectFinder/PreScan")
                 .string("XmlFile");
-    QFileInfo cascadeFileInfo(baseDir, cascadeFileName);
+    QFileInfo cascadeFileInfo(baseCascadeDir, cascadeFileName);
     TRACE << cascadeFileInfo << cascadeFileInfo.exists()
           << cascadeFileInfo.isReadable() << cascadeFileInfo.isFile();
     EXPECT(cascadeFileInfo.exists());
     EXPECT(cascadeFileInfo.isReadable());
     EXPECT(cascadeFileInfo.isFile());
-    cmpRectFinder->load(CascadeType::PreScan, cascadeFileInfo.absoluteFilePath());
-    EXPECT(cmpRectFinder->loaded(CascadeType::PreScan));
-    writeLine("---Cascade: "+cascadeFileInfo.absoluteFilePath()+" loaded");
-
+    write("---Cascade: "+cascadeFileInfo.absoluteFilePath()+" loading...");
+    mPreScanCascade.loadCascade(cascadeFileInfo.absoluteFilePath());
+    EXPECT(mPreScanCascade.isLoaded());
+    //cmpRectFinder->load(CascadeType::PreScan, cascadeFileInfo.absoluteFilePath());
+//    EXPECT(cmpRectFinder->loaded(CascadeType::PreScan));
+    writeLine("done");
     EMIT(resoursesInitd());
     QTimer::singleShot(100, this, &FaceConsole::startProcessing);}
 
@@ -144,9 +150,8 @@ void FaceConsole::startProcessing()
 
 void FaceConsole::nextFile()
 {
-    TRACEFN;
-
-    if (commandLine()->positionalArgumentSize())
+    TRACEQFI << commandLine()->positionalArgumentSize();
+    if (commandLine()->positionalArgumentSize() > 0)
     {
         mCurrentFileInfo = QFileInfo(rCommandLine().takePositionalArgument());
         DUMPVAL(mCurrentFileInfo);
@@ -154,70 +159,45 @@ void FaceConsole::nextFile()
     }
     else
     {
-        QTimer::singleShot(100, this, &FaceConsole::nextFile);
+        QTimer::singleShot(100, this, &FaceConsole::finishProcessing);
     }
-
-    NEEDDO(more);
-    EMIT(processed(QFileInfo(), 0));
 }
 
 void FaceConsole::processCurrentFile()
 {
     TRACEQFI << mCurrentFileInfo << mCurrentFileInfo.isReadable();
-    Success success;
+//    Success success;
 //    QByteArray bytes;
-    QImage image(mCurrentFileInfo.absoluteFilePath());
+//    QImage image(mCurrentFileInfo.absoluteFilePath());
     QImage rectImage;
     QString outputFileName;
 
-    //if (success) success = mFramePak.setInputFrame(mCurrentFile);
     writeLine("---Processing: "+mCurrentFileInfo.absoluteFilePath());
-    TRACE << image.size() << image.format();
-    success = ! image.isNull();
-    EXPECT(success);
-    if (success) cmpRectFinder->set(CascadeType::PreScan, image);
-    EXPECT(success);
-    if (success) cmpRectFinder->findRectangles(CascadeType::PreScan);
-    EXPECT(success);
-    if (success) mCurrentRectangles = cmpRectFinder->rectangleList(CascadeType::PreScan);
-    EXPECT(success);
-    if (success) writeLine(QString("   %1 PreScan rectangles found")
+    mPreScanCascade.imreadInputMat(mCurrentFileInfo);
+    mCurrentRectangles = mPreScanCascade.detect();
+    writeLine(QString("   %1 PreScan rectangles found")
                             .arg(mCurrentRectangles.size()));
-    if (success) rectImage = cmpRectFinder->makeRectImage(CascadeType::PreScan);
-    EXPECT(success);
-    if (success) success = ! rectImage.isNull();
-    EXPECT(success);
-    if (success) mRectImage = rectImage;
-    EXPECT(success);
-    if (success) outputFileName = QFileInfo(mMarkedRectOutputDir,
+    outputFileName = QFileInfo(mMarkedRectOutputDir,
                                             mCurrentFileInfo.completeBaseName()+".PNG")
                                   .absoluteFilePath();
-    EXPECT(success);
-    if (success) success = mRectImage.save(outputFileName);
-    EXPECT(success);
-    if (success) writeLine("   " + outputFileName + " written");
-    EXPECT(success);
-    if (success)
-    {
-        //mFramePak.setPreScanImage(cmpRectFinder->findRectImage(CascadeType::PreScan));
-        //mFramePak.setFrameRectangles(mCurrentRectangles);
-        EMIT(processed(QFileInfo(mCurrentFileInfo),
+    EXPECT(mPreScanCascade.imwriteMarkedImage(outputFileName));
+    writeLine("   " + outputFileName + " written");
+    EMIT(processed(QFileInfo(mCurrentFileInfo),
              mCurrentRectangles.size()));
-        NEEDDO("somethingWithFramePak");
-    }
+    NEEDDO("somethingWithFramePak");
+    /*
     else
     {
         EMIT(processFailed(mCurrentFileInfo, "Error locating face objects"));
     }
+    */
     NEEDDO(more);
-    EMIT(processed(mCurrentFileInfo, 0));
 }
 
 void FaceConsole::finishProcessing()
 {
     TRACEFN;
-
-
+    writeLine("===Processing Complete");
     NEEDDO(more);
     EMIT(processingComplete());
 }

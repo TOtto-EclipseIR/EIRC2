@@ -3,8 +3,8 @@
 #include <QObject>
 #include <eirExe/Console.h>
 
-
-#include <eirFinder/RectFinder.h>
+#include <eirQtCV/cvCascade.h>
+//#include <eirFinder/RectFinder.h>
 //#include <eirFrame/FramePak.h>
 //#include <eirImageIO/OutputManager.h>
 
@@ -46,7 +46,8 @@ signals:
 private:
     ConfigObject * const cmpConfigObject=nullptr;
 //    OutputManager * const cmpOutput=nullptr;
-    RectFinder * const cmpRectFinder=nullptr;
+//    RectFinder * const cmpRectFinder=nullptr;
+    cvCascade mPreScanCascade;
     QDir mBaseOutputDir;
     QDir mMarkedRectOutputDir;
     QFileInfo mCurrentFileInfo;

@@ -1,5 +1,8 @@
 #include "cvCascade.h"
 
+#include <QPainter>
+#include <QPixmap>
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/objdetect.hpp>
 
@@ -68,29 +71,44 @@ cv::CascadeClassifier *cvCascade::cascade()
     return mpCascade;
 }
 
-cvCascade::RectList cvCascade::detect(const cvMat &detectMat,
-                                      const CascadeParameters &parms)
+bool cvCascade::imreadInputMat(const QFileInfo &inputFileInfo)
 {
-    TRACEQFI << detectMat.dumpString();
-    parms.cascadeConfig().dump();
-    parms.dump();
-  //  QSize minSize = parms.minSize();
-//    QSize maxSize = parms.maxSize();
-    QSize minSize(32,32), maxSize(256,256);
+    mInputMat.imread(inputFileInfo.absoluteFilePath(), cv::IMREAD_COLOR);
+    //std::cout << qPrintable(inputQMat.dumpString()) << std::endl;
+    //cv::imshow("inputQMat", mInputMat.mat());
+    //cv::waitKey();
+/*
+    mDetectMat = cvMat(mInputMat.rows(), mInputMat.cols(), CV_8UC1);
+    mInputMat.makeGrey(mDetectMat);
+    std::cout << qPrintable(mDetectMat.dumpString()) << std::endl;
+    cv::imshow("mDetectMat", mDetectMat.mat());
+    cv::waitKey();
+*/
+    return mInputMat.isValid();
+}
 
+cvCascade::RectList cvCascade::detect()
+{
+    TRACEQFI << mInputMat.dumpString();
+
+#if 1
+    cvMat detectMat(mInputMat.rows(), mInputMat.cols(), CV_8UC1);
+    mInputMat.makeGrey(detectMat.mat());
+    mDetectMat.set(detectMat.mat());
+#else
+    cvMat detectMat = mInputMat.toGrey();
+#endif
     std::vector<cv::Rect> cvRectVector;
-    cv::InputArray ia(detectMat.mat());
     cvCascade::RectList results;
 
-//    cv::imshow("detectMat", detectMat.mat());
-    mpCascade->detectMultiScale(ia,
-                        cvRectVector,
+    mpCascade->detectMultiScale(detectMat.mat(),
+                        cvRectVector, 1.075, 0); /*,
                         parms.factor(),
                         parms.neighbors(),
                         parms.flags(),
                         cv::Size(minSize.width(), minSize.height()),
                         cv::Size(maxSize.width(), maxSize.height()));
-
+*/
     foreach (cv::Rect cvrc, cvRectVector)
     {
         QRect qrc(cvrc.x, cvrc.y, cvrc.width, cvrc.height);
@@ -98,7 +116,21 @@ cvCascade::RectList cvCascade::detect(const cvMat &detectMat,
     }
 
     TRACE << results.size() << "Rectangles";
+    mRectList = results;
     return results;
+}
+
+bool cvCascade::imwriteMarkedImage(const QFileInfo &markFileInfo)
+{
+    TRACEQFI << markFileInfo;
+    cv::Mat markMat;
+    mInputMat.mat().copyTo(markMat);
+    foreach (QRect qrc, mRectList)
+        cv::rectangle(markMat,
+                      cv::Rect(qrc.left(), qrc.top(), qrc.width(), qrc.height()),
+                      cv::Scalar(255, 255, 0),
+                      0);
+    return  cv::imwrite(cvString(markFileInfo.absoluteFilePath()), markMat);
 }
 
 bool cvCascade::getCoreSize(const QFileInfo &cascadeXmlInfo)
