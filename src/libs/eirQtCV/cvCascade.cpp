@@ -19,7 +19,10 @@ cvCascade::cvCascade(const CascadeType &cascadeType)
 
 void cvCascade::configure(const Configuration &config)
 {
-    mParameters.configureCascade(config);
+    TRACEFN;
+    config.dump();
+    mCascadeConfig = config;
+    //mParameters.configureCascade(config);
 }
 
 CascadeType cvCascade::cascadeType() const
@@ -82,6 +85,7 @@ bool cvCascade::imreadInputMat(const QQFileInfo &inputFileInfo)
     TRACEQFI << inputFileInfo;
     mInputMat.imread(inputFileInfo.absoluteFilePath(), cv::IMREAD_COLOR);
     TRACE << mInputMat.dumpString();
+    EXPECT(mInputMat.isValid());
     return mInputMat.isValid();
 }
 
@@ -89,19 +93,23 @@ cvCascade::RectList cvCascade::detect()
 {
     TRACEQFI << mInputMat.dumpString();
     TODO(inputSize&coreSize);
-    QSize minSize = mParameters.minSize();
-    QSize maxSize = mParameters.maxSize();
+    CascadeParameters parms(mCascadeConfig);
+    parms.calculate(mInputMat.toSize(), QSize(32,32));
+    QSize minSize = parms.minSize();
+    QSize maxSize = parms.maxSize();
     cvMat detectMat(mInputMat.rows(), mInputMat.cols(), CV_8UC1);
     mInputMat.makeGrey(detectMat.mat());
     mDetectMat.set(detectMat.mat());
     std::vector<cv::Rect> cvRectVector;
     cvCascade::RectList results;
+    makeMethodString(parms);
+    TRACE << methodString();
 
     mpCascade->detectMultiScale(detectMat.mat(),
                         cvRectVector,
-                        mParameters.factor(),
-                        mParameters.neighbors(),
-                        mParameters.flags(),
+                        parms.factor(),
+                        parms.neighbors(),
+                        parms.flags(),
                         cv::Size(minSize.width(), minSize.height()),
                         cv::Size(maxSize.width(), maxSize.height()));
 
@@ -118,9 +126,7 @@ cvCascade::RectList cvCascade::detect()
 
 QString cvCascade::methodString() const
 {
-    return QString("Factor=%1,Neighbors=%2,%3")
-            .arg(mParameters.factor()).arg(mParameters.neighbors())
-            .arg(mCascadeXmlInfo.completeBaseName());
+    return mMethodString;
 }
 
 QString cvCascade::imwriteMarkedImage(QQFileInfo markFileInfo)
@@ -147,5 +153,18 @@ bool cvCascade::getCoreSize(const QFileInfo &cascadeXmlInfo)
     mCoreSize = QSize(32, 32);
     NEEDDO(it);
     return false;
+}
+
+void cvCascade::makeMethodString(const CascadeParameters &parms)
+{
+    TRACEFN;
+    parms.dumpList();
+    mMethodString = QString("Factor=%1,Neighbors=%2"
+                            ",MinSize=%3x%4,MaxSize=%5x%6,%7")
+            .arg(parms.factor()).arg(parms.neighbors())
+            .arg(parms.minSize().width()).arg(parms.minSize().height())
+            .arg(parms.maxSize().width()).arg(parms.maxSize().height())
+            .arg(mCascadeXmlInfo.completeBaseName());
+
 }
 

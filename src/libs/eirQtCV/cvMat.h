@@ -26,6 +26,7 @@ public:
     void set(const cv::Mat other);
     void set(const QSize sz);
     void set(const QImage &qimage);
+    QSize toSize() const;
     QImage toImage() const;
     QPixmap toPixmap() const;
     void makeGrey(cvMat greyMat) const;

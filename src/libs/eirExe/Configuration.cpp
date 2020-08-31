@@ -1,5 +1,6 @@
 #include "Configuration.h"
 
+#include <eirXfr/Debug.h>
 
 Configuration::Configuration() {;}
 Configuration::Configuration(const VarMap &other) : VarMap(other) {;}
@@ -23,8 +24,10 @@ signed Configuration::signedInt(const MultiName &key, const signed defValue) con
 
 unsigned Configuration::unsignedInt(const MultiName &key, const unsigned defValue) const
 {
+    TRACEQFI << key() << defValue;
     bool ok;
     unsigned uintValue = value(key).value().toUInt(&ok);
+    TRACE << ok << contains(key) << uintValue;
     return  (ok && contains(key))
             ? uintValue
             : defValue;
@@ -40,8 +43,10 @@ bool Configuration::boolean(const MultiName &key, const bool defValue) const
 
 qreal Configuration::real(const MultiName &key, const qreal &defValue) const
 {
+    TRACEQFI << key() << defValue;
     bool ok;
-    bool realValue = value(key).value().toDouble(&ok);
+    qreal realValue = value(key).value().toDouble(&ok);
+    TRACE << ok << contains(key) << realValue;
     return  (ok && contains(key))
             ? realValue
             : defValue;

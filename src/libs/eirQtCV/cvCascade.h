@@ -44,15 +44,18 @@ public:
 
 private:
     bool getCoreSize(const QFileInfo &cascadeXmlInfo);
+    void makeMethodString(const CascadeParameters &parms);
 
 private:
     const CascadeType cmCascadeType;
-    CascadeParameters mParameters;
+    Configuration mCascadeConfig;
+//    CascadeParameters mParameters;
     QFileInfo mCascadeXmlInfo;
     cv::CascadeClassifier *mpCascade=nullptr;
     QSize mCoreSize;
     cvMat mInputMat;
     cvMat mDetectMat;
+    QString mMethodString;
     RectList mRectList;
     QImage mMarkedImage;
 };

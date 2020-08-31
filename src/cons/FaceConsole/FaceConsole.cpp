@@ -155,8 +155,12 @@ void FaceConsole::initializeResources()
     write("---Cascade: "+cascadeFileInfo.absoluteFilePath()+" loading...");
     mPreScanCascade.loadCascade(cascadeFileInfo.absoluteFilePath());
     EXPECT(mPreScanCascade.isLoaded());
-    //NEEDDO(mPreScanCascade.configure);
-    MUSTDO(mPreScanCascade.configure);
+
+    NEEDDO(mPreScanCascade.configure);
+    Configuration preScanConfig = config()->configuration("Option/RectFinder");
+    preScanConfig += config()->configuration("PreScan/RectFinder");
+    mPreScanCascade.configure(preScanConfig);
+    //MUSTDO(mPreScanCascade.configure);
 
     //cmpRectFinder->load(CascadeType::PreScan, cascadeFileInfo.absoluteFilePath());
 //    EXPECT(cmpRectFinder->loaded(CascadeType::PreScan));

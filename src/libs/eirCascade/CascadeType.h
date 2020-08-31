@@ -6,6 +6,7 @@
 #define CASCADETYPE_ENUM(NV) \
     NV(nullCascadeType, = 0)  \
     NV(PreScan,) \
+    NV(PreScanAll,) \
     NV(Face,) \
     NV(LeftEye,) \
     NV(RighttEye,) \

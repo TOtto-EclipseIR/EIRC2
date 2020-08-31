@@ -13,8 +13,9 @@ class EIRCASCADE_EXPORT CascadeParameters
 {
 public:
     CascadeParameters(const Configuration &cascadeConfig=Configuration());
-    CascadeParameters(const double factor, const int neighbors);
+    //CascadeParameters(const double factor, const int neighbors);
     void configureCascade(const Configuration &cascadeConfig);
+    void calculate(const QSize imageSize, const QSize coreSize);
     double factor() const;
     int neighbors() const;
     int flags() const;
@@ -25,7 +26,7 @@ public:
     void dump() const;
 
 private:
-    double calcFactor(); // non-const
+    double parseFactor(); // non-const
 
 private:
     CascadeType mCascadeType;

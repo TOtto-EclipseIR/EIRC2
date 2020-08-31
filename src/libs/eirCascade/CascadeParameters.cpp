@@ -7,22 +7,47 @@ CascadeParameters::CascadeParameters(const Configuration &cascadeConfig)
 {
     TRACEFN;
     NEEDDO(ImageSize); NEEDDO(coreSize);
-    mConfig.setName("CascadeConfiguration");
+    mConfig.setName("CascadeParameters:mConfig");
     mConfig.dump();
 #if 0
     NEEDDO(it);
     mAll = true;
     mFactor = 1.010;
     mNeighbors = 0;
-#else
+#elif 0
     mAll = mConfig.boolean("FindAll", false);
-    mFactor = calcFactor();
+    mFactor = parseFactor();
     mNeighbors = mConfig.unsignedInt("Neighbors", mAll ? 1 : 3);
+#else
 #endif
 }
-
+/*
 CascadeParameters::CascadeParameters(const double factor, const int neighbors)
     : mFactor(factor), mNeighbors(neighbors) {;}
+*/
+void CascadeParameters::configureCascade(const Configuration &cascadeConfig)
+{
+    TRACEFN;
+    mConfig += cascadeConfig;
+    mConfig.dump();
+}
+
+void CascadeParameters::calculate(const QSize imageSize, const QSize coreSize)
+{
+    TRACEQFI << imageSize << coreSize;
+    NEEDUSE(imageSize);
+    NEEDUSE(coreSize);
+
+    double fac = parseFactor();
+    mFactor = qIsNull(fac) ? 1.160 : fac;
+    NEEDDO("Default Based on Image/Core size & MaxDetectors, etc.");
+
+    int neigh = mConfig.signedInt("Neighbors");
+    mNeighbors = (neigh >= 1) ? neigh : 2;
+
+    DUMPVAL(factor());
+    DUMPVAL(neighbors());
+}
 
 double CascadeParameters::factor() const
 {
@@ -71,24 +96,17 @@ void CascadeParameters::dump() const
     DUMP << dumpList();
 }
 
-double CascadeParameters::calcFactor()
+double CascadeParameters::parseFactor()
 {
     TRACEFN;
-    double result=1.100;
+    double result=qQNaN();
     double f = mConfig.real("Factor");
-    if (f < 1.001) // calculate default
-        result = mAll ? 1.075 : 1.150;
-    else if (f < 2.000)
-        result = f;
+    if (f < 2.000)
+        result = 0.0;
     else
         result = 1.000 + f / 1000.0;
     TRACE << f << result;
+    EXPECTNE(result, qQNaN());
     return result;
 }
 
-void CascadeParameters::configureCascade(const Configuration &cascadeConfig)
-{
-    TRACEFN;
-    mConfig += cascadeConfig;
-    mConfig.dump();
-}

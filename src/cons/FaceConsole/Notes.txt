@@ -1,59 +1,11 @@
-[X] VersionInfo to eirType
-[X] Var* to eirType
-[X] Value& in eirType
-[X] Debug.h, ErrorHandler, &c. to eirXfr
-[ ] Success to eirXfr
+200831aho
+* Config 20,0 to Param 15,3
+[ ] !! Is Neighbors zero different than 1 in detectMultiScale
+* Move cvCascade::makeMethodString to CascadeParameters::methodString()
+* Output absolute dir relative to exeDir
 
-to eirType
-[!] Success
-[X] Uid
-[X] UInt128
-[X] Milliseconds
-[X] Boolean
-[X] DualMap
-[X] BasicName
-
-[~] eirBase::registerErrors()
-
-eirExe:
-
-BaseArgumentManager : QObject
-	=== Item List Management
-	private:
-		QLinkedList<BaseArgumentItem> mItemLList;
-	slots:
-		enqueue(BaseArgumentItem)
-		enqueue(QString)
-		enqueue(BaseArgumentItem::List)
-		enqueue(QStringList)
-	public:
-		dequeue() : BaseArgumentItem
-		peek() : BaseArgumentItem
-		size(), isEmpty(), notEmpty()
-	signals: TBD
-	
-	=== Handler Management
-	private:
-		DualMap<Uid, BaseArgumentHandler *> mUidHandlerDMap;
-		QMultiMap<Trigger (regex?), 
-	
-
-  
-BaseArgumentItem : QObject
-	ctor(QString)
-
-ArgumentId : Id
-
-ArgumentType : Enumeration
-	New, BasicString, PathName, InputDir, InputDirNoExpand, InputFile,
-	OutputFile, OutputDir, ConfigItem, IncludeFileName, IncludeFileTxt, Unknown
-
-
-BaseArgumentHandler : QObject (plugin interface TODO)
-	ArgumentHandlerId mId; // createId(Handler/multiname)
-
-	derived: BasicStringArgumentHandler, IncludeFileArgumentHandler, ConfigHandler,
-		IOFileHandler, PathHandler
-
-
-
+* Later:
+  * Handle CascadeParameters:mAll differently
+    * based upon PreScanAllRect output
+    * CascadeType:PreScanAll
+  * Boost Rational lib to eirType:Rational class

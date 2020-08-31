@@ -130,6 +130,11 @@ void cvMat::set(const QImage &qimage)
     TRACERTV();
 }
 
+QSize cvMat::toSize() const
+{
+    return QSize(cols(), rows());
+}
+
 QImage cvMat::toImage() const
 {
     TRACEQFI << dumpString();
