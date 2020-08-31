@@ -84,6 +84,14 @@ void FaceConsole::setConfiguration()
     writeLine("---Configuration:");
     writeLines(commandLine()->configuration().dumpList());
 
+    EMIT(configurationSet());
+    QTimer::singleShot(100, this, &FaceConsole::initializeResources);
+}
+
+void FaceConsole::setBaseOutputDir()
+{
+    TRACEFN;
+
     QString baseDirString(config()->configuration("/Output").string("BaseDir"));
     baseDirString.replace("@", QDateTime::currentDateTime()
         .toString("DyyyyMMdd-Thhmm"));
@@ -91,6 +99,14 @@ void FaceConsole::setConfiguration()
     EXPECT(mBaseOutputDir.mkpath(baseDirString));
     EXPECT(mBaseOutputDir.cd(baseDirString));
     EXPECT(mBaseOutputDir.exists());
+
+    EMIT(baseDirSet());
+    QTimer::singleShot(100, this, &FaceConsole::setOutputDirs);
+}
+
+void FaceConsole::setOutputDirs()
+{
+    TRACEFN;
 
     QString markedRectDirString(config()->
             configuration("Output/Dirs")
@@ -114,8 +130,10 @@ void FaceConsole::setConfiguration()
             writeLine("   " + mMarkedRectOutputDir.absolutePath() + " created");
     }
     DUMPVAL(mMarkedRectOutputDir);
+    NEEDDO(OtherDirs);
     TODO(BackToImageIO);
-    EMIT(configurationSet());
+
+    EMIT(outputDirsSet());
     QTimer::singleShot(100, this, &FaceConsole::initializeResources);
 }
 
@@ -137,6 +155,9 @@ void FaceConsole::initializeResources()
     write("---Cascade: "+cascadeFileInfo.absoluteFilePath()+" loading...");
     mPreScanCascade.loadCascade(cascadeFileInfo.absoluteFilePath());
     EXPECT(mPreScanCascade.isLoaded());
+    //NEEDDO(mPreScanCascade.configure);
+    MUSTDO(mPreScanCascade.configure);
+
     //cmpRectFinder->load(CascadeType::PreScan, cascadeFileInfo.absoluteFilePath());
 //    EXPECT(cmpRectFinder->loaded(CascadeType::PreScan));
     writeLine("done");
@@ -178,7 +199,6 @@ void FaceConsole::processCurrentFile()
     QString outputFileName;
 
     writeLine("---Processing: "+mCurrentFileInfo.absoluteFilePath());
-    MUSTDO(mPreScanCascade.configure);
     mPreScanCascade.imreadInputMat(mCurrentFileInfo);
     mCurrentRectangles = mPreScanCascade.detect();
     writeLine(QString("   %1 PreScan rectangles found")

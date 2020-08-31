@@ -27,6 +27,8 @@ public slots:
 private slots:
     void setupCommandLine();
     void setConfiguration();
+    void setBaseOutputDir();
+    void setOutputDirs();
     void initializeResources();
     void startProcessing();
     void nextFile();
@@ -37,6 +39,8 @@ signals:
     void applicationInitd();
     void commandLineSetup();
     void configurationSet();
+    void baseDirSet();
+    void outputDirsSet();
     void resoursesInitd();
     void processingStarted();
     void processed(QFileInfo fileInfo, int rectCount);
