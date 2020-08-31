@@ -52,7 +52,7 @@ void FaceConsole::initializeApplication()
             this, &FaceConsole::nextFile);
     CONNECT(this, &FaceConsole::processed,
             this, &FaceConsole::nextFile);
-    CONNECT(this, &FaceConsole::finishProcessing,
+    CONNECT(this, &FaceConsole::processingComplete,
             qApp, &QCoreApplication::quit);
     EMIT(applicationInitd());
     QTimer::singleShot(100, this, &FaceConsole::setupCommandLine);
@@ -80,8 +80,6 @@ void FaceConsole::setupCommandLine()
 void FaceConsole::setConfiguration()
 {
     TRACEFN;
-
-
     cmpConfigObject->set(commandLine()->configuration());
     writeLine("---Configuration:");
     writeLines(commandLine()->configuration().dumpList());
@@ -89,7 +87,7 @@ void FaceConsole::setConfiguration()
     QString baseDirString(config()->configuration("/Output").string("BaseDir"));
     baseDirString.replace("@", QDateTime::currentDateTime()
         .toString("DyyyyMMdd-Thhmm"));
-#if 1
+    TRACE << baseDirString;
     EXPECT(mBaseOutputDir.mkpath(baseDirString));
     EXPECT(mBaseOutputDir.cd(baseDirString));
     EXPECT(mBaseOutputDir.exists());
@@ -97,19 +95,26 @@ void FaceConsole::setConfiguration()
     QString markedRectDirString(config()->
             configuration("Output/Dirs")
                 .string("MarkedRect", "MarkedRect"));
-    mMarkedRectOutputDir = mBaseOutputDir;
-    EXPECT(mMarkedRectOutputDir.mkpath(markedRectDirString));
-    EXPECT(mMarkedRectOutputDir.cd(markedRectDirString));
-    EXPECT(mMarkedRectOutputDir.exists());
-    if (mMarkedRectOutputDir.exists())
-        writeLine("   " + mMarkedRectOutputDir.absolutePath() + " created");
-
+    TRACE << markedRectDirString;
+    QDir markedRectDir(markedRectDirString);
+    QDir markedRectBaseDir = markedRectDir.isAbsolute() ? QDir::root() : mBaseOutputDir;
+    QFileInfo markedRectDirFileInfo(markedRectBaseDir, markedRectDirString);
+    if (markedRectDirFileInfo.exists())
+    {
+        EXPECTNOT(markedRectDirFileInfo.isFile());
+        mMarkedRectOutputDir = markedRectDirFileInfo.dir();
+    }
+    else
+    {
+        mMarkedRectOutputDir = markedRectDirFileInfo.dir();
+        EXPECT(mMarkedRectOutputDir.mkpath(markedRectDirString));
+        EXPECT(mMarkedRectOutputDir.cd(markedRectDirString));
+        EXPECT(mMarkedRectOutputDir.exists());
+        if (mMarkedRectOutputDir.exists())
+            writeLine("   " + mMarkedRectOutputDir.absolutePath() + " created");
+    }
+    DUMPVAL(mMarkedRectOutputDir);
     TODO(BackToImageIO);
-#else
-    BaseOutputDir baseDir(baseDirString);
-    cmpOutput->setBase(baseDir);
-    cmpOutput->configure(cmpConfigObject);
-#endif
     EMIT(configurationSet());
     QTimer::singleShot(100, this, &FaceConsole::initializeResources);
 }
@@ -173,15 +178,15 @@ void FaceConsole::processCurrentFile()
     QString outputFileName;
 
     writeLine("---Processing: "+mCurrentFileInfo.absoluteFilePath());
+    MUSTDO(mPreScanCascade.configure);
     mPreScanCascade.imreadInputMat(mCurrentFileInfo);
     mCurrentRectangles = mPreScanCascade.detect();
     writeLine(QString("   %1 PreScan rectangles found")
                             .arg(mCurrentRectangles.size()));
-    outputFileName = QFileInfo(mMarkedRectOutputDir,
-                                            mCurrentFileInfo.completeBaseName()+".PNG")
+    outputFileName = QQFileInfo(mMarkedRectOutputDir,
+                        mCurrentFileInfo.completeBaseName()+"-%M@.png")
                                   .absoluteFilePath();
-    EXPECT(mPreScanCascade.imwriteMarkedImage(outputFileName));
-    writeLine("   " + outputFileName + " written");
+    writeLine("   " + mPreScanCascade.imwriteMarkedImage(outputFileName) + " written");
     EMIT(processed(QFileInfo(mCurrentFileInfo),
              mCurrentRectangles.size()));
     NEEDDO("somethingWithFramePak");

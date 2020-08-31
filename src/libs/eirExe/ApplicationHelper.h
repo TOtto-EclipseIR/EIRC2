@@ -30,10 +30,6 @@ public:
     CommandLine &rCommandLine();
     ConfigObject *config() const;
 
-public: // static
-    static QDateTime baseDateTime();
-    static QString baseDateTime(const QString format);
-
 public slots:
     void run();
 
@@ -53,8 +49,5 @@ private:
     ConfigObject * const cmpConfigObject=nullptr;
     QTemporaryDir const * cmpTempDir=nullptr;
     QList<QFile *> mTempFiles;
-
-private: // static
-    static QDateTime smBaseDateTime;
 };
 

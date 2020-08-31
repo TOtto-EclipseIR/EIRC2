@@ -12,8 +12,9 @@
 class EIRCASCADE_EXPORT CascadeParameters
 {
 public:
-    CascadeParameters(const Configuration &cascadeConfig);
+    CascadeParameters(const Configuration &cascadeConfig=Configuration());
     CascadeParameters(const double factor, const int neighbors);
+    void configureCascade(const Configuration &cascadeConfig);
     double factor() const;
     int neighbors() const;
     int flags() const;

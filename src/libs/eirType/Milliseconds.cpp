@@ -2,21 +2,18 @@
 
 #include "Milliseconds.h"
 
-const QDateTime Milliseconds::mBaseDateTime(
+const QDateTime Milliseconds::csmBaseDateTime(
         QDateTime::currentDateTime());
+const Milliseconds Milliseconds::csmBaseMsec(csmBaseDateTime);
+const Milliseconds Milliseconds::csmZoneMsecDelta(
+        (csmBaseDateTime.toUTC().toMSecsSinceEpoch())
+        - csmBaseDateTime.toMSecsSinceEpoch());
+const Milliseconds Milliseconds::csmNullMsec(INT64_MIN);
+QString Milliseconds::smDateStampFormat("-DyyyyMMdd-Thhmmss");
+QString Milliseconds::smBaseDateStamp(toDateStamp(csmBaseMsec));
 
-const Milliseconds Milliseconds::mBaseMsec(mBaseDateTime);
-
-const Milliseconds Milliseconds::mZoneMsecDelta(
-        (mBaseDateTime.toUTC().toMSecsSinceEpoch())
-        - mBaseDateTime.toMSecsSinceEpoch());
-
-const Milliseconds Milliseconds::mNullMsec(INT64_MIN);
-
-Milliseconds::Milliseconds(void) : mEpochMsec(mNullMsec) {;}
-
+Milliseconds::Milliseconds(void) : mEpochMsec(csmNullMsec) {;}
 Milliseconds::Milliseconds(qint64 ems) : mEpochMsec(ems) {;}
-
 Milliseconds::Milliseconds(const QDateTime & dt)
     : mEpochMsec(dt.isValid() ? dt.toMSecsSinceEpoch() : INT64_MIN) {;}
 
@@ -45,17 +42,17 @@ bool Milliseconds::isValid(void) const
 
 bool Milliseconds::isNull(void) const
 {
-    return mNullMsec == mEpochMsec;
+    return csmNullMsec == mEpochMsec;
 }
 
 bool Milliseconds::isBaseNull(void) const
 {
-    return mNullMsec == mBaseMsec;
+    return csmNullMsec == csmBaseMsec;
 }
 
 bool Milliseconds::isUtc(void)
 {
-    return 0 == mZoneMsecDelta;
+    return 0 == csmZoneMsecDelta;
 }
 
 Milliseconds::operator qint64(void) const
@@ -88,17 +85,22 @@ void Milliseconds::set(const Milliseconds other)
 
 void Milliseconds::nullify(void)
 {
-    mEpochMsec = mNullMsec;
+    mEpochMsec = csmNullMsec;
 }
 
 qint64 Milliseconds::base(void)
 {
-    return mBaseMsec;
+    return csmBaseMsec;
 }
 
 Milliseconds Milliseconds::null(void)
 {
-    return mNullMsec;
+    return csmNullMsec;
+}
+
+QDateTime Milliseconds::baseDateTime()
+{
+    return csmBaseDateTime;
 }
 
 Milliseconds Milliseconds::delta(Milliseconds ems) const
@@ -118,9 +120,30 @@ QString Milliseconds::toString(const QString & format) const
                                  : format);
 }
 
+QString Milliseconds::toDateStamp() const
+{
+    return toDateStamp(mEpochMsec);
+}
+
 QString Milliseconds::baseString(const QString & format)
 {
-    return QDateTime::fromMSecsSinceEpoch(mBaseMsec).toString(format);
+    return QDateTime::fromMSecsSinceEpoch(csmBaseMsec).toString(format);
+}
+
+QString Milliseconds::baseDateStamp()
+{
+    return smBaseDateStamp;
+}
+
+void Milliseconds::setDateStampFormat(const QString &format)
+{
+    smDateStampFormat = format;
+    smBaseDateStamp = toDateStamp(csmBaseMsec);
+}
+
+QString Milliseconds::toDateStamp(const Milliseconds msec)
+{
+    return msec.toString(smDateStampFormat);
 }
 
 QByteArray Milliseconds::toByteArray() const

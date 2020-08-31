@@ -38,6 +38,7 @@ HEADERS += \
 DISTFILES += \
     ../../../../../bin/config/DetectCascades.txt \
     ../../../../../bin/config/DetectRD.txt \
+    ../../../../../bin/config/I5c.bat \
     ../../../../../bin/config/Input01.txt \
     ../../../../../bin/config/OutputRD.txt \
     Notes.txt \

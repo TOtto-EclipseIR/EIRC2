@@ -10,14 +10,16 @@
 #include <QStringList>
 
 #include <eirType/BasicName.h>
+#include <eirType/QQFileInfo.h>
 #include <eirExe/Configuration.h>
+#include <eirCascade/CascadeParameters.h>
 #include <eirCascade/CascadeType.h>
 
 #include "cvMat.h"
 
-namespace cv { class CascadeClassifier; }
+#include <eirCascade/CascadeParameters.h>
 
-class CascadeParameters;
+namespace cv { class CascadeClassifier; }
 
 class EIRQTCV_EXPORT cvCascade
 {
@@ -26,6 +28,7 @@ public:
 
 public:
     cvCascade(const CascadeType &cascadeType=CascadeType::nullCascadeType);
+    void configure(const Configuration &config);
     CascadeType cascadeType() const;
     bool loadCascade(const QFileInfo &cascadeXmlInfo);
     bool notLoaded() const;
@@ -34,15 +37,17 @@ public:
     QSize coreSize() const;
     QFileInfo cascadeFileInfo() const;
     cv::CascadeClassifier *cascade();
-    bool imreadInputMat(const QFileInfo &inputFileInfo);
+    bool imreadInputMat(const QQFileInfo &inputFileInfo);
     RectList detect();
-    bool imwriteMarkedImage(const QFileInfo &markFileInfo);
+    QString methodString() const;
+    QString imwriteMarkedImage(QQFileInfo markFileInfo);
 
 private:
     bool getCoreSize(const QFileInfo &cascadeXmlInfo);
 
 private:
     const CascadeType cmCascadeType;
+    CascadeParameters mParameters;
     QFileInfo mCascadeXmlInfo;
     cv::CascadeClassifier *mpCascade=nullptr;
     QSize mCoreSize;

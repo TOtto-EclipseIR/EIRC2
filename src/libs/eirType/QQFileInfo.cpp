@@ -5,13 +5,48 @@
 
 #include <eirXfr/Debug.h>
 
-QQFileInfo::QQFileInfo() {;}
+#include "Milliseconds.h"
 
+QQFileInfo::QQFileInfo() {;}
 QQFileInfo::QQFileInfo(const QString &filePathName)
     : QFileInfo(filePathName), mIsNull(false) {;}
-
 QQFileInfo::QQFileInfo(const QFileInfo &other)
     : QFileInfo(other), mIsNull(false) {;}
+QQFileInfo::QQFileInfo(const QFile &file)
+    : QFileInfo(file), mIsNull(false) {;}
+
+QQFileInfo::QQFileInfo(const QDir &dir, const QString &fileName)
+{
+    setFile(dir, fileName);
+}
+
+void QQFileInfo::setFile(const QString &filePathName)
+{
+    TRACEQFI << filePathName;
+    mIsNull = false;
+    QFileInfo::setFile(filePathName);
+    replace("@", Milliseconds::baseDateStamp());
+    TRACE << QFileInfo::filePath();
+}
+
+void QQFileInfo::setFile(const QDir &dir, const QString &fileName)
+{
+    TRACEQFI << dir << fileName;
+    mIsNull = false;
+    QFileInfo fi(dir, fileName);
+    QString filePathName = fi.filePath();
+    setFile(filePathName);
+    TRACE << QFileInfo::filePath();
+}
+
+void QQFileInfo::replace(const QString &trigger, const QString &with)
+{
+    TRACEQFI << trigger << with;
+    QString filePathName = filePath();
+    filePathName.replace(trigger, with);
+    QFileInfo::setFile(filePathName);
+    TRACE << QFileInfo::filePath();
+}
 
 bool QQFileInfo::isNull() const
 {
@@ -46,7 +81,7 @@ QString QQFileInfo::attributes() const
     if (isReadable())       attribString += "Readable ";
     if (isRoot())           attribString += "Root ";
     if (isWritable())       attribString += "Writable ";
-    return attribString;
+    return attribString.simplified();
 }
 
 QString QQFileInfo::toString() const

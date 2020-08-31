@@ -13,9 +13,6 @@
 
 #include "../../version.h"
 
-QDateTime ApplicationHelper::smBaseDateTime
-                = QDateTime::currentDateTime();
-
 ApplicationHelper::ApplicationHelper(QObject *parent)
     : QObject(parent)
     , cmpCommandLine(new CommandLine(this))
@@ -78,15 +75,4 @@ void ApplicationHelper::initCommandLine()
     TSTALLOC(cmpCommandLine)
     cmpCommandLine->process();
     EMIT(commandLineInitd());
-}
-
-
-QDateTime ApplicationHelper::baseDateTime()
-{
-    return smBaseDateTime;
-}
-
-QString ApplicationHelper::baseDateTime(const QString format)
-{
-    return smBaseDateTime.toString(format);
 }

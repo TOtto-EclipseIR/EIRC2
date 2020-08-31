@@ -15,6 +15,11 @@ public:
     QQFileInfo();
     QQFileInfo(const QString &filePathName);
     QQFileInfo(const QFileInfo & other);
+    QQFileInfo(const QFile & file);
+    QQFileInfo(const QDir &dir, const QString &fileName);
+    void setFile(const QString &filePathName);
+    void setFile(const QDir &dir, const QString &fileName);
+    void replace(const QString &trigger, const QString &with);
     bool isNull() const;
     bool tryIsFile(const QIODevice::OpenMode mode
                             =QIODevice::ReadOnly) const;

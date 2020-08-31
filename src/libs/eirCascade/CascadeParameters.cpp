@@ -7,8 +7,9 @@ CascadeParameters::CascadeParameters(const Configuration &cascadeConfig)
 {
     TRACEFN;
     NEEDDO(ImageSize); NEEDDO(coreSize);
+    mConfig.setName("CascadeConfiguration");
     mConfig.dump();
-#if 1
+#if 0
     NEEDDO(it);
     mAll = true;
     mFactor = 1.010;
@@ -72,13 +73,22 @@ void CascadeParameters::dump() const
 
 double CascadeParameters::calcFactor()
 {
+    TRACEFN;
     double result=1.100;
     double f = mConfig.real("Factor");
     if (f < 1.001) // calculate default
-        result = mAll ? 1.050 : 1.100;
+        result = mAll ? 1.075 : 1.150;
     else if (f < 2.000)
         result = f;
     else
         result = 1.000 + f / 1000.0;
+    TRACE << f << result;
     return result;
+}
+
+void CascadeParameters::configureCascade(const Configuration &cascadeConfig)
+{
+    TRACEFN;
+    mConfig += cascadeConfig;
+    mConfig.dump();
 }
