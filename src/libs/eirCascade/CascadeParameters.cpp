@@ -43,8 +43,14 @@ void CascadeParameters::calculate(const QSize imageSize, const QSize coreSize)
     NEEDDO("Default Based on Image/Core size & MaxDetectors, etc.");
 
     int neigh = mConfig.signedInt("Neighbors");
-    mNeighbors = (neigh >= 1) ? neigh : 2;
+    mNeighbors = (neigh >= 0) ? neigh : 2;
+    NEEDDO("When AllRect mode is completed, >= 1");
 
+#if 0
+    MUSTDO(RemoveForFlight);
+    mFactor = 1.050;
+    mNeighbors = 0;
+#endif
     DUMPVAL(factor());
     DUMPVAL(neighbors());
 }

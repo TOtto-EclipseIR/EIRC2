@@ -1,5 +1,6 @@
 #include "cvCascade.h"
 
+#include <QColor>
 #include <QPainter>
 #include <QPixmap>
 
@@ -135,11 +136,21 @@ QString cvCascade::imwriteMarkedImage(QQFileInfo markFileInfo)
     cv::Mat markMat;
     mInputMat.mat().copyTo(markMat);
 
+#if 0
     foreach (QRect qrc, mRectList)
         cv::rectangle(markMat,
                       cv::Rect(qrc.left(), qrc.top(), qrc.width(), qrc.height()),
                       cv::Scalar(255, 255, 0),
                       3);
+#else
+    RMUSTDO(RemoveForFlight);
+    foreach (QRect qrc, mRectList)
+        cv::rectangle(markMat,
+                      cv::Rect(qrc.left(), qrc.top(), qrc.width(), qrc.height()),
+                      cv::Scalar(255, 0, 0),
+                      1);
+
+#endif
 
     markFileInfo.replace("%M", methodString());
     return  cv::imwrite(cvString(markFileInfo.absoluteFilePath()), markMat)

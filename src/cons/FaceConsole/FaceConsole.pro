@@ -25,7 +25,7 @@ LIBS *= -leirBase2
 LIBS *= -leirType2
 LIBS *= -leirExe2
 LIBS *= -leirCascade2
-LIBS *= -leirFinder2
+#LIBS *= -leirFinder2
 LIBS *= -leirQtCV2
 
 SOURCES += \
@@ -33,6 +33,7 @@ SOURCES += \
     main.cpp
 
 HEADERS += \
+    ../../version.h \
     FaceConsole.h
 
 DISTFILES += \

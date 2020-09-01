@@ -21,6 +21,11 @@ Console::Console(QObject *parent)
             EXPECT(mpErr->open(stderr, QIODevice::WriteOnly))
 }
 
+bool Console::isForkQtDebug() const
+{
+    return m_ForkQtDebug;
+}
+
 /* This mechanism is broken; simply use qApp-> for now
 QCoreApplication *Console::core()
 {
@@ -74,6 +79,7 @@ void Console::writeLine(const QString &qs,
     write(qs.toLocal8Bit(), false);
     mpOut->write("\n");
     if (andFlush) mpOut->flush();
+    if (m_ForkQtDebug) qInfo() << qs;
 }
 
 void Console::writeLines(const QStringList &qsl)
@@ -87,10 +93,21 @@ void Console::writeErr(const QString &qs, const bool andFlush)
     mpErr->write(qs.toLocal8Bit());
     mpErr->write("\n");
     if (andFlush) mpErr->flush();
+    if (m_ForkQtDebug) qCritical() << qs;
 }
 
 void Console::writeErrs(const QStringList &qsl)
 {
     foreach (QString qs, qsl) writeErr(qs, false);
     mpErr->flush();
+}
+
+void Console::setForkQtDebug(bool mForkQtDebug)
+{
+    m_ForkQtDebug = mForkQtDebug;
+}
+
+void Console::resetForkQtDebug()
+{
+    m_ForkQtDebug = true;
 }

@@ -20,16 +20,10 @@
 FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
     , cmpConfigObject(new ConfigObject(parent))
-//    , cmpOutput(new OutputManager(parent))
-//    , cmpRectFinder(new RectFinder(cmpConfigObject, parent))
-  //  , cmpMarkerManager(new MarkerManager(cmpConfigObject, this))
 {
     TRACEFN;
     setObjectName("FaceConsole");
     TSTALLOC(cmpConfigObject);
-    //TSTALLOC(cmpOutput);
-    //TSTALLOC(cmpRectFinder);
-  //  TSTALLOC(cmpMarkerManager);
 
     QTimer::singleShot(500, this, &FaceConsole::initializeApplication);
     TRACERTV();
@@ -61,10 +55,7 @@ void FaceConsole::initializeApplication()
 void FaceConsole::enqueueNext()
 {
     TRACEQFI << commandLine()->firstPositionalArgument();
-//    TSTALLOC(cmpOutput);
     QString fileNameArgument = commandLine()->firstPositionalArgument();
-//    if ( ! fileNameArgument.isEmpty())
-  //      cmpOutput->enqueue(FramePak(rCommandLine().takePositionalArgument()));
 }
 
 void FaceConsole::setupCommandLine()
@@ -85,7 +76,7 @@ void FaceConsole::setConfiguration()
     writeLines(commandLine()->configuration().dumpList());
 
     EMIT(configurationSet());
-    QTimer::singleShot(100, this, &FaceConsole::initializeResources);
+    QTimer::singleShot(100, this, &FaceConsole::setBaseOutputDir);
 }
 
 void FaceConsole::setBaseOutputDir()
@@ -95,11 +86,14 @@ void FaceConsole::setBaseOutputDir()
     QString baseDirString(config()->configuration("/Output").string("BaseDir"));
     baseDirString.replace("@", QDateTime::currentDateTime()
         .toString("DyyyyMMdd-Thhmm"));
-    TRACE << baseDirString;
-    EXPECT(mBaseOutputDir.mkpath(baseDirString));
-    EXPECT(mBaseOutputDir.cd(baseDirString));
-    EXPECT(mBaseOutputDir.exists());
-
+    DUMPVAL(baseDirString);
+    QDir baseDir(baseDirString);
+    EXPECT(baseDir.mkpath("."));
+    EXPECT(baseDir.cd("."));
+    EXPECT(baseDir.exists());
+    DUMPVAL(baseDir);
+    DUMPVAL(baseDir.exists());
+    if (baseDir.exists()) mBaseOutputDir = baseDir;
     EMIT(baseDirSet());
     QTimer::singleShot(100, this, &FaceConsole::setOutputDirs);
 }
@@ -111,14 +105,15 @@ void FaceConsole::setOutputDirs()
     QString markedRectDirString(config()->
             configuration("Output/Dirs")
                 .string("MarkedRect", "MarkedRect"));
-    TRACE << markedRectDirString;
-    QDir markedRectDir(markedRectDirString);
-    QDir markedRectBaseDir = markedRectDir.isAbsolute() ? QDir::root() : mBaseOutputDir;
-    QFileInfo markedRectDirFileInfo(markedRectBaseDir, markedRectDirString);
+    DUMPVAL(markedRectDirString);
+    QQFileInfo markedRectDirFileInfo(mBaseOutputDir, markedRectDirString);
+    DUMPVAL(markedRectDirFileInfo);
+    DUMPVAL(markedRectDirFileInfo.exists());
     if (markedRectDirFileInfo.exists())
     {
         EXPECTNOT(markedRectDirFileInfo.isFile());
         mMarkedRectOutputDir = markedRectDirFileInfo.dir();
+        writeLine("   " + mMarkedRectOutputDir.absolutePath() + " exists");
     }
     else
     {
@@ -142,7 +137,6 @@ void FaceConsole::initializeResources()
     TRACEFN;
     QDir baseCascadeDir(config()->configuration("/Resources/RectFinder")
                  .string("BaseDir"));
-    //cmpRectFinder->set(baseDir);
     QString cascadeFileName = config()->
             configuration("/Resources/RectFinder/PreScan")
                 .string("XmlFile");
@@ -160,10 +154,7 @@ void FaceConsole::initializeResources()
     Configuration preScanConfig = config()->configuration("Option/RectFinder");
     preScanConfig += config()->configuration("PreScan/RectFinder");
     mPreScanCascade.configure(preScanConfig);
-    //MUSTDO(mPreScanCascade.configure);
 
-    //cmpRectFinder->load(CascadeType::PreScan, cascadeFileInfo.absoluteFilePath());
-//    EXPECT(cmpRectFinder->loaded(CascadeType::PreScan));
     writeLine("done");
     EMIT(resoursesInitd());
     QTimer::singleShot(100, this, &FaceConsole::startProcessing);}
@@ -171,8 +162,6 @@ void FaceConsole::initializeResources()
 void FaceConsole::startProcessing()
 {
     TRACEFN;
-
-//    NEEDDO(cmpOutput->start());
 
     NEEDDO(more);
     EMIT(processingStarted());
@@ -196,24 +185,21 @@ void FaceConsole::nextFile()
 void FaceConsole::processCurrentFile()
 {
     TRACEQFI << mCurrentFileInfo << mCurrentFileInfo.isReadable();
-//    Success success;
-//    QByteArray bytes;
-//    QImage image(mCurrentFileInfo.absoluteFilePath());
     QImage rectImage;
-    QString outputFileName;
+    QString markedRectOutputFileInfo;
 
     writeLine("---Processing: "+mCurrentFileInfo.absoluteFilePath());
     mPreScanCascade.imreadInputMat(mCurrentFileInfo);
     mCurrentRectangles = mPreScanCascade.detect();
     writeLine(QString("   %1 PreScan rectangles found")
                             .arg(mCurrentRectangles.size()));
-    outputFileName = QQFileInfo(mMarkedRectOutputDir,
+    markedRectOutputFileInfo = QQFileInfo(mMarkedRectOutputDir,
                         mCurrentFileInfo.completeBaseName()+"-%M@.png")
                                   .absoluteFilePath();
-    writeLine("   " + mPreScanCascade.imwriteMarkedImage(outputFileName) + " written");
+    writeLine("   " + mPreScanCascade.imwriteMarkedImage(markedRectOutputFileInfo) + " written");
     EMIT(processed(QFileInfo(mCurrentFileInfo),
              mCurrentRectangles.size()));
-    NEEDDO("somethingWithFramePak");
+    NEEDDO(processFailed());
     /*
     else
     {

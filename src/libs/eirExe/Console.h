@@ -14,12 +14,17 @@ class BaseCommandLine;
 class EIREXE_EXPORT Console : public ApplicationHelper
 {
     Q_OBJECT
+    Q_PROPERTY(bool mForkQtDebug READ isForkQtDebug
+        WRITE setForkQtDebug RESET resetForkQtDebug USER true)
+
 public:
     explicit Console(QObject *parent = nullptr);
-    /* This mechanism is broken; simply use qApp-> for now
+    /* The mechanism below is broken; simply use qApp-> for now
     QCoreApplication * core();
     QObject * appParent();
     */
+
+    bool isForkQtDebug() const;
 
 public slots:
     void putChar(const char c);
@@ -32,6 +37,9 @@ public slots:
                   const bool andFlush=true);
     void writeErrs(const QStringList &qsl);
 
+    void setForkQtDebug(bool mForkQtDebug);
+    void resetForkQtDebug();
+
 signals:
     void charPut(const char c);
     void charNotPut(const char c);
@@ -42,8 +50,10 @@ signals:
 
 private:
     QCoreApplication * const cmpCoreApp=nullptr;
+
     QFile * mpIn=nullptr;
     QFile * mpOut=nullptr;
     QFile * mpErr=nullptr;
+    bool m_ForkQtDebug=true;
 };
 
