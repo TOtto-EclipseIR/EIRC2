@@ -1,12 +1,14 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
+    ../../libs/eirObjDet \
         ../../libs/eirXfr \
         ../../libs/eirBase \
         ../../libs/eirType \
         ../../libs/eirExe \
         ../../libs/eirCascade \
 #        ../../libs/eirFinder \
+        ../../libs/eirObjDet \
         ../../libs/eirQtCV \
         ../FaceConsole \
 #        ../../libs/eirFrame \
