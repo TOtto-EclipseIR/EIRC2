@@ -33,6 +33,7 @@ public:
     QStringList positionalArgumentList() const;
     QString firstPositionalArgument() const;
     QString takePositionalArgument();
+    int takePositionalArgumentCount() const;
     const QStringList exeArguments(bool withNumbers=false) const;
     const QQFileInfo exeFileInfo() const;
     Configuration configuration() const;
@@ -68,5 +69,6 @@ private:
     CommandLineClientInterface * mpInterface=nullptr;
     LegacySettings * mpLegacySettings=nullptr;
     QStringList mPositionalArgumentList;
+    int mPositionalArgumentsTaken=0;
     Configuration mConfiguration;
 };

@@ -228,7 +228,9 @@ void FaceConsole::processCurrentFile()
     QImage rectImage;
     QString markedRectOutputFileInfo;
 
-    writeLine("---Processing: "+mCurrentFileInfo.absoluteFilePath());
+    writeLine(QString("---Processing #%1: %2")
+              .arg(commandLine()->takePositionalArgumentCount())
+              .arg(mCurrentFileInfo.absoluteFilePath()));
     mPreScanCascade.imreadInputMat(mCurrentFileInfo);
     mCurrentRectangles = mPreScanCascade.detect();
     writeLine(QString("   %1 PreScan rectangles found")
