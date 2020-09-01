@@ -136,7 +136,7 @@ QString cvCascade::imwriteMarkedImage(QQFileInfo markFileInfo)
     cv::Mat markMat;
     mInputMat.mat().copyTo(markMat);
 
-#if 0
+#if 1
     foreach (QRect qrc, mRectList)
         cv::rectangle(markMat,
                       cv::Rect(qrc.left(), qrc.top(), qrc.width(), qrc.height()),

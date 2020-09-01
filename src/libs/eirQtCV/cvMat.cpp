@@ -21,6 +21,12 @@ cvMat::cvMat(const int rows, const int cols, const int type)
     TRACE << dumpString();
 }
 
+cvMat::cvMat(const QString &fileName, const int imreadFlags)
+{
+    if ( ! imread(fileName, imreadFlags))
+        clear();
+}
+
 cvMat::cvMat(const cv::Mat &otherMat)
 {
     set(otherMat);
@@ -31,10 +37,34 @@ cvMat::~cvMat()
     clear();
 }
 
-bool cvMat::imread(const QString &fileName, const int imreadFlags)
+void cvMat::clear()
 {
-    set(cv::imread(cvString(fileName), imreadFlags));
-    return isValid();
+    TRACEFN;
+    if (mpCvMat)
+    {
+        TRACE << "release()" << Qt::hex << mpCvMat << Qt::dec;
+        mpCvMat->release();
+        TRACE << "delete" << Qt::hex << mpCvMat << Qt::dec;
+        delete mpCvMat;
+        TRACE << "nullptr" << Qt::hex << mpCvMat << Qt::dec;
+        mpCvMat = nullptr;
+    }
+    TRACERTV();
+}
+
+cv::Mat cvMat::mat() const
+{
+    return  mpCvMat ? *mpCvMat : cv::Mat();
+}
+
+cv::Mat cvMat::mat()
+{
+    return  mpCvMat ? *mpCvMat : cv::Mat();
+}
+
+quint8 *cvMat::data() const
+{
+    return mat().data;
 }
 
 int cvMat::cols() const
@@ -156,6 +186,35 @@ QImage cvMat::toImage() const
     return image;
 }
 
+QPixmap cvMat::toPixmap() const
+{
+    return QPixmap::fromImage(toImage());
+}
+
+
+bool cvMat::imread(const QString &fileName, const int imreadFlags)
+{
+    set(cv::imread(cvString(fileName), imreadFlags));
+    return isValid();
+}
+
+bool cvMat::imread(const QFileInfo &fileInfo, const int imreadFlags)
+{
+    return imread(fileInfo.absoluteFilePath(), imreadFlags);
+}
+
+bool cvMat::imwrite(const QString &fileName)
+{
+    TRACEQFI << fileName;
+    TODO(imwrite::params);
+    return cv::imwrite(cvString(fileName), mat());
+}
+
+bool cvMat::imwrite(const QFileInfo &fileInfo)
+{
+    return imwrite(fileInfo.absoluteFilePath());
+}
+
 void cvMat::makeGrey(cvMat greyMat) const
 {
     TRACEQFI << greyMat.dumpString() << dumpString();
@@ -170,36 +229,6 @@ cvMat cvMat::toGrey() const
     cv::cvtColor(mat(), gm, cv::COLOR_BGR2GRAY);
     TRACE << cvMat(gm).dumpString();
     return cvMat(gm);
-}
-
-void cvMat::clear()
-{
-    TRACEFN;
-    if (mpCvMat)
-    {
-        TRACE << "release()" << Qt::hex << mpCvMat << Qt::dec;
-        mpCvMat->release();
-        TRACE << "delete" << Qt::hex << mpCvMat << Qt::dec;
-        delete mpCvMat;
-        TRACE << "nullptr" << Qt::hex << mpCvMat << Qt::dec;
-        mpCvMat = nullptr;
-    }
-    TRACERTV();
-}
-
-cv::Mat cvMat::mat() const
-{
-    return  mpCvMat ? *mpCvMat : cv::Mat();
-}
-
-cv::Mat cvMat::mat()
-{
-    return  mpCvMat ? *mpCvMat : cv::Mat();
-}
-
-quint8 *cvMat::data() const
-{
-    return mat().data;
 }
 
 QString cvMat::dumpString() const
