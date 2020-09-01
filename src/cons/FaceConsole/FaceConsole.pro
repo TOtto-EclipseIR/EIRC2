@@ -20,13 +20,13 @@ TARGET = INDI5console
 include(../../EIRC2.pri)
 include(../../opencv4.pri)
 
-LIBS *= -leirXfr2
-LIBS *= -leirBase2
-LIBS *= -leirType2
-LIBS *= -leirExe2
-LIBS *= -leirCascade2
-#LIBS *= -leirFinder2
-LIBS *= -leirQtCV2
+LIBS *= -leirXfr5
+LIBS *= -leirBase5
+LIBS *= -leirType5
+LIBS *= -leirExe5
+LIBS *= -leirCascade5
+#LIBS *= -leirFinder5
+LIBS *= -leirQtCV5
 
 SOURCES += \
     FaceConsole.cpp \
