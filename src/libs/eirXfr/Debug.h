@@ -117,6 +117,11 @@
 #define BEXPECTNE(expt, var)    DEBUGXNE(qCritical, PABORT, expt, var); DEBUGQUIT
 #define BEXPECTPTR(ptr)         DEBUGXPTR(qCritical, PABORT, ptr); DEBUGQUIT
 #define MUSTDO(msg)             DEBUGDO(qCritical, PBTODO, msg); DEBUGQUIT
+#ifdef QT_DEBUG
+#define RMUSTDO(msg)            DEBUGDO(qCritical, PETODO, msg)
+#else
+#define RMUSTDO(msg)            DEBUGDO(qCritical, PBTODO, msg); DEBUGQUIT
+#endif
 #define MUSTUSE(msg)            DEBUGUSE(qCritical, PBTODO, msg); DEBUGQUIT
 #define MUSTRTN(msg)            DEBUGRTN(qCritical, PBTODO, msg); DEBUGQUIT
 #define BPTR(ptr, expr)         DEBUGPTR(qCritical, PERROR, ptr, expr); DEBUGQUIT
