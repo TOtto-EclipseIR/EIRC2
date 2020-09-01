@@ -6,7 +6,12 @@ ConfigObject::ConfigObject(QObject *parent)
     : QObject(parent)
 {
     TRACEFN
-    setObjectName("ConfigObject");
+            setObjectName("ConfigObject");
+}
+
+bool ConfigObject::contains(const MultiName &key) const
+{
+    return mConfiguration.contains(key);
 }
 
 Var ConfigObject::at(const MultiName &key)

@@ -26,6 +26,7 @@ SOURCES += \
     FunctionInfo.cpp \
     Id.cpp \
     MultiName.cpp \
+    QQDir.cpp \
     QQFileInfo.cpp \
     QQFileInfoList.cpp \
     QQRect.cpp \
@@ -64,6 +65,7 @@ HEADERS += \
     NamedArray.h \
     NamedEnum.h \
     NamedMap.h \
+    QQDir.h \
     QQFileInfo.h \
     QQFileInfoList.h \
     QQRect.h \

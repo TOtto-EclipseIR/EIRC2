@@ -102,17 +102,52 @@ void FaceConsole::setOutputDirs()
 {
     TRACEFN;
 
+    bool created = false;
+    mMarkedRectOutputDir.setNull(true);
     QString markedRectDirString(config()->
             configuration("Output/Dirs")
-                .string("MarkedRect", "MarkedRect"));
+                .string("MarkedRect"));
     DUMPVAL(markedRectDirString);
+#if 1
+    if (markedRectDirString.isEmpty())
+    {
+        // do nothing, leave mMarkedRectOutputDir null
+    }
+    else if (QDir::isRelativePath(markedRectDirString))
+    {
+        QDir relativeDir(mBaseOutputDir);
+        DUMPVAL(relativeDir);
+        if ( ! relativeDir.exists(markedRectDirString))
+            created = relativeDir.mkpath(markedRectDirString);
+        EXPECT(relativeDir.cd(markedRectDirString));
+        DUMPVAL(relativeDir);
+        EXPECT(relativeDir.exists());
+        DUMPVAL(relativeDir.exists());
+        if (relativeDir.exists())
+            mMarkedRectOutputDir = relativeDir;
+        // else mMarkedRectOutputDir is still null
+    }
+    else if (QDir::isAbsolutePath(markedRectDirString))
+    {
+        QDir absoluteDir(markedRectDirString);
+        if ( ! absoluteDir.exists())
+            created = absoluteDir.mkpath(".");
+        if (absoluteDir.exists())
+            mMarkedRectOutputDir = absoluteDir;
+        // else mMarkedRectOutputDir is still null
+    }
+    else
+    {
+        writeErr(QString("***%1 Dir = %2 is invalid").arg("MarkedRect").arg(markedRectDirString));
+    }
+#else
     QQFileInfo markedRectDirFileInfo(mBaseOutputDir, markedRectDirString);
     DUMPVAL(markedRectDirFileInfo);
     DUMPVAL(markedRectDirFileInfo.exists());
     if (markedRectDirFileInfo.exists())
     {
         EXPECTNOT(markedRectDirFileInfo.isFile());
-        mMarkedRectOutputDir = markedRectDirFileInfo.dir();
+        mMarkedRectOutputDir = QDir(markedRectDirFileInfo.path());
         writeLine("   " + mMarkedRectOutputDir.absolutePath() + " exists");
     }
     else
@@ -124,10 +159,15 @@ void FaceConsole::setOutputDirs()
         if (mMarkedRectOutputDir.exists())
             writeLine("   " + mMarkedRectOutputDir.absolutePath() + " created");
     }
+#endif
+    DUMPVAL(mMarkedRectOutputDir.isNull());
     DUMPVAL(mMarkedRectOutputDir);
+    if (mMarkedRectOutputDir.notNull())
+        writeLine("---"+mMarkedRectOutputDir.absolutePath()
+                  + (created ? " created" : " exists"));
+
     NEEDDO(OtherDirs);
     TODO(BackToImageIO);
-
     EMIT(outputDirsSet());
     QTimer::singleShot(100, this, &FaceConsole::initializeResources);
 }

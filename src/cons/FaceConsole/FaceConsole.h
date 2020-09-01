@@ -3,15 +3,11 @@
 #include <QObject>
 #include <eirExe/Console.h>
 
+#include <eirType/QQDir.h>
 #include <eirQtCV/cvCascade.h>
-//#include <eirFinder/RectFinder.h>
-//#include <eirFrame/FramePak.h>
-//#include <eirImageIO/OutputManager.h>
 
 class QCommandLineParser;
 class ConfigObject;
-class OutputManager;
-// class MarkerManager;
 
 class FaceConsole : public Console
 {
@@ -53,7 +49,7 @@ private:
 //    RectFinder * const cmpRectFinder=nullptr;
     cvCascade mPreScanCascade;
     QDir mBaseOutputDir;
-    QDir mMarkedRectOutputDir;
+    QQDir mMarkedRectOutputDir;
     QFileInfo mCurrentFileInfo;
     QList<QRect> mCurrentRectangles;
 //    FramePak mFramePak;
