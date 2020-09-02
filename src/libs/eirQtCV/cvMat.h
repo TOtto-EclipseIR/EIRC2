@@ -4,8 +4,10 @@
 #include <QFileInfo>
 #include <QImage>
 #include <QPixmap>
+#include <QVector>
 
 namespace cv { class Mat; }
+typedef QVector<int> IntVector;
 
 class EIRQTCV_EXPORT cvMat
 {
@@ -35,10 +37,13 @@ public:
     QPixmap toPixmap() const;
     bool imread(const QString &fileName, const int imreadFlags=0);
     bool imread(const QFileInfo &fileInfo, const int imreadFlags=0);
-    bool imwrite(const QString &fileName);
-    bool imwrite(const QFileInfo &fileInfo);
+    bool imwrite(const QString &fileName, const IntVector parms=IntVector());
+    bool imwrite(const QFileInfo &fileInfo, const IntVector parms=IntVector());
     void makeGrey(cvMat greyMat) const;
     cvMat toGrey() const;
+    void markRectangles(const QList<QRect> &rectList,
+                        const QColor &penColor=Qt::cyan,
+                        const int penWidth=3);
     QString dumpString() const;
 
 private:

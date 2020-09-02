@@ -16,6 +16,7 @@ SUBDIRS += \
     ./cons/HelloConsole     \
     cons/QtCVmain \
     libs/eirCascade \
+    libs/eirImage \
     libs/eirObjDet
 
 eirType.depends     = eirBase

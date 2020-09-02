@@ -130,32 +130,14 @@ QString cvCascade::methodString() const
     return mMethodString;
 }
 
-QString cvCascade::imwriteMarkedImage(QQFileInfo markFileInfo)
+bool cvCascade::imwriteMarkedImage(QQFileInfo markFileInfo)
 {
     TRACEQFI << markFileInfo;
-    cv::Mat markMat;
-    mInputMat.mat().copyTo(markMat);
+    cvMat markMat(mInputMat.cols(), mInputMat.rows(), mInputMat.type());
+    mInputMat.mat().copyTo(markMat.mat());
+    markMat.markRectangles(mRectList);
 
-#if 1
-    foreach (QRect qrc, mRectList)
-        cv::rectangle(markMat,
-                      cv::Rect(qrc.left(), qrc.top(), qrc.width(), qrc.height()),
-                      cv::Scalar(255, 255, 0),
-                      3);
-#else
-    RMUSTDO(RemoveForFlight);
-    foreach (QRect qrc, mRectList)
-        cv::rectangle(markMat,
-                      cv::Rect(qrc.left(), qrc.top(), qrc.width(), qrc.height()),
-                      cv::Scalar(255, 0, 0),
-                      1);
-
-#endif
-
-    markFileInfo.replace("%M", methodString());
-    return  cv::imwrite(cvString(markFileInfo.absoluteFilePath()), markMat)
-            ? markFileInfo.absoluteFilePath()
-            : "Error writing MarkedRect file";
+    return markMat.imwrite(markFileInfo.absoluteFilePath());
 }
 
 bool cvCascade::getCoreSize(const QFileInfo &cascadeXmlInfo)

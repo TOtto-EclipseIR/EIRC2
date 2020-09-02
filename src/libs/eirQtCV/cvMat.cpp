@@ -149,7 +149,7 @@ void cvMat::set(const QImage &qimage)
                     QImage::Format_Grayscale8
                         == qimage.format() ? CV_8UC1 : CV_8UC4);
     TRACE << Qt::hex << mpCvMat->data << qimage.bits() << Qt::dec
-            << QString("memcpy(0x%1, 0x%2, %3*%4=%5")
+          << QString("memcpy(0x%1, 0x%2, %3*%4=%5")
              .arg("uchar*")
              .arg("uchar*")
              .arg(mpCvMat->elemSize1()).arg(mpCvMat->total())
@@ -203,16 +203,17 @@ bool cvMat::imread(const QFileInfo &fileInfo, const int imreadFlags)
     return imread(fileInfo.absoluteFilePath(), imreadFlags);
 }
 
-bool cvMat::imwrite(const QString &fileName)
+bool cvMat::imwrite(const QString &fileName, const IntVector parms)
 {
     TRACEQFI << fileName;
     TODO(imwrite::params);
-    return cv::imwrite(cvString(fileName), mat());
+    return cv::imwrite(cvString(fileName), mat(),
+                       std::vector<int>(parms.begin(), parms.end()));
 }
 
-bool cvMat::imwrite(const QFileInfo &fileInfo)
+bool cvMat::imwrite(const QFileInfo &fileInfo, const IntVector parms)
 {
-    return imwrite(fileInfo.absoluteFilePath());
+    return imwrite(fileInfo.absoluteFilePath(), parms);
 }
 
 void cvMat::makeGrey(cvMat greyMat) const
@@ -229,6 +230,19 @@ cvMat cvMat::toGrey() const
     cv::cvtColor(mat(), gm, cv::COLOR_BGR2GRAY);
     TRACE << cvMat(gm).dumpString();
     return cvMat(gm);
+}
+
+void cvMat::markRectangles(const QList<QRect> &rectList,
+                           const QColor &penColor,
+                           const int penWidth)
+{
+    cv::Scalar color(penColor.blue(), penColor.green(),
+               penColor.red(), penColor.alpha());
+    foreach (QRect qrc, rectList)
+        cv::rectangle(mat(),
+                      cv::Rect(qrc.left(), qrc.top(), qrc.width(), qrc.height()),
+                      color,
+                      penWidth);
 }
 
 QString cvMat::dumpString() const

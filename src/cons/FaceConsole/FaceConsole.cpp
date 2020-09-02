@@ -226,7 +226,7 @@ void FaceConsole::processCurrentFile()
 {
     TRACEQFI << mCurrentFileInfo << mCurrentFileInfo.isReadable();
     QImage rectImage;
-    QString markedRectOutputFileInfo;
+    QString markedRectOutputFileName;
 
     writeLine(QString("---Processing #%1: %2")
               .arg(commandLine()->takePositionalArgumentCount())
@@ -235,10 +235,12 @@ void FaceConsole::processCurrentFile()
     mCurrentRectangles = mPreScanCascade.detect();
     writeLine(QString("   %1 PreScan rectangles found")
                             .arg(mCurrentRectangles.size()));
-    markedRectOutputFileInfo = QQFileInfo(mMarkedRectOutputDir,
+    markedRectOutputFileName = QQFileInfo(mMarkedRectOutputDir,
                         mCurrentFileInfo.completeBaseName()+"-%M@.png")
                                   .absoluteFilePath();
-    writeLine("   " + mPreScanCascade.imwriteMarkedImage(markedRectOutputFileInfo) + " written");
+    markedRectOutputFileName.replace("%M", mPreScanCascade.methodString());
+    if (mPreScanCascade.imwriteMarkedImage(markedRectOutputFileName))
+        writeLine("   " + markedRectOutputFileName + " written");
     EMIT(processed(QFileInfo(mCurrentFileInfo),
              mCurrentRectangles.size()));
     NEEDDO(processFailed());

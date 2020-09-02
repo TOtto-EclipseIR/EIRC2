@@ -40,7 +40,7 @@ public:
     bool imreadInputMat(const QQFileInfo &inputFileInfo);
     RectList detect();
     QString methodString() const;
-    QString imwriteMarkedImage(QQFileInfo markFileInfo);
+    bool imwriteMarkedImage(QQFileInfo markFileInfo);
 
 private:
     bool getCoreSize(const QFileInfo &cascadeXmlInfo);
