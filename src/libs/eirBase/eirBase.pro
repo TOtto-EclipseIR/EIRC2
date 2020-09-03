@@ -20,11 +20,15 @@ include(../../EIRC2.pri)
 #??? LIBS *= -leirXfr5
 
 SOURCES += \
+    UInt128.cpp \
+    Uuid.cpp \
     eirBase.cpp \
 
 HEADERS += \
     ../../version.h \
     Typedefs.h \
+    UInt128.h \
+    Uuid.h \
     eirBase_global.h \
     eirBase.h \
 

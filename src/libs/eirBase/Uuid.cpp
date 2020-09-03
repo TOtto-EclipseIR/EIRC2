@@ -1,11 +1,12 @@
-// file: {repo:EIRC2}./src/libs/eirType/Uid.cpp
-#include "Uid.h"
+#include "Uuid.h"
+
+#include <QDateTime>
 
 #include <eirXfr/Debug.h>
 
-#include "UInt128.h"
-
-Uuid::Uuid(void) {;}
+Uuid::Uuid(quint64 key)
+    : QUuid(QByteArray::number(key
+        ? key : QDateTime::currentMSecsSinceEpoch(), 16)) {;}
 
 Uuid::Uuid(const UInt128 u128)
 {

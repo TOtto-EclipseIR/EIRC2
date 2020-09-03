@@ -1,24 +1,20 @@
-// file: {repo:EIRC2}./src/libs/eirType/Uid.h
 #pragma once
-#include "eirType.h"
+#include "eirBase.h"
 
-#include <QByteArray>
-#include <QList>
-#include <QPair>
-#include <QString>
+#include <QMap>
 #include <QUuid>
+#include <QVariant>
 
 #include "UInt128.h"
 
-class EIRTYPE_EXPORT Uuid
+class EIRBASE_EXPORT Uuid : public QUuid
 {
 public:
     typedef QList<Uuid> List;
+    typedef QMap<Uuid, QVariant> Map;
 
 public:
-
-public:
-    Uuid(void);
+    Uuid(quint64 key=0);
     Uuid(const UInt128 u128);
     Uuid(const QString & sUid,
         const QUuid::StringFormat fmt,
@@ -42,4 +38,6 @@ public: // static
 private:
     QUuid mQUuid;
 };
+
+template<class T> QMap<Uuid, T> UuidTMap;
 

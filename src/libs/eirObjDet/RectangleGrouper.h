@@ -1,8 +1,9 @@
 #pragma once
+#include "eirObjDet.h"
 
 #include <QObject>
 
-class RectangleGrouper : public QObject
+class EIROBJDET_EXPORT RectangleGrouper : public QObject
 {
     Q_OBJECT
 public:

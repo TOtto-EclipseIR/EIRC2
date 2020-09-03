@@ -46,8 +46,6 @@ SOURCES += \
     Boolean.cpp \
     Milliseconds.cpp \
     Success.cpp \
-    UInt128.cpp \
-    Uid.cpp \
     eirType.cpp \
 
 HEADERS += \
@@ -85,8 +83,6 @@ HEADERS += \
     DualMap.h \
     Milliseconds.h \
     Success.h \
-    UInt128.h \
-    Uid.h \
     eirType_global.h \
     eirType.h \
 

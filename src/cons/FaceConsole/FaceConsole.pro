@@ -25,7 +25,7 @@ LIBS *= -leirBase5
 LIBS *= -leirType5
 LIBS *= -leirExe5
 LIBS *= -leirCascade5
-#LIBS *= -leirFinder5
+LIBS *= -leirObjDet5
 LIBS *= -leirQtCV5
 
 SOURCES += \

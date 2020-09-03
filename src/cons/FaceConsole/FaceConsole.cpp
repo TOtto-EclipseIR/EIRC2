@@ -13,7 +13,8 @@
 
 FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
-    , cmpConfigObject(new ConfigObject(parent))
+    , cmpConfigObject(new ConfigObject(this))
+    , cmpPreScanObjDet(new ObjectDetector(cvCascade::PreScan, this))
 {
     TRACEFN;
     setObjectName("FaceConsole");
@@ -215,6 +216,7 @@ void FaceConsole::processCurrentFile()
     QImage rectImage;
     QString markedRectOutputFileName;
 
+    cmpPreScanObjDet->enqueue(mCurrentFileInfo);
     writeLine(QString("---Processing #%1: %2")
               .arg(commandLine()->takePositionalArgumentCount())
               .arg(mCurrentFileInfo.absoluteFilePath()));

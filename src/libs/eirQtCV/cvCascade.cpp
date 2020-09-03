@@ -18,6 +18,11 @@ cvCascade::cvCascade(const cvCascade::Type &type)
     TRACEQFI << type;
 }
 
+BasicName cvCascade::typeName() const
+{
+    return typeName(cmType);
+}
+
 bool cvCascade::isNull() const
 {
     return nullType == cmType;
@@ -72,6 +77,19 @@ QFileInfo cvCascade::cascadeFileInfo() const
 cv::CascadeClassifier *cvCascade::cascade()
 {
     return mpCascade;
+}
+
+BasicName cvCascade::typeName(cvCascade::Type type)
+{
+    switch (type)
+    {
+        case nullType:      return "{null}";
+        case PreScan:       return "PreScan";
+        default:
+            MUSTDO(handle);
+            break;
+    }
+    return "{unknown}";
 }
 
 

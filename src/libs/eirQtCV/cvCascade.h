@@ -35,6 +35,7 @@ public:
 
 public:
     cvCascade(const Type &type=Type::nullType);
+    BasicName typeName() const;
     bool isNull() const;
     bool loadCascade(const QFileInfo &cascadeXmlInfo);
     bool notLoaded() const;
@@ -43,6 +44,9 @@ public:
     QSize coreSize() const;
     QFileInfo cascadeFileInfo() const;
     cv::CascadeClassifier *cascade();
+
+public: // static
+    static BasicName typeName(Type type);
 
 private:
     Type cmType=nullType;

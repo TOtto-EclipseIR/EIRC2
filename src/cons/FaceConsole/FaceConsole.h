@@ -4,6 +4,7 @@
 #include <eirExe/Console.h>
 
 #include <eirType/QQDir.h>
+#include <eirObjDet/ObjectDetector.h>
 #include <eirQtCV/cvCascade.h>  // TODO: Remove for Flight
 
 class QCommandLineParser;
@@ -45,6 +46,7 @@ signals:
 
 private:
     ConfigObject * const cmpConfigObject=nullptr;
+    ObjectDetector * const cmpPreScanObjDet=nullptr;
     cvCascade mPreScanCascade;
     QDir mBaseOutputDir;
     QQDir mMarkedRectOutputDir;

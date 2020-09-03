@@ -12,7 +12,12 @@ void RectangleFinder::setCascadeBaseDir(const QString &cascadeBaseDirName)
     MUSTUSE(cascadeBaseDirName);
 }
 
-void RectangleFinder::loadCascade(const CascadeType type, const QString &cascadeXmlFileName)
+void RectangleFinder::loadCascade(const cvCascade::Type type, const QString &cascadeXmlFileName)
 {
     MUSTUSE(type); MUSTUSE(cascadeXmlFileName);
+}
+
+void RectangleFinder::enqueue(const cvCascade::Type type, const ObjDetPak &pak)
+{
+    MUSTUSE(type); MUSTUSE(pak);
 }

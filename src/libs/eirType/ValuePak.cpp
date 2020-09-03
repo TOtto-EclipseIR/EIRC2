@@ -2,10 +2,8 @@
 
 #include <eirXfr/Debug.h>
 
-ValuePak::ValuePak()
-{
-
-}
+ValuePak::ValuePak() {;}
+ValuePak::ValuePak(const Id id) : mId(id) {;}
 
 void ValuePak::clear()
 {

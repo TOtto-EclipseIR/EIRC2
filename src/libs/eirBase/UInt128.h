@@ -1,5 +1,6 @@
-// file: {EIRC2 repo}./src/libs/eirType/UInt128.h
+// file: {EIRC2 repo}./src/libs/eirBase/UInt128.h
 #pragma once
+#include "eirBase.h"
 
 #include <QByteArray>
 #include <QList>
@@ -7,7 +8,7 @@
 #include <QString>
 #include <QUuid>
 
-class UInt128
+class EIRBASE_EXPORT UInt128
 {
 public:
     typedef QPair<quint64, quint64> Pair128;

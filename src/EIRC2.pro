@@ -8,16 +8,16 @@ SUBDIRS += \
     ./libs/eirType          \
     ./libs/eirExe           \
     ./libs/eirQtCV          \
-    ./libs/eirFrame         \
-    ./libs/eirFinder        \
-    ./libs/eirImageIO       \
+#    ./libs/eirFrame         \
+#    ./libs/eirFinder        \
+#    ./libs/eirImageIO       \
 #    ./cons/If2Console       \
     ./cons/FaceConsole      \
     ./cons/HelloConsole     \
     cons/QtCVmain \
     libs/eirCascade \
     libs/eirImage \
-    libs/eirObjDet
+    libs/eirObjDet \
 
 eirType.depends     = eirBase
 eirExe.depends      = eirBase eirType

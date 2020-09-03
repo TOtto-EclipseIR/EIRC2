@@ -18,6 +18,9 @@ public:
     bool cd(const QString &dirName);
     void setPath(const QString &path);
 
+public: // static
+    static QString filenameFilter(const QStringList suffixList);
+
 private:
     bool mNull=true;
 };

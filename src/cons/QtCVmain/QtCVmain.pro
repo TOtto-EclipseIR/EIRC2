@@ -27,8 +27,8 @@ CONFIG(debug, debug|release) {
 
 PRE_TARGETDEPS *= $$OURDEST/eirCascade2.lib
 PRE_TARGETDEPS *= $$OURDEST/eirQtCV2.lib
-LIBS *= -leirCascade2
-LIBS *= -leirQtCV2
+LIBS *= -leirCascade5
+LIBS *= -leirQtCV5
 
 SOURCES += \
         main.cpp

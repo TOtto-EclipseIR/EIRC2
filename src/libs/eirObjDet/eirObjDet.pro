@@ -11,19 +11,20 @@ CONFIG += c++11
 
 include(../../EIRC2.pri)
 LIBS *= -leirType5
+LIBS *= -leirQtCV5
 
 SOURCES += \
     CascadeType.cpp \
-    ObjDetData.cpp \
     ObjDetPak.cpp \
+    ObjectDetector.cpp \
     RectangleFinder.cpp \
     RectangleGrouper.cpp \
     eirObjDet.cpp
 
 HEADERS += \
     CascadeType.h \
-    ObjDetData.h \
     ObjDetPak.h \
+    ObjectDetector.h \
     RectangleFinder.h \
     RectangleGrouper.h \
     eirObjDet_global.h \

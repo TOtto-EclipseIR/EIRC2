@@ -1,4 +1,5 @@
 #pragma once
+#include "eirObjDet.h"
 
 #include <QObject>
 
@@ -10,24 +11,26 @@
 
 #include <eirQtCV/cvCascade.h>
 
-#include "CascadeType.h"
+#include "ObjDetPak.h"
 
-class RectangleFinder : public QObject
+class EIROBJDET_EXPORT RectangleFinder : public QObject
 {
     Q_OBJECT
 public:
     explicit RectangleFinder(QObject *parent = nullptr);
-    bool isLoaded(const CascadeType type);
+    bool isLoaded(const cvCascade::Type type);
 
 public slots:
     void setCascadeBaseDir(const QString &cascadeBaseDirName);
-    void loadCascade(const CascadeType type,
+    void loadCascade(const cvCascade::Type type,
                      const QString &cascadeXmlFileName);
+    void enqueue(const cvCascade::Type type,
+                 const ObjDetPak &pak);
 
 signals:
-    void cascadeBaseDirSet(CascadeType type,
+    void cascadeBaseDirSet(cvCascade::Type type,
                            QDir cascadeBaseDir);
-    void cascadeLoaded(CascadeType type,
+    void cascadeLoaded(cvCascade::Type type,
                        QFileInfo cascadeXmlFileInfo);
 
 };
