@@ -7,15 +7,9 @@
 
 #include <eirExe/CommandLine.h>
 #include <eirExe/ConfigObject.h>
-//#include <eirFinder/CascadeType.h>
 #include <eirType/Success.h>
 #include <eirXfr/Debug.h>
 #include <eirXfr/StartupDebug.h>
-//#include <eirImageIO/BaseOutputDir.h>
-//#include <eirImageIO/OutputManager.h>
-
-//#include <eirRectFind/RectFinder.h>
-//#include <eirMarker/MarkerManager.h>
 
 FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
@@ -193,7 +187,7 @@ void FaceConsole::initializeResources()
     NEEDDO(mPreScanCascade.configure);
     Configuration preScanConfig = config()->configuration("Option/RectFinder");
     preScanConfig += config()->configuration("PreScan/RectFinder");
-    mPreScanCascade.configure(preScanConfig);
+    //mPreScanCascade.configure(preScanConfig);
 
     writeLine("done");
     EMIT(resoursesInitd());
@@ -231,6 +225,7 @@ void FaceConsole::processCurrentFile()
     writeLine(QString("---Processing #%1: %2")
               .arg(commandLine()->takePositionalArgumentCount())
               .arg(mCurrentFileInfo.absoluteFilePath()));
+#if 0
     mPreScanCascade.imreadInputMat(mCurrentFileInfo);
     mCurrentRectangles = mPreScanCascade.detect();
     writeLine(QString("   %1 PreScan rectangles found")
@@ -250,6 +245,7 @@ void FaceConsole::processCurrentFile()
         EMIT(processFailed(mCurrentFileInfo, "Error locating face objects"));
     }
     */
+#endif
     NEEDDO(more);
 }
 

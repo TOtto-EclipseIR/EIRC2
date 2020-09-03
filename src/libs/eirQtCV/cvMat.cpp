@@ -17,14 +17,8 @@ cvMat::cvMat(const int rows, const int cols, const int type)
 {
     TRACEQFI << rows << cols << type;
     mpCvMat = new cv::Mat(rows, cols, type);
-    EXPECT(isValid());
+    //EXPECT(isValid());
     TRACE << dumpString();
-}
-
-cvMat::cvMat(const QString &fileName, const int imreadFlags)
-{
-    if ( ! imread(fileName, imreadFlags))
-        clear();
 }
 
 cvMat::cvMat(const cv::Mat &otherMat)
@@ -84,7 +78,24 @@ int cvMat::type() const
 
 bool cvMat::isNull() const
 {
-    return mat().rows <= 0 || mat().cols || nullptr == data();
+    return mat().rows <= 0 || mat().cols <= 0 || nullptr == data();
+}
+
+void cvMat::set(const cv::Mat other)
+{
+    mpCvMat = new cv::Mat(other);
+}
+
+QImage::Format cvMat::qformat() const
+{
+    return mQFormat;
+}
+
+#if 0
+cvMat::cvMat(const QString &fileName, const int imreadFlags)
+{
+    if ( ! imread(fileName, imreadFlags))
+        clear();
 }
 
 bool cvMat::isValid() const
@@ -124,10 +135,6 @@ bool cvMat::isGreyishData(signed epsilon) const
     return true;
 }
 
-void cvMat::set(const cv::Mat other)
-{
-    mpCvMat = new cv::Mat(other);
-}
 
 void cvMat::set(const QSize sz)
 {
@@ -244,6 +251,7 @@ void cvMat::markRectangles(const QList<QRect> &rectList,
                       color,
                       penWidth);
 }
+#endif
 
 QString cvMat::dumpString() const
 {

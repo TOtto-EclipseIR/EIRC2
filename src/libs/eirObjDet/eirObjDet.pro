@@ -13,13 +13,17 @@ include(../../EIRC2.pri)
 LIBS *= -leirType5
 
 SOURCES += \
+    CascadeType.cpp \
     ObjDetData.cpp \
+    ObjDetPak.cpp \
     RectangleFinder.cpp \
     RectangleGrouper.cpp \
     eirObjDet.cpp
 
 HEADERS += \
+    CascadeType.h \
     ObjDetData.h \
+    ObjDetPak.h \
     RectangleFinder.h \
     RectangleGrouper.h \
     eirObjDet_global.h \

@@ -12,28 +12,20 @@
 
 #include "cvString.h"
 
-cvCascade::cvCascade(const CascadeType &cascadeType)
-    : cmCascadeType(cascadeType)
+
+cvCascade::cvCascade(const cvCascade::Type &type)
 {
-    TRACEQFI << cascadeType.name();
+    TRACEQFI << type;
 }
 
-void cvCascade::configure(const Configuration &config)
+bool cvCascade::isNull() const
 {
-    TRACEFN;
-    config.dump();
-    mCascadeConfig = config;
-    //mParameters.configureCascade(config);
-}
-
-CascadeType cvCascade::cascadeType() const
-{
-    return cmCascadeType;
+    return nullType == cmType;
 }
 
 bool cvCascade::loadCascade(const QFileInfo &cascadeXmlInfo)
 {
-    TRACEQFI << cascadeType().name() << cascadeXmlInfo;
+    TRACEQFI << cmType << cascadeXmlInfo;
     unload();
     cv::CascadeClassifier * pcvcc = new cv::CascadeClassifier;
     if (pcvcc->load(cvString(cascadeXmlInfo.absoluteFilePath())))
@@ -68,6 +60,7 @@ void cvCascade::unload()
 
 QSize cvCascade::coreSize() const
 {
+    MUSTDO(extractFromXml);
     return mCoreSize;
 }
 
@@ -81,6 +74,26 @@ cv::CascadeClassifier *cvCascade::cascade()
     return mpCascade;
 }
 
+
+#if 0
+cvCascade::cvCascade(const CascadeType &cascadeType)
+    : cmCascadeType(cascadeType)
+{
+    TRACEQFI << cascadeType.name();
+}
+
+void cvCascade::configure(const Configuration &config)
+{
+    TRACEFN;
+    config.dump();
+    mCascadeConfig = config;
+    //mParameters.configureCascade(config);
+}
+
+CascadeType cvCascade::cascadeType() const
+{
+    return cmCascadeType;
+}
 bool cvCascade::imreadInputMat(const QQFileInfo &inputFileInfo)
 {
     TRACEQFI << inputFileInfo;
@@ -160,4 +173,4 @@ void cvCascade::makeMethodString(const CascadeParameters &parms)
             .arg(mCascadeXmlInfo.completeBaseName());
 
 }
-
+#endif

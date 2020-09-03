@@ -14,7 +14,6 @@ class EIRQTCV_EXPORT cvMat
 public:
     cvMat();
     cvMat(const int cols, const int rows, const int type);
-    cvMat(const QString &fileName, const int imreadFlags=0);
     cvMat(const cv::Mat &otherMat);
     ~cvMat();
     void clear();
@@ -25,11 +24,14 @@ public:
     int rows() const;
     int type() const;
     bool isNull() const;
+    void set(const cv::Mat other);
+    QImage::Format qformat() const;
+#if 0
+    cvMat(const QString &fileName, const int imreadFlags=0);
     bool isValid() const;
     bool isGreyType() const;
     bool isGreyData() const;
     bool isGreyishData(signed epsilon=2) const;
-    void set(const cv::Mat other);
     void set(const QSize sz);
     void set(const QImage &qimage);
     QSize toSize() const;
@@ -44,9 +46,11 @@ public:
     void markRectangles(const QList<QRect> &rectList,
                         const QColor &penColor=Qt::cyan,
                         const int penWidth=3);
+#endif
     QString dumpString() const;
 
 private:
     cv::Mat * mpCvMat=nullptr;
+    QImage::Format mQFormat=QImage::Format_Invalid;
 };
 

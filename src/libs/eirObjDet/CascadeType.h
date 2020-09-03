@@ -1,5 +1,5 @@
 #pragma once
-#include "eirCascade.h"
+#include "eirObjDet.h"
 
 #include <eirType/Enumeration.h>
 
@@ -15,7 +15,7 @@
     NV(Mouth,) \
     NV(sizeCascadeType,)   \
 
-class EIRCASCADE_EXPORT CascadeType : public Enumeration
+class EIROBJDET_EXPORT CascadeType : public Enumeration
 {
     DECLARE_ENUMERATION(CascadeType, CASCADETYPE_ENUM)
 };

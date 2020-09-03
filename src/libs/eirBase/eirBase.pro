@@ -24,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     ../../version.h \
+    Typedefs.h \
     eirBase_global.h \
     eirBase.h \
 

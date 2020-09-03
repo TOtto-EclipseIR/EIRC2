@@ -1,16 +1,15 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    ../../libs/eirObjDet \
-        ../../libs/eirXfr \
-        ../../libs/eirBase \
-        ../../libs/eirType \
-        ../../libs/eirExe \
-        ../../libs/eirCascade \
-        ../../libs/eirImage \
-        ../../libs/eirQtCV \
-        ../../libs/eirObjDet \
-        ../FaceConsole \
+        ./libs/eirXfr \
+        ./libs/eirBase \
+        ./libs/eirType \
+        ./libs/eirExe \
+        ./libs/eirCascade \
+        ./libs/eirImage \
+        ./libs/eirQtCV \
+        ./libs/eirObjDet \
+        ./cons/FaceConsole \
 
 eirBase.depends     = eirXfr
 eirType.depends     = eirBase eirXfr

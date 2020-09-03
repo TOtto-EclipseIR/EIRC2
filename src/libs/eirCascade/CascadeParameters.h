@@ -7,7 +7,7 @@
 #include <eirType/BasicName.h>
 #include <eirExe/ConfigObject.h>
 
-#include "CascadeType.h"
+//#include "CascadeType.h"
 
 class EIRCASCADE_EXPORT CascadeParameters
 {
@@ -29,7 +29,7 @@ private:
     double parseFactor(); // non-const
 
 private:
-    CascadeType mCascadeType;
+//    CascadeType mCascadeType;
     Configuration mConfig;
     bool mAll=false;
     double mFactor=1.100;

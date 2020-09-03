@@ -45,16 +45,11 @@ signals:
 
 private:
     ConfigObject * const cmpConfigObject=nullptr;
-//    OutputManager * const cmpOutput=nullptr;
-//    RectFinder * const cmpRectFinder=nullptr;
     cvCascade mPreScanCascade;
     QDir mBaseOutputDir;
     QQDir mMarkedRectOutputDir;
     QFileInfo mCurrentFileInfo;
     QList<QRect> mCurrentRectangles;
-//    FramePak mFramePak;
     QImage mRectImage;
-
-  //  MarkerManager * const cmpMarkerManager=nullptr;
 };
 
