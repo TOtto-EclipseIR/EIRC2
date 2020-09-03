@@ -26,6 +26,7 @@ SOURCES += \
     FunctionInfo.cpp \
     Id.cpp \
     MultiName.cpp \
+    QQByteArray.cpp \
     QQDir.cpp \
     QQFile.cpp \
     QQFileInfo.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
     QQRect.cpp \
     QQRectF.cpp \
     QQRectList.cpp \
+    QQSize.cpp \
     Region.cpp \
     Sortable.cpp \
     BitFlags.cpp \
@@ -64,6 +66,7 @@ HEADERS += \
     NamedArray.h \
     NamedEnum.h \
     NamedMap.h \
+    QQByteArray.h \
     QQDir.h \
     QQFile.h \
     QQFileInfo.h \
@@ -71,6 +74,7 @@ HEADERS += \
     QQRect.h \
     QQRectF.h \
     QQRectList.h \
+    QQSize.h \
     Region.h \
     Sortable.h \
     Value.h \

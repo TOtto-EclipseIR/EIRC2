@@ -6,6 +6,8 @@
 #include <opencv2/core/matx.hpp>
 #include <opencv2/core/types.hpp>
 
+#include <eirType/QQRect.h>
+#include <eirType/QQSize.h>
 #include <eirXfr/Debug.h>
 
 #include "cvBGRA.h"
@@ -84,6 +86,28 @@ bool cvMat::isNull() const
 void cvMat::set(const cv::Mat other)
 {
     mpCvMat = new cv::Mat(other);
+}
+
+void cvMat::setGrey(const QQImage &image)
+{
+    TRACEQFI << image;
+    EXPECTNOT(image.isNull());
+    if (image.isNull()) return;                             /* /=========\ */
+    QQImage greyImage = image.convertToFormat(QImage::Format_Grayscale8);
+    QPoint cropCenter = greyImage.rect().center();
+    QQSize cropSize(greyImage.cols(), greyImage.rows(), 16);
+    QQRect cropRect(cropSize, cropCenter);
+    QQImage cropGreyImage = greyImage.copy(cropRect);
+    EXPECTEQ(1, cropGreyImage.depth());
+    EXPECTEQ(cropSize.area(), cropGreyImage.sizeInBytes());
+    clear();
+    mpCvMat = new cv::Mat(image.height(), image.width(), CV_8UC1);
+    TSTALLOC(mpCvMat->ptr());
+    EXPECTEQ(cropGreyImage.depth(), int(mpCvMat->elemSize1()));
+    EXPECTEQ(cropGreyImage.sizeInBytes(), int(mpCvMat->total()));
+    std::memcpy(mpCvMat->ptr(), cropGreyImage.bits(),
+                cropGreyImage.sizeInBytes());
+    TRACERTV();
 }
 
 QImage::Format cvMat::qformat() const

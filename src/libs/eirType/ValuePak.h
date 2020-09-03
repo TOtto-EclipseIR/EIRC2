@@ -8,6 +8,8 @@
 #include <QVariant>
 #include <QVariantList>
 
+#include <eirType/QQByteArray.h>
+
 #include "Id.h"
 #include "MultiName.h"
 #include "Value.h"
@@ -23,7 +25,7 @@ public:
     bool contains(const MultiName &key) const;
     bool notContains(const MultiName &key) const;
     void set(const Id &id);
-    void set(const QByteArray &byteArray);
+    void set(const QQByteArray &byteArray);
     void set(const int index, const QVariant value);
     void set(const MultiName &key, const QVariant value);
     void insert(const Value::Map &valueMap);
@@ -37,7 +39,7 @@ public:
     Id id() const;
     Id &id();
     Uuid uuid() const;
-    QByteArray bytes() const;
+    QQByteArray bytes() const;
     Value::Map map() const;
     Value::Map &map(); // non-const
     QVariant operator()(const int index) const;
@@ -48,7 +50,7 @@ protected:
 
 private:
     Id mId;
-    QByteArray mBytes;
+    QQByteArray mBytes;
     QVariantList mValueList;
     Value::Map mValueMap;
 };

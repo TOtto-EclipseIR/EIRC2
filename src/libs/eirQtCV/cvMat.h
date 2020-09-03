@@ -6,6 +6,8 @@
 #include <QPixmap>
 #include <QVector>
 
+#include <eirImage/QQImage.h>
+
 namespace cv { class Mat; }
 typedef QVector<int> IntVector;
 
@@ -25,6 +27,7 @@ public:
     int type() const;
     bool isNull() const;
     void set(const cv::Mat other);
+    void setGrey(const QQImage &image);
     QImage::Format qformat() const;
 #if 0
     cvMat(const QString &fileName, const int imreadFlags=0);

@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QQueue>
 
+#include <eirType/QQByteArray.h>
 #include <eirType/QQFileInfo.h>
 #include <eirType/ValuePak.h>
 #include <eirImage/QQImage.h>
@@ -14,7 +15,7 @@ public:
     enum ImageIndex
     {
         nullImageIndex = 0,
-        InputImage,
+        InputImageIndex,
         sizeImageIndex
     };
 
@@ -23,13 +24,13 @@ public:
 public:
     ObjDetPak();
     ObjDetPak(const QQFileInfo &fileInfo, const bool load=true);
-    ObjDetPak(const QByteArray &bytes, const bool load=true);
+    ObjDetPak(const QQByteArray &bytes, const bool load=true);
     QQFileInfo inputImageFileInfo() const;
-    QByteArray inputImageBytes() const;
+    QQByteArray inputImageBytes() const;
     void setInputFileInfo(const QQFileInfo &fileInfo);
-    void setInputBytes(const QByteArray &bytes);
+    void setInputBytes(const QQByteArray &bytes);
     void loadInputImage(const QQFileInfo &fileInfo);
-    void loadInputImage(const QByteArray &bytes);
+    void loadInputImage(const QQByteArray &bytes);
     void loadInputImage();
 
 protected:

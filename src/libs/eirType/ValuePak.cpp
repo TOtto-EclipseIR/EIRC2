@@ -24,7 +24,7 @@ bool ValuePak::notContains(const int index) const
     return ! contains(index);
 }
 
-void ValuePak::set(const QByteArray &byteArray)
+void ValuePak::set(const QQByteArray &byteArray)
 {
     mBytes = byteArray;
 }
@@ -81,7 +81,7 @@ Uuid ValuePak::uuid() const
     return mId.uuid();
 }
 
-QByteArray ValuePak::bytes() const
+QQByteArray ValuePak::bytes() const
 {
     return mBytes;
 }

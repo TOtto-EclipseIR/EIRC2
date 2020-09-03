@@ -20,7 +20,7 @@ ObjDetPak::ObjDetPak(const QQFileInfo &fileInfo, const bool load)
         setInputFileInfo(fileInfo);
 }
 
-ObjDetPak::ObjDetPak(const QByteArray &bytes, const bool load)
+ObjDetPak::ObjDetPak(const QQByteArray &bytes, const bool load)
 {
     TRACEQFI << bytes << load;
     if (load)
@@ -35,7 +35,7 @@ QQFileInfo ObjDetPak::inputImageFileInfo() const
     return ValuePak::at("InputImage/FileInfo");
 }
 
-QByteArray ObjDetPak::inputImageBytes() const
+QQByteArray ObjDetPak::inputImageBytes() const
 {
     TRACEFN;
     return ValuePak::bytes();
@@ -47,9 +47,9 @@ void ObjDetPak::setInputFileInfo(const QQFileInfo &fileInfo)
     ValuePak::set("InputImage/FileInfo", fileInfo.toVariant());
 }
 
-void ObjDetPak::setInputBytes(const QByteArray &bytes)
+void ObjDetPak::setInputBytes(const QQByteArray &bytes)
 {
-    TRACEQFI << bytes;
+    TRACEQFI << bytes.traceString();
     ValuePak::set(bytes);
     loadInputImage();
 }
@@ -61,9 +61,9 @@ void ObjDetPak::loadInputImage(const QQFileInfo &fileInfo)
     loadInputImage();
 }
 
-void ObjDetPak::loadInputImage(const QByteArray &bytes)
+void ObjDetPak::loadInputImage(const QQByteArray &bytes)
 {
-    TRACEQFI << bytes;
+    TRACEQFI << bytes.traceString();
     setInputBytes(bytes);
     loadInputImage();
 }
@@ -72,23 +72,23 @@ void ObjDetPak::loadInputImage()
 {
     TRACEFN;
     QQFileInfo imageFileInfo = inputImageFileInfo();
-    QByteArray imageBytes = inputImageBytes();
+    QQByteArray imageBytes = inputImageBytes();
     DUMPVAL(imageFileInfo);
-    DUMPVAL(imageBytes);
+    DUMP << "imageBytes = " << imageBytes.traceString();
     if (imageBytes.isEmpty())
     {
         EXPECT(imageFileInfo.isReadable() && imageFileInfo.isFile());
         imageBytes = QQFile::readAll(imageFileInfo);
-        DUMPVAL(imageBytes);
+        DUMP << "imageBytes = " << imageBytes.traceString();
         EXPECTNOT(imageBytes.isEmpty());
         if (imageBytes.isEmpty()) return;                   /* /========\ */
         ValuePak::set(imageBytes);
     }
     QQImage inputImage = QQImage::fromData(imageBytes);
-    DUMPVAL(inputImage);
+    DUMP << inputImage;
     EXPECTNOT(inputImage.isNull());
     if (inputImage.isNull()) return;                        /* /========\ */
-    setImage(InputImage, inputImage);
+    setImage(InputImageIndex, inputImage);
     TRACERTV();
 }
 

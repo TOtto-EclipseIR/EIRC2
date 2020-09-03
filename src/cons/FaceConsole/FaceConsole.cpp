@@ -165,22 +165,22 @@ void FaceConsole::initializeResources()
     TRACEFN;
     QDir baseCascadeDir(config()->configuration("/Resources/RectFinder")
                  .string("BaseDir"));
-    QString cascadeFileName = config()->
+    QString preScanCascadeFileName = config()->
             configuration("/Resources/RectFinder/PreScan")
                 .string("XmlFile");
-    QFileInfo cascadeFileInfo(baseCascadeDir, cascadeFileName);
-    TRACE << cascadeFileInfo << cascadeFileInfo.exists()
-          << cascadeFileInfo.isReadable() << cascadeFileInfo.isFile();
-    EXPECT(cascadeFileInfo.exists());
-    EXPECT(cascadeFileInfo.isReadable());
-    EXPECT(cascadeFileInfo.isFile());
-    write("---Cascade: "+cascadeFileInfo.absoluteFilePath()+" loading...");
-    mPreScanCascade.loadCascade(cascadeFileInfo.absoluteFilePath());
+    QFileInfo preScanCascadeFileInfo(baseCascadeDir, preScanCascadeFileName);
+    TRACE << preScanCascadeFileInfo << preScanCascadeFileInfo.exists()
+          << preScanCascadeFileInfo.isReadable() << preScanCascadeFileInfo.isFile();
+    EXPECT(preScanCascadeFileInfo.exists());
+    EXPECT(preScanCascadeFileInfo.isReadable());
+    EXPECT(preScanCascadeFileInfo.isFile());
+    write("---Cascade: "+preScanCascadeFileInfo.absoluteFilePath()+" loading...");
+    mPreScanCascade.loadCascade(preScanCascadeFileInfo.absoluteFilePath());
     EXPECT(mPreScanCascade.isLoaded());
 
-    NEEDDO(mPreScanCascade.configure);
     Configuration preScanConfig = config()->configuration("Option/RectFinder");
     preScanConfig += config()->configuration("PreScan/RectFinder");
+    NEEDDO(mPreScanCascade.configure);
     //mPreScanCascade.configure(preScanConfig);
 
     writeLine("done");

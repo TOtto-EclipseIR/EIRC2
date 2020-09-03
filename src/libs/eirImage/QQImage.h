@@ -12,6 +12,8 @@ public:
     QQImage();
     QQImage(const QImage &other);
     QQImage(const QString &fileName, const char *format = nullptr);
+    int rows() const;
+    int cols() const;
 
 public: // static
     static QStringList supportedReadFormats();
