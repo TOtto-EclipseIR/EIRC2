@@ -5,6 +5,7 @@
 #include <QFileInfo>
 
 #include <QList>
+#include <QVariant>
 
 
 class EIRTYPE_EXPORT QQFileInfo : public QFileInfo
@@ -17,6 +18,7 @@ public:
     QQFileInfo(const QFileInfo & other);
     QQFileInfo(const QFile & file);
     QQFileInfo(const QDir &dir, const QString &fileName);
+    QQFileInfo(const QVariant & variant);
     void setFile(const QString &filePathName);
     void setFile(const QDir &dir, const QString &fileName);
     void replace(const QString &trigger, const QString &with);
@@ -26,8 +28,10 @@ public:
     bool tryIsDir() const;
     QString attributes() const;
     QString toString() const;
+    QVariant toVariant() const;
     operator QString () const;
     QString operator ()() const;
+
 public: // static
     static bool tryIsFile(const QString &filePathName,
             const QIODevice::OpenMode mode=QIODevice::ReadOnly);
@@ -36,4 +40,4 @@ public: // static
 private:
     bool mIsNull=true;
 };
-
+Q_DECLARE_METATYPE(QQFileInfo)

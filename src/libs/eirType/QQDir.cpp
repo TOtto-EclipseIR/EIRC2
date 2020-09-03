@@ -50,9 +50,3 @@ void QQDir::setPath(const QString &path)
     QDir::setPath(path);
     mNull = QDir::exists();
 }
-
-QString QQDir::filenameFilter(const QStringList suffixList)
-{
-    MUSTUSE(suffixList);
-    MUSTRTN(QString());
-}

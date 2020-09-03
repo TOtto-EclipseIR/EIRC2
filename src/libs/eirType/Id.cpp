@@ -80,7 +80,7 @@ MultiName Id::name() const
     return mNameKey;
 }
 
-QUuid Id::uuid() const
+Uuid Id::uuid() const
 {
     return mUuid;
 }

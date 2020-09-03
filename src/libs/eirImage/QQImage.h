@@ -6,16 +6,20 @@
 
 #include <eirBase/Typedefs.h>
 
-class QQImage : public QImage
+class EIRIMAGE_EXPORT QQImage : public QImage
 {
 public:
     QQImage();
-    QQImage(const QImage &image);
+    QQImage(const QImage &other);
     QQImage(const QString &fileName, const char *format = nullptr);
 
 public: // static
     static QStringList supportedReadFormats();
     static QStringList supportedWriteFormats();
+    static QStringList dirNameFilters(const QStringList suffixList);
+    static QString dialogNameFilter(const QStringList suffixList);
+
+
 };
 
 

@@ -20,6 +20,11 @@ QQFileInfo::QQFileInfo(const QDir &dir, const QString &fileName)
     setFile(dir, fileName);
 }
 
+QQFileInfo::QQFileInfo(const QVariant &variant)
+{
+    *this = variant.value<QQFileInfo>();
+}
+
 void QQFileInfo::setFile(const QString &filePathName)
 {
     TRACEQFI << filePathName;
@@ -91,9 +96,9 @@ QString QQFileInfo::toString() const
     return fileName();
 }
 
-QString QQFileInfo::operator ()() const
+QVariant QQFileInfo::toVariant() const
 {
-    return toString();
+    return QVariant::fromValue(*this);
 }
 
 QQFileInfo::operator QString() const
@@ -101,7 +106,13 @@ QQFileInfo::operator QString() const
     return toString();
 }
 
-//static
+QString QQFileInfo::operator ()() const
+{
+    return toString();
+}
+
+/* -------- static public --------------------------------- */
+
 bool QQFileInfo::tryIsFile(const QString &filePathName,
                            const QIODevice::OpenMode mode)
 {
@@ -112,7 +123,6 @@ bool QQFileInfo::tryIsFile(const QString &filePathName,
     return canOpenFile;
 }
 
-//static
 bool QQFileInfo::tryIsDir(const QString &pathName)
 {
     TRACEQFI << pathName;

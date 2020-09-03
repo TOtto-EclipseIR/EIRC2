@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QQueue>
 
+#include <eirType/QQFileInfo.h>
 #include <eirType/ValuePak.h>
 #include <eirImage/QQImage.h>
 
@@ -21,14 +22,19 @@ public:
     typedef QQueue<ObjDetPak> Queue;
 public:
     ObjDetPak();
-    ObjDetPak(const QFileInfo &fileInfo,
-              const bool andLoad=true);
-    QFileInfo inputFileInfo() const;
-    void setInputFileInfo(const QFileInfo &fileInfo);
+    ObjDetPak(const QQFileInfo &fileInfo, const bool load=true);
+    ObjDetPak(const QByteArray &bytes, const bool load=true);
+    QQFileInfo inputImageFileInfo() const;
+    QByteArray inputImageBytes() const;
+    void setInputFileInfo(const QQFileInfo &fileInfo);
     void setInputBytes(const QByteArray &bytes);
+    void loadInputImage(const QQFileInfo &fileInfo);
+    void loadInputImage(const QByteArray &bytes);
+    void loadInputImage();
+
+protected:
     void setImage(const ImageIndex iix,
-                  const MultiName &valueName,
                   const QQImage &image);
-    void loadInputFile(const QFileInfo &fileInfo);
+
 };
 

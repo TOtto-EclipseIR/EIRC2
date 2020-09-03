@@ -11,6 +11,7 @@ CONFIG += c++11
 
 include(../../EIRC2.pri)
 LIBS *= -leirType5
+LIBS *= -leirImage5
 LIBS *= -leirQtCV5
 
 SOURCES += \

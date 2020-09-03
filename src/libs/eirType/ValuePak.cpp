@@ -9,7 +9,7 @@ void ValuePak::clear()
 {
     TRACEFN;
     mId.clear(),
-            mBA.clear(),
+            mBytes.clear(),
             mValueList.clear(),
             mValueMap.clear();
 }
@@ -26,27 +26,28 @@ bool ValuePak::notContains(const int index) const
 
 void ValuePak::set(const QByteArray &byteArray)
 {
-    mBA = byteArray;
+    mBytes = byteArray;
 }
 
-void ValuePak::set(const int index, const Value &mapItem)
+void ValuePak::set(const int index, const QVariant value)
 {
-    at(index) = mapItem;
+    if (notContains(index)) resizeList(index);
+    mValueList.replace(index, value);
 }
 
-Value &ValuePak::at(const int index)
+void ValuePak::set(const MultiName &key, const QVariant value)
 {
-    return mValueList[index];
+    mValueMap.insert(key, value);
 }
 
-Value ValuePak::at(const int index) const
+QVariant ValuePak::at(const int index) const
 {
-    return mValueList[index];
+    return contains(index) ? mValueList.at(index) :QVariant();
 }
 
-QVariant ValuePak::value(const int index) const
+QVariant ValuePak::at(const MultiName &name) const
 {
-    return at(index).second;
+    return mValueMap.value(name);
 }
 
 MultiName::List ValuePak::keys(const MultiName &groupName,
@@ -82,10 +83,18 @@ Uuid ValuePak::uuid() const
 
 QByteArray ValuePak::bytes() const
 {
-    return mBA;
+    return mBytes;
 }
 
 QVariant ValuePak::operator()(const int index) const
 {
-    return at(index).second;
+    return at(index);
+}
+
+/* --------- protected ------------------------------------ */
+
+void ValuePak::resizeList(const int index)
+{
+    while (mValueList.size() <= index)
+        mValueList.append(QVariant());
 }

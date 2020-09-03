@@ -41,7 +41,7 @@ public:
     void set(const QString desc);
     void set(const QVariant data);
     MultiName name() const;
-    QUuid uuid() const;
+    Uuid uuid() const;
     QString toString() const;
     QString operator () () const;
     bool operator <  (const Id & other);
