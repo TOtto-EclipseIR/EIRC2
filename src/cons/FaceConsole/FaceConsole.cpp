@@ -43,7 +43,7 @@ void FaceConsole::initializeApplication()
     CONNECT(this, &FaceConsole::processingComplete,
             qApp, &QCoreApplication::quit);
     EMIT(applicationInitd());
-    QTimer::singleShot(100, this, &FaceConsole::setupCommandLine);
+    QTimer::singleShot(100, this, &FaceConsole::processCommandLine);
 }
 
 void FaceConsole::enqueueNext()
@@ -52,12 +52,24 @@ void FaceConsole::enqueueNext()
     QString fileNameArgument = commandLine()->firstPositionalArgument();
 }
 
-void FaceConsole::setupCommandLine()
+void FaceConsole::processCommandLine()
 {
     TRACEFN
     rCommandLine().process();
     rCommandLine().expandDirectories();
-    EMIT(commandLineSetup());
+    CommandLine::ExpandDirResultList edrl = rCommandLine().expandDirResults();
+    if ( ! edrl.isEmpty())
+    {
+        writeLine("---Directories:");
+        foreach (CommandLine::ExpandDirResult edr, edrl)
+        {
+            int k = 0;
+            writeLine(QString("   %1. %2 %3 files from %4")
+                      .arg(++k).arg(edr.dir.path())
+                      .arg(edr.fileCount).arg(edr.firstFileName));
+        }
+    }
+    EMIT(commandLineProcessed());
     QTimer::singleShot(100, this, &FaceConsole::setConfiguration);
 
 }
@@ -102,7 +114,7 @@ void FaceConsole::setOutputDirs()
             configuration("Output/Dirs")
                 .string("MarkedRect"));
     DUMPVAL(markedRectDirString);
-#if 1
+
     if (markedRectDirString.isEmpty())
     {
         // do nothing, leave mMarkedRectOutputDir null
@@ -134,26 +146,7 @@ void FaceConsole::setOutputDirs()
     {
         writeErr(QString("***%1 Dir = %2 is invalid").arg("MarkedRect").arg(markedRectDirString));
     }
-#else
-    QQFileInfo markedRectDirFileInfo(mBaseOutputDir, markedRectDirString);
-    DUMPVAL(markedRectDirFileInfo);
-    DUMPVAL(markedRectDirFileInfo.exists());
-    if (markedRectDirFileInfo.exists())
-    {
-        EXPECTNOT(markedRectDirFileInfo.isFile());
-        mMarkedRectOutputDir = QDir(markedRectDirFileInfo.path());
-        writeLine("   " + mMarkedRectOutputDir.absolutePath() + " exists");
-    }
-    else
-    {
-        mMarkedRectOutputDir = markedRectDirFileInfo.dir();
-        EXPECT(mMarkedRectOutputDir.mkpath(markedRectDirString));
-        EXPECT(mMarkedRectOutputDir.cd(markedRectDirString));
-        EXPECT(mMarkedRectOutputDir.exists());
-        if (mMarkedRectOutputDir.exists())
-            writeLine("   " + mMarkedRectOutputDir.absolutePath() + " created");
-    }
-#endif
+
     DUMPVAL(mMarkedRectOutputDir.isNull());
     DUMPVAL(mMarkedRectOutputDir);
     if (mMarkedRectOutputDir.notNull())
@@ -236,6 +229,7 @@ void FaceConsole::processCurrentFile()
     markedRectOutputFileName.replace("%M", mPreScanCascade.methodString());
     if (mPreScanCascade.imwriteMarkedImage(markedRectOutputFileName))
         writeLine("   " + markedRectOutputFileName + " written");
+#endif
     EMIT(processed(QFileInfo(mCurrentFileInfo),
              mCurrentRectangles.size()));
     NEEDDO(processFailed());
@@ -245,7 +239,6 @@ void FaceConsole::processCurrentFile()
         EMIT(processFailed(mCurrentFileInfo, "Error locating face objects"));
     }
     */
-#endif
     NEEDDO(more);
 }
 

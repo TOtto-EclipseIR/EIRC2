@@ -4,7 +4,7 @@
 #include <eirExe/Console.h>
 
 #include <eirType/QQDir.h>
-#include <eirQtCV/cvCascade.h>
+#include <eirQtCV/cvCascade.h>  // TODO: Remove for Flight
 
 class QCommandLineParser;
 class ConfigObject;
@@ -21,7 +21,7 @@ public slots:
     void enqueueNext();
 
 private slots:
-    void setupCommandLine();
+    void processCommandLine();
     void setConfiguration();
     void setBaseOutputDir();
     void setOutputDirs();
@@ -33,7 +33,7 @@ private slots:
 
 signals:
     void applicationInitd();
-    void commandLineSetup();
+    void commandLineProcessed();
     void configurationSet();
     void baseDirSet();
     void outputDirsSet();
