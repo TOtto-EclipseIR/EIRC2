@@ -10,6 +10,11 @@ ObjectDetector::ObjectDetector(const cvCascade::Type type, QObject *parent)
     TRACEQFI << cvCascade::typeName(type)() << QOBJNAME(parent);
 }
 
+cvCascade *ObjectDetector::cascade()
+{
+    return &mCascade;
+}
+
 void ObjectDetector::enqueue(const QFileInfo &inputFileInfo)
 {
     TRACEQFI << inputFileInfo;

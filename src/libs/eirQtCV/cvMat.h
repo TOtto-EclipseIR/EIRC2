@@ -26,6 +26,7 @@ public:
     int rows() const;
     int type() const;
     bool isNull() const;
+    QSize size() const;
     void set(const cv::Mat other);
     void setGrey(const QQImage &image);
     QImage::Format qformat() const;

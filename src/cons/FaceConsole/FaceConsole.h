@@ -47,7 +47,7 @@ signals:
 private:
     ConfigObject * const cmpConfigObject=nullptr;
     ObjectDetector * const cmpPreScanObjDet=nullptr;
-    cvCascade mPreScanCascade;
+    //cvCascade mPreScanCascade;
     QDir mBaseOutputDir;
     QQDir mMarkedRectOutputDir;
     QFileInfo mCurrentFileInfo;

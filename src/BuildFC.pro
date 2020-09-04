@@ -5,7 +5,6 @@ SUBDIRS += \
         ./libs/eirBase \
         ./libs/eirType \
         ./libs/eirExe \
-        ./libs/eirCascade \
         ./libs/eirImage \
         ./libs/eirQtCV \
         ./libs/eirObjDet \
@@ -14,7 +13,6 @@ SUBDIRS += \
 eirBase.depends     = eirXfr
 eirType.depends     = eirBase eirXfr
 eirExe.depends      = eirType eirBase ierXfr
-eirCascade.depends  = eirType
-eirQtCV.depends     = eirCascade eirExe eirType eirBase eirXfr
-FaceConsole.depends = eirQtCV eirCascade eirExe eirType eirBase eirXfr
+eirQtCV.depends     = eirExe eirType eirBase eirXfr
+FaceConsole.depends = eirQtCV eirExe eirType eirBase eirXfr
 

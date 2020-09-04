@@ -14,6 +14,7 @@ class EIROBJDET_EXPORT ObjectDetector : public QObject
 public:
     explicit ObjectDetector(const cvCascade::Type type,
                             QObject *parent = nullptr);
+    cvCascade * cascade();
 
 public slots:
     void enqueue(const QFileInfo &inputFileInfo);

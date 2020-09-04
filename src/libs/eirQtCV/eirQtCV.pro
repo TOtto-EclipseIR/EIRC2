@@ -21,7 +21,6 @@ include(../../opencv4.pri)
 
 LIBS *= -leirType5
 LIBS *= -leirExe5
-LIBS *= -leirCascade5
 LIBS *= -leirImage5
 
 SOURCES += \

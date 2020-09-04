@@ -9,16 +9,19 @@
 #include <QString>
 #include <QStringList>
 
+#include <eirBase/Typedefs.h>
 #include <eirType/BasicName.h>
 #include <eirType/QQFileInfo.h>
+#include <eirType/QQRect.h>
+#include <eirType/QQRectList.h>
+#include <eirType/QQSize.h>
 #include <eirExe/Configuration.h>
-#include <eirCascade/CascadeParameters.h>
+#include <eirImage/QQImage.h>
+//#include <eirCascade/CascadeParameters.h>
 //#include <eirCascade/CascadeType.h>
 
 #include "cvMat.h"
 
-#include <eirBase/Typedefs.h>
-#include <eirCascade/CascadeParameters.h>
 
 namespace cv { class CascadeClassifier; }
 
@@ -33,6 +36,7 @@ public:
         sizeType
     };
 
+
 public:
     cvCascade(const Type &type=Type::nullType);
     BasicName typeName() const;
@@ -43,7 +47,15 @@ public:
     void unload();
     QSize coreSize() const;
     QFileInfo cascadeFileInfo() const;
-    cv::CascadeClassifier *cascade();
+    cv::CascadeClassifier *classifier();
+
+    int detectRectangles(const Configuration &rectFinderConfig,
+                         const QQImage &inputImage,
+                         const QQRect &region);
+    cvMat detectMat() const;
+    QQImage detectImage() const;
+    QQRectList rectList() const;
+    QString methodString() const;
 
 public: // static
     static BasicName typeName(Type type);
@@ -51,8 +63,41 @@ public: // static
 private:
     Type cmType=nullType;
     QFileInfo mCascadeXmlInfo;
-    cv::CascadeClassifier *mpCascade=nullptr;
+    cv::CascadeClassifier *mpClassifier=nullptr;
     QSize mCoreSize;
+    // side-effects of detectRectangles()
+    cvMat mDetectMat;
+    QQRectList mRectList;
+    QString mMethodString;
+
+private:
+    class Parameters
+    {
+    public:
+        Parameters(const Configuration &cascadeConfig);
+        void calculate(const Type type,
+                       const QQSize imageSize,
+                       const QQSize coreSize);
+        double factor() const;
+        int neighbors() const;
+        int flags() const;
+        QSize minSize() const;
+        QSize maxSize() const;
+        QString methodString(const QFileInfo &cascadeXmlInfo) const;
+
+
+    private:
+        double parseFactor();
+        QStringList dumpList() const;
+
+    private:
+        Configuration mConfig;
+        double mFactor=1.100;
+        int mNeighbors=0;
+        int mFlags=0;
+        QSize mMinSize;
+        QSize mMaxSize;
+    };
 
 #if 0
     void configure(const Configuration &config);

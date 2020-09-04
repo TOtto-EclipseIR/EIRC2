@@ -83,6 +83,11 @@ bool cvMat::isNull() const
     return mat().rows <= 0 || mat().cols <= 0 || nullptr == data();
 }
 
+QSize cvMat::size() const
+{
+    return QSize(cols(), rows());
+}
+
 void cvMat::set(const cv::Mat other)
 {
     mpCvMat = new cv::Mat(other);
@@ -107,6 +112,7 @@ void cvMat::setGrey(const QQImage &image)
     EXPECTEQ(cropGreyImage.sizeInBytes(), int(mpCvMat->total()));
     std::memcpy(mpCvMat->ptr(), cropGreyImage.bits(),
                 cropGreyImage.sizeInBytes());
+    mQFormat = QImage::Format_Grayscale8;
     TRACERTV();
 }
 

@@ -24,7 +24,6 @@ LIBS *= -leirXfr5
 LIBS *= -leirBase5
 LIBS *= -leirType5
 LIBS *= -leirExe5
-LIBS *= -leirCascade5
 LIBS *= -leirObjDet5
 LIBS *= -leirQtCV5
 
