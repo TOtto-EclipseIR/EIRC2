@@ -34,6 +34,16 @@ Uuid Uuid::set(const QString &sUid)
     return *this;
 }
 
+QUuid Uuid::toUuid() const
+{
+    return *this;
+}
+
+QString Uuid::tail() const
+{
+    return toString(QUuid::WithBraces).right(14);
+}
+
 Uuid Uuid::create()
 {
     QUuid quuid = QUuid::createUuid();

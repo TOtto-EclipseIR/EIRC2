@@ -14,12 +14,15 @@
 FaceConsole::FaceConsole(QObject *parent)
     : Console(parent)
     , cmpConfigObject(new ConfigObject(this))
-    , cmpPreScanObjDet(new ObjectDetector(cvCascade::PreScan, this))
+    , cmpPreScanObjDet(new ObjectDetector(cvCascade::PreScan,
+                                          cmpConfigObject, this))
 {
     TRACEFN;
     setObjectName("FaceConsole");
     TSTALLOC(cmpConfigObject);
-
+    TSTALLOC(cmpPreScanObjDet);
+    cmpConfigObject->setObjectName("ConfigObject:FaceConsole");
+    cmpConfigObject->setObjectName("ObjectDetector:FaceConsole:PreScan");
     QTimer::singleShot(500, this, &FaceConsole::initializeApplication);
     TRACERTV();
 }

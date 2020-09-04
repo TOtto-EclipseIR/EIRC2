@@ -2,6 +2,7 @@
 #include "eirBase.h"
 
 #include <QMap>
+#include <QQueue>
 #include <QUuid>
 #include <QVariant>
 
@@ -11,6 +12,7 @@ class EIRBASE_EXPORT Uuid : public QUuid
 {
 public:
     typedef QList<Uuid> List;
+    typedef QQueue<Uuid> Queue;
     typedef QMap<Uuid, QVariant> Map;
 
 public:
@@ -29,8 +31,10 @@ public:
     Uuid set(const QByteArray & rawUid,
             const QUuid::Version ver=QUuid::Time,
             const QUuid::Variant var=QUuid::DCE);
+    QUuid toUuid() const;
     QByteArray toByteArray(void) const;
     UInt128 toU128(void) const;
+    QString tail() const;
 
 public: // static
     static Uuid create();

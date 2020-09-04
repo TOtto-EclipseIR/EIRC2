@@ -21,6 +21,8 @@ public:
 
 public:
     typedef QQueue<ObjDetPak> Queue;
+    typedef QMap<Uuid, ObjDetPak> UuidMap;
+
 public:
     ObjDetPak();
     ObjDetPak(const QQFileInfo &fileInfo, const bool load=true);
