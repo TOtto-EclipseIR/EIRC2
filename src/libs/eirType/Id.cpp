@@ -16,8 +16,7 @@ Id::Id() {;}
 Id::Id(const quint64 key64,
        const QString &desc,
        const QVariant &data)
-    : mUuid(key64)
-    , mU64Key(key64)
+    : mU64Key(key64)
     , mDescription(desc)
     , mData(data) {;}
 
@@ -25,8 +24,7 @@ Id::Id(const MultiName &name,
        const quint64 key64,
        const QString &desc,
        const QVariant &data)
-    : mUuid(key64)
-    , mU64Key(key64)
+    : mU64Key(key64)
     , mNameKey(name)
     , mDescription(desc)
     , mData(data) {;}

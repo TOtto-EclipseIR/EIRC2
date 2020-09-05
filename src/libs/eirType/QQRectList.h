@@ -8,11 +8,13 @@
 #include <QRect>
 #include <QVector>
 
+#include <eirBase/Typedefs.h>
+
 class EIRTYPE_EXPORT QQRectList : public QList<QQRect>
 {
 public:
     QQRectList(const QList<QQRect> rects=QList<QQRect>());
     void set(const QList<QQRect> rects);
-    QVector<QRect> vector() const;
+    QRectVector vector() const;
 };
 

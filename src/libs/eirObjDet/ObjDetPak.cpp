@@ -41,6 +41,12 @@ QQByteArray ObjDetPak::inputImageBytes() const
     return ValuePak::bytes();
 }
 
+QQImage ObjDetPak::inputImage() const
+{
+    TRACEFN;
+    return getImage(InputImageIndex);
+}
+
 void ObjDetPak::setInputFileInfo(const QQFileInfo &fileInfo)
 {
     TRACEQFI << fileInfo;
@@ -81,18 +87,29 @@ void ObjDetPak::loadInputImage()
         imageBytes = QQFile::readAll(imageFileInfo);
         DUMP << "imageBytes = " << imageBytes.traceString();
         EXPECTNOT(imageBytes.isEmpty());
-        if (imageBytes.isEmpty()) return;                   /* /========\ */
-        ValuePak::set(imageBytes);
+        if ( ! imageBytes.isEmpty())
+            ValuePak::set(imageBytes);
     }
-    QQImage inputImage = QQImage::fromData(imageBytes);
-    DUMP << inputImage;
-    EXPECTNOT(inputImage.isNull());
-    if (inputImage.isNull()) return;                        /* /========\ */
-    setImage(InputImageIndex, inputImage);
+    if ( ! imageBytes.isEmpty())
+    {
+        QQImage inputImage = QQImage::fromData(imageBytes);
+        DUMP << inputImage;
+        EXPECTNOT(inputImage.isNull());
+        if ( ! inputImage.isNull())
+            setImage(InputImageIndex, inputImage);
+    }
     TRACERTV();
 }
 
 /* ======== private ======================================= */
+
+QQImage ObjDetPak::getImage(const ObjDetPak::ImageIndex iix) const
+{
+    TRACEQFI << iix;
+    QVariant vi = ValuePak::at(iix);
+    return vi.value<QImage>();
+
+}
 
 void ObjDetPak::setImage(const ObjDetPak::ImageIndex iix,
                          const QQImage &image)

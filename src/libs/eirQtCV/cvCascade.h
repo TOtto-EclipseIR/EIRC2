@@ -39,6 +39,7 @@ public:
 
 public:
     cvCascade(const Type &type=Type::nullType);
+    Type type() const;
     BasicName typeName() const;
     bool isNull() const;
     bool loadCascade(const QFileInfo &cascadeXmlInfo);
@@ -51,7 +52,8 @@ public:
 
     int detectRectangles(const Configuration &rectFinderConfig,
                          const QQImage &inputImage,
-                         const QQRect &region);
+                         const bool showDetect=false,
+                         const QQRect &region=QQRect());
     cvMat detectMat() const;
     QQImage detectImage() const;
     QQRectList rectList() const;
@@ -123,3 +125,4 @@ private:
 #endif
 };
 
+typedef cvCascade::Type cvCascadeType;

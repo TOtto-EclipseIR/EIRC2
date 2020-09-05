@@ -4,10 +4,8 @@
 
 #include <eirXfr/Debug.h>
 
-Uuid::Uuid(quint64 key)
-    : QUuid(QByteArray::number(key
-        ? key : QDateTime::currentMSecsSinceEpoch(), 16)) {;}
-
+Uuid::Uuid(): QUuid(QUuid::createUuid()) {;}
+/*
 Uuid::Uuid(const UInt128 u128)
 {
     set(u128);
@@ -33,20 +31,20 @@ Uuid Uuid::set(const QString &sUid)
     mQUuid = QUuid(sUid);
     return *this;
 }
-
+*/
 QUuid Uuid::toUuid() const
 {
     return *this;
 }
 
-QString Uuid::tail() const
+QString Uuid::trace() const
 {
     return toString(QUuid::WithBraces).right(14);
 }
-
+/*
 Uuid Uuid::create()
 {
     QUuid quuid = QUuid::createUuid();
     return Uuid(UInt128(quuid));
 }
-
+*/

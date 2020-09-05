@@ -12,10 +12,9 @@ void QQRectList::set(const QList<QQRect> rects)
     QList<QQRect>::append(rects);
 }
 
-QVector<QRect> QQRectList::vector() const
+QRectVector QQRectList::vector() const
 {
-    QVector<QRect> vec;
-    foreach (QQRect rc, mid(0))
-        vec << QRect(rc);
+    QRectVector vec;
+    foreach (QQRect rc, mid(0)) vec << QRect(rc);
     return vec;
 }

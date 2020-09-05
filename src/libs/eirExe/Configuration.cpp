@@ -5,6 +5,11 @@
 Configuration::Configuration() {;}
 Configuration::Configuration(const VarMap &other) : VarMap(other) {;}
 
+void Configuration::setDefault(const MultiName &key, const QVariant &defaultValue)
+{
+    insert(Var(key, defaultValue));
+}
+
 QString Configuration::string(const MultiName &key, const QString &defValue) const
 {
     QString strValue = value(key).value().toString();

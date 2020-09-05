@@ -29,6 +29,7 @@ public:
     ObjDetPak(const QQByteArray &bytes, const bool load=true);
     QQFileInfo inputImageFileInfo() const;
     QQByteArray inputImageBytes() const;
+    QQImage inputImage() const;
     void setInputFileInfo(const QQFileInfo &fileInfo);
     void setInputBytes(const QQByteArray &bytes);
     void loadInputImage(const QQFileInfo &fileInfo);
@@ -36,6 +37,7 @@ public:
     void loadInputImage();
 
 protected:
+    QQImage getImage(const ImageIndex iix) const;
     void setImage(const ImageIndex iix,
                   const QQImage &image);
 

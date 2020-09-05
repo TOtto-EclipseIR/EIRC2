@@ -21,6 +21,7 @@ public:
     void clear();
     cv::Mat mat() const;
     cv::Mat mat();
+    cv::Mat operator()() const;
     quint8 *data() const;
     int cols() const;
     int rows() const;

@@ -11,17 +11,20 @@ CONFIG += c++11
 
 include(../../EIRC2.pri)
 LIBS *= -leirType5
+LIBS *= -leirExe5
 
 SOURCES += \
     MarkManager.cpp \
     OutputManager.cpp \
     QQImage.cpp \
+    SimpleRectMarker.cpp \
     eirImage.cpp
 
 HEADERS += \
     MarkManager.h \
     OutputManager.h \
     QQImage.h \
+    SimpleRectMarker.h \
     eirImage_global.h \
     eirImage.h
 

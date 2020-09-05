@@ -16,6 +16,11 @@ cvCascade::cvCascade(const cvCascade::Type &type)
     TRACEQFI << type;
 }
 
+cvCascade::Type cvCascade::type() const
+{
+    return cmType;
+}
+
 BasicName cvCascade::typeName() const
 {
     return typeName(cmType);
@@ -63,7 +68,7 @@ void cvCascade::unload()
 
 QSize cvCascade::coreSize() const
 {
-    MUSTDO(extractFromXml);
+    NEEDDO(extractFromXml);
     return mCoreSize;
 }
 
@@ -79,6 +84,7 @@ cv::CascadeClassifier *cvCascade::classifier()
 
 int cvCascade::detectRectangles(const Configuration &rectFinderConfig,
                                 const QQImage &inputImage,
+                                const bool showDetect,
                                 const QQRect &region)
 {
     TRACEQFI << inputImage << region;
@@ -92,11 +98,22 @@ int cvCascade::detectRectangles(const Configuration &rectFinderConfig,
 
     mDetectMat.setGrey(inputImage);
     DUMP << mDetectMat.dumpString();
+    if (showDetect)
+    {
+        cv::imshow("DetectMat", mDetectMat.mat());
+        cv::waitKey(5000);
+    }
 
     Parameters parms(rectFinderConfig);
     parms.calculate(cmType, mDetectMat.size(), coreSize());
+#if 0
     QSize minSize = parms.minSize();
     QSize maxSize = parms.maxSize();
+#else
+    NEEDDO(RemoveForFlight);
+    QSize minSize(80,80);
+    QSize maxSize(160,160);
+#endif
     mMethodString = parms.methodString(mCascadeXmlInfo);
     DUMPVAL(mMethodString);
 

@@ -7,6 +7,7 @@
 
 #include <eirExe/CommandLine.h>
 #include <eirExe/ConfigObject.h>
+#include <eirImage/SimpleRectMarker.h>
 #include <eirType/Success.h>
 #include <eirXfr/Debug.h>
 #include <eirXfr/StartupDebug.h>
@@ -40,6 +41,8 @@ void FaceConsole::initializeApplication()
               .arg(qApp->applicationName())
               .arg(qApp->applicationVersion())
               .arg(locale.toString(QDateTime::currentDateTime())));
+    CONNECT(cmpPreScanObjDet, &ObjectDetector::ready,
+            cmpPreScanObjDet, &ObjectDetector::start);
     CONNECT(this, &FaceConsole::processingStarted,
             this, &FaceConsole::nextFile);
     CONNECT(this, &FaceConsole::processed,
@@ -185,6 +188,7 @@ void FaceConsole::initializeResources()
     preScanConfig += config()->configuration("PreScan/RectFinder");
     NEEDDO(mPreScanCascade.configure);
     //mPreScanCascade.configure(preScanConfig);
+    //cmpPreScanObjDet->initialize();
 
     writeLine("done");
     EMIT(resoursesInitd());
@@ -216,23 +220,28 @@ void FaceConsole::nextFile()
 void FaceConsole::processCurrentFile()
 {
     TRACEQFI << mCurrentFileInfo << mCurrentFileInfo.isReadable();
-    QImage rectImage;
     QString markedRectOutputFileName;
 
-    cmpPreScanObjDet->enqueue(mCurrentFileInfo);
+    //cmpPreScanObjDet->enqueue(mCurrentFileInfo);
     writeLine(QString("---Processing #%1: %2")
               .arg(commandLine()->takePositionalArgumentCount())
               .arg(mCurrentFileInfo.absoluteFilePath()));
-#if 0
-    mPreScanCascade.imreadInputMat(mCurrentFileInfo);
-    mCurrentRectangles = mPreScanCascade.detect();
+#if 1
+    mCurrentRectangles = cmpPreScanObjDet->process(mCurrentFileInfo);
+//    mPreScanCascade.imreadInputMat(mCurrentFileInfo);
+//    mCurrentRectangles = mPreScanCascade.detect();
     writeLine(QString("   %1 PreScan rectangles found")
                             .arg(mCurrentRectangles.size()));
     markedRectOutputFileName = QQFileInfo(mMarkedRectOutputDir,
                         mCurrentFileInfo.completeBaseName()+"-%M@.png")
                                   .absoluteFilePath();
-    markedRectOutputFileName.replace("%M", mPreScanCascade.methodString());
-    if (mPreScanCascade.imwriteMarkedImage(markedRectOutputFileName))
+    markedRectOutputFileName.replace("%M", cmpPreScanObjDet->cascade()->methodString());
+//    if (mPreScanCascade.imwriteMarkedImage(markedRectOutputFileName))
+    QQImage inputImage = cmpPreScanObjDet->processInputImage();
+    SimpleRectMarker rectMarker(inputImage);
+    rectMarker.mark(Configuration(), mCurrentRectangles);
+    QQImage rectMarkedImage = rectMarker;
+    if (rectMarkedImage.save(markedRectOutputFileName))
         writeLine("   " + markedRectOutputFileName + " written");
 #endif
     EMIT(processed(QFileInfo(mCurrentFileInfo),

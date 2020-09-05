@@ -3,6 +3,7 @@
 
 #include <QObject>
 
+#include <QHash>
 class QTimer;
 
 #include <eirBase/Uuid.h>
@@ -16,13 +17,26 @@ class EIROBJDET_EXPORT ObjectDetector : public QObject
 {
     Q_OBJECT
 public:
+    typedef ObjectDetector * This;
+public:
     explicit ObjectDetector(const cvCascade::Type type,
                             ConfigObject * cfgObj,
                             QObject *parent = nullptr);
+    ~ObjectDetector();
+    static ObjectDetector * p(const cvCascadeType type);
     cvCascade * cascade();
+    ObjDetPak &pak(const Uuid uuid); // non-const ref
+    QQRectList process(const QFileInfo &inputFileInfo,
+                       bool showDetect=false);
+    QQRectList groupByUnion(const QQRectList &inputRects);
+    QQImage processInputImage() const;
 
 public slots:
-    void start(const Milliseconds pulseMsec=0);
+    // setup
+    void initialize();
+    void start();
+
+    // running
     void enqueue(const QFileInfo &inputFileInfo);
     void dequeue(const int count=1);
     void release(const Uuid uuid);
@@ -32,6 +46,7 @@ signals:
     // setup
     void ctored();
     void initialized();
+    void defaultsSet();
     void configured();
     void ready();
     void started();
@@ -52,7 +67,7 @@ signals:
 
 private slots:
     // setup
-    void initialize();
+    void setDefaults();
     void configure();
     void readyStart();
 
@@ -64,16 +79,17 @@ private slots:
     void removeReleased(const Uuid uuid);
 
 private:
-    cvCascade::Type cmType=cvCascade::nullType;
     cvCascade mCascade;
     ConfigObject  * const cmpConfig=nullptr;
     QTimer  * const cmpTimer=nullptr;
     Configuration mObjDetConfig;
+    QQImage mProcessInputImage;
     ObjDetPak::UuidMap mPakMap;
     Uuid::Queue mInputQueue;
     Uuid::Queue mFinderQueue;
     Uuid::Queue mGrouperQueue;
     Uuid::Queue mProcessedQueue;
     Uuid::Queue mReleasedQueue;
+    static QHash<cvCascadeType, This> smTypeDetectorHash;
 };
 

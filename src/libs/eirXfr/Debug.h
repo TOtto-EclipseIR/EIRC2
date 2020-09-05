@@ -29,6 +29,7 @@
 #define DEBUGRTV(qmt, pfx) { qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << "Return(void)"; return; }
 #define DEBUGQUIT Q_ASSERT(false);
 #define DEBUGCON(qmt, pfx, src, sig, rec, slt) TSTALLOC(src); TSTALLOC(rec); if ( ! connect(src,sig,rec,slt)) DEBUG(qmt, pfx) << "Connect FAILED:" << #src << #sig << #rec << #slt;
+#define DEBUGDCON(qmt, pfx, src, sig, rec, slt) TSTALLOC(src); TSTALLOC(rec); if ( ! disconnect(src,sig,rec,slt)) DEBUG(qmt, pfx) << "Disconnect FAILED:" << #src << #sig << #rec << #slt;
 
 #define PINFO   "= INFO"
 #define PDUMP   "~ DUMP"
@@ -67,6 +68,7 @@
 #define TRACERTN(expr)          TRACE << "return" << #expr << expr;
 #define TRACEFNR(expr)          DEBUGFNR(qDebug, PTRACE, expr)
 #define TODO(msg)               DEBUGDO(qDebug, PTODO, msg)
+#define LATERDO(msg)            DEBUGDO(qDebug, PTODO, msg)
 #define TOUSE(msg)              DEBUGUSE(qDebug, PTODO, msg)
 #define TORTN(msg)              DEBUGRTN(qDebug, PTODO, msg)
 #define UNUSED(var)             Q_UNUSED(var)
@@ -98,6 +100,7 @@
 #define EXPECTEQ(expt, var)     DEBUGXEQ(qCritical, PERROR, expt, var)
 #define EXPECTNE(expt, var)     DEBUGXNE(qCritical, PERROR, expt, var)
 #define CONNECT(src, sig, dst, slt)    DEBUGCON(qCritical,  PERROR, src, sig, dst, slt)
+#define DISCONNECT(src, sig, dst, slt) DEBUGDCON(qCritical, PERROR, src, sig, dst, slt)
 #define NEEDDO(msg)             DEBUGDO(qCritical, PETODO, msg)
 #define NEEDUSE(msg)            DEBUGUSE(qCritical, PETODO, msg)
 #define NEEDRTN(msg)            DEBUGRTN(qCritical, PETODO, msg)

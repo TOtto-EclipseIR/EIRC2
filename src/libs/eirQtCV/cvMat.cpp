@@ -58,6 +58,11 @@ cv::Mat cvMat::mat()
     return  mpCvMat ? *mpCvMat : cv::Mat();
 }
 
+cv::Mat cvMat::operator()() const
+{
+    return mat();
+}
+
 quint8 *cvMat::data() const
 {
     return mat().data;

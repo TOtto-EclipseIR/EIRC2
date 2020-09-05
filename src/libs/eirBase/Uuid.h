@@ -16,7 +16,8 @@ public:
     typedef QMap<Uuid, QVariant> Map;
 
 public:
-    Uuid(quint64 key=0);
+    Uuid();
+    /*
     Uuid(const UInt128 u128);
     Uuid(const QString & sUid,
         const QUuid::StringFormat fmt,
@@ -31,13 +32,14 @@ public:
     Uuid set(const QByteArray & rawUid,
             const QUuid::Version ver=QUuid::Time,
             const QUuid::Variant var=QUuid::DCE);
+    */
     QUuid toUuid() const;
     QByteArray toByteArray(void) const;
     UInt128 toU128(void) const;
-    QString tail() const;
+    QString trace() const;
 
 public: // static
-    static Uuid create();
+//    static Uuid create();
 
 private:
     QUuid mQUuid;
