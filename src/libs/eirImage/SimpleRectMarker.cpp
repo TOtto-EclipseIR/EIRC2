@@ -20,8 +20,8 @@ void SimpleRectMarker::mark(const Configuration &markRectConfig,
     markRectConfig.dump();
     QPainter painter(this);
     QColor penColor = QColor(markRectConfig.string("PenColor","#7f00CCCC"));
-    qreal penWidth = markRectConfig.real("PenWidth", 3.0);
-    Qt::PenStyle penStyle = Qt::PenStyle(markRectConfig.unsignedInt("PenStyle", 1));
+    qreal penWidth = markRectConfig.real("PenWidth", 5.0);
+    Qt::PenStyle penStyle = Qt::PenStyle(markRectConfig.unsignedInt("PenStyle", 2));
     QBrush penBrush(penColor);
     QPen pen(penBrush, penWidth, penStyle);
     painter.setPen(pen);

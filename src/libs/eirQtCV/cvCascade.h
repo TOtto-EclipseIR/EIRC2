@@ -43,6 +43,7 @@ public:
     BasicName typeName() const;
     bool isNull() const;
     bool loadCascade(const QFileInfo &cascadeXmlInfo);
+    bool loadCoreSize(const QFileInfo &cascadeXmlInfo);
     bool notLoaded() const;
     bool isLoaded() const;
     void unload();

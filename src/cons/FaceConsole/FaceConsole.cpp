@@ -183,6 +183,8 @@ void FaceConsole::initializeResources()
     write("---Cascade: "+preScanCascadeFileInfo.absoluteFilePath()+" loading...");
     cmpPreScanObjDet->cascade()->loadCascade(preScanCascadeFileInfo.absoluteFilePath());
     EXPECT(cmpPreScanObjDet->cascade()->isLoaded());
+    EXPECT(cmpPreScanObjDet->cascade()->loadCoreSize(preScanCascadeFileInfo));
+    EXPECT(cmpPreScanObjDet->cascade()->coreSize().isValid());
 
     Configuration preScanConfig = config()->configuration("Option/RectFinder");
     preScanConfig += config()->configuration("PreScan/RectFinder");

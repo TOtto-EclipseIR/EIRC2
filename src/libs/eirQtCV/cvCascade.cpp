@@ -1,12 +1,14 @@
 #include "cvCascade.h"
 
 #include <QColor>
+#include <QDomElement>
 #include <QPainter>
 #include <QPixmap>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/objdetect.hpp>
 
+#include <eirExe/XmlFile.h>
 #include <eirXfr/Debug.h>
 
 #include "cvString.h"
@@ -45,6 +47,30 @@ bool cvCascade::loadCascade(const QFileInfo &cascadeXmlInfo)
     return nullptr != mpClassifier;
 }
 
+bool cvCascade::loadCoreSize(const QFileInfo &cascadeXmlInfo)
+{
+    TRACEQFI << cmType << cascadeXmlInfo;
+    mCoreSize = QSize();
+    XmlFile xmlFile(cascadeXmlInfo.absoluteFilePath());
+    bool loaded = xmlFile.load();
+    EXPECT(loaded);
+    if ( ! loaded) return loaded;
+    QDomElement rootDE = xmlFile.rootElement();
+    DUMPVAL(rootDE.tagName());
+    QDomElement topDE = rootDE.firstChildElement();
+    DUMPVAL(topDE.tagName());
+    DUMPVAL(topDE.attribute("type_id"));
+    QDomElement heightDE = topDE.firstChildElement("height");
+    QDomElement widthDE  = topDE.firstChildElement("width");
+    QString sHeight = heightDE.text();
+    QString sWidth  = widthDE.text();
+    int height = sHeight.toInt(), width = sWidth.toInt();
+    QSize sz(width, height);
+    DUMP << width << height << sz;
+    if (sz.isValid()) mCoreSize = sz;
+    return mCoreSize.isValid();
+}
+
 bool cvCascade::notLoaded() const
 {
     return mpClassifier ? mpClassifier->empty() : true;
@@ -68,7 +94,7 @@ void cvCascade::unload()
 
 QSize cvCascade::coreSize() const
 {
-    NEEDDO(extractFromXml);
+    TRACEQFI << mCoreSize;
     return mCoreSize;
 }
 
@@ -273,7 +299,7 @@ void cvCascade::Parameters::calculate(const cvCascade::Type type,
                                       const QQSize imageSize,
                                       const QQSize coreSize)
 {
-    TRACEQFI << imageSize << coreSize;
+    TRACEQFI << cvCascade::typeName(type)() << imageSize << coreSize;
     NEEDUSE(type);
     NEEDUSE(imageSize);
     NEEDUSE(coreSize);
@@ -305,12 +331,12 @@ int cvCascade::Parameters::flags() const
 
 QSize cvCascade::Parameters::minSize() const
 {
-    return mMinSize;
+    return mMinSize.isValid() ? mMinSize : QSize(0,0);
 }
 
 QSize cvCascade::Parameters::maxSize() const
 {
-    return mMaxSize;
+    return mMaxSize.isValid() ? mMaxSize : QSize(0,0);
 }
 
 QString cvCascade::Parameters::methodString(const QFileInfo &cascadeXmlInfo) const

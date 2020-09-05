@@ -1,4 +1,4 @@
-QT *= gui
+QT *= gui xml
 
 TEMPLATE = lib
 DEFINES += EIRQTCV_LIBRARY
