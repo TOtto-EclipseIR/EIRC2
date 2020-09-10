@@ -98,8 +98,8 @@ private:
         double mFactor=1.100;
         int mNeighbors=0;
         int mFlags=0;
-        QSize mMinSize;
-        QSize mMaxSize;
+        QQSize mMinSize;
+        QQSize mMaxSize;
     };
 
 #if 0

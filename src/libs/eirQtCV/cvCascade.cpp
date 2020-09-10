@@ -304,6 +304,39 @@ void cvCascade::Parameters::calculate(const cvCascade::Type type,
     NEEDUSE(imageSize);
     NEEDUSE(coreSize);
 
+
+    qreal typeFactor = qQNaN(); // object portion of shoulder-to-shoulder
+    switch (type)
+    {
+        case Face:      typeFactor = 1.0 / 3.0;     break;
+        default:        TODO(others);               break;
+    }
+
+    int minWidth = coreSize.width();
+    int maxWidth = imageSize.minDimension();
+    int minAcross = mConfig.unsignedInt("MinAcross");
+    int maxAcross = mConfig.unsignedInt("MaxAcross");
+    if (minAcross)
+        minWidth = qreal(imageSize.width()) / qreal(minAcross)
+                        / qreal(coreSize.width()) * typeFactor;
+    if (maxAcross)
+        maxWidth *= qreal(maxWidth) / qreal(maxAcross)
+                        / qreal(coreSize.width()) * typeFactor;
+    mMinSize.setWidth(minWidth, coreSize.aspect());
+
+    /*
+    QSize sz = DetectorSize;
+    qreal s1 = qMin((qreal)scaled_size.height() / (qreal)sz.height() / ClassFactor,
+                    (qreal)scaled_size.width()  / (qreal)sz.width()  / ClassFactor);
+    qreal s2 = s1;
+
+    if (MinAcross)
+        s1 = qMax(1.0, (qreal)scaled_size.width() / (qreal)MinAcross
+                / (qreal)sz.width() * ClassFactor);
+    if (MaxPixels)
+        s2 = qMax(1.0, (qreal)MaxPixels / (qreal)sz.width());
+    sz *= qMin(s1, s2);
+    return sz.boundedTo(scaled_size);    */
     double fac = parseFactor();
     mFactor = qIsNull(fac) ? 1.160 : fac;
     NEEDDO("Default Based on Image/Core size & MaxDetectors, etc.");

@@ -23,7 +23,7 @@ FaceConsole::FaceConsole(QObject *parent)
     TSTALLOC(cmpConfigObject);
     TSTALLOC(cmpPreScanObjDet);
     cmpConfigObject->setObjectName("ConfigObject:FaceConsole");
-    cmpConfigObject->setObjectName("ObjectDetector:FaceConsole:PreScan");
+    cmpPreScanObjDet->setObjectName("ObjectDetector:FaceConsole:PreScan");
     QTimer::singleShot(500, this, &FaceConsole::initializeApplication);
     TRACERTV();
 }
@@ -87,7 +87,6 @@ void FaceConsole::setConfiguration()
     cmpConfigObject->set(commandLine()->configuration());
     writeLine("---Configuration:");
     writeLines(commandLine()->configuration().dumpList());
-
     EMIT(configurationSet());
     QTimer::singleShot(100, this, &FaceConsole::setBaseOutputDir);
 }
@@ -95,7 +94,6 @@ void FaceConsole::setConfiguration()
 void FaceConsole::setBaseOutputDir()
 {
     TRACEFN;
-
     QString baseDirString(config()->configuration("/Output").string("BaseDir"));
     baseDirString.replace("@", QDateTime::currentDateTime()
         .toString("DyyyyMMdd-Thhmm"));
@@ -186,13 +184,15 @@ void FaceConsole::initializeResources()
     EXPECT(cmpPreScanObjDet->cascade()->loadCoreSize(preScanCascadeFileInfo));
     EXPECT(cmpPreScanObjDet->cascade()->coreSize().isValid());
 
-    Configuration preScanConfig = config()->configuration("Option/RectFinder");
-    preScanConfig += config()->configuration("PreScan/RectFinder");
+    mPreScanConfig = config()->configuration("Option/RectFinder");
+    mPreScanConfig += config()->configuration("PreScan/RectFinder");
     NEEDDO(mPreScanCascade.configure);
-    //mPreScanCascade.configure(preScanConfig);
+    //mPreScanCascade.configure(mPreScanConfig);
     //cmpPreScanObjDet->initialize();
 
-    writeLine("done");
+    writeLine(QString("done. Core=%1x%2")
+            .arg(cmpPreScanObjDet->cascade()->coreSize().width())
+            .arg(cmpPreScanObjDet->cascade()->coreSize().height()));
     EMIT(resoursesInitd());
     QTimer::singleShot(100, this, &FaceConsole::startProcessing);}
 
@@ -229,16 +229,13 @@ void FaceConsole::processCurrentFile()
               .arg(commandLine()->takePositionalArgumentCount())
               .arg(mCurrentFileInfo.absoluteFilePath()));
 #if 1
-    mCurrentRectangles = cmpPreScanObjDet->process(mCurrentFileInfo);
-//    mPreScanCascade.imreadInputMat(mCurrentFileInfo);
-//    mCurrentRectangles = mPreScanCascade.detect();
+    mCurrentRectangles = cmpPreScanObjDet->process(mPreScanConfig, mCurrentFileInfo);
     writeLine(QString("   %1 PreScan rectangles found")
                             .arg(mCurrentRectangles.size()));
     markedRectOutputFileName = QQFileInfo(mMarkedRectOutputDir,
                         mCurrentFileInfo.completeBaseName()+"-%M@.png")
                                   .absoluteFilePath();
     markedRectOutputFileName.replace("%M", cmpPreScanObjDet->cascade()->methodString());
-//    if (mPreScanCascade.imwriteMarkedImage(markedRectOutputFileName))
     QQImage inputImage = cmpPreScanObjDet->processInputImage();
     SimpleRectMarker rectMarker(inputImage);
     rectMarker.mark(Configuration(), mCurrentRectangles);

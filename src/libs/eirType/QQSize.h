@@ -9,7 +9,9 @@ public:
     QQSize();
     QQSize(const QSize other);
     QQSize(const int width, const int height, const int truncate);
+    qreal aspect() const;
+    int minDimension() const;
     int area() const;
-
+    void setWidth(int width, qreal aspect);
 };
 

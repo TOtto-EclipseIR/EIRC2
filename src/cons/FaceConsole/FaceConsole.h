@@ -48,6 +48,7 @@ private:
     ConfigObject * const cmpConfigObject=nullptr;
     ObjectDetector * const cmpPreScanObjDet=nullptr;
     //cvCascade mPreScanCascade;
+    Configuration mPreScanConfig;
     QDir mBaseOutputDir;
     QQDir mMarkedRectOutputDir;
     QFileInfo mCurrentFileInfo;

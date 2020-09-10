@@ -55,14 +55,15 @@ ObjDetPak &ObjectDetector::pak(const Uuid uuid)
     return mPakMap[uuid];
 }
 
-QQRectList ObjectDetector::process(const QFileInfo &inputFileInfo
-                                   , bool showDetect)
+QQRectList ObjectDetector::process(const Configuration &config,
+                                   const QFileInfo &inputFileInfo,
+                                   bool showDetect)
 {
     TRACEQFI << inputFileInfo;
     ObjDetPak pak(inputFileInfo, true);
     QQImage inputImage = pak.inputImage();
     mProcessInputImage = inputImage;
-    cascade()->detectRectangles(Configuration(), inputImage, showDetect);
+    cascade()->detectRectangles(config, inputImage, showDetect);
     QQRectList rectList = cascade()->rectList();
     rectList = groupByUnion(rectList);
     return rectList;
@@ -170,6 +171,7 @@ void ObjectDetector::setDefaults()
     TRACEFN;
     mObjDetConfig.setDefault("PulseMsec", 64);
     mObjDetConfig.setDefault("ProcessedHoldCount", 32);
+    mObjDetConfig.setDefault("HoldMaxIntervals", 4);
     mObjDetConfig.setDefault("ReleasedRemoveCount", 32);
     mObjDetConfig.setDefault("InputQueue/AutoLoad", false);
     TODO(RectFinder/TBD);

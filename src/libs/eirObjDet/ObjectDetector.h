@@ -26,7 +26,8 @@ public:
     static ObjectDetector * p(const cvCascadeType type);
     cvCascade * cascade();
     ObjDetPak &pak(const Uuid uuid); // non-const ref
-    QQRectList process(const QFileInfo &inputFileInfo,
+    QQRectList process(const Configuration &config,
+                       const QFileInfo &inputFileInfo,
                        bool showDetect=false);
     QQRectList groupByUnion(const QQRectList &inputRects);
     QQImage processInputImage() const;
