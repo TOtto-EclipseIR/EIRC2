@@ -25,6 +25,7 @@ LIBS *= -leirImage5
 
 SOURCES += \
     cvBGRA.cpp \
+    cvCascade-Parameters.cpp \
     cvCascade.cpp \
     cvMat.cpp \
     cvString.cpp \

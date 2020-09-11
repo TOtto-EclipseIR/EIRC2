@@ -29,6 +29,7 @@ public:
     QString attributes() const;
     QString toString() const;
     QVariant toVariant() const;
+    operator QVariant () const;
     operator QString () const;
     QString operator ()() const;
 

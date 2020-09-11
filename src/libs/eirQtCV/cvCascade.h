@@ -10,6 +10,7 @@
 #include <QStringList>
 
 #include <eirBase/Typedefs.h>
+#include <eirBase/Uuid.h>
 #include <eirType/BasicName.h>
 #include <eirType/QQFileInfo.h>
 #include <eirType/QQRect.h>
@@ -35,6 +36,36 @@ public:
         BothEyes, Nose, Mouth, LeftProfile, RightProfile,
         sizeType
     };
+    class EIRQTCV_EXPORT Parameters
+    {
+    public:
+        Parameters();
+        Parameters(const Configuration &cascadeConfig);
+        void set(const Configuration &cascadeConfig);
+        void calculate(const Type type,
+                       const QQSize imageSize,
+                       const QQSize coreSize);
+        double factor() const;
+        int neighbors() const;
+        int flags() const;
+        QQSize minSize() const;
+        QQSize maxSize() const;
+        QString methodString(const QFileInfo &cascadeXmlInfo) const;
+        QVariant toVariant() const;
+        operator QVariant() const;
+
+    private:
+        double parseFactor();
+        QStringList dumpList() const;
+
+    private:
+        Configuration mConfig;
+        double mFactor=Q_QNAN;
+        int mNeighbors=0;
+        int mFlags=0;
+        QQSize mMinSize;
+        QQSize mMaxSize;
+    };
 
 
 public:
@@ -48,7 +79,7 @@ public:
     bool isLoaded() const;
     void unload();
     QSize coreSize() const;
-    QFileInfo cascadeFileInfo() const;
+    QQFileInfo cascadeFileInfo() const;
     cv::CascadeClassifier *classifier();
 
     int detectRectangles(const Configuration &rectFinderConfig,
@@ -59,48 +90,22 @@ public:
     QQImage detectImage() const;
     QQRectList rectList() const;
     QString methodString() const;
+    Parameters parameters() const;
 
 public: // static
     static BasicName typeName(Type type);
 
 private:
     Type cmType=nullType;
-    QFileInfo mCascadeXmlInfo;
+    QQFileInfo mCascadeXmlInfo;
     cv::CascadeClassifier *mpClassifier=nullptr;
     QSize mCoreSize;
     // side-effects of detectRectangles()
     cvMat mDetectMat;
     QQRectList mRectList;
     QString mMethodString;
+    Parameters mParameters;
 
-private:
-    class Parameters
-    {
-    public:
-        Parameters(const Configuration &cascadeConfig);
-        void calculate(const Type type,
-                       const QQSize imageSize,
-                       const QQSize coreSize);
-        double factor() const;
-        int neighbors() const;
-        int flags() const;
-        QSize minSize() const;
-        QSize maxSize() const;
-        QString methodString(const QFileInfo &cascadeXmlInfo) const;
-
-
-    private:
-        double parseFactor();
-        QStringList dumpList() const;
-
-    private:
-        Configuration mConfig;
-        double mFactor=1.100;
-        int mNeighbors=0;
-        int mFlags=0;
-        QQSize mMinSize;
-        QQSize mMaxSize;
-    };
 
 #if 0
     void configure(const Configuration &config);
@@ -125,5 +130,5 @@ private:
     QImage mMarkedImage;
 #endif
 };
-
+Q_DECLARE_METATYPE(cvCascade::Parameters);
 typedef cvCascade::Type cvCascadeType;

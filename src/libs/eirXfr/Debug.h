@@ -113,12 +113,12 @@
 #define ABORTFN()               DEBUGFN(qCritical, PABORT); DEBUGQUIT
 #define ABORTPSZ(psz)           DEBUGPSZ(qCritical, PABORT, psz); DEBUGQUIT
 #define ABORTQST(qst)           DEBUGQST(qCritical, PABORT, qPrintable(qst)); DEBUGQUIT
-#define BEXPECT(bexpr)          DEBUGEXP(qCritical, PABORT, bexpr); DEBUGQUIT
-#define BCONNECT(src, sig, dst, slt)    DEBUGCON(qCritical,  PERROR, src, sig, dst, slt); DEBUGQUIT
-#define BEXPECTNOT(bexpr)       DEBUGXN(qCritical, PABORT, bexpr); DEBUGQUIT
-#define BEXPECTEQ(expt, var)    DEBUGXEQ(qCritical, PABORT, expt, var); DEBUGQUIT
-#define BEXPECTNE(expt, var)    DEBUGXNE(qCritical, PABORT, expt, var); DEBUGQUIT
+#define BEXPECT(bexpr)          DEBUGEXP(qCritical, PABORT, bexpr); if ( ! bexpr) DEBUGQUIT
+#define BEXPECTNOT(bexpr)       DEBUGXN(qCritical, PABORT, bexpr); if (bexpr) DEBUGQUIT
+#define BEXPECTEQ(expt, var)    DEBUGXEQ(qCritical, PABORT, expt, var); if (expt != var) DEBUGQUIT
+#define BEXPECTNE(expt, var)    DEBUGXNE(qCritical, PABORT, expt, var); if (expt == var) DEBUGQUIT
 #define BEXPECTPTR(ptr)         DEBUGXPTR(qCritical, PABORT, ptr); DEBUGQUIT
+//#define BCONNECT(src, sig, dst, slt)    DEBUGCON(qCritical,  PERROR, src, sig, dst, slt); DEBUGQUIT
 #define MUSTDO(msg)             DEBUGDO(qCritical, PBTODO, msg); DEBUGQUIT
 #ifdef QT_DEBUG
 #define RMUSTDO(msg)            DEBUGDO(qCritical, PETODO, msg)

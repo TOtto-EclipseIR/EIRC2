@@ -101,6 +101,11 @@ QVariant QQFileInfo::toVariant() const
     return QVariant::fromValue(*this);
 }
 
+QQFileInfo::operator QVariant() const
+{
+    return toVariant();
+}
+
 QQFileInfo::operator QString() const
 {
     return toString();

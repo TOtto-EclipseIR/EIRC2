@@ -14,6 +14,7 @@
 #include "cvString.h"
 
 cvCascade::cvCascade(const cvCascade::Type &type)
+    : cmType(type)
 {
     TRACEQFI << type;
 }
@@ -98,7 +99,7 @@ QSize cvCascade::coreSize() const
     return mCoreSize;
 }
 
-QFileInfo cvCascade::cascadeFileInfo() const
+QQFileInfo cvCascade::cascadeFileInfo() const
 {
     return mCascadeXmlInfo;
 }
@@ -130,25 +131,25 @@ int cvCascade::detectRectangles(const Configuration &rectFinderConfig,
         cv::waitKey(5000);
     }
 
-    Parameters parms(rectFinderConfig);
-    parms.calculate(cmType, mDetectMat.size(), coreSize());
-#if 0
-    QSize minSize = parms.minSize();
-    QSize maxSize = parms.maxSize();
+    mParameters.set(rectFinderConfig);
+    mParameters.calculate(cmType, mDetectMat.size(), coreSize());
+#if 1
+    QSize minSize = mParameters.minSize();
+    QSize maxSize = mParameters.maxSize();
 #else
     NEEDDO(RemoveForFlight);
     QSize minSize(80,80);
     QSize maxSize(160,160);
 #endif
-    mMethodString = parms.methodString(mCascadeXmlInfo);
+    mMethodString = mParameters.methodString(mCascadeXmlInfo);
     DUMPVAL(mMethodString);
 
     std::vector<cv::Rect> cvRectVector;
     classifier()->detectMultiScale(mDetectMat.mat(),
                         cvRectVector,
-                        parms.factor(),
-                        parms.neighbors(),
-                        parms.flags(),
+                        mParameters.factor(),
+                        mParameters.neighbors(),
+                        mParameters.flags(),
                         cv::Size(minSize.width(), minSize.height()),
                         cv::Size(maxSize.width(), maxSize.height()));
 
@@ -178,6 +179,11 @@ QQRectList cvCascade::rectList() const
 QString cvCascade::methodString() const
 {
     return mMethodString;
+}
+
+cvCascade::Parameters cvCascade::parameters() const
+{
+    return mParameters;
 }
 
 BasicName cvCascade::typeName(cvCascade::Type type)
@@ -287,123 +293,3 @@ void cvCascade::makeMethodString(const CascadeParameters &parms)
 
 }
 #endif
-
-cvCascade::Parameters::Parameters(const Configuration &cascadeConfig)
-{
-    TRACEFN;
-    cascadeConfig.dump();
-    mConfig = cascadeConfig;
-}
-
-void cvCascade::Parameters::calculate(const cvCascade::Type type,
-                                      const QQSize imageSize,
-                                      const QQSize coreSize)
-{
-    TRACEQFI << cvCascade::typeName(type)() << imageSize << coreSize;
-    NEEDUSE(type);
-    NEEDUSE(imageSize);
-    NEEDUSE(coreSize);
-
-
-    qreal typeFactor = qQNaN(); // object portion of shoulder-to-shoulder
-    switch (type)
-    {
-        case Face:      typeFactor = 1.0 / 3.0;     break;
-        default:        TODO(others);               break;
-    }
-
-    int minWidth = coreSize.width();
-    int maxWidth = imageSize.minDimension();
-    int minAcross = mConfig.unsignedInt("MinAcross");
-    int maxAcross = mConfig.unsignedInt("MaxAcross");
-    if (minAcross)
-        minWidth = qreal(imageSize.width()) / qreal(minAcross)
-                        / qreal(coreSize.width()) * typeFactor;
-    if (maxAcross)
-        maxWidth *= qreal(maxWidth) / qreal(maxAcross)
-                        / qreal(coreSize.width()) * typeFactor;
-    mMinSize.setWidth(minWidth, coreSize.aspect());
-
-    /*
-    QSize sz = DetectorSize;
-    qreal s1 = qMin((qreal)scaled_size.height() / (qreal)sz.height() / ClassFactor,
-                    (qreal)scaled_size.width()  / (qreal)sz.width()  / ClassFactor);
-    qreal s2 = s1;
-
-    if (MinAcross)
-        s1 = qMax(1.0, (qreal)scaled_size.width() / (qreal)MinAcross
-                / (qreal)sz.width() * ClassFactor);
-    if (MaxPixels)
-        s2 = qMax(1.0, (qreal)MaxPixels / (qreal)sz.width());
-    sz *= qMin(s1, s2);
-    return sz.boundedTo(scaled_size);    */
-    double fac = parseFactor();
-    mFactor = qIsNull(fac) ? 1.160 : fac;
-    NEEDDO("Default Based on Image/Core size & MaxDetectors, etc.");
-
-    int neigh = mConfig.signedInt("Neighbors");
-    mNeighbors = (neigh >= 0) ? neigh : 2;
-
-    DUMP << dumpList();
-}
-
-double cvCascade::Parameters::factor() const
-{
-    return mFactor;
-}
-
-int cvCascade::Parameters::neighbors() const
-{
-    return mNeighbors;
-}
-
-int cvCascade::Parameters::flags() const
-{
-    return mFlags;
-}
-
-QSize cvCascade::Parameters::minSize() const
-{
-    return mMinSize.isValid() ? mMinSize : QSize(0,0);
-}
-
-QSize cvCascade::Parameters::maxSize() const
-{
-    return mMaxSize.isValid() ? mMaxSize : QSize(0,0);
-}
-
-QString cvCascade::Parameters::methodString(const QFileInfo &cascadeXmlInfo) const
-{
-    return QString("Factor=%1,Neighbors=%2,MinSize=%3x%4,MaxSize=%5x%6,%7")
-            .arg(factor()).arg(neighbors())
-            .arg(minSize().width()).arg(minSize().height())
-            .arg(maxSize().width()).arg(maxSize().height())
-            .arg(cascadeXmlInfo.completeBaseName());
-}
-
-double cvCascade::Parameters::parseFactor()
-{
-    double result=qQNaN();
-    double f = mConfig.real("Factor");
-    if (f < 2.000)
-        result = 0.0;
-    else
-        result = 1.000 + f / 1000.0;
-    TRACE << f << result;
-    EXPECTNE(result, qQNaN());
-    return result;
-}
-
-QStringList cvCascade::Parameters::dumpList() const
-{
-    QStringList qsl;
-    qsl << QString("%1 = %2").arg("factor").arg(factor());
-    qsl << QString("%1 = %2").arg("neighbors").arg(neighbors());
-    qsl << QString("%1 = %2").arg("flags").arg(flags());
-    qsl << QString("%1 = %2x%3").arg("minSize").arg(minSize().width())
-                                               .arg(minSize().height());
-    qsl << QString("%1 = %2x%3").arg("maxSize").arg(maxSize().width())
-                                               .arg(maxSize().height());
-    return qsl;
-}
-

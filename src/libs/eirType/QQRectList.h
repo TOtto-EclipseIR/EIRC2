@@ -5,7 +5,9 @@
 #include <QList>
 #include "QQRect.h"
 
+#include <QMetaType>
 #include <QRect>
+#include <QVariant>
 #include <QVector>
 
 #include <eirBase/Typedefs.h>
@@ -16,5 +18,7 @@ public:
     QQRectList(const QList<QQRect> rects=QList<QQRect>());
     void set(const QList<QQRect> rects);
     QRectVector vector() const;
+    QVariant toVariant() const;
+    operator QVariant() const;
 };
-
+Q_DECLARE_METATYPE(QQRectList);

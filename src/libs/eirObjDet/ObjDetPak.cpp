@@ -5,13 +5,11 @@
 #include <eirXfr/Debug.h>
 
 ObjDetPak::ObjDetPak()
-    : ValuePak(Id(Milliseconds::current()))
 {
     TRACEFN;
 }
 
 ObjDetPak::ObjDetPak(const QQFileInfo &fileInfo, const bool load)
-    : ValuePak(Id(Milliseconds::current()))
 {
     TRACEQFI << fileInfo << load;
     if (load)
@@ -116,4 +114,12 @@ void ObjDetPak::setImage(const ObjDetPak::ImageIndex iix,
 {
     TRACEQFI << iix << image;
     ValuePak::set(iix, image);
+}
+
+/* ======== non-member ==================================== */
+
+QDebug operator<<(QDebug dbg, const ObjDetPak &pak)
+{
+    dbg << pak.inputImageFileInfo() << pak.inputImageBytes().size();
+    return dbg;
 }

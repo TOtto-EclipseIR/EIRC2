@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 TARGET = INDI5console
+RC_FILE = INDI5console.rc
 
 include(../../EIRC2.pri)
 include(../../opencv4.pri)
@@ -34,7 +35,8 @@ SOURCES += \
 
 HEADERS += \
     ../../version.h \
-    FaceConsole.h
+    FaceConsole.h \
+    INDI5console.rc
 
 DISTFILES += \
     ../../../../../bin/config/DetectCascades.txt \
@@ -45,6 +47,8 @@ DISTFILES += \
     ../../../../../bin/config/SkyPlex.txt \
     ../../../../../bin/detectors/v2/Aim8A001-32-NoSplit.xml \
     ../../../../../bin/detectors/v4/haarcascade_frontalface_default.xml \
+    I5c.bat \
+    INDIface24.ico \
     Notes.txt \
     T:/bin/DetectCascades.txt \
     T:/bin/DetectRD.txt \

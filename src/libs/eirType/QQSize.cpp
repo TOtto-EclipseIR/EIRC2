@@ -1,7 +1,10 @@
 #include "QQSize.h"
 
+QQSize QQSize::null(0,0);
+
 QQSize::QQSize() {;}
 QQSize::QQSize(const QSize other) : QSize(other) {;}
+QQSize::QQSize(const int width, const int height) : QSize(width, height) {;}
 QQSize::QQSize(const int width, const int height, const int truncate)
     : QSize(width & ~truncate, height & ~truncate) {;}
 

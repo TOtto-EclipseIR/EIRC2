@@ -238,7 +238,9 @@ void FaceConsole::processCurrentFile()
     markedRectOutputFileName.replace("%M", cmpPreScanObjDet->cascade()->methodString());
     QQImage inputImage = cmpPreScanObjDet->processInputImage();
     SimpleRectMarker rectMarker(inputImage);
-    rectMarker.mark(Configuration(), mCurrentRectangles);
+    Configuration preScanMarkerConfig = cmpConfigObject->
+            configuration("/Marker/MarkedPreScan");
+    rectMarker.mark(preScanMarkerConfig, mCurrentRectangles);
     QQImage rectMarkedImage = rectMarker;
     if (rectMarkedImage.save(markedRectOutputFileName))
         writeLine("   " + markedRectOutputFileName + " written");

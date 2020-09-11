@@ -40,6 +40,6 @@ protected:
     QQImage getImage(const ImageIndex iix) const;
     void setImage(const ImageIndex iix,
                   const QQImage &image);
-
 };
 
+QDebug operator<<(QDebug dbg, const ObjDetPak &pak);

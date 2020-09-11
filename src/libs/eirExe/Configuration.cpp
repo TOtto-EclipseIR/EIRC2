@@ -2,15 +2,17 @@
 
 #include <eirXfr/Debug.h>
 
-Configuration::Configuration() {;}
+Configuration::Configuration(const MultiName &name) : VarMap(name) {;}
 Configuration::Configuration(const VarMap &other) : VarMap(other) {;}
 
-void Configuration::setDefault(const MultiName &key, const QVariant &defaultValue)
+void Configuration::setDefault(const MultiName &key,
+                               const QVariant &defaultValue)
 {
     insert(Var(key, defaultValue));
 }
 
-QString Configuration::string(const MultiName &key, const QString &defValue) const
+QString Configuration::string(const MultiName &key,
+                              const QString &defValue) const
 {
     QString strValue = value(key).value().toString();
     return notContains(key)
@@ -18,7 +20,8 @@ QString Configuration::string(const MultiName &key, const QString &defValue) con
             : strValue;
 }
 
-signed Configuration::signedInt(const MultiName &key, const signed defValue) const
+signed Configuration::signedInt(const MultiName &key,
+                                const signed defValue) const
 {
     bool ok;
     signed sintValue = value(key).value().toInt(&ok);
@@ -27,7 +30,8 @@ signed Configuration::signedInt(const MultiName &key, const signed defValue) con
             : defValue;
 }
 
-unsigned Configuration::unsignedInt(const MultiName &key, const unsigned defValue) const
+unsigned Configuration::unsignedInt(const MultiName &key,
+                                    const unsigned defValue) const
 {
     TRACEQFI << key() << defValue;
     bool ok;
@@ -38,7 +42,8 @@ unsigned Configuration::unsignedInt(const MultiName &key, const unsigned defValu
             : defValue;
 }
 
-bool Configuration::boolean(const MultiName &key, const bool defValue) const
+bool Configuration::boolean(const MultiName &key,
+                            const bool defValue) const
 {
     bool boolValue = value(key).value().toBool();
     return notContains(key)
@@ -46,7 +51,8 @@ bool Configuration::boolean(const MultiName &key, const bool defValue) const
             : boolValue;
 }
 
-qreal Configuration::real(const MultiName &key, const qreal &defValue) const
+qreal Configuration::real(const MultiName &key,
+                          const qreal &defValue) const
 {
     TRACEQFI << key() << defValue;
     bool ok;

@@ -10,7 +10,6 @@ ObjectDetector::ObjectDetector(const cvCascade::Type type,
                                ConfigObject *cfgObj,
                                QObject *parent)
     : QObject(parent)
-//    , cmType(type)
     , mCascade(type)
     , cmpConfig(cfgObj)
     , cmpTimer(new QTimer(parent))
@@ -55,6 +54,12 @@ ObjDetPak &ObjectDetector::pak(const Uuid uuid)
     return mPakMap[uuid];
 }
 
+void ObjectDetector::insert(const ObjDetPak &pak)
+{
+    TRACEQFI << pak;
+    mPakMap.insert(pak.uuid(), pak);
+}
+
 QQRectList ObjectDetector::process(const Configuration &config,
                                    const QFileInfo &inputFileInfo,
                                    bool showDetect)
@@ -62,10 +67,16 @@ QQRectList ObjectDetector::process(const Configuration &config,
     TRACEQFI << inputFileInfo;
     ObjDetPak pak(inputFileInfo, true);
     QQImage inputImage = pak.inputImage();
+    pak.set("InputImage/Configuration", config.toVariant());
     mProcessInputImage = inputImage;
     cascade()->detectRectangles(config, inputImage, showDetect);
+    pak.set(cascade()->typeName()+"/Cascade", cascade()->cascadeFileInfo());
+    pak.set(cascade()->typeName()+"/Parameters", cascade()->parameters());
+    pak.set(cascade()->typeName()+"/Parameters", cascade()->methodString());
     QQRectList rectList = cascade()->rectList();
+    pak.set(cascade()->typeName()+"/Rectangles", rectList);
     rectList = groupByUnion(rectList);
+    insert(pak);
     return rectList;
 }
 

@@ -18,3 +18,14 @@ QRectVector QQRectList::vector() const
     foreach (QQRect rc, mid(0)) vec << QRect(rc);
     return vec;
 }
+
+QVariant QQRectList::toVariant() const
+{
+    return QVariant::fromValue(*this);
+}
+
+QQRectList::operator QVariant() const
+{
+    return toVariant();
+}
+
