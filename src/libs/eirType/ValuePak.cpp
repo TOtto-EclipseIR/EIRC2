@@ -45,6 +45,11 @@ QVariant ValuePak::at(const int index) const
     return contains(index) ? mValueList.at(index) :QVariant();
 }
 
+QVariant &ValuePak::at(const MultiName &name)
+{
+    return mValueMap[name];
+}
+
 QVariant ValuePak::at(const MultiName &name) const
 {
     return mValueMap.value(name);

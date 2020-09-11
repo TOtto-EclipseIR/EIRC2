@@ -40,7 +40,9 @@ public:
     {
     public:
         Parameters();
+        Parameters(const QVariant &variant);
         Parameters(const Configuration &cascadeConfig);
+        Configuration &cascadeConfig();
         void set(const Configuration &cascadeConfig);
         void calculate(const Type type,
                        const QQSize imageSize,
@@ -53,10 +55,10 @@ public:
         QString methodString(const QFileInfo &cascadeXmlInfo) const;
         QVariant toVariant() const;
         operator QVariant() const;
+        QStringList dumpList() const;
 
     private:
         double parseFactor();
-        QStringList dumpList() const;
 
     private:
         Configuration mConfig;

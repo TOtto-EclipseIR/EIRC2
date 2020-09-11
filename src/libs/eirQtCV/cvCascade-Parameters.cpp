@@ -2,13 +2,26 @@
 
 #include "cvCascade.h"
 
+#include <eirType/Real.h>
 #include <eirXfr/Debug.h>
 
-cvCascade::Parameters::Parameters() {;}
+cvCascade::Parameters::Parameters() { TRACEFN; }
+
+cvCascade::Parameters::Parameters(const QVariant &variant)
+{
+    TRACEQFI << variant;
+    *this = variant.value<cvCascade::Parameters>();
+}
 
 cvCascade::Parameters::Parameters(const Configuration &cascadeConfig)
 {
+    TRACEFN;
     set(cascadeConfig);
+}
+
+Configuration &cvCascade::Parameters::cascadeConfig()
+{
+    return mConfig;
 }
 
 void cvCascade::Parameters::set(const Configuration &cascadeConfig)
@@ -35,30 +48,31 @@ void cvCascade::Parameters::calculate(const cvCascade::Type type,
     }
     BEXPECTNOT(qIsNaN(typeFactor));
 
-    int minWidth = coreSize.width();
-    int maxWidth = imageSize.minDimension();
-    int minAcross = mConfig.unsignedInt("MinAcross");
-    int maxAcross = mConfig.unsignedInt("MaxAcross");
-    if (minAcross)
-        minWidth = qreal(imageSize.width()) / qreal(minAcross)
-                        / qreal(coreSize.width()) * typeFactor;
-    if (maxAcross)
-        maxWidth *= qreal(maxWidth) / qreal(maxAcross)
-                        / qreal(coreSize.width()) * typeFactor;
-    mMinSize.setWidth(minWidth, coreSize.aspect());
-    /*
-    QSize sz = DetectorSize;
-    qreal s1 = qMin((qreal)scaled_size.height() / (qreal)sz.height() / ClassFactor,
-                    (qreal)scaled_size.width()  / (qreal)sz.width()  / ClassFactor);
-    qreal s2 = s1;
-
-    if (MinAcross)
-        s1 = qMax(1.0, (qreal)scaled_size.width() / (qreal)MinAcross
-                / (qreal)sz.width() * ClassFactor);
-    if (MaxPixels)
-        s2 = qMax(1.0, (qreal)MaxPixels / (qreal)sz.width());
-    sz *= qMin(s1, s2);
-    return sz.boundedTo(scaled_size);    */
+    qreal coreWidth = coreSize.width();
+    qreal imageWidth = imageSize.width();
+    qreal minWidth = coreWidth;
+    qreal maxWidth = imageSize.minDimension() - coreSize.width();
+    unsigned minAcross = qMax(1U, mConfig.unsignedInt("MinAcross", 1));
+    unsigned maxAcross = qMax(1U, mConfig.unsignedInt("MaxAcross", 32));
+    DUMP << minAcross << maxAcross;
+    if (true || minAcross < 1)
+    {
+        maxWidth = imageWidth;
+        maxWidth /= qreal(minAcross);
+        maxWidth *= typeFactor;
+        TRACE << minAcross << typeFactor << maxWidth << imageWidth;
+    }
+    if (true || maxAcross < 1)
+    {
+        minWidth = imageWidth;
+        minWidth /= qreal(maxAcross);
+        minWidth *= typeFactor;
+        minWidth = qMax(minWidth, coreWidth);
+        TRACE << minAcross << typeFactor << maxWidth << imageWidth;
+    }
+    mMinSize.setByWidth(minWidth, coreSize.aspect());
+    mMaxSize.setByWidth(maxWidth, coreSize.aspect());
+    DUMP << mMinSize << mMaxSize;
 
     double fac = parseFactor();
     mFactor = qIsNull(fac) ? 1.160 : fac;
@@ -98,7 +112,7 @@ QQSize cvCascade::Parameters::maxSize() const
 QString cvCascade::Parameters::methodString(const QFileInfo &cascadeXmlInfo) const
 {
     return QString("Factor=%1,Neighbors=%2,MinSize=%3x%4,MaxSize=%5x%6,%7")
-            .arg(factor()).arg(neighbors())
+            .arg(factor(),5,'f',3).arg(neighbors())
             .arg(minSize().width()).arg(minSize().height())
             .arg(maxSize().width()).arg(maxSize().height())
             .arg(cascadeXmlInfo.completeBaseName());

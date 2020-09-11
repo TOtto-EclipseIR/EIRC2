@@ -13,7 +13,7 @@ public:
     qreal aspect() const;
     int minDimension() const;
     int area() const;
-    void setWidth(int width, qreal aspect);
+    void setByWidth(int width, qreal aspect);
     static QQSize null;
 };
 

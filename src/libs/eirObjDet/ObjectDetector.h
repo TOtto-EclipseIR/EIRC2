@@ -27,7 +27,7 @@ public:
     cvCascade * cascade();
     ObjDetPak &pak(const Uuid uuid); // non-const ref
     void insert(const ObjDetPak &pak);
-    QQRectList process(const Configuration &config,
+    Uuid process(const Configuration &config,
                        const QFileInfo &inputFileInfo,
                        bool showDetect=false);
     QQRectList groupByUnion(const QQRectList &inputRects);

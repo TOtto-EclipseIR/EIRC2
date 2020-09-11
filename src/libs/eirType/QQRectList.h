@@ -16,7 +16,9 @@ class EIRTYPE_EXPORT QQRectList : public QList<QQRect>
 {
 public:
     QQRectList(const QList<QQRect> rects=QList<QQRect>());
-    void set(const QList<QQRect> rects);
+    void set(const QList<QQRect> &rects);
+    void set(const QVariant &variant);
+    QList<QRect> list() const;
     QRectVector vector() const;
     QVariant toVariant() const;
     operator QVariant() const;

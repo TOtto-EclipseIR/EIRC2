@@ -14,5 +14,7 @@ eirBase.depends     = eirXfr
 eirType.depends     = eirBase eirXfr
 eirExe.depends      = eirType eirBase ierXfr
 eirQtCV.depends     = eirExe eirType eirBase eirXfr
+eirObjDet.depends   = eirType eirObjDet
+eirImage.depends    = eirType eirQtCV eirObjDet
 FaceConsole.depends = eirQtCV eirExe eirType eirBase eirXfr
 

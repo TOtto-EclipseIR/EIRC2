@@ -2,6 +2,7 @@
 
 #include <QTimer>
 
+#include <eirBase/Uuid.h>
 #include <eirXfr/Debug.h>
 
 QHash<cvCascadeType, ObjectDetector::This> ObjectDetector::smTypeDetectorHash;
@@ -60,24 +61,28 @@ void ObjectDetector::insert(const ObjDetPak &pak)
     mPakMap.insert(pak.uuid(), pak);
 }
 
-QQRectList ObjectDetector::process(const Configuration &config,
+Uuid ObjectDetector::process(const Configuration &config,
                                    const QFileInfo &inputFileInfo,
                                    bool showDetect)
 {
-    TRACEQFI << inputFileInfo;
-    ObjDetPak pak(inputFileInfo, true);
+    TRACEQFI << inputFileInfo << showDetect;
+    config.dump();
+    ObjDetPak pak(inputFileInfo.absoluteFilePath());
     QQImage inputImage = pak.inputImage();
     pak.set("InputImage/Configuration", config.toVariant());
     mProcessInputImage = inputImage;
     cascade()->detectRectangles(config, inputImage, showDetect);
     pak.set(cascade()->typeName()+"/Cascade", cascade()->cascadeFileInfo());
+    pak.set(cascade()->typeName()+"/CoreSize", cascade()->coreSize());
+    DUMP << cascade()->parameters();
     pak.set(cascade()->typeName()+"/Parameters", cascade()->parameters());
-    pak.set(cascade()->typeName()+"/Parameters", cascade()->methodString());
+    pak.set(cascade()->typeName()+"/MethodString", cascade()->methodString());
     QQRectList rectList = cascade()->rectList();
     pak.set(cascade()->typeName()+"/Rectangles", rectList);
     rectList = groupByUnion(rectList);
     insert(pak);
-    return rectList;
+    TRACE << "return uuid" << pak.uuid();
+    return pak.uuid();
 }
 
 QQRectList ObjectDetector::groupByUnion(const QQRectList &inputRects)

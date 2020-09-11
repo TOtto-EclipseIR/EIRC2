@@ -23,7 +23,7 @@ int QQSize::area() const
     return width() * height();
 }
 
-void QQSize::setWidth(int width, qreal aspect)
+void QQSize::setByWidth(int width, qreal aspect)
 {
     QSize::setWidth(width);
     QSize::setHeight(width * aspect);

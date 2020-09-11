@@ -12,6 +12,8 @@ CONFIG += c++11
 include(../../EIRC2.pri)
 LIBS *= -leirType5
 LIBS *= -leirExe5
+LIBS *= -leirObjDet5
+LIBS *= -leirQtCV5
 
 SOURCES += \
     MarkManager.cpp \

@@ -6,10 +6,15 @@ QQRectList::QQRectList(const QList<QQRect> rects)
     set(rects);
 }
 
-void QQRectList::set(const QList<QQRect> rects)
+void QQRectList::set(const QList<QQRect> &rects)
 {
     QList<QQRect>::clear();
     QList<QQRect>::append(rects);
+}
+
+void QQRectList::set(const QVariant &variant)
+{
+    set(variant.value<QQRectList>());
 }
 
 QRectVector QQRectList::vector() const
@@ -29,3 +34,10 @@ QQRectList::operator QVariant() const
     return toVariant();
 }
 
+
+QList<QRect> QQRectList::list() const
+{
+    QList<QRect> list;
+    foreach (QQRect qqrc, mid(0)) list << QRect(qqrc);
+    return list;
+}

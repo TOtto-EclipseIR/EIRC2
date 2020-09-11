@@ -17,6 +17,7 @@ cvCascade::cvCascade(const cvCascade::Type &type)
     : cmType(type)
 {
     TRACEQFI << type;
+    TODO(cv::redirectError);
 }
 
 cvCascade::Type cvCascade::type() const

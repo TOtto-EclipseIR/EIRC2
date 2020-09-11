@@ -17,6 +17,7 @@ FaceConsole::FaceConsole(QObject *parent)
     , cmpConfigObject(new ConfigObject(this))
     , cmpPreScanObjDet(new ObjectDetector(cvCascade::PreScan,
                                           cmpConfigObject, this))
+    , mPreScanConfig("PreScanConfig")
 {
     TRACEFN;
     setObjectName("FaceConsole");
@@ -184,12 +185,9 @@ void FaceConsole::initializeResources()
     EXPECT(cmpPreScanObjDet->cascade()->loadCoreSize(preScanCascadeFileInfo));
     EXPECT(cmpPreScanObjDet->cascade()->coreSize().isValid());
 
-    mPreScanConfig = config()->configuration("Option/RectFinder");
+    mPreScanConfig += config()->configuration("Option/RectFinder");
     mPreScanConfig += config()->configuration("PreScan/RectFinder");
-    NEEDDO(mPreScanCascade.configure);
-    //mPreScanCascade.configure(mPreScanConfig);
-    //cmpPreScanObjDet->initialize();
-
+    mPreScanConfig.dump();
     writeLine(QString("done. Core=%1x%2")
             .arg(cmpPreScanObjDet->cascade()->coreSize().width())
             .arg(cmpPreScanObjDet->cascade()->coreSize().height()));
@@ -229,7 +227,9 @@ void FaceConsole::processCurrentFile()
               .arg(commandLine()->takePositionalArgumentCount())
               .arg(mCurrentFileInfo.absoluteFilePath()));
 #if 1
-    mCurrentRectangles = cmpPreScanObjDet->process(mPreScanConfig, mCurrentFileInfo);
+    mPreScanConfig.dump();
+    Uuid pakUuid = cmpPreScanObjDet->process(mPreScanConfig, mCurrentFileInfo);
+    mCurrentRectangles.set(cmpPreScanObjDet->pak(pakUuid).at("PreScan/Rectangles"));
     writeLine(QString("   %1 PreScan rectangles found")
                             .arg(mCurrentRectangles.size()));
     markedRectOutputFileName = QQFileInfo(mMarkedRectOutputDir,
@@ -240,7 +240,7 @@ void FaceConsole::processCurrentFile()
     SimpleRectMarker rectMarker(inputImage);
     Configuration preScanMarkerConfig = cmpConfigObject->
             configuration("/Marker/MarkedPreScan");
-    rectMarker.mark(preScanMarkerConfig, mCurrentRectangles);
+    rectMarker.mark(preScanMarkerConfig, mCurrentRectangles, cmpPreScanObjDet->pak(pakUuid));
     QQImage rectMarkedImage = rectMarker;
     if (rectMarkedImage.save(markedRectOutputFileName))
         writeLine("   " + markedRectOutputFileName + " written");
