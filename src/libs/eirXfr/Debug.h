@@ -23,6 +23,7 @@
 #define DEBUGXN(qmt, pfx, bexpr) { if (bexpr) qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__  << "Expectation FAILED:" << #bexpr; }
 #define DEBUGXEQ(qmt, pfx, expt, var) { if (expt != var) qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << "Expectation FAILED:" << #expt << expt << "==" << #var << var; }
 #define DEBUGXNE(qmt, pfx, expt, var) { if (expt == var) qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << "Expectation FAILED:" << #expt << expt << "!=" << #var << var; }
+#define DEBUGXGT(qmt, pfx, expt, var) { if (expt <  var) qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << "Expectation FAILED:" << #expt << expt << ">" << #var << var; }
 #define DEBUGXPTR(qmt, pfx, ptr) if (nullptr == ptr) qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << "Pointer FAILED:" <<  #ptr;
 #define DEBUGPTR(qmt, pfx, ptr, expr)     if (ptr) ptr->expr else DEBUG(qmt, pfx) "Pointer" << #ptr << "FAILED for" << #expr;
 #define DEBUGFNR(qmt, pfx, expr) { qmt() << pfx << TIME << Q_FUNC_INFO << __LINE__ << "Return:" << #expr << QString(expr); return expr; }
@@ -96,9 +97,11 @@
 #define ERRORPSZ(psz)           DEBUGPSZ(qCritical, PERROR, psz);
 #define ERRORQST(qst)           DEBUGQST(qCritical, PERROR, qPrintable(qst));
 #define EXPECT(bexpr)           DEBUGEXP(qCritical, PERROR, bexpr)
+#define EXPECT(bexpr)           DEBUGEXP(qCritical, PERROR, bexpr)
 #define EXPECTNOT(bexpr)        DEBUGXN(qCritical, PERROR, bexpr)
 #define EXPECTEQ(expt, var)     DEBUGXEQ(qCritical, PERROR, expt, var)
 #define EXPECTNE(expt, var)     DEBUGXNE(qCritical, PERROR, expt, var)
+#define EXPECTGT(expt, var)     DEBUGXGT(qCritical, PERROR, expt, var)
 #define CONNECT(src, sig, dst, slt)    DEBUGCON(qCritical,  PERROR, src, sig, dst, slt)
 #define DISCONNECT(src, sig, dst, slt) DEBUGDCON(qCritical, PERROR, src, sig, dst, slt)
 #define NEEDDO(msg)             DEBUGDO(qCritical, PETODO, msg)

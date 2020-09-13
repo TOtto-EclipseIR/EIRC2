@@ -19,6 +19,8 @@ LIBS *= -leirQtCV5
 SOURCES += \
     CascadeType.cpp \
     ObjDetPak.cpp \
+    ObjDetResultItem.cpp \
+    ObjDetResultList.cpp \
     ObjectDetector.cpp \
     RectangleFinder.cpp \
     RectangleGrouper.cpp \
@@ -27,6 +29,8 @@ SOURCES += \
 HEADERS += \
     CascadeType.h \
     ObjDetPak.h \
+    ObjDetResultItem.h \
+    ObjDetResultList.h \
     ObjectDetector.h \
     RectangleFinder.h \
     RectangleGrouper.h \

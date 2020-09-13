@@ -63,6 +63,26 @@ cv::Mat cvMat::operator()() const
     return mat();
 }
 
+size_t cvMat::totalPixels() const
+{
+    return mat().total();
+}
+
+size_t cvMat::depthInBytes() const
+{
+    return mat().elemSize();
+}
+
+size_t cvMat::depth() const
+{
+    return depthInBytes() * 8;
+}
+
+qsizetype cvMat::sizeInBytes() const
+{
+    return totalPixels() * depthInBytes();
+}
+
 quint8 *cvMat::data() const
 {
     return mat().data;
@@ -86,6 +106,11 @@ int cvMat::type() const
 bool cvMat::isNull() const
 {
     return mat().rows <= 0 || mat().cols <= 0 || nullptr == data();
+}
+
+bool cvMat::isEmpty() const
+{
+    return mat().empty();
 }
 
 QSize cvMat::size() const
@@ -115,8 +140,8 @@ void cvMat::setGrey(const QQImage &image)
     TSTALLOC(mpCvMat->ptr());
     EXPECTEQ(cropGreyImage.depth(), int(mpCvMat->elemSize1()));
     EXPECTEQ(cropGreyImage.sizeInBytes(), int(mpCvMat->total()));
-    std::memcpy(mpCvMat->ptr(), cropGreyImage.bits(),
-                cropGreyImage.sizeInBytes());
+//  std::memcpy(mpCvMat->ptr(), cropGreyImage.bits(), sizeInBytes());
+    std::memcpy(mpCvMat->ptr(), cropGreyImage.bits(), cropGreyImage.sizeInBytes());
     mQFormat = QImage::Format_Grayscale8;
     TRACERTV();
 }
@@ -126,171 +151,9 @@ QImage::Format cvMat::qformat() const
     return mQFormat;
 }
 
-#if 0
-cvMat::cvMat(const QString &fileName, const int imreadFlags)
-{
-    if ( ! imread(fileName, imreadFlags))
-        clear();
-}
-
-bool cvMat::isValid() const
-{
-    if (isNull()) return false;
-    // TODO more
-    return true;
-}
-
-bool cvMat::isGreyType() const
-{
-    // note: really is single plane of unsigned char
-    return 0 == type();
-}
-
-bool cvMat::isGreyData() const
-{
-    if (isGreyType()) return true;
-    for (int r = 0; r < rows(); ++r)
-    {
-        quint32 *p = (quint32 *)(mat().ptr(r));
-        for (int c = 0; c < cols(); ++c)
-            if ( ! cvBGRA(*p++).isGrey()) return false;
-    }
-    return true;
-}
-
-bool cvMat::isGreyishData(signed epsilon) const
-{
-    if (isGreyType()) return true;
-    for (int r = 0; r < rows(); ++r)
-    {
-        quint32 *p = (quint32 *)(mat().ptr(r));
-        for (int c = 0; c < cols(); ++c)
-            if ( ! cvBGRA(*p++).isGreyish(epsilon)) return false;
-    }
-    return true;
-}
-
-
-void cvMat::set(const QSize sz)
-{
-    mpCvMat = new cv::Mat();
-    mpCvMat->cols = sz.width(),
-            mpCvMat->rows = sz.height();
-}
-
-void cvMat::set(const QImage &qimage)
-{
-    TRACEQFI << qimage;
-    clear();
-    QSize sz = qimage.size();
-    DUMPVAL(sz);
-    TRACE << "new cv::Mat()" << sz.height() << sz.width()
-          << ((QImage::Format_Grayscale8
-             == qimage.format()) ? CV_8U : CV_8UC4);
-    mpCvMat = new cv::Mat(sz.height() , sz.width(),
-                    QImage::Format_Grayscale8
-                        == qimage.format() ? CV_8UC1 : CV_8UC4);
-    TRACE << Qt::hex << mpCvMat->data << qimage.bits() << Qt::dec
-          << QString("memcpy(0x%1, 0x%2, %3*%4=%5")
-             .arg("uchar*")
-             .arg("uchar*")
-             .arg(mpCvMat->elemSize1()).arg(mpCvMat->total())
-             .arg(mpCvMat->elemSize1() * mpCvMat->total())
-             ;
-    std::memcpy(mpCvMat->data, qimage.bits(),
-                mpCvMat->elemSize1() * mpCvMat->total());
-    TRACERTV();
-}
-
-QSize cvMat::toSize() const
-{
-    return QSize(cols(), rows());
-}
-
-QImage cvMat::toImage() const
-{
-    TRACEQFI << dumpString();
-    QImage::Format f = (CV_8UC1 == mat().type())
-                            ? QImage::Format_Grayscale8
-                            : QImage::Format_RGB32;
-    QImage image;
-    if (mat().isContinuous())
-    {
-        image = QImage(mat().data, mat().cols, mat().rows, f);
-    }
-    else
-    {
-        image = QImage(cols(), rows(), f);
-        for (int r = 0; r < rows(); ++r)
-            std::memcpy(image.scanLine(r), mat().ptr(r), cols() * mat().elemSize());
-    }
-    TRACE << image;
-    return image;
-}
-
-QPixmap cvMat::toPixmap() const
-{
-    return QPixmap::fromImage(toImage());
-}
-
-
-bool cvMat::imread(const QString &fileName, const int imreadFlags)
-{
-    set(cv::imread(cvString(fileName), imreadFlags));
-    return isValid();
-}
-
-bool cvMat::imread(const QFileInfo &fileInfo, const int imreadFlags)
-{
-    return imread(fileInfo.absoluteFilePath(), imreadFlags);
-}
-
-bool cvMat::imwrite(const QString &fileName, const IntVector parms)
-{
-    TRACEQFI << fileName;
-    TODO(imwrite::params);
-    return cv::imwrite(cvString(fileName), mat(),
-                       std::vector<int>(parms.begin(), parms.end()));
-}
-
-bool cvMat::imwrite(const QFileInfo &fileInfo, const IntVector parms)
-{
-    return imwrite(fileInfo.absoluteFilePath(), parms);
-}
-
-void cvMat::makeGrey(cvMat greyMat) const
-{
-    TRACEQFI << greyMat.dumpString() << dumpString();
-    cv::cvtColor(mat(), greyMat.mat(), cv::COLOR_BGR2GRAY);
-    TRACE << greyMat.dumpString();
-}
-
-cvMat cvMat::toGrey() const
-{
-    TRACEQFI << dumpString();
-    cv::Mat gm;
-    cv::cvtColor(mat(), gm, cv::COLOR_BGR2GRAY);
-    TRACE << cvMat(gm).dumpString();
-    return cvMat(gm);
-}
-
-void cvMat::markRectangles(const QList<QRect> &rectList,
-                           const QColor &penColor,
-                           const int penWidth)
-{
-    cv::Scalar color(penColor.blue(), penColor.green(),
-               penColor.red(), penColor.alpha());
-    foreach (QRect qrc, rectList)
-        cv::rectangle(mat(),
-                      cv::Rect(qrc.left(), qrc.top(), qrc.width(), qrc.height()),
-                      color,
-                      penWidth);
-}
-#endif
-
 QString cvMat::dumpString() const
 {
     return QString("cvMat size=%1x%2 type=%3 total=%4")
             .arg(mat().size().width).arg(mat().size().height)
-            .arg(mat().type()).arg(mat().total());
+            .arg(mat().type()).arg(sizeInBytes());
 }

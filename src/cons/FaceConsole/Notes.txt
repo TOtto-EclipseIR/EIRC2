@@ -1,2 +1,14 @@
-200904aho
-* Check BEXPECTNE(0, pulseMsec) always fail
+* 200911
+  - [ ] Fix QQRect fromSet warnings
+  - [x] Try aim8 cascade
+    - Different loadCoreSize() for v2
+  - [x] Do or lose ObjDetPak Debug operator
+
+* 200912
+  - [ ] eirExe:SettingsFile QSettings(QTempFile)
+    - to/fromVariant
+    - implement for ObjDetResultList set/get ObjDetPak
+  - [ ] eirType:QQFileInfo enum Options
+    - simplify spaces
+    - squeeze all spaces
+

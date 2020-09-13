@@ -17,6 +17,20 @@ void QQRectList::set(const QVariant &variant)
     set(variant.value<QQRectList>());
 }
 
+qreal QQRectList::averageOverlap() const
+{
+    QQRectList copy = *this;
+    qreal accumulatedOverlap = 0.0;
+    QQRect prevRect = copy.takeFirst();
+    while ( ! isEmpty())
+    {
+        QQRect nextRect = copy.takeFirst();
+        accumulatedOverlap += prevRect.overlap(nextRect);
+        prevRect = nextRect;
+    }
+    return accumulatedOverlap / size();
+}
+
 QRectVector QQRectList::vector() const
 {
     QRectVector vec;

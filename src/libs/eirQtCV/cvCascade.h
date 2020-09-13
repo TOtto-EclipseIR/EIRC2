@@ -12,6 +12,7 @@
 #include <eirBase/Typedefs.h>
 #include <eirBase/Uuid.h>
 #include <eirType/BasicName.h>
+#include <eirType/Boolean.h>
 #include <eirType/QQFileInfo.h>
 #include <eirType/QQRect.h>
 #include <eirType/QQRectList.h>
@@ -54,7 +55,6 @@ public:
         QQSize maxSize() const;
         QString methodString(const QFileInfo &cascadeXmlInfo) const;
         QVariant toVariant() const;
-        operator QVariant() const;
         QStringList dumpList() const;
 
     private:
@@ -76,7 +76,8 @@ public:
     BasicName typeName() const;
     bool isNull() const;
     bool loadCascade(const QFileInfo &cascadeXmlInfo);
-    bool loadCoreSize(const QFileInfo &cascadeXmlInfo);
+    bool loadCoreSize(const QFileInfo &cascadeXmlInfo,
+                      int cascadeVersion=0);
     bool notLoaded() const;
     bool isLoaded() const;
     void unload();
@@ -107,30 +108,6 @@ private:
     QQRectList mRectList;
     QString mMethodString;
     Parameters mParameters;
-
-
-#if 0
-    void configure(const Configuration &config);
-    CascadeType cascadeType() const;
-    bool imreadInputMat(const QQFileInfo &inputFileInfo);
-    RectList detect();
-    QString methodString() const;
-    bool imwriteMarkedImage(QQFileInfo markFileInfo);
-
-private:
-    bool getCoreSize(const QFileInfo &cascadeXmlInfo);
-    void makeMethodString(const CascadeParameters &parms);
-
-private:
-    const CascadeType cmCascadeType;
-    Configuration mCascadeConfig;
-//    CascadeParameters mParameters;
-    cvMat mInputMat;
-    cvMat mDetectMat;
-    QString mMethodString;
-    RectList mRectList;
-    QImage mMarkedImage;
-#endif
 };
 Q_DECLARE_METATYPE(cvCascade::Parameters);
 typedef cvCascade::Type cvCascadeType;

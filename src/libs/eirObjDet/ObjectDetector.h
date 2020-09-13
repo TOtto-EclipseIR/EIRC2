@@ -12,6 +12,8 @@ class QTimer;
 #include <eirQtCV/cvCascade.h>
 
 #include "ObjDetPak.h"
+#include "ObjDetResultItem.h"
+#include "ObjDetResultList.h"
 
 class EIROBJDET_EXPORT ObjectDetector : public QObject
 {
@@ -30,7 +32,9 @@ public:
     Uuid process(const Configuration &config,
                        const QFileInfo &inputFileInfo,
                        bool showDetect=false);
-    QQRectList groupByUnion(const QQRectList &inputRects);
+    ObjDetResultList groupByUnion(const QQRectList &inputRects,
+                            const qreal threshold);
+    qreal calculateQuality(const ObjDetResultItem &item) const;
     QQImage processInputImage() const;
 
 public slots:

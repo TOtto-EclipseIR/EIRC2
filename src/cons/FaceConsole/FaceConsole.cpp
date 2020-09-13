@@ -230,8 +230,10 @@ void FaceConsole::processCurrentFile()
     mPreScanConfig.dump();
     Uuid pakUuid = cmpPreScanObjDet->process(mPreScanConfig, mCurrentFileInfo);
     mCurrentRectangles.set(cmpPreScanObjDet->pak(pakUuid).at("PreScan/Rectangles"));
-    writeLine(QString("   %1 PreScan rectangles found")
-                            .arg(mCurrentRectangles.size()));
+    mCurrentResults.set(cmpPreScanObjDet->pak(pakUuid).at("PreScan/ResultList"));
+    writeLine(QString("   %1 PreScan rectangles found, %2 candidate faces, %3 orphans")
+            .arg(mCurrentRectangles.size())
+            .arg(mCurrentResults.count()).arg(mCurrentResults.orphanCount()));
     markedRectOutputFileName = QQFileInfo(mMarkedRectOutputDir,
                         mCurrentFileInfo.completeBaseName()+"-%M@.png")
                                   .absoluteFilePath();
@@ -240,10 +242,26 @@ void FaceConsole::processCurrentFile()
     SimpleRectMarker rectMarker(inputImage);
     Configuration preScanMarkerConfig = cmpConfigObject->
             configuration("/Marker/MarkedPreScan");
-    rectMarker.mark(preScanMarkerConfig, mCurrentRectangles, cmpPreScanObjDet->pak(pakUuid));
+    rectMarker.mark(preScanMarkerConfig, mCurrentResults, cmpPreScanObjDet->pak(pakUuid));
     QQImage rectMarkedImage = rectMarker;
     if (rectMarkedImage.save(markedRectOutputFileName))
         writeLine("   " + markedRectOutputFileName + " written");
+    foreach (ObjDetResultItem item, mCurrentResults.list())
+    {
+        int ao = 1000 * item.averageOverlap();
+        QString markedQuality = QString("Q%1-").arg(item.quality(), 3, 10, QChar('0'));
+        QString markedFaceTitle = QString("-X%1Y%2W%3K%4O%5")
+                .arg(item.resultRect().center().x(), 4, 10, QChar('0'))
+                .arg(item.resultRect().center().y(), 4, 10, QChar('0'))
+                .arg(item.resultRect().width(), 4, 10, QChar('0'))
+                .arg(item.count(), 2, 10, QChar('0'))
+                .arg(ao, 3, 10, QChar('0'));
+        QFileInfo markedFaceInfo(mMarkedRectOutputDir,
+            markedQuality + mCurrentFileInfo.completeBaseName() + markedFaceTitle + ".PNG");
+        QQImage markedFaceImage = rectMarkedImage.copy(item.resultRect().expandedBy(2.0));
+        if (markedFaceImage.save(markedFaceInfo.absoluteFilePath()))
+            writeLine("   "+markedFaceInfo.absoluteFilePath()+" written");
+    }
 #endif
     EMIT(processed(QFileInfo(mCurrentFileInfo),
              mCurrentRectangles.size()));

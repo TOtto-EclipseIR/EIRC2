@@ -1,6 +1,7 @@
 #include "cvCascade.h"
 
 #include <QColor>
+#include <QTextStream>
 #include <QDomElement>
 #include <QPainter>
 #include <QPixmap>
@@ -49,10 +50,12 @@ bool cvCascade::loadCascade(const QFileInfo &cascadeXmlInfo)
     return nullptr != mpClassifier;
 }
 
-bool cvCascade::loadCoreSize(const QFileInfo &cascadeXmlInfo)
+bool cvCascade::loadCoreSize(const QFileInfo &cascadeXmlInfo,
+                             int cascadeVersion)
 {
-    TRACEQFI << cmType << cascadeXmlInfo;
+    TRACEQFI << cmType << cascadeXmlInfo << cascadeVersion;
     mCoreSize = QSize();
+
     XmlFile xmlFile(cascadeXmlInfo.absoluteFilePath());
     bool loaded = xmlFile.load();
     EXPECT(loaded);
@@ -62,13 +65,43 @@ bool cvCascade::loadCoreSize(const QFileInfo &cascadeXmlInfo)
     QDomElement topDE = rootDE.firstChildElement();
     DUMPVAL(topDE.tagName());
     DUMPVAL(topDE.attribute("type_id"));
-    QDomElement heightDE = topDE.firstChildElement("height");
-    QDomElement widthDE  = topDE.firstChildElement("width");
-    QString sHeight = heightDE.text();
-    QString sWidth  = widthDE.text();
-    int height = sHeight.toInt(), width = sWidth.toInt();
+
+    if (cascadeVersion != 2 && cascadeVersion != 4)
+    {
+        QString typeId = topDE.attribute("type_id");
+        if (typeId == "opencv-haar-classifier")
+            cascadeVersion = 2;
+        else if (typeId == "opencv-cascade-classifier")
+            cascadeVersion = 4;
+    }
+
+    int height, width;
+    switch (cascadeVersion)
+    {
+    case 2:
+    {
+        QDomElement sizeDE = topDE.firstChildElement("size");
+        QString sizeText = sizeDE.text();
+        QTextStream ts(&sizeText);
+        ts >> width >> height;
+    }
+        break;
+
+    case 4:
+    {
+        QDomElement heightDE = topDE.firstChildElement("height");
+        QDomElement widthDE  = topDE.firstChildElement("width");
+        height = heightDE.text().toInt();
+        width  = widthDE.text().toInt();
+    }
+        break;
+
+    default:
+        return false;
+    }
+
     QSize sz(width, height);
-    DUMP << width << height << sz;
+    DUMPVAL(sz);
     if (sz.isValid()) mCoreSize = sz;
     return mCoreSize.isValid();
 }

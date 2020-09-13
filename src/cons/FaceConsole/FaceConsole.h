@@ -53,6 +53,7 @@ private:
     QQDir mMarkedRectOutputDir;
     QFileInfo mCurrentFileInfo;
     QQRectList mCurrentRectangles;
+    ObjDetResultList mCurrentResults;
     QImage mRectImage;
 };
 

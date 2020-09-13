@@ -18,6 +18,7 @@ public:
     QQRectList(const QList<QQRect> rects=QList<QQRect>());
     void set(const QList<QQRect> &rects);
     void set(const QVariant &variant);
+    qreal averageOverlap() const;
     QList<QRect> list() const;
     QRectVector vector() const;
     QVariant toVariant() const;

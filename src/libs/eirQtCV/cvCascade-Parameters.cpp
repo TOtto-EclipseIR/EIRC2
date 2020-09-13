@@ -123,11 +123,6 @@ QVariant cvCascade::Parameters::toVariant() const
     return QVariant::fromValue(*this);
 }
 
-cvCascade::Parameters::operator QVariant() const
-{
-    return toVariant();
-}
-
 double cvCascade::Parameters::parseFactor()
 {
     double result=qQNaN();

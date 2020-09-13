@@ -5,6 +5,9 @@
 #include <eirBase/Uuid.h>
 #include <eirXfr/Debug.h>
 
+#include "ObjDetResultItem.h"
+#include "ObjDetResultList.h"
+
 QHash<cvCascadeType, ObjectDetector::This> ObjectDetector::smTypeDetectorHash;
 
 ObjectDetector::ObjectDetector(const cvCascade::Type type,
@@ -75,40 +78,63 @@ Uuid ObjectDetector::process(const Configuration &config,
     pak.set(cascade()->typeName()+"/Cascade", cascade()->cascadeFileInfo());
     pak.set(cascade()->typeName()+"/CoreSize", cascade()->coreSize());
     DUMP << cascade()->parameters();
-    pak.set(cascade()->typeName()+"/Parameters", cascade()->parameters());
+    pak.set(cascade()->typeName()+"/Parameters", cascade()->parameters().toVariant());
     pak.set(cascade()->typeName()+"/MethodString", cascade()->methodString());
     QQRectList rectList = cascade()->rectList();
     pak.set(cascade()->typeName()+"/Rectangles", rectList);
-    rectList = groupByUnion(rectList);
+    qreal groupUnionThreshold = config.real("GroupUnionThreshold", 0.5);
+    ObjDetResultList resultList = groupByUnion(rectList, groupUnionThreshold);
+    pak.set(cascade()->typeName()+"/ResultList", resultList.toVariant());
     insert(pak);
     TRACE << "return uuid" << pak.uuid();
     return pak.uuid();
 }
 
-QQRectList ObjectDetector::groupByUnion(const QQRectList &inputRects)
+ObjDetResultList ObjectDetector::groupByUnion(const QQRectList &inputRects,
+                                        const qreal threshold)
 {
-    TRACEQFI << inputRects;
-    QQRectList resultRects;
+    TRACEQFI << inputRects << threshold;
+    EXPECTNOT(inputRects.isEmpty());
+    if (inputRects.isEmpty()) return ObjDetResultList();
+    ObjDetResultList resultList;
     QQRectList remainingRects = inputRects;
+    DUMPVAL(remainingRects);
     while ( ! remainingRects.isEmpty())
     {
         QQRect currentRect = remainingRects.takeFirst();
+        DUMPVAL(currentRect);
+        ObjDetResultItem currentItem;
+        currentItem.unite(currentRect);
         QQRectList nextRects;
         {
             while ( ! remainingRects.isEmpty())
             {
                 QQRect thisRect = remainingRects.takeFirst();
-                if (currentRect.overlap(thisRect) > 0.1)
-                    currentRect = QQRect(currentRect.united(thisRect));
+                DUMPVAL(thisRect);
+                if (currentItem.unitedOverlap(thisRect) > threshold)
+                    currentItem.unite(thisRect);
                 else
                     nextRects << thisRect;
             }
         }
-        resultRects << currentRect;
+        if (currentItem.isOrphan())
+        {
+            resultList.appendOrphan(currentRect);
+        }
+        else if (currentItem.isEmpty())
+        {
+            EXPECTNOT(currentItem.isEmpty());
+        }
+        else
+        {
+            currentItem.calculate();
+            resultList.append(currentItem);
+        }
         remainingRects = nextRects;
     }
-    TRACE << resultRects;
-    return resultRects;
+    resultList.assignRanks();
+    resultList.dump(2);
+    return resultList;
 }
 
 QQImage ObjectDetector::processInputImage() const

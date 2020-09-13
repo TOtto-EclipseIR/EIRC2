@@ -42,4 +42,4 @@ protected:
                   const QQImage &image);
 };
 
-QDebug operator<<(QDebug dbg, const ObjDetPak &pak);
+EIROBJDET_EXPORT QDebug operator<<(QDebug dbg, const ObjDetPak &pak);
