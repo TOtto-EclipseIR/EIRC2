@@ -16,6 +16,7 @@ LIBS *= -leirObjDet5
 LIBS *= -leirQtCV5
 
 SOURCES += \
+    Hue.cpp \
     MarkManager.cpp \
     OutputManager.cpp \
     QQImage.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
     eirImage.cpp
 
 HEADERS += \
+    Hue.h \
     MarkManager.h \
     OutputManager.h \
     QQImage.h \

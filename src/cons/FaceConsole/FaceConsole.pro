@@ -45,6 +45,7 @@ DISTFILES += \
     ../../../../../bin/config/Input01.txt \
     ../../../../../bin/config/OutputRD.txt \
     ../../../../../bin/config/SkyPlex.txt \
+    ../../../../../bin/config/fodder.txt \
     ../../../../../bin/detectors/v2/Aim8A001-32-NoSplit.xml \
     ../../../../../bin/detectors/v4/haarcascade_frontalface_default.xml \
     I5c.bat \

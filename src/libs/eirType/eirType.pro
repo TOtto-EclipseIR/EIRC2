@@ -35,7 +35,9 @@ SOURCES += \
     QQRectF.cpp \
     QQRectList.cpp \
     QQSize.cpp \
+    Rational.cpp \
     Real.cpp \
+    RealMath.cpp \
     Region.cpp \
     Sortable.cpp \
     BitFlags.cpp \
@@ -76,7 +78,9 @@ HEADERS += \
     QQRectF.h \
     QQRectList.h \
     QQSize.h \
+    Rational.h \
     Real.h \
+    RealMath.h \
     Region.h \
     Sortable.h \
     Value.h \

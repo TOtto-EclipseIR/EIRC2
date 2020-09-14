@@ -249,17 +249,25 @@ void FaceConsole::processCurrentFile()
     foreach (ObjDetResultItem item, mCurrentResults.list())
     {
         int ao = 1000 * item.averageOverlap();
-        QString markedQuality = QString("Q%1-").arg(item.quality(), 3, 10, QChar('0'));
+        QString markedQualityDirName = QString("Q%1")
+                .arg(100 * (item.quality() / 100), 3, 10, QChar('0'));
+        QDir markedFaceDir(mMarkedRectOutputDir.absolutePath());
+        markedFaceDir.mkpath(markedQualityDirName);
+        markedFaceDir.cd(markedQualityDirName);
+        QString markedQuality = QString("Q%1-")
+                .arg(item.quality(), 3, 10, QChar('0'));
         QString markedFaceTitle = QString("-X%1Y%2W%3K%4O%5")
                 .arg(item.resultRect().center().x(), 4, 10, QChar('0'))
                 .arg(item.resultRect().center().y(), 4, 10, QChar('0'))
                 .arg(item.resultRect().width(), 4, 10, QChar('0'))
                 .arg(item.count(), 2, 10, QChar('0'))
                 .arg(ao, 3, 10, QChar('0'));
-        QFileInfo markedFaceInfo(mMarkedRectOutputDir,
+        QFileInfo markedFaceInfo(markedFaceDir,
             markedQuality + mCurrentFileInfo.completeBaseName() + markedFaceTitle + ".PNG");
         QQImage markedFaceImage = rectMarkedImage.copy(item.resultRect().expandedBy(2.0));
-        if (markedFaceImage.save(markedFaceInfo.absoluteFilePath()))
+        if (markedFaceImage.width() < 256)
+            markedFaceImage = markedFaceImage.scaledToWidth(256);
+        if (markedFaceImage.save(markedFaceInfo.filePath()))
             writeLine("   "+markedFaceInfo.absoluteFilePath()+" written");
     }
 #endif
