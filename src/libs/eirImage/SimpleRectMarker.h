@@ -12,6 +12,8 @@ class EIRIMAGE_EXPORT SimpleRectMarker : public QQImage
 {
 public:
     SimpleRectMarker(const QQImage &inputImage);
+    void markAll(const Configuration &markRectConfig,
+                 const QQRectList &rectList);
     void mark(const Configuration &markRectConfig,
               const ObjDetResultList &resultList,
               const ObjDetPak &pak);

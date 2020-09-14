@@ -51,7 +51,7 @@ private:
     Configuration mPreScanConfig;
     QDir mBaseOutputDir;
     QQDir mMarkedRectOutputDir;
-    QFileInfo mCurrentFileInfo;
+    QQFileInfo mCurrentFileInfo;
     QQRectList mCurrentRectangles;
     ObjDetResultList mCurrentResults;
     QImage mRectImage;

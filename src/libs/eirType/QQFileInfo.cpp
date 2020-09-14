@@ -8,16 +8,16 @@
 #include "Milliseconds.h"
 
 QQFileInfo::QQFileInfo() {;}
-QQFileInfo::QQFileInfo(const QString &filePathName)
-    : QFileInfo(filePathName), mIsNull(false) {;}
+QQFileInfo::QQFileInfo(const QQString &filePathName, const QQString::Flags flags)
+    : QFileInfo(QQString(filePathName, flags)), mIsNull(false) {;}
 QQFileInfo::QQFileInfo(const QFileInfo &other)
     : QFileInfo(other), mIsNull(false) {;}
 QQFileInfo::QQFileInfo(const QFile &file)
     : QFileInfo(file), mIsNull(false) {;}
 
-QQFileInfo::QQFileInfo(const QDir &dir, const QString &fileName)
+QQFileInfo::QQFileInfo(const QDir &dir, const QQString &fileName, const QQString::Flags flags)
 {
-    setFile(dir, fileName);
+    setFile(dir, QQString(fileName, flags));
 }
 
 QQFileInfo::QQFileInfo(const QVariant &variant)
@@ -25,7 +25,32 @@ QQFileInfo::QQFileInfo(const QVariant &variant)
     *this = variant.value<QQFileInfo>();
 }
 
-void QQFileInfo::setFile(const QString &filePathName)
+QQString QQFileInfo::filePath(const QQString::Flags flags) const
+{
+    return QQString(QFileInfo::filePath(), flags);
+}
+
+QQString QQFileInfo::absoluteFilePath(const QQString::Flags flags) const
+{
+    return QQString(QFileInfo::absoluteFilePath(), flags);
+}
+
+QQString QQFileInfo::fileName(const QQString::Flags flags) const
+{
+    return QQString(QFileInfo::fileName(), flags);
+}
+
+QQString QQFileInfo::completeBaseName(const QQString::Flags flags) const
+{
+    return QQString(QFileInfo::completeBaseName(), flags);
+}
+
+QQString QQFileInfo::absolutePath(const QQString::Flags flags) const
+{
+    return QQString(QFileInfo::absolutePath(), flags);
+}
+
+void QQFileInfo::setFile(const QQString &filePathName)
 {
     TRACEQFI << filePathName;
     mIsNull = false;
@@ -34,20 +59,20 @@ void QQFileInfo::setFile(const QString &filePathName)
     TRACE << QFileInfo::filePath();
 }
 
-void QQFileInfo::setFile(const QDir &dir, const QString &fileName)
+void QQFileInfo::setFile(const QDir &dir, const QQString &fileName)
 {
     TRACEQFI << dir << fileName;
     mIsNull = false;
     QFileInfo fi(dir, fileName);
-    QString filePathName = fi.filePath();
+    QQString filePathName = fi.filePath();
     setFile(filePathName);
     TRACE << QFileInfo::filePath();
 }
 
-void QQFileInfo::replace(const QString &trigger, const QString &with)
+void QQFileInfo::replace(const QQString &trigger, const QQString &with)
 {
     TRACEQFI << trigger << with;
-    QString filePathName = filePath();
+    QQString filePathName = filePath();
     filePathName.replace(trigger, with);
     QFileInfo::setFile(filePathName);
     TRACE << QFileInfo::filePath();
@@ -68,17 +93,17 @@ bool QQFileInfo::tryIsFile(const QIODevice::OpenMode mode) const
 
 bool QQFileInfo::tryIsDir() const
 {
-    QString absolutePath = dir().absolutePath();
+    QQString absolutePath = dir().absolutePath();
     TRACEQFI << absolutePath;
     bool canCdDir = tryIsDir(absolutePath);
     TRACERTN(canCdDir);
     return canCdDir;
 }
 
-QString QQFileInfo::attributes() const
+QQString QQFileInfo::attributes() const
 {
     if (isNull()) return "isNull ";
-    QString attribString;
+    QQString attribString;
     if (isAbsolute())       attribString += "Absolute ";
     if (tryIsDir())         attribString += "Dir ";
     if (isExecutable())     attribString += "Executable ";
@@ -89,7 +114,7 @@ QString QQFileInfo::attributes() const
     return attribString.simplified();
 }
 
-QString QQFileInfo::toString() const
+QQString QQFileInfo::toString() const
 {
     if (tryIsDir())     return absolutePath();
     if (tryIsFile())    return absoluteFilePath();
@@ -106,19 +131,19 @@ QQFileInfo::operator QVariant() const
     return toVariant();
 }
 
-QQFileInfo::operator QString() const
+QQFileInfo::operator QQString() const
 {
     return toString();
 }
 
-QString QQFileInfo::operator ()() const
+QQString QQFileInfo::operator ()() const
 {
     return toString();
 }
 
 /* -------- static public --------------------------------- */
 
-bool QQFileInfo::tryIsFile(const QString &filePathName,
+bool QQFileInfo::tryIsFile(const QQString &filePathName,
                            const QIODevice::OpenMode mode)
 {
     TRACEQFI << filePathName;
@@ -128,7 +153,7 @@ bool QQFileInfo::tryIsFile(const QString &filePathName,
     return canOpenFile;
 }
 
-bool QQFileInfo::tryIsDir(const QString &pathName)
+bool QQFileInfo::tryIsDir(const QQString &pathName)
 {
     TRACEQFI << pathName;
     QDir tryDir;

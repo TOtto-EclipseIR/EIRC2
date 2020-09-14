@@ -35,6 +35,7 @@ SOURCES += \
     QQRectF.cpp \
     QQRectList.cpp \
     QQSize.cpp \
+    QQString.cpp \
     Rational.cpp \
     Real.cpp \
     RealMath.cpp \
@@ -78,6 +79,7 @@ HEADERS += \
     QQRectF.h \
     QQRectList.h \
     QQSize.h \
+    QQString.h \
     Rational.h \
     Real.h \
     RealMath.h \

@@ -173,13 +173,13 @@ void FaceConsole::initializeResources()
     QString preScanCascadeFileName = config()->
             configuration("/Resources/RectFinder/PreScan")
                 .string("XmlFile");
-    QFileInfo preScanCascadeFileInfo(baseCascadeDir, preScanCascadeFileName);
+    QQFileInfo preScanCascadeFileInfo(baseCascadeDir, preScanCascadeFileName);
     TRACE << preScanCascadeFileInfo << preScanCascadeFileInfo.exists()
           << preScanCascadeFileInfo.isReadable() << preScanCascadeFileInfo.isFile();
     EXPECT(preScanCascadeFileInfo.exists());
     EXPECT(preScanCascadeFileInfo.isReadable());
     EXPECT(preScanCascadeFileInfo.isFile());
-    write("---Cascade: "+preScanCascadeFileInfo.absoluteFilePath()+" loading...");
+    write("---Cascade: "+preScanCascadeFileInfo+" loading...");
     cmpPreScanObjDet->cascade()->loadCascade(preScanCascadeFileInfo.absoluteFilePath());
     EXPECT(cmpPreScanObjDet->cascade()->isLoaded());
     EXPECT(cmpPreScanObjDet->cascade()->loadCoreSize(preScanCascadeFileInfo));
@@ -225,23 +225,27 @@ void FaceConsole::processCurrentFile()
     //cmpPreScanObjDet->enqueue(mCurrentFileInfo);
     writeLine(QString("---Processing #%1: %2")
               .arg(commandLine()->takePositionalArgumentCount())
-              .arg(mCurrentFileInfo.absoluteFilePath()));
-#if 1
+              .arg(mCurrentFileInfo.absoluteFilePath(QQString::Squeeze)));
     mPreScanConfig.dump();
     Uuid pakUuid = cmpPreScanObjDet->process(mPreScanConfig, mCurrentFileInfo);
     mCurrentRectangles.set(cmpPreScanObjDet->pak(pakUuid).at("PreScan/Rectangles"));
     mCurrentResults.set(cmpPreScanObjDet->pak(pakUuid).at("PreScan/ResultList"));
-    writeLine(QString("   %1 PreScan rectangles found, %2 candidate faces, %3 orphans")
-            .arg(mCurrentRectangles.size())
-            .arg(mCurrentResults.count()).arg(mCurrentResults.orphanCount()));
+    writeLine(QString("   %1 PreScan rectangles found")
+            .arg(mCurrentRectangles.size()));
     markedRectOutputFileName = QQFileInfo(mMarkedRectOutputDir,
-                        mCurrentFileInfo.completeBaseName()+"-%M@.png")
-                                  .absoluteFilePath();
+            mCurrentFileInfo.completeBaseName(QQString::Squeeze)+"-%M@.png")
+                .absoluteFilePath(QQString::Squeeze);
     markedRectOutputFileName.replace("%M", cmpPreScanObjDet->cascade()->methodString());
     QQImage inputImage = cmpPreScanObjDet->processInputImage();
     SimpleRectMarker rectMarker(inputImage);
     Configuration preScanMarkerConfig = cmpConfigObject->
             configuration("/Marker/MarkedPreScan");
+    rectMarker.markAll(preScanMarkerConfig, mCurrentRectangles);
+    QQImage rectMarkedImage = rectMarker;
+    if (rectMarkedImage.save(markedRectOutputFileName))
+        writeLine("   " + markedRectOutputFileName + " written");
+
+#if 0
     rectMarker.mark(preScanMarkerConfig, mCurrentResults, cmpPreScanObjDet->pak(pakUuid));
     QQImage rectMarkedImage = rectMarker;
     if (rectMarkedImage.save(markedRectOutputFileName))
@@ -269,10 +273,8 @@ void FaceConsole::processCurrentFile()
             markedFaceImage = markedFaceImage.scaledToWidth(256);
         if (markedFaceImage.save(markedFaceInfo.filePath()))
             writeLine("   "+markedFaceInfo.absoluteFilePath()+" written");
-    }
 #endif
-    EMIT(processed(QFileInfo(mCurrentFileInfo),
-             mCurrentRectangles.size()));
+    EMIT(processed(QFileInfo(mCurrentFileInfo), mCurrentRectangles.size()));
     NEEDDO(processFailed());
     /*
     else

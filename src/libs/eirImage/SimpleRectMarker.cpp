@@ -18,6 +18,22 @@ SimpleRectMarker::SimpleRectMarker(const QQImage &inputImage)
     TRACEQFI << inputImage;
 }
 
+void SimpleRectMarker::markAll(const Configuration &markRectConfig,
+                               const QQRectList &rectList)
+{
+    TRACEQFI << rectList.size();
+    markRectConfig.dump();
+    QPainter painter(this);
+    QColor penColor = QColor(markRectConfig.string("PenColor","#7f00CCCC"));
+    qreal penWidth = markRectConfig.real("PenWidth", 1.0);
+    Qt::PenStyle penStyle = Qt::PenStyle(markRectConfig.unsignedInt("PenStyle", 1));
+    QBrush penBrush(penColor);
+    QPen pen(penBrush, penWidth, penStyle);
+    painter.setPen(pen);
+    painter.drawRects(rectList.vector());
+    painter.end();
+}
+
 void SimpleRectMarker::mark(const Configuration &markRectConfig,
                             const ObjDetResultList &resultList,
                             const ObjDetPak &pak)
@@ -29,7 +45,7 @@ void SimpleRectMarker::mark(const Configuration &markRectConfig,
     resultList.dump(1);
     QPainter painter(this);
 
-#if 0
+#if 1
     QColor penColor = QColor(markRectConfig.string("PenColor","#7f00CCCC"));
 #else
     QColor penColor;
@@ -42,7 +58,7 @@ void SimpleRectMarker::mark(const Configuration &markRectConfig,
     foreach (ObjDetResultItem item, resultList.list())
     {
         item.dump();
-#if 0
+#if 1
         int qual = item.quality(500);
         QColor qualColor = penColor.lighter(qual / 5);
         QBrush penBrush(qualColor);

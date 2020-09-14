@@ -70,7 +70,7 @@ Uuid ObjectDetector::process(const Configuration &config,
 {
     TRACEQFI << inputFileInfo << showDetect;
     config.dump();
-    ObjDetPak pak(inputFileInfo.absoluteFilePath());
+    ObjDetPak pak(inputFileInfo);
     QQImage inputImage = pak.inputImage();
     pak.set("InputImage/Configuration", config.toVariant());
     mProcessInputImage = inputImage;

@@ -28,3 +28,8 @@ void QQSize::setByWidth(int width, qreal aspect)
     QSize::setWidth(width);
     QSize::setHeight(width * aspect);
 }
+
+void QQSize::nullify()
+{
+    setWidth(0), setHeight(0);
+}

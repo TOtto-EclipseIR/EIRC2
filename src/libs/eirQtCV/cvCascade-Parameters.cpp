@@ -48,6 +48,7 @@ void cvCascade::Parameters::calculate(const cvCascade::Type type,
     }
     BEXPECTNOT(qIsNaN(typeFactor));
 
+#if 0
     qreal coreWidth = coreSize.width();
     qreal imageWidth = imageSize.width();
     qreal minWidth = coreWidth;
@@ -72,6 +73,10 @@ void cvCascade::Parameters::calculate(const cvCascade::Type type,
     }
     mMinSize.setByWidth(minWidth, coreSize.aspect());
     mMaxSize.setByWidth(maxWidth, coreSize.aspect());
+#else
+    mMinSize.nullify();
+    mMaxSize.nullify();
+#endif
     DUMP << mMinSize << mMaxSize;
 
     double fac = parseFactor();

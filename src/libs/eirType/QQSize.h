@@ -14,6 +14,7 @@ public:
     int minDimension() const;
     int area() const;
     void setByWidth(int width, qreal aspect);
+    void nullify();
     static QQSize null;
 };
 
