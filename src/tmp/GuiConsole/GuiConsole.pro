@@ -15,7 +15,8 @@ SOURCES += \
 
 HEADERS += \
     ConsoleWidget.h \
-    GuiConsole.h
+    GuiConsole.h \
+    QQQueue.h
 
 FORMS += \
 
